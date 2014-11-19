@@ -1,49 +1,51 @@
 {% load i18n %}
 {% load static from staticfiles %}
 
-<div class="control-group">
+<div class="control-group span11">
     <label for="add_photo" class="control-label">
-        <strong>{% trans 'Photos' %}</strong><br />
-        {% trans 'La photo doit permettre de replacer l’incident dans son contexte. Les visages et plaques d’immatriculation ne peuvent pas être identifiables.' %}
+        <span class="dosisformblue">{% trans 'Photos' %}</span><br />
     </label>
 
     <div class="controls">
         {{ file_formset.management_form }}
         {% for dict in file_formset.errors %}
-            {% for error in dict.values %}
-                {{ error }}
-            {% endfor %}
+        {% for error in dict.values %}
+        {{ error }}
+        {% endfor %}
         {% endfor %}
 
         <div class="control-group">
             <div class="container-fluid">
                 <div id="file-form-files"></div>
+                <div id="file-form-row-tpl" class="hidden">
+                    <div>
+                        <div class="row-fluid">
+                            <div class="span3 thumb" align="center" ></div>
+                            <div class="span8">
+                                {{ file_formset.empty_form.title }}
+                            </div>
+
+                            <div class="span1 formPictureContainer" align="center">
+                                <img class="removeThumbnail pull-right" src="{% static 'images/delete_documentation.png' %}" title="Remove"/>
+                            </div>
+                            {{ file_formset.empty_form.reportattachment_ptr }}
+                            {{ file_formset.empty_form.file_creation_date }}
+                            {# { file_formset.empty_form.file } #}
+                        </div>
+                    </div>
+                </div>
                 <div id="file-form-btn-add-container">
-                    <label class="input-file-button btn" for="file-form-input-add">{% trans 'Add file' %}</label>
+
+                    <label class="input-file-button btn1" for="file-form-input-add" style="float:right;"><img src="/static/images/addPicture.png"/> {% trans 'Add file' %}</label>
+
+                    <p class="formCommentText"> {% trans 'La photo doit permettre de replacer l’incident dans son contexte. Les visages et plaques d’immatriculation ne peuvent pas être identifiables.' %}</p>
+
                     <span class="input-file-button2">
                         <input id="file-form-input-add" class="input-file-button2" type="file" multiple />
                     </span>
                 </div>
 
-                <div id="file-form-row-tpl" class="hidden">
-                    <div class="row">
-                        <div>
-                            <div class="row-fluid">
-                                <div class="span4 thumb"></div>
-                                <div class="span7">
-                                    {{ file_formset.empty_form.title }}
-                                </div>
-
-                                <div class="span1">
-                                    <img class="removeThumbnail pull-right" src="{% static 'images/delete_documentation.png' %}" title="Remove"/>
-                                </div>
-                                {{ file_formset.empty_form.reportattachment_ptr }}
-                                {{ file_formset.empty_form.file_creation_date }}
-                                {# { file_formset.empty_form.file } #}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>

@@ -174,7 +174,7 @@ class CitizenForm(forms.Form):
     last_name = forms.CharField(max_length="30", label=_('Identity'), required=False)
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
     email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={'type': 'email', 'class': 'validate-email'}))
-    quality = forms.ChoiceField(label=_('Quality'), widget=forms.RadioSelect, choices=qualities)
+    quality = forms.ChoiceField(label=_('Quality'), widget=forms.Select, choices=qualities)
     #citizen_firstname = forms.CharField(max_length="30", label=_('Firstname'))
 
     def clean(self):
@@ -238,7 +238,7 @@ class ReportFileForm(forms.ModelForm):
         fields = ('reportattachment_ptr', 'file', 'title', 'file_creation_date')
 
     file_creation_date = forms.CharField(widget=forms.HiddenInput(), required=False)
-    title = forms.CharField(max_length=80, required=False)
+    title = forms.CharField(widget=forms.Textarea(attrs={'cols': 50, 'rows': 4}))
 
     def clean_file(self):
         f = self.cleaned_data['file']
