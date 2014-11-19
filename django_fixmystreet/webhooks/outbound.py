@@ -36,7 +36,7 @@ class AbstractBaseOutWebhook(object):
         for endpoint in endpoints:
             try:
                 response = self._send_request(endpoint, payload)
-                if response.status_code == requests.codes.ok:
+                if response.status_code != requests.codes.ok:
                     message = u"Invalid status code ({}).".format(response.status_code)
                     response_data = response.json()
                     if response_data.get("message"):
