@@ -57,17 +57,28 @@
                 <li>
                     <a href="#list_created" data-toggle="tab">
                             <img src="{% static 'images/attention1.png' %}" style="float:left;"/>
-                        <span class="num_reports" style="color:#e74c3c;">{{ report_counts.recent_new }}</span>
+                        <span class="num_reports list_created_color">
+                            {{ report_counts.recent_new }}
+                        </span>
                         <br />{% trans "Report Created" %}
                     </a>
                 </li>
                 <li class="active">
-                    <a href="#list_in_progress" data-toggle="tab">                            <img src="{% static 'images/worker5.png' %}" style="float:left;"/>
-<span class="num_reports" style="color:#e67e22;">{{ report_counts.recent_updated }}</span><br />{% trans "Report In progress" %}</a>
+                    <a href="#list_in_progress" data-toggle="tab">
+                        <img src="{% static 'images/worker5.png' %}" style="float:left;"/>
+                        <span class="num_reports list_in_progress_color">
+                            {{ report_counts.recent_updated }}
+                        </span>
+                        <br />{% trans "Report In progress" %}
+                    </a>
                 </li>
                 <li >
-                    <a href="#list_closed" data-toggle="tab">                            <img src="{% static 'images/approved.png' %}" style="float:left;"/>
-<span class="num_reports"  style="color:#2ecc71;" >{{ report_counts.recent_fixed }}</span><br />{% trans "Report Processed" %}</a>
+                    <a href="#list_closed" data-toggle="tab">
+                        <img src="{% static 'images/approved.png' %}" style="float:left;"/>
+                        <span class="num_reports list_closed_color">
+                            {{ report_counts.recent_fixed }}
+                        </span>
+                            <br />{% trans "Report Processed" %}</a>
                 </li>
             </ul>
             <div class="container tab-content">

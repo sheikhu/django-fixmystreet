@@ -3,7 +3,7 @@
 
 <a href="{{ url }}" class="{% if active %} active{% endif %}">
 
-    <div style="float:left; width:48%; margin:0px; margin-left:15px; margin-bottom:10px">
+    <div id="navigationReports">
         <div id="containerIconCircle">
             <div id="iconCircle" class="icon2-list_created"></div>
         </div>
@@ -24,7 +24,7 @@
                 {% elif report.thumbnail %}
                     <img class="defectPic" src="{{ report.thumbnail }}"/>
                 {% else %}
-                    <img class="defectPic" src="{% static 'images/no-pix.png' %}" />
+                    <img src="{% static 'images/no-pix.png' %}" style="" />
                 {% endif %}
             </div>
         </div>

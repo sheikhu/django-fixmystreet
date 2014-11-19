@@ -5,8 +5,8 @@
 {% block title %}{% trans "Users admin" %}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}"></link>
 {{ block.super }}
+<link rel="stylesheet" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}"></link>
 {% endblock %}
 
 {% block script %}
@@ -37,16 +37,16 @@ $(document).ready(function() {
     <table id="users-table">
         <thead>
             <tr>
-                <td>{% trans "Name" %}</td>
-                <td>{% trans "Phone" %}</td>
-                <td>{% trans "Email" %}</td>
-                <td>{% trans "Role" %}</td>
+                <td style="background-color:#d3d6ff;">{% trans "Name" %}</td>
+                <td style="background-color:#e2e4ff;">{% trans "Phone" %}</td>
+                <td style="background-color:#e2e4ff;">{% trans "Email" %}</td>
+                <td style="background-color:#e2e4ff;">{% trans "Role" %}</td>
             </tr>
             <tr>
-                <td>{% trans "Name" %}</td>
-                <td>{% trans "Phone" %}</td>
-                <td>{% trans "Email" %}</td>
-                <td>{% trans "Role" %}</td>
+                <td style="background-color:#d3d6ff;-webkit-border-radius: 5px 0px 0px 0px; -moz-border-radius: 5px 0px 0px 0px; border-radius: 5px 0px 0px 0px; color:#2c3e50; text-align:center; font-size:16px">{% trans "Name" %}</td>
+                <td style="background-color:#e2e4ff; color:#2c3e50; text-align:center; font-size:16px">{% trans "Phone" %}</td>
+                <td style="background-color:#e2e4ff;color:#2c3e50; text-align:center; font-size:16px">{% trans "Email" %}</td>
+                <td style="background-color:#e2e4ff;-webkit-border-radius: 0px 5px 0px 0px; -moz-border-radius: 0px 5px 0px 0px; border-radius: 0px 5px 0px 0px; color:#2c3e50; text-align:center; font-size:16px">{% trans "Role" %}</td>
             </tr>
         </thead>
         <tbody>
@@ -75,13 +75,8 @@ $(document).ready(function() {
             {% endfor %}
         </tbody>
     </table>
+
 </div>
-{% if can_create %}
-<p class="lead span12">
-    <a href="{% url 'create_user' %}" class="btn btn-large btn-primary">
-        <i class="icon-plus"></i> {% trans 'Create user' %}
-    </a>
-</p>
-{% endif %}
+
 
 {% endblock %}

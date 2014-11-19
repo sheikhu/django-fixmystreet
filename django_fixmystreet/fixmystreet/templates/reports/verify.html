@@ -34,9 +34,15 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="span10">
-            <h2 class="verify_title">{% trans "we have" %} {{ reports_nearby.count }} {% trans "incident sector" %}</h2>
-            <p class="lead">{% trans "thanks verify" %}</p>
+        <div class="span10 ">
+            <div id="infozone">
+                <img src="{% static 'images/icon-info2.png' %}" />
+            </div>
+            <div id="infodoublontext">
+                <h2 class="verify_title">{% trans "we have" %} {{ reports_nearby.count }} {% trans "incident sector" %}</h2>
+                <p class="lead">{% trans "thanks verify" %}</p>
+            </div>
+
         </div>
         <div class="span2">
             <div class="switch_verify btn-group pull-right">
@@ -55,60 +61,129 @@
             </article>
             <div id='list'>
                 {% for report in reports_nearby %}
-                    <div class="row">
+                    <div class="row" style="padding-top:15px; padding-bottom:5px;">
                         <div class="span12">
                             <div class="one_incident">
                                 <div class="row">
                                     <!-- Address and categories -->
-                                    <div class="span4 loc_desc">
+                                    <div class="span1 loc_desc">
                                         <!-- Distance -->
                                         <p class="distance">{% trans "to" context "distance" %} {{ report.distance.m|floatformat:"0" }} m</p>
-                                        <img src="{% static report.get_marker %}" class="report-counter"/>
-                                        <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
-                                        <span class="ticket_address">
-                                            {{ report.address }}, {{ report.address_number }}<br />
-                                            {{ report.postalcode }} {{ report.territorial_entity.name }}
-                                        </span><br />
-                                        <span class="ticket_desc">
-                                            {{ report.display_category }}
-                                        </span><br />
-                                    <!-- Button "it's the same" -->
-                                    <a
-                                        href="{% if BACKOFFICE %}{{ report.get_absolute_url_pro }}{% else %}{{ report.get_absolute_url }}{% endif %}"
-                                        class="btn_same_incident report{% if active %} active{% endif %}">
-                                            {% trans "This is the same incident" %}
-                                    </a>
-                                    </div>
-                                    <!-- Photos -->
-                                    <div class="span4 picture">
-                                        {% if BACKOFFICE and report.thumbnail_pro %}
-                                            <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
-                                        {% elif report.thumbnail %}
-                                            <img src="{{ report.thumbnail }}" class="report-preview thumbnail"  />
-                                        {% else %}
-                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
-                                        {% endif %}
-                                    </div>
-                                    <!-- Comments -->
-                                    <div class="span4">
-                                        {% for attachment in report.attachments.all %}
-                                            {% if attachment.reportcomment.text %}
-                                                {% if attachment.is_public or BACKOFFICE and attachment.is_private %}
-                                                    <p class="comment-incident">
-                                                        {{ attachment.get_type_message }}
-                                                        {{ attachment.reportcomment.text|truncatechars:200 }}
-                                                    </p>
+                                        <!-- Colored circle to be adapted -->
+                                        <div id="containerIconCircle" style="margin-left:15px;">
+                                            <div id="iconCircle" class="icon2-list_created"></div>
+                                        </div>
+                                              
+
+                                     <!-- Button "it's the same" 
+                                                        
+                                                                            -->                    
+                
+                                     </div>
+                                    <div class="span3 picture marginleft15" style="float:left;">
+                                        <div style="margin-left:10px;">
+
+                                            <!-- Map wrapper -->
+                                            <div class="homeWrappingPicture1" align="right">
+                                                {% if BACKOFFICE and report.thumbnail_pro %}
+                                                    <img class="defectPic" src="{{ report.thumbnail_pro }}"/>
+                                                {% elif report.thumbnail %}
+                                                    <img class="defectPic" src="{{ report.thumbnail }}"/>
+                                                {% else %}
+                                                    <img src="http://upload.wikimedia.org/wikipedia/commons/1/1e/Wolfgang-amadeus-mozart_1.jpg" class="defectPic" />
                                                 {% endif %}
+                                            </div>
+
+                                            <!-- Picture Wrapper -->
+                                            <div class="homeWrappingPicture1" align="right">
+                                                {% if BACKOFFICE and report.thumbnail_pro %}
+                                                    <img class="defectPic" src="{{ report.thumbnail_pro }}"/>
+                                                {% elif report.thumbnail %}
+                                                    <img class="defectPic" src="{{ report.thumbnail }}"/>
+                                                {% else %}
+                                                    <img src="{% static 'images/no-pix.png' %}"  />
+                                                {% endif %}
+                                            </div>
+                                            <!--
+                                            {% if BACKOFFICE and report.thumbnail_pro %}
+                                                <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail" style="float:left; width:100px"  />
+                                            {% elif report.thumbnail %}
+                                                <img src="{{ report.thumbnail }}" class="report-preview thumbnail" style="float:left; width:100px"  />
+                                            {% else %}
+                                                <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="float:left; width:100px" />
                                             {% endif %}
-                                        {% endfor %}
+
+                                            -->
+
+                                            <!-- Photo - Only show 1-->                    
+
+                                            <!--
+                                              {% if BACKOFFICE and report.thumbnail_pro %}
+                                                <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail" style="float:left; width:100px;"   />
+                                            {% elif report.thumbnail %}
+                                                <img src="{{ report.thumbnail }}" class="report-preview thumbnail" style="float:left;width:100px;"  />
+                                            {% else %}
+                                                <img src="" class="report-preview thumbnail"  style="float:left;width:100px"/>
+                                            {% endif %}
+
+                                            -->
+                                    
+                                    </div>    
+                                    </div>   
+                                    <!-- Some incident's decription -->
+                                    <div class="span5 marginleft10top20">
+                                        <span class="ticket_number">N° {{ report.get_ticket_number }}</span><br />
+                                        <span class="ticket_address">
+                                            {{ report.address }}, {{ report.address_number }} in {{ report.postalcode }} {{ report.territorial_entity.name }}
+                                        </span><br/>
+                                        <span class="ticket_desc">
+                                            {{ report.display_category }} <br/>
+                                            {{ report.display_comment }}
+
+                                        </span><br />
                                     </div>
-                                    <!-- Deprecated ? -->
-                                    {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+
+
+
+                                    <div class="span3">
+
+                                        <a href="{% if BACKOFFICE %}{{ report.get_absolute_url_pro }}{% else %}{{ report.get_absolute_url }}{% endif %}" class="btn_same_incident report{% if active %} active{% endif %} "> {% trans "This is the same incident" %}
+                                        </a>
+                                        <!-- Deprecated ? -->
+                                        {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+                                    </div>
+
+
+
+                                    <!-- Comments 
+                                    
+                                        {% if BACKOFFICE %}
+                                              {% url "report_new_pro" as report_url %}
+                                             {% else %}
+                                                 {% url "report_new" as report_url %}
+                                            {% endif %}  
+
+
+                                    -->
+                                    
+                                    
                                 </div>
                             </div>
+                            {% endfor %}
+                            
+                            {% if BACKOFFICE %}
+                                {% url "report_new_pro" as report_url %}
+                            {% else %}
+                                {% url "report_new" as report_url %}
+                            {% endif %} 
+                        <div style="margin-right:20px;">
+                            <a class="btn_continue pull-right" href='{{ report_url }}?x={{ request.GET.x }}&y={{ request.GET.y }}'>{% trans "Continuez à encoder" %}</a>
+                            <span class="txt_continue pull-right">{% trans 'Aucun de ces incidents ne correspond à votre incident ?' %}</span>
+                        </div>
                         </div>
                     </div>
-                {% endfor %}
+
+
             </div>
             <p>
                 {% if BACKOFFICE %}
@@ -116,8 +191,6 @@
                 {% else %}
                     {% url "report_new" as report_url %}
                 {% endif %}
-                <a class="btn_continue pull-right" href='{{ report_url }}?x={{ request.GET.x }}&y={{ request.GET.y }}'>{% trans "Continuez à encoder" %}</a>
-                <span class="txt_continue pull-right">{% trans 'Aucun de ces incidents ne correspond à votre incident ?' %}</span>
             </p>
         </div>
     </div>

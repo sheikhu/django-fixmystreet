@@ -1,10 +1,6 @@
 {% load i18n %}
 
 <article class="span12 {{ classes }}">
-    {% if BACKOFFICE %}
-    <div style="margin-top:20px">
-    {% endif %}
-
     <div class="container lead-container">
         {% if instructions %}
         <div class="instructions row-fluid clearfix">
@@ -60,8 +56,6 @@
     <div id="map" class="fmsmap-size-medium"></div>
     {% endif %}
 
-    {% if BACKOFFICE %}
-    </div>
-    {% endif %}
+
 
 </article>

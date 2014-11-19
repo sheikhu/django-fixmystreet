@@ -240,13 +240,13 @@
   padding: 0;
 }
 .leaflet-container a.leaflet-popup-close-button {
-  color: #999;
+  color: white;
   height: auto;
   padding: 6px;
 }
 .leaflet-container a.leaflet-popup-close-button:hover,
 .leaflet-container a.leaflet-popup-close-button:focus {
-  color: #333;
+  color: white;
 }
 .fmsmap-popup {
   min-height: 150px;
@@ -257,14 +257,15 @@
   min-width: 200px;
 }
 .fmsmap-popup-header {
-  background-color: #bcd3f2;
-          border-radius: 6px 6px 0 0;
-     -moz-border-radius: 6px 6px 0 0;
+  background-color: #3498db;
+  border-radius: 6px 6px 0 0;
+  -moz-border-radius: 6px 6px 0 0;
   -webkit-border-radius: 6px 6px 0 0;
   font-size: 14px;
   font-weight: bold;
   line-height: 17px;
   padding: 8px 10px;
+  color:white;
 }
 .fmsmap-popup-footer {
   padding: 10px;
@@ -274,8 +275,8 @@
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
           border-radius: 4px;
-  border: 1px solid #607c9d;
-  color: #607c9d;
+  border: 1px solid #3498db;
+  color: #3498db;
   display: inline-block;
   font-family: 'Dosis', sans-serif;
   padding: 4px 12px 4px 27px;
@@ -303,6 +304,7 @@
 }
 .fmsmap-popup-body .address {
   font-weight: bold;
+  margin-left:20px;
 }
 .fmsmap-popup-body .icons li {
 }
@@ -325,9 +327,9 @@
   border-radius: 4px;
 }
 .fmsmap-panel-header {
-  background-color: #607c9d;
-          border-radius: 4px 4px 0 0;
-     -moz-border-radius: 4px 4px 0 0;
+  background-color: #3498db;
+  border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
   -webkit-border-radius: 4px 4px 0 0;
   font-size: 14px;
   font-weight: bold;
@@ -350,7 +352,7 @@
 }
 
 .fmsmap-panel-search {
-  border: 1px solid #607c9d;
+  border: 1px solid #3498db;
   position: absolute;
   display: block;
   height: auto;
@@ -407,7 +409,7 @@
 .fmsmap-panel-search li p:after {
   position: absolute;
   right: 10px;
-  color: #607c9d;
+  color: #3498db;
   content: ">";
   display: block;
   font-size: 40px;
