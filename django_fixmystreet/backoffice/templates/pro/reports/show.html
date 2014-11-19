@@ -193,7 +193,7 @@ $(document).ready(function() {
 
                         <span class="ticket_address">
                             {{ report.address }}, {{ report.address_number }}<br />
-                            {{ report.postalcode }} {{ report.get_address_commune_name }}
+                            <span class="marginadress">{{ report.postalcode }} {{ report.get_address_commune_name }}</span>
                             {% if report.false_address %}
                                 <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{{ report.false_address }}'>
                                     <img src="{% static 'images/icon-false-address.png' %}" />
@@ -213,7 +213,7 @@ $(document).ready(function() {
                         </span>
 
                         <br />
-                        <ul class='iconsPopup'>
+                        <ul class='iconsPopup' >
                             {% if report.responsible_entity.id == 20 %}
                                 <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src="{% static 'images/regional_on.png' %}" /></a></li>
                             {% endif %}
@@ -251,25 +251,12 @@ $(document).ready(function() {
 
                             {% endif %}
 
-                        </ul>
+                        
                         <!--/div-->
-
+                            <span class="visilibility">{% trans 'Visibility' %} : {{ report.private|yesno:_("pro,public") }}</span>
                     </div>
                 </div>
-
-                <div class="span6 incidentDetailsStatus">
-                    <ul class="">
-
-                        <!-- ROW PRO 1 -->
-                        <li>
-                            <strong>
-                                {% trans 'Visibility' %} :
-                            </strong>
-                            {{ report.private|yesno:_("pro,public") }}
-                        </li>
-
-                        <!-- ROW PRO 2 -->
-                        <li>
+                <div class="span6" id="postedbytitle">
                             <strong>{% trans 'Posted by' %}</strong> <a href='mailto:{{ report.get_creator.email }}'>{{ report.get_creator.get_full_name }}</a>
                             {% trans 'on' context 'date' %} {{ report.created|date:"d/m/Y" }}
                             {% trans 'via' context 'source/origin' %} {{ report.source }}
@@ -278,63 +265,71 @@ $(document).ready(function() {
                                 - {{ report.citizen.get_quality_display }}
                                 ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.get_creator.fmsuser.telephone}})
                            {% endif %}
-                        </li>
-                        <!-- ROW PRO 3 -->
-                        <li>
-                        <strong>{% trans "Responsible:" %}</strong>
-                        {# responsible-name=report.responsible_department.contact_user, responsible-group=report.responsible_department, responsible-entity=report.responsible_entity #}
-                        {{report.responsible_department.contact_user.get_full_name}} -
-                        <a href="mailto:{{report.responsible_department.email }}">{{report.responsible_department.name }}</a> -
-                        {{report.responsible_entity.name}}
-                        {% if report.responsible_department.phone %}
-                            ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
-                        {% endif %}
-                        </li>
-                        <!-- ROW PRO 4 -->
-                        <li>
-                            <strong>{% trans "Status:" %}</strong>
-                            {{ report.get_status_display }}
-                            {% if report.last_history_status_event %}
-                                {% trans 'on' context 'date' %}
-                                {{report.last_history_status_event.event_at|date:"d/m/Y"}}
-                            {% endif %}
+                    <div class="incidentDetailsStatus">
 
-                            {% if report.is_contractor_or_applicant_assigned %}
-                                {{report.contractor.name}}
-                                {% if report.contractor.phone %}
-                                    ({{report.contractor.phone}})
+                            <span class="incidentStatus">
+                              <strong>{% trans "Status:" %}</strong>
+                                {{ report.get_status_display }}
+                                {% if report.last_history_status_event %}
+                                    {% trans 'on' context 'date' %}
+                                    {{report.last_history_status_event.event_at|date:"d/m/Y"}}
+                                {% endif %}
+
+                                {% if report.is_contractor_or_applicant_assigned %}
+                                    {{report.contractor.name}}
+                                    {% if report.contractor.phone %}
+                                        ({{report.contractor.phone}})
+                                    {% endif %}
+                                    {% if report.waiting_for_organisation_entity %}
+                                        <strong id="danger-risk">
+                                            <a href="#" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'In progress with a contractor' %}" title="{% trans 'In progress with a contractor' %}" class="myTooltip">
+                                                <i class="icon-danger-red"></i>
+                                            </a>
+                                        </strong>
+                                    {% endif %}
+                                {% endif %}
+
+                            </span><br/>
+
+                            <span class="incidentStatus">
+                            <strong>{% trans "Responsible:" %}</strong>
+                            {# responsible-name=report.responsible_department.contact_user, responsible-group=report.responsible_department, responsible-entity=report.responsible_entity #}
+                            {{report.responsible_department.contact_user.get_full_name}} -
+                            <a style="color:#2c3e50" href="mailto:{{report.responsible_department.email }}">{{report.responsible_department.name }}</a> -
+                            {{report.responsible_entity.name}}
+                            {% if report.responsible_department.phone %}
+                                ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
+                            {% endif %}
+   
+                            <!-- ROW PRO 5 -->
+                            {% if report.merged_with %}
+                                    <strong>
+                                        {% trans "Merged on" %}
+                                    </strong>
+                                    {{report.last_history_event.event_at|date:"d/m/Y"}}
+                                    {% trans "with incident" %}
+                                     <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
+                                        {{report.merged_with.id}}
+                                    </a>
+                            {% endif %}
+                            </span>
+                         
+                    </div>
+
+                       {# ONLY THE MANAGER CAN USE BUTTONS #}
+                            {% if report.responsible_department in request.fmsuser.organisations_list %}
+                                {# DISPLAY WHEN REPORT STATUS IS CREATED #}
+                                {% if report.is_created %}
+                                    <a href="{% url 'report_accept_pro' report.id %}" class="btn accept" >{% trans 'Accept' %}</a>
+                                    <a class="btn reject" onclick="refuse();">{% trans 'Reject' %}</a>
+                                {% endif %}
+
+                                {# DISPLAY WHEN REPORT STATUS IS CLOSED OR REFUSED #}
+                                {% if report.is_closed or report.is_refused %}
+                                    <a href="{% url 'report_reopen_pro' report.id %}" class="btn accept" >{% trans 'Reopen' %}</a>
                                 {% endif %}
                             {% endif %}
-                        </li>
-                        <!-- ROW PRO 5 -->
-                        {% if report.merged_with %}
-                            <li>
-                                <strong>
-                                    {% trans "Merged on" %}
-                                </strong>
-                                {{report.last_history_event.event_at|date:"d/m/Y"}}
-                                {% trans "with incident" %}
-                                 <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
-                                    {{report.merged_with.id}}
-                                </a>
-                            </li>
-                        {% endif %}
 
-                    </ul>
-
-                        {# ONLY THE MANAGER CAN USE BUTTONS #}
-                        {% if report.responsible_department in request.fmsuser.organisations_list %}
-                            {# DISPLAY WHEN REPORT STATUS IS CREATED #}
-                            {% if report.is_created %}
-                                <a href="{% url 'report_accept_pro' report.id %}" class="btn accept" >{% trans 'Accept' %}</a>
-                                <a class="btn reject" onclick="refuse();">{% trans 'Reject' %}</a>
-                            {% endif %}
-
-                            {# DISPLAY WHEN REPORT STATUS IS CLOSED OR REFUSED #}
-                            {% if report.is_closed or report.is_refused %}
-                                <a href="{% url 'report_reopen_pro' report.id %}" class="btn accept" >{% trans 'Reopen' %}</a>
-                            {% endif %}
-                        {% endif %}
                 </div>
 
                 <div class="span3 btn-group-vertical">

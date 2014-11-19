@@ -164,11 +164,15 @@ function getAddressFromPoint(lang, x, y) {
                 msg = gettext('Unable to locate this address');
             }
             $('#address-text').html(msg);
+            $('#citycode-text').html(msg);
+
         }
     });
 }
 function fillAdressField(address) {
-    $('#address-text').html(address.number + ' ' + address.street.name+ ', ' + address.street.postCode + " " + zipcodes[address.street.postCode].commune); // urbis must return the full text municipality
+    $('#address-text').html(address.number + ' ' + address.street.name); // urbis must return the full text municipality
+    $('#citycode-text').html(address.street.postCode + " " + zipcodes[address.street.postCode].commune); // urbis must return the full text municipality
+
     $('#id_report-postalcode').val(address.street.postCode);
     $('#id_report-address_number').val(address.number);
 }
@@ -185,6 +189,7 @@ function retrieveAddress() {
 
     $form.find('button, :submit').prop('disabled', true);
     $('#address-text').addClass('loading');
+    $('#citycode-text').addClass('loading');
 
     fms.currentMap.getSelectedAddress(currLang, function(lang, response) {
         var address = response.result.address;

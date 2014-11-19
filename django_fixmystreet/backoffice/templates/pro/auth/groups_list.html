@@ -5,8 +5,9 @@
 {% block title %}{% trans "Groups admin" %}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}"></link>
 {{ block.super }}
+
+<link rel="stylesheet" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}"></link>
 {% endblock %}
 
 {% block script %}
@@ -63,10 +64,6 @@ $(document).ready(function() {
         </tbody>
     </table>
 </div>
-{% if can_create %}
-    <p class="lead span12">
-        <a class="btn btn-large btn-primary" href="{% url 'create_group' %}"><i class="icon-plus"></i> {% trans 'Create group' %}</a>
-    </p>
-{% endif %}
+
 
 {% endblock %}

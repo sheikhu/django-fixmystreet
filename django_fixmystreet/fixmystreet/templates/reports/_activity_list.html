@@ -3,16 +3,19 @@
         {% if privacy == 'private' and activity.is_pro_visible %}
             <tr>
                 <td colspan="2">
-                    <strong>- {{ activity.event_at|date:"d/m/Y" }} : [{{ activity.organisation.name }}] </strong>
-                        {{ activity }}
+                    <strong><span class="historyTitle">{{ activity.event_at|date:"d/m/Y" }} : [{{ activity.organisation.name }}] </span></strong><br/>
+                        <span class="historySubtitle">{{ activity }}</span>
+                        <div class="line-separator" align="center"></div>
+
                 </td>
             </tr>
         {% else %}
             {% if privacy == 'public' and activity.is_public_visible %}
                 <tr>
                     <td colspan="2">
-                        <strong>- {{ activity.event_at|date:"d/m/Y" }} : [{{ activity.organisation.name }}] </strong>
-                            {{ activity.get_public_activity_text }}
+                    <strong><span class="historyTitle">{{ activity.event_at|date:"d/m/Y" }} : [{{ activity.organisation.name }}] </span></strong><br/>
+                            <span class="historySubtitle">{{ activity.get_public_activity_text }}</span>
+                            <div class="line-separator" align="center"></div>
                     </td>
                 </tr>
             {% endif %}

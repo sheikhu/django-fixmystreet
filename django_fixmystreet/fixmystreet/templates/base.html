@@ -2,11 +2,12 @@
 {% load tags i18n %}
 {% load static from staticfiles %}
 <html>
-    <head>
-        {% block base %}{% endblock %}
+<head>
+    {% block base %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/> -->
-        <title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
+    <!-- <base href="{% if request.is_secure %}https{% else %}http{% endif %}://{{request.get_host}}" target="_blank"/> -->
+    <title>{% block title %}{% trans "Home" %}{% endblock %} - {% trans "Fix My Street Brussels" %}</title>
         <!--[if lt IE 9]>
         <script src="{% static 'lib/html5shiv.js' %}"></script>
         <![endif]-->
@@ -20,9 +21,8 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/fms.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/leaflet-fms.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/ie_compat.css' %}" />
-
         <link rel="Shortcut Icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
-        <link href='//fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css' />
+        <link href='//fonts.googleapis.com/css?family=Dosis:600' rel='stylesheet' type='text/css' />
         {% endblock %}
 
         {% block meta %}{% endblock %}
@@ -31,123 +31,104 @@
     <body>
         <div class="container">
             <div class="row">
-                    <div class="alert alert-block fade in alertBrowserSupport span12" id="browser_support_popup" style="display:none;">
-                        <div class="inAlert">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <h4>{% trans 'Browser not supported' %}. {% trans 'Please download one of the supported browsers below before continuing on the website.' %}</h4>
-                            <ul>
-                                <li><a href="https://www.mozilla.org/firefox/features/" target="_blank">Firefox (26+)</a></li>
-                                <li><a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank">Internet Explorer (10+)</a></li>
-                                <li><a href="https://www.google.com/chrome/" target="_blank">Google Chrome (31+)</a></li>
-                                <li><a href="https://www.apple.com/safari/" target="_blank">Apple Safari (6+)</a></li>
-                            </ul>
-                        </div>
+                <div class="alert alert-block fade in alertBrowserSupport span12" id="browser_support_popup" style="display:none;">
+                    <div class="inAlert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4>{% trans 'Browser not supported' %}. {% trans 'Please download one of the supported browsers below before continuing on the website.' %}</h4>
+                        <ul>
+                            <li><a href="https://www.mozilla.org/firefox/features/" target="_blank">Firefox (26+)</a></li>
+                            <li><a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank">Internet Explorer (10+)</a></li>
+                            <li><a href="https://www.google.com/chrome/" target="_blank">Google Chrome (31+)</a></li>
+                            <li><a href="https://www.apple.com/safari/" target="_blank">Apple Safari (6+)</a></li>
+                        </ul>
                     </div>
+                </div>
                 <header>
                     <div class="span12 navbar">
                         {% block lng %}
 
                         <section class="langSelect">
-                             <a class="{% is_active_menu 'help' %}" href="{% url 'help' %}">{% trans "Help" %}</a>
-                             <a class="{% is_active_menu 'faq' %}" href="{% url 'faq' %}">{% trans "FAQ" %}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                         <a class="{% is_active_menu 'help' %}" href="{% url 'help' %}">{% trans "Help" %}</a>
+                         <a class="{% is_active_menu 'faq' %}" href="{% url 'faq' %}">{% trans "FAQ" %}</a>&nbsp;&nbsp;&nbsp;&nbsp;
 
-                              {% if not request.user.is_authenticated %}
-                                        <a href="{% url 'login' %}">
-                                           {% trans 'Sign in' %}
-                                        </a>&nbsp;&nbsp;&nbsp;&nbsp;
-                                {% else %}
-                                    <li id="login">
-                                        <a class="dropdown-toggle {% is_active_menu 'auth' %}" data-toggle="dropdown" href="{% url 'list_users' %}">
-                                            {{ request.user.get_full_name }}
-                                            <b class="caret"></b>
-                                        </a>
-                                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" class="btn-group">
-                                            {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
-                                                <li class="user-orga">{{ request.fmsuser.get_organisation }}</li>
-                                                <li class="divider"></li>
+                         {% if not request.user.is_authenticated %}
+                         <a href="{% url 'login' %}">
+                           {% trans 'Sign in' %}
+                       </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                       {% else %}
+                       <li id="login">
+                        <a class="dropdown-toggle {% is_active_menu 'auth' %}" data-toggle="dropdown" href="{% url 'list_users' %}">
+                            {{ request.user.get_full_name }}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" class="btn-group">
+                            {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
+                            <li class="user-orga"><img src="{% static 'images/location16.png' %}" class="user-orga-icon"/> {{ request.fmsuser.get_organisation }}</li>
+                            <li class="divider"></li>
 
-                                                <li>
-                                                    <a class="{% is_active_menu 'users' %}"     href="{% url 'list_users' %}">
-                                                        {% trans "Users" %}
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="{% is_active_menu 'groups' %}"     href="{% url 'list_groups' %}">
-                                                        {% trans "Groups" %}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
+                            <li>
+                                <a class="{% is_active_menu 'users' %}"     href="{% url 'list_users' %}">
+                                    {% trans "Users" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a class="{% is_active_menu 'groups' %}"     href="{% url 'list_groups' %}">
+                                    {% trans "Groups" %}
+                                </a>
+                            </li>
+                            {% endif %}
 
-                                            {% if request.fmsuser.organisation %}
-                                            {% if request.fmsuser.leader or request.fmsuser.manager %}
-                                                <li>
-                                                    <a href="{% url 'reporting_list' %}">
-                                                        {% trans "Reporting" %}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
-                                            {% endif %}
+                            {% if request.fmsuser.organisation %}
+                            {% if request.fmsuser.leader or request.fmsuser.manager %}
+                            <li>
+                                <a href="{% url 'reporting_list' %}">
+                                    {% trans "Reporting" %}
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endif %}
 
-                                            {% if request.fmsuser.leader %}
-                                                <li>
-                                                    <a class="{% is_active_menu 'users_manager_dispatching' %}"  href="{% url 'category_gestionnaire_configuration' %}">
-                                                        {% trans "Managers dispatching" %}
-                                                    </a>
-                                                </li>
-                                            {% endif %}
+                            {% if request.fmsuser.leader %}
+                            <li>
+                                <a class="{% is_active_menu 'users_manager_dispatching' %}"  href="{% url 'category_gestionnaire_configuration' %}">
+                                    {% trans "Managers dispatching" %}
+                                </a>
+                            </li>
+                            {% endif %}
 
-                                            <li>
-                                                <a class="{% is_active_menu 'users_change_password' %}"     href="{% url 'password_change' %}">
-                                                    {% trans "Change your password" %}
-                                                </a>
-                                            </li>
+                            <li>
+                                <a class="{% is_active_menu 'users_change_password' %}"     href="{% url 'password_change' %}">
+                                    {% trans "Change your password" %}
+                                </a>
+                            </li>
 
+                            <li>
+                                <a class="logout" href="{% url 'logout' %}">
+                                    <!--i class="icon-login"> </i-->{% trans 'Log out' %}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}   
 
+                    {% get_available_languages as LANGUAGES %}
+                    {% for l in LANGUAGES %}
+                    {% get_language_info for l.0 as lang %}
+                    <a class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
+                    href="{% url 'update_current_language' %}?from={{ request.get_full_path }}&language={{ lang.code }}"
+                    title="{{ lang.name_local }}">{{ lang.code }}</a>
+                    {% endfor %}
 
-                                            <!--li class="divider"></li-->
-                                            <li>
-                                                <a class="logout" href="{% url 'logout' %}">
-                                                    <!--i class="icon-login"> </i-->{% trans 'Log out' %}
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                {% endif %}   
+                </section>
+                {% endblock %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            {% get_available_languages as LANGUAGES %}
-                            {% for l in LANGUAGES %}
-                            {% get_language_info for l.0 as lang %}
-                            <a class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
-                                href="{% url 'update_current_language' %}?from={{ request.get_full_path }}&language={{ lang.code }}"
-                                title="{{ lang.name_local }}">{{ lang.code }}</a>
-                            {% endfor %}
-
-                        </section>
-                        {% endblock %}
-
-                        {% if not BACKOFFICE %}
-                        <a class="brand" href="{% url 'home' %}">
-                        {% else %}
-                        <a class="brand" href="{% url 'home_pro' %}">
+                {% if not BACKOFFICE %}
+                <a class="brand" href="{% url 'home' %}">
+                    {% else %}
+                    <a class="brand" href="{% url 'home_pro' %}">
                         {% endif %}
-                            <img id="banner" src="{% static 'images/'|add:LANGUAGE_CODE|add:'/logo_fixmystreet.png' %}" alt="{% trans 'Fix My Street' %}">
-                           
+                        <img id="banner" src="{% static 'images/'|add:LANGUAGE_CODE|add:'/logo_fixmystreet.png' %}" alt="{% trans 'Fix My Street' %}" class="banner">
+                        
                         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -157,27 +138,32 @@
                         <nav class="nav-collapse collapse">
                             <ul class="nav nav-pills pull-right">
                                 {% if not request.user.is_authenticated or not request.fmsuser.is_pro %}
-                                    <li class="nav-group">
-                                        <a class="{% is_active_menu 'submit' %}" href="{% url 'home' %}">
-                                            {% trans "Submit a Report" %}
-                                        </a>
-                                        <a class="{% is_active_menu 'view' %}" href="{% url 'report_index' %}">
-                                            {% trans "View Reports" %}
-                                        </a>
-                                 
-                                    </li>
+                                <li class="nav-group">
+                                    <a class="{% is_active_menu 'submit' %}" href="{% url 'home' %}">
+                                        {% trans "Submit a Report" %}
+                                    </a>
+                                    <a class="{% is_active_menu 'view' %}" href="{% url 'report_index' %}">
+                                        {% trans "View Reports" %}
+                                    </a>
+                                    
+                                    
+                                </li>
+                                <div class="promoStore">
+                                    <a href="#"><img src="{% static 'images/apple.png' %}" alt="SEO" /></a>
+                                    <a href="#"><img src="{% static 'images/playstore.png' %}" alt="SEO" /></a>
+                                </div>
                                 {% else %}
-                                    <li class="nav-group">
-                                        <a class="{% is_active_menu 'submit' %}"   href="{% url 'report_prepare_pro' %}">
-                                            {% trans "Submit a Report" %}
-                                        </a>
-                                        <a class="{% is_active_menu 'view' %}" href="{% url 'report_table_pro' %}">
-                                            {% trans "View Reports" %}
-                                        </a>
-                                        <a class="{% is_active_menu 'help' %}" href="{% url 'help' %}">{% trans "Help" %}</a>
-                                    </li>
+                                <li class="nav-group">
+                                    <a class="{% is_active_menu 'submit' %}"   href="{% url 'report_prepare_pro' %}">
+                                        {% trans "Submit a Report" %}
+                                    </a>
+                                    <a class="{% is_active_menu 'view' %}" href="{% url 'report_table_pro' %}">
+                                        {% trans "View Reports" %}
+                                    </a>
+                                </li>
+
                                 {% endif %}
-                               
+                                
                             </ul>
                         </nav>
                         {% endblock %}
@@ -191,7 +177,7 @@
             {% block map %}
             {% endblock %}
 
-            <section id="content" class="">
+            <section id="content" >{% if BACKOFFICE %} <div style="margin-left:-30px"> {% endif %}
                 {% if messages %}
                 <div id="messages">
                     {% for message in messages %}
@@ -210,86 +196,88 @@
                                 {% elif "error" in message.tags %}
                                     <i class="icon-nok-big"> </i>
                                 {% endif %}
-                                -->
-                                <strong>{{ message }}</strong>
-                            </p>
+                            -->
+                            <strong>{{ message }}</strong>
+                        </p>
 
-                            {% if "new_report" in message.tags  %}
-                                <p>
-                                    {% if not BACKOFFICE %}
-                                        <input type="checkbox" id="createNewReport">
-                                        <label>{% trans 'I want to create a new report' %}</label>
-                                    {% else %}
-                                        <!-- Invisible for pro Thierry demand 12/2013 -->
-                                        <input class="invisible" type="checkbox" id="createNewReport">
-                                    {% endif %}
-                                </p>
+                        {% if "new_report" in message.tags  %}
+                        <p>
+                            {% if not BACKOFFICE %}
+                            <input type="checkbox" id="createNewReport">
+                            <label>{% trans 'I want to create a new report' %}</label>
+                            {% else %}
+                            <!-- Invisible for pro Thierry demand 12/2013 -->
+                            <input class="invisible" type="checkbox" id="createNewReport">
                             {% endif %}
-                        </div>
-                        <div class="modal-footer">
-                            <input id="messageButton" type="button" class="btn" value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-                {% block content %}{% endblock %}
-            </section>
-
-            {% block footer %}
-            <footer>
-                <div class="clearfloat"></div>
-                <div class="row">
-                    {% block content_third %}{% endblock %}
-
-                    <div class="span4">
-                        <a href="{% if LANGUAGE_CODE == 'nl' %}http://www.brussel.irisnet.be/{% else %}http://www.bruxelles.irisnet.be/{% endif %}" target="_blank"><img src="{% static 'images/'|add:LANGUAGE_CODE|add:'/region-de-bruxelles-capitale-brussels-hoofdstedelijk-gewest.png' %}"></a>
-                    </div>
-                    <div class="span4 a-propos">
-                        <!--a href="{% url 'terms_of_use' %}" target="_blank">{% trans "Terms of Use" %}</a-->
-                        <a href="{% url 'about' %}">{% trans 'A propos de Fix My Street' %}</a>
-                        <p class="muted">{{ APP_VERSION }}</p>
-                    </div>
-                    <div class="span4 cirb-cibg">
-                        <a href="{% if LANGUAGE_CODE == 'nl' %}http://www.cibg.irisnet.be/{% else %}http://www.cirb.irisnet.be/{% endif %}" target="_blank"><img src="{% static 'images/created-and-hosted-by-cirb-cibg.png' %}"/></a>
-                    </div>
-                </div>
-            </footer>
-            {% endblock %}
-        </div>
-
-        <!-- Staging code -->
-         {% if ENVIRONMENT == "staging" %}
-            <img id="staging-badge" src="{% static 'images/Staging_badge.png' %}" style="position: absolute; top: 2px; left: 493px;" />
-          {% endif %}
-                        </a>
-                        {% if ENVIRONMENT == "staging" or ENVIRONMENT == "dev" or ENVIRONMENT == "local" %}
-                        <strong class="current-app-version">{{ ENVIRONMENT }} {{ APP_VERSION }}</strong>
+                        </p>
                         {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <input id="messageButton" type="button" class="btn" value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+            {% if BACKOFFICE %} </div> {% endif %}
+
+        </section>
+
+        {% block footer %}
+        <footer>
+            <div class="clearfloat"></div>
+            <div class="row">
+                {% block content_third %}{% endblock %}
+
+                <div class="span4">
+                    <a href="{% if LANGUAGE_CODE == 'nl' %}http://www.brussel.irisnet.be/{% else %}http://www.bruxelles.irisnet.be/{% endif %}" target="_blank"><img src="{% static 'images/'|add:LANGUAGE_CODE|add:'/region-de-bruxelles-capitale-brussels-hoofdstedelijk-gewest.png' %}"></a>
+                </div>
+                <div class="span4 a-propos">
+                    <!--a href="{% url 'terms_of_use' %}" target="_blank">{% trans "Terms of Use" %}</a-->
+                    <a href="{% url 'about' %}">{% trans 'A propos de Fix My Street' %}</a>
+                    <p class="muted">{{ APP_VERSION }}</p>
+                </div>
+                <div class="span4 cirb-cibg">
+                    <a href="{% if LANGUAGE_CODE == 'nl' %}http://www.cibg.irisnet.be/{% else %}http://www.cirb.irisnet.be/{% endif %}" target="_blank"><img src="{% static 'images/created-and-hosted-by-cirb-cibg.png' %}"/></a>
+                </div>
+            </div>
+        </footer>
+        {% endblock %}
+    </div>
+
+    <!-- Staging code -->
+    {% if ENVIRONMENT == "staging" %}
+    <img id="staging-badge" src="{% static 'images/Staging_badge.png' %}" style="position: absolute; top: 2px; left: 493px;" />
+    {% endif %}
+</a>
+{% if ENVIRONMENT == "staging" or ENVIRONMENT == "dev" or ENVIRONMENT == "local" %}
+<strong class="current-app-version">{{ ENVIRONMENT }} {{ APP_VERSION }}</strong>
+{% endif %}
 
 
 
 
 
-        {% block script %}
-        <script type="text/javascript" src="{% url 'jsi18n' %}"></script>
-        <script type="text/javascript">
+{% block script %}
+<script type="text/javascript" src="{% url 'jsi18n' %}"></script>
+<script type="text/javascript">
             //Test if console.log exists (does not exists on ie8 and <) tips to avoid console.log to block js on those env.
             if (typeof console=='undefined') {
                 window.console = new Object();
-                window.console.log = function(msg) {/*Does nothing*/};
-            }
+            window.console.log = function(msg) {/*Does nothing*/};
+        }
 
-            var URBIS_URL = '{{ URBIS_URL }}';
-            var WMS_SERVICE_URL = '{{ WMS_SERVICE_URL }}';
-            var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
-            if (LANGUAGE_CODE != 'fr' && LANGUAGE_CODE != 'nl') { LANGUAGE_CODE = 'fr'; }
-            var GEOSERVER_URL = '//{{ GEOSERVER }}';
-            var STATIC_URL = '{{ STATIC_URL }}';
-            var DEBUG = {% if request.GET.debug %}true{% else %}{{ DEBUG|yesno:"true,false" }}{% endif %};
-            var BACKOFFICE = {{ BACKOFFICE|yesno:"true,false" }};
-            var fms = {};
-            {% block js_vars %}{% endblock %}
+        var URBIS_URL = '{{ URBIS_URL }}';
+        var WMS_SERVICE_URL = '{{ WMS_SERVICE_URL }}';
+        var LANGUAGE_CODE = '{{ LANGUAGE_CODE }}';
+        if (LANGUAGE_CODE != 'fr' && LANGUAGE_CODE != 'nl') { LANGUAGE_CODE = 'fr'; }
+        var GEOSERVER_URL = '//{{ GEOSERVER }}';
+        var STATIC_URL = '{{ STATIC_URL }}';
+        var DEBUG = {% if request.GET.debug %}true{% else %}{{ DEBUG|yesno:"true,false" }}{% endif %};
+        var BACKOFFICE = {{ BACKOFFICE|yesno:"true,false" }};
+        var fms = {};
+        {% block js_vars %}{% endblock %}
         </script>
 
         <script type="text/javascript" src="{% static 'lib/jquery-1.8.3.min.js' %}"></script>
@@ -317,15 +305,15 @@
 
         {% if messages %}
         <script>
-            $(function(){
-                $('.message').modal();
-            });
+        $(function(){
+            $('.message').modal();
+        });
         </script>
         {% endif %}
 
         <script type="text/javascript">
-            $(function(){
-                if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 10) || ($.browser.mozilla && !navigator.userAgent.match(/Trident.*rv\:11\./) && parseInt($.browser.version.split(".")[0]) < 24) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 31) {
+        $(function(){
+            if (($.browser.msie && parseInt($.browser.version.split(".")[0]) < 10) || ($.browser.mozilla && !navigator.userAgent.match(/Trident.*rv\:11\./) && parseInt($.browser.version.split(".")[0]) < 24) || $.browser.chrome && parseInt($.browser.version.split(".")[0]) < 31) {
                     //$('#browser_support_popup').alert();
                     $('#browser_support_popup').css('display', "block");
                 }
@@ -336,10 +324,10 @@
             });
         </script>
         <script type='text/javascript'>
-            $('.myTooltip').tooltip();
+        $('.myTooltip').tooltip();
         </script>
         {% ga_script %}
         {% endblock %}
     </body>
 
-</html>
+    </html>

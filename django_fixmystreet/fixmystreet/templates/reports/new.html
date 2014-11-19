@@ -71,15 +71,20 @@
         <div class="container lead-container no-map">
             <div class="instructions row-fluid">
                 <ol class="steps span8">
-                    <li class="stepOne off">{% trans "Localisation" %}</li>
-                    <li id="stepDescription" class="stepTwo on">{% trans "Description" %}</li>
+                    <li class="stepOne off"><div id="progressline" align="center"></div> {% trans "Localisation" %}</li>
+                    <li id="stepDescription" class="stepTwo on"><div id="progressline" class="opacity7" align="left"></div> {% trans "Description" %}</li>
 
                     {% if not BACKOFFICE %}
                         <li id="stepCoordonnees" class="stepThree off">{% trans "Coordonnees" %}</li>
                     {% endif %}
                 </ol>
                 <div>
-                    <span id="address-text" class="pull-right"></span>
+                    <div class="addressMarker">
+                        <span id="address-text" class="pull-right"></span><br/>
+                        <span id="citycode-text" class="pull-right"></span>
+                    <div>
+
+
                 </div>
             </div>
         </div>
