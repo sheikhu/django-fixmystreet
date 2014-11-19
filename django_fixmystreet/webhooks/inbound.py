@@ -21,7 +21,7 @@ class ReportAcceptInWebhookMixin(object):
     ACTION_MESSAGE = u""
 
     def run(self):
-        super(ReportAcceptInWebhookMixin, self).run()
+        self._validate()
 
         context = {
             "action_msg": self.ACTION_MESSAGE,
@@ -43,7 +43,7 @@ class ReportRejectInWebhookMixin(object):
     ACTION_MESSAGE = u""
 
     def run(self):
-        super(ReportRejectInWebhookMixin, self).run()
+        self._validate()
 
         context = {
             "action_msg": self.ACTION_MESSAGE,
@@ -63,7 +63,7 @@ class ReportCloseInWebhookMixin(object):
     ACTION_MESSAGE = u""
 
     def run(self):
-        super(ReportCloseInWebhookMixin, self).run()
+        self._validate()
 
         context = {
             "action_msg": self.ACTION_MESSAGE,
@@ -93,9 +93,6 @@ class AbstractBaseInWebhook(object):
         self._user = user
 
     def run(self):
-        self._validate()
-
-    def _validate(self):
         raise NotImplementedError()
 
 
