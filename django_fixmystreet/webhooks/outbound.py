@@ -40,8 +40,8 @@ class AbstractBaseOutWebhook(object):
                 if response.status_code != requests.codes.ok:
                     message = u"Invalid status code ({}).".format(response.status_code)
                     response_data = response.json()
-                    if response_data.get("message"):
-                        message = u"{} Message: {}".format(message, response_data["message"])
+                    if response_data.get("detail"):
+                        message = u"{} Message: {}".format(message, response_data["detail"])
                     self._handle_error(message, response, endpoint)
             except ValueError, e:
                 message = "Exception: {}".format(e)
