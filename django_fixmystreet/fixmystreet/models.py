@@ -1587,7 +1587,7 @@ def webhook_transfer(sender, instance, **kwargs):
     if kwargs['raw'] or not is_transferred or not instance.is_in_progress():
         return
 
-    webhook = outbound.ReportTransferRequestWebhook(instance, third_party=instance.responsible_department)
+    webhook = outbound.ReportTransferRequestOutWebhook(instance, third_party=instance.responsible_department)
     webhook.fire()
 
 

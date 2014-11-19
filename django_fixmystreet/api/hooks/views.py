@@ -21,10 +21,12 @@ class HooksView(PrivateApiView):
             to_upper_camel_case(meta["action"])
         )
         try:  # ``AttributeError`` means there's no handler for that ``resource.hook.action``.
-            cls = getattr(inbound_webhooks, class_name)
+            handler_class = getattr(inbound_webhooks, class_name)
         except AttributeError:
             raise UnknownWebhookError(u"Unknown inbound wehook for '{resource}.{hook}.{action}'.".format(**meta))
 
         # Run the handler.
-        handler = cls(meta, data, user=request.user)
+        handler = handler_class(meta, data, user=request.user)
         handler.run()
+
+        return self._get_response_200()
