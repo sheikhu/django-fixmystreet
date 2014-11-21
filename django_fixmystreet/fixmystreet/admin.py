@@ -67,9 +67,15 @@ class AttachmentsInline(admin.TabularInline):
     extra = 0
 
 
-class MembershipsInline(admin.TabularInline):
+class UserMembershipsInline(admin.TabularInline):
     model = UserOrganisationMembership
     fk_name = "user"
+    fields = ("contact_user", "organisation")
+    extra = 0
+
+class GroupMembershipsInline(admin.TabularInline):
+    model = UserOrganisationMembership
+    fk_name = "organisation"
     fields = ("contact_user", "organisation")
     extra = 0
 
@@ -83,7 +89,7 @@ class FMSUserAdmin(SimpleHistoryAdmin):
     list_display = ("id", "get_full_name", "username", "organisation", "leader", "manager", "agent", "applicant", "contractor")
     list_display_links = list_display[:2]
     inlines = (
-        MembershipsInline,
+        UserMembershipsInline,
         # NotificationsInline,
         UserEventsInline
     )
@@ -228,6 +234,7 @@ class OrganisationEntityAdmin(SimpleHistoryAdmin):
     list_filter = ("type",)
     inlines = (
         OrgaUsersInline,
+        GroupMembershipsInline,
         GroupsInline,
     )
 
