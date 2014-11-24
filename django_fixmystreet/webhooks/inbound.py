@@ -143,19 +143,19 @@ class AbstractReportAssignmentInWebhook(AbstractReportInWebhook):
 class ReportAssignmentAcceptInWebhook(ReportAcceptInWebhookMixin, AbstractReportAssignmentInWebhook):
     """Inbound webhook handler for ``report.assignment.accept``."""
 
-    ACTION_MESSAGE = _(u"Incident assignment was accepted by {third_party}.")
+    ACTION_MESSAGE = _(u"Report assignment was accepted by {third_party}.")
 
 
 class ReportAssignmentRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportAssignmentInWebhook):
     """Inbound webhook handler for ``report.assignment.reject``."""
 
-    ACTION_MESSAGE = _(u"Incident assignment was rejected by {third_party}.")
+    ACTION_MESSAGE = _(u"Report assignment was rejected by {third_party}.")
 
 
 class ReportAssignmentCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportAssignmentInWebhook):
     """Inbound webhook handler for ``report.assignment.close``."""
 
-    ACTION_MESSAGE = _(u"Incident assignment was closed by {third_party}.")
+    ACTION_MESSAGE = _(u"Report assignment was closed by {third_party}.")
 
 
 class AbstractReportTransferInWebhook(AbstractReportInWebhook):
@@ -172,13 +172,13 @@ class AbstractReportTransferInWebhook(AbstractReportInWebhook):
 class ReportTransferAcceptInWebhook(ReportAcceptInWebhookMixin, AbstractReportTransferInWebhook):
     """Inbound webhook handler for ``report.transfer.accept``."""
 
-    ACTION_MESSAGE = _(u"Incident transfer was accepted by {third_party}.")
+    ACTION_MESSAGE = _(u"Report transfer was accepted by {third_party}.")
 
 
 class ReportTransferRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportTransferInWebhook):
     """Inbound webhook handler for ``report.transfer.reject``."""
 
-    ACTION_MESSAGE = _(u"Incident transfer was rejected by {third_party}.")
+    ACTION_MESSAGE = _(u"Report transfer was rejected by {third_party}.")
 
     def run(self):
         super(ReportTransferRejectInWebhook, self).run()
@@ -196,7 +196,7 @@ class ReportTransferRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportTr
 class ReportTransferCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportTransferInWebhook):
     """Inbound webhook handler for ``report.transfer.close``."""
 
-    ACTION_MESSAGE = _(u"Incident transfer was closed by {third_party}.")
+    ACTION_MESSAGE = _(u"Report transfer was closed by {third_party}.")
 
     def run(self):
         super(ReportTransferCloseInWebhook, self).run()
