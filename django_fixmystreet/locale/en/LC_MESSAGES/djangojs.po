@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-19 14:10+0100\n"
+"POT-Creation-Date: 2014-11-24 17:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,11 +30,11 @@ msgid "Please contact the municipality"
 msgstr ""
 
 #: fixmystreet/static/js/new_report.js:164
-#: fixmystreet/static/js/new_report.js:232
+#: fixmystreet/static/js/new_report.js:237
 msgid "Unable to locate this address"
 msgstr ""
 
-#: fixmystreet/static/js/new_report.js:230
+#: fixmystreet/static/js/new_report.js:235
 msgid "Error"
 msgstr ""
 
