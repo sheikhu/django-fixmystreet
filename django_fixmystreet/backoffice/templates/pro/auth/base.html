@@ -31,10 +31,10 @@
         </li>
     {% if can_create %}
         <li style="float:right">
-            <a href="{% url 'create_user' %}" class="nav-tabs1-icon pull-right" style="color:#2c3e50; background-color:#ffdb0b; border:0px; margin-right:5px;"><i class="icon-plus"></i> {% trans 'Create user' %}</a>
+            <a href="{% url 'create_user' %}" class="nav-tabs1-icon" style="color:#2c3e50; background-color:#ffdb0b; border:0px; margin-right:10px;"><i class="icon-plus"></i> {% trans 'Create user' %}</a>
         </li>
         <li style="float:right">
-            <a href="{% url 'create_group' %}" class="nav-tabs1-icon pull-right" style="color:#2c3e50; background-color:#ffdb0b; border:0px;"><i class="icon-plus"></i> {% trans 'Create group' %}</a>
+            <a href="{% url 'create_group' %}" class="nav-tabs1-icon" style="color:#2c3e50; background-color:#ffdb0b; border:0px;"><i class="icon-plus"></i> {% trans 'Create group' %}</a>
     {% endif %}
     </ul>
 </div>

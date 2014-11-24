@@ -63,7 +63,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" class="btn-group">
                             {% if request.fmsuser.leader or request.fmsuser.manager or request.fmsuser.agent %}
-                            <li class="user-orga"><img src="{% static 'images/location16.png' %}" class="user-orga-icon"/> {{ request.fmsuser.get_organisation }}</li>
+                            <li class="user-orga">{{ request.fmsuser.get_organisation }}</li>
                             <li class="divider"></li>
 
                             <li>
@@ -177,7 +177,7 @@
             {% block map %}
             {% endblock %}
 
-            <section id="content" >{% if BACKOFFICE %} <div style="margin-left:-30px"> {% endif %}
+            <section id="content" >{% if BACKOFFICE %} <div style="margin-left:0px;"> {% endif %}
                 {% if messages %}
                 <div id="messages">
                     {% for message in messages %}

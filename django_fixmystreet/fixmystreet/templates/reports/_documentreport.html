@@ -55,11 +55,11 @@
      <div class="control-group">
         {% if report_form %}
         <label for="notifications" class="control-label">
-            <strong>{% trans 'Notifications' %}</strong>
+            <strong><span class="dosisformblue">{% trans 'Notifications' %}</span></strong>
         </label>
 
         <div class="controls">
-            <label class="checkbox inline">
+            <label class="checkbox inline" style="color:#2c3e50">
                 {% input_class report_form.subscription 'conditions_check' %}
                 {% trans "I want to be notified of the evolution of the incident" %}
             </label>
