@@ -145,18 +145,19 @@
     <div class="container">
         <div class="row">
             <div class="span12">
-                <div id="searchContainer" class="mergeIncident">
+                <div id="search-container" class="mergeIncident">
                     <div class="one_incident master">
-                        <div class="row">
+                        <div class="row" style="padding-left:15px; padding-right:15px;">
                           <!-- Address and categories -->
-                            <div class="span4 loc_desc">
+                            <div class="span5 loc_desc">
                                 <!-- Distance -->
-                                <p class="distance">{% trans "Report to merge" %}</p>
-                                <img src="{% static report.get_marker %}" class="report-counter"/>
-                                <span class="ticket_number">{% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span></span><br />
+                                <p class="distance" style="color:#2c3e50; font-size:14px;">{% trans "Report to merge" %}</p>
+                                <span class="ticket_number orange_border">
+                                  <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                </span><br/>
                                 <span class="ticket_address">
                                     {{ report.address }}, {{ report.address_number }}<br />
-                                    {{ report.postalcode }} {{ report.territorial_entity.name }}
+                                    <span>{{ report.postalcode }} {{ report.territorial_entity.name }}</span>
                                 </span><br />
                                 <span class="ticket_desc">
                                     {{ report.display_category }}
@@ -164,7 +165,7 @@
                             </div>
 
                             <!-- Photos -->
-                            <div class="span4 picture">
+                            <div class="span2 picture">
                                 {% if report.thumbnail_pro %}
                                     <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
                                 {% else %}
@@ -175,7 +176,7 @@
                             <div class="span4">
                                 {% for attachment in report.attachments.all %}
                                     {% if attachment.reportcomment.text %}
-                                        <p class="comment-incident">
+                                        <p class="incidentDetailsStatus1">
                                             {{ attachment.get_type_message }}
                                             {{ attachment.reportcomment.text|truncatechars:200 }}
                                         </p>
@@ -259,21 +260,18 @@
                                         <span class="ticket_desc">
                                             {{ report.display_category }}
                                         </span><br />
-                                    <!-- Button "it's the same" -->
-                                    <a
-                                        href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
-                                        class="btn_same_incident report">{% trans "Merge" %}</a>
+
                                     </div>
                                     <!-- Photos -->
-                                    <div class="span4 picture">
+                                    <div class="span1 picture">
                                         {% if report.thumbnail_pro %}
                                             <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
                                         {% else %}
-                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
+                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />
                                         {% endif %}
                                     </div>
                                     <!-- Comments -->
-                                    <div class="span4">
+                                    <div class="span4 incidentDetailsStatus2">
                                         {% for attachment in report.attachments.all %}
                                             {% if attachment.reportcomment.text %}
                                                 <p class="comment-incident">
@@ -282,6 +280,12 @@
                                                 </p>
                                             {% endif %}
                                         {% endfor %}
+
+                                    </div> 
+                                    <div clas="span2">
+                                                                        <!-- Button "it's the same" -->
+                                    <a href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
+                                        class="btn_same_incident report" style="margin-right:10px; margin-top:px;">{% trans "Merge" %}</a>
                                     </div>
                                     <!-- Deprecated ? -->
                                     {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
@@ -315,8 +319,8 @@
             <h3>{% trans 'Are you sure you want to merge these incidents?' %}</h3>
         </div>
         <div id="mergeModalBody" class="modal-body">
-            <div class="text-center well" id="olderToMerge">
-                <p>
+            <div class="text-center well" id="olderToMerge" style="color:white;">
+                <p style="color:white;">
                     {% trans 'Report' %} :
                     <strong>
                         <img id="oldertoMergeMarker" src="" class="report-counter"/>
@@ -328,11 +332,11 @@
                     </strong>
                 </p>
             </div>
-
+            <div align="center">
+                   <h3> {% trans "Will be merged with the report" %} :</h3>
+            </div>
             <div class="text-center well" id="newerToMerge">
                 <p>
-                    {% trans "Will be merged with the report" %} :
-                    <br/>
                     <strong>
                         <img id="newertoMergeMarker" src="" class="report-counter"/>
                         N°<span id="newertoMergeNumber"></span>
@@ -344,7 +348,7 @@
                 </p>
             </div>
 
-            <p>{% trans "The result of the merge will be visible to" %} :
+            <p align="center">{% trans "The result of the merge will be visible to" %} :
 
                 <strong>
                     {% if report.private %}
@@ -357,7 +361,7 @@
         </div>
 
         <div class="modal-footer">
-            <a class="btn btn-danger" data-dismiss="modal" aria-hidden="true" >{% trans 'No' %}</a>
+            <a class="btn" data-dismiss="modal" aria-hidden="true" >{% trans 'No' %}</a>
             <input type="submit" class="btn  btn-primary"  value="{% trans 'Merge'%}"/>
         </div>
     </form>

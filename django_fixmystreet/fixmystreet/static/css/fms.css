@@ -6,6 +6,9 @@ header{
 	position: relative;
 }
 
+body{
+	font-family: 'Dosis', sans-serif;
+}
 
 
 
@@ -80,6 +83,16 @@ nav ul{
 
 
 }
+
+.fmsmap-popup-header {
+	font-size: 13px;
+}
+
+.leaflet-control-layers-list label > span {
+	color: #2c3e50;
+}
+
+
 
 @media (min-width: 200px) and (max-width: 1000px) {
 	#file-form-files input[type="text"]{
@@ -183,8 +196,7 @@ li.user-orga{
 	color:#FFF;
 	background:#3498db;
 	padding: 10px 10px 10px 10px;
-	height: 22px;
-	font-size: 16pt;
+	font-size: 14pt;
 }
 li.user-orga + li.divider{
 	margin:0;
@@ -230,6 +242,7 @@ a.lang{
 a.lang:link, a.lang:visited{
 	color: #9AB7DA;
 	text-decoration: none;
+	margin-left:10px;
 }
 a.lang:hover, a.lang:active, a.lang:focus{
 	color: #495E77;
@@ -273,9 +286,9 @@ a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
 
 
 #login a:link, #login a:visited{
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 	padding:5px;
 	font-family: 'Dosis', sans-serif;
 	background: #3498db;
@@ -288,12 +301,18 @@ a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
 	left:79%;
 }
 
+.span12 #users-table_wrapper, .span12 #groups-table_wrapper {
+	margin-left: -30px;
+	width: 100%;
+}
+
+
 
 #login a:hover, #login a:active, #login a:focus{
-	border: 1px solid #BCD4F1;
-	background: #BCD4F1;
+	border: 1px solid #3498DB;
+	background: #3498DB;
 	text-decoration: none;
-	color: #495E77;
+	
 }
 footer{
 	font-size: 12px;
@@ -374,20 +393,158 @@ HOME
 }
 
 
-#modifypassword h1 {
-	font-size:16pt;
+
+#gestionnaire-config h1 {
+	font-size:18pt;
+	color: #3498db;
+	padding-left:30px;
+	background: url('../images/settings48.png') 0px 50% no-repeat;
+	line-height: 30px;
+}
+
+#modifypassword h1
+{
+	font-size:18pt;
 	color: #3498db;
 	padding-left:30px;
 	background: url('../images/locked59.png') 0px 50% no-repeat;
 	line-height: 30px;
+}
+
+#reporting-download h2
+{
+	font-size:18pt;
+	color: #3498db;
+	padding-left:30px;
+	background: url('../images/statistics2.png') 0px 50% no-repeat;
+	line-height: 30px;
+}
+
+#reporting-download small
+{
+	padding-left:20px;
+	margin-left:5px;
+	line-height: 30px;
+	color:#595959;
+
+	background: url('../images/arrow487.png') 0px 50% no-repeat;
 
 }
+
 
 .modal-header h3 {
 	font-size:20pt;
 	color: white;
 	font-family: 'Dosis', sans-serif;
 
+}
+#gestionnaire-config{
+	background:#ecf0f1;
+	border: 1px solid #3498db;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding:5px 18px;
+	display:inline-block;
+	min-height: 355px;
+	padding-bottom:20px;
+	height:105%;
+	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
+}
+
+form#report-form h3{
+	font-size:18pt;
+	color: #3498db;
+	padding-left:30px;
+	background: url('../images/help18.png') 0px 50% no-repeat;
+	line-height: 30px;
+	margin-bottom:15px;
+	margin-top:15px;
+}
+
+form#report-form h5{
+	font-size:18pt;
+	color: #3498db;
+	padding-left:30px;
+	background: url('../images/new10.png') 0px 50% no-repeat;
+	line-height: 30px;
+	margin-bottom:15px;
+	margin-top:15px;
+}
+
+.yelloww {
+	margin-top:10px;
+	color:black;
+	text-decoration:none;
+	float:right;
+}
+
+#faq{
+	background:#ecf0f1;
+	border: 1px solid #3498db;
+	-webkit-border-radius: 4px;
+
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding:20px 18px;
+	padding-bottom:20px;
+	display:inline-block;
+	min-height: 355px;
+	height:105%;
+	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
+}
+
+#faq h3
+{
+	font-size:18pt;
+	color: #3498db;
+	padding-left:30px;
+	background: url('../images/help18.png') 0px 50% no-repeat;
+	line-height: 30px;
+	margin-bottom:15px;
+	margin-top:15px;
+}
+
+#faq p
+{
+	font-size:12pt;
+	padding-left:45px;
+	line-height: 21px;
+	color: #34495e;
+	text-align: justify;
+	padding-right:25px;
+}
+
+#faq ul
+{
+	font-size:12pt;
+	padding-left:40px;
+	color: #34495e;
+	list-style-type: none;
+	background: url('../images/arrow487.png') 0px 50% no-repeat;
+	margin-left:45px;
+
+}
+
+
+#reporting-download{
+	background:#ecf0f1;
+	border: 1px solid #3498db;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding:5px 18px;
+	min-height: 355px;
+	padding-bottom:20px;
+
+	max-height: 940px;
+	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
 }
 
 .modal-text  {
@@ -410,7 +567,7 @@ HOME
 
 
 .modal-header h2 {
-	font-size:16pt;
+	font-size:20pt;
 	color: white;
 	font-family: 'Dosis', sans-serif;
 	line-height: 30px;
@@ -1197,7 +1354,14 @@ color:#495E77;
 }
 */
 
+.fmsmap-panel-body .type-reported,
+.fmsmap-panel-body .type-ongoing,
+.fmsmap-panel-body .type-closed,
+.fmsmap-panel-body .type-reported,
+.fmsmap-panel-body .type-other   {
+	color:#2c3e50;
 
+}
 
 
 
@@ -1219,7 +1383,12 @@ color:#495E77;
 	color:#8c9899;
 	border-bottom:0;
 	text-align: left;
+	white-space: nowrap;
 
+}
+
+.nav-tabs>li{
+	width:240px;
 
 }
 .nav-tabs > .active > a,
@@ -1236,6 +1405,7 @@ color:#495E77;
 .nav-tabs1{
 	margin-bottom:0;
 	border-bottom:0;
+	margin-left: -30px;	
 }
 .nav-tabs1>li>a{
 	border-bottom:0;
@@ -1551,9 +1721,40 @@ form#report-form{
 	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
 }
 #required-note, .info_end_form{
-	font-size: 11px;
+	font-size: 14px;
 	margin-left:180px;
 }
+
+#modalTable .modal-body #table-container .dataTables_wrapper{
+	background-color:white;
+}
+
+
+ul#column-visibility.dropdown-menu {
+	top:100%;
+	left:0%;
+	background-color:#EAEBFF;
+	color:white;
+	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+}
+
+#report-form label[for=id_type_0], 
+#report-form label[for=id_type_1],
+#report-form label[for=id_type_2],
+#report-form label[for=id_type_3],
+#report-form label[for=id_type_4],
+#report-form label[for=id_type_5]
+{
+	color:#2c3e50;
+	list-style-type:none;
+}
+
+.controls ul {
+	list-style-type:none;
+}
+
 .prevStep{
 	position:absolute;
 	margin-top:14px;
@@ -1667,7 +1868,6 @@ SHOW REPORT
 .btn-group.open .btn-primary.dropdown-toggle{
 	color: #222C37;
 	background: #FFDB00;
-	font-size: 12px;
 }
 
 .btn-danger:hover,
@@ -1777,6 +1977,8 @@ SHOW REPORT
 	margin-top:20px;
 }
 
+
+
 .incidentDetailsStatus {
 	line-height: 10px; 
 	margin-top: 10px;
@@ -1807,6 +2009,38 @@ SHOW REPORT
 	text-align: center;
 	letter-spacing: -0.3px;
 	color: #FFF;
+	float:right;
+	border: 0;
+	padding:2px 10px 2px 33px;
+	/*float: right;*/
+	margin-left:20px;
+	margin-top:20px;
+	float:right;
+	text-decoration: underline;
+
+}
+
+
+.lead-container a.accepted,
+.lead-container a.accepted:hover,
+.lead-container a.accepted:focus,
+.lead-container a.accepted:active{
+	height: 23px;
+	padding: 0;
+	padding-top: 2px;
+	font-size: 13px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	background: #2ecc71 url('../images/btn_accept.png') 5px 5px no-repeat;
+	font-family: 'Dosis', sans-serif;
+	text-transform: uppercase;
+	text-decoration: none;
+	text-align: center;
+	letter-spacing: -0.3px;
+	color: #2c3e50;
+	float:right;
+
 	border: 0;
 	padding:2px 10px 2px 33px;
 	/*float: right;*/
@@ -1907,14 +2141,53 @@ padding: 0 15px 15px 15px;
 
 	font-family:'Dosis', sans-serif;
 	font-size: 15pt;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	background-color: rgba(236,240,241,0.9);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: rgba(236,240,241,0.7);
 	padding: 10px;
 	color:#2c3e50;
 
 }
+
+
+.incidentDetailsStatus2 {
+
+	font-family:'Dosis', sans-serif;
+	font-size: 15pt;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: rgba(236,240,241,0.7);
+	padding: 10px;
+	color:#2c3e50;
+	padding-top:15px;
+	margin-top:20px;
+	width:40%;
+	margin-bottom:15px;
+}
+
+
+.incidentDetailsStatus1 {
+
+	font-family:'Dosis', sans-serif;
+	font-size: 13pt;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: rgba(236,240,241,0.7);
+	padding: 20px;
+	color:#2c3e50;
+	width: 100%;
+	margin-top:20px;
+	height:90px;
+	 overflow: overlay; /* les dépassements seront masqués */
+	 white-space: normal;
+	 line-height: 15px;
+
+}
+
+
 
 .incidentDetailsStatus ul li {
 
@@ -1961,6 +2234,9 @@ padding: 0 15px 15px 15px;
 .visilibility {
 	font-size: 11pt;
 	font-family:'Dosis';
+	margin-left:15px;
+	mar
+
 }
 
 #postedbytitle {
@@ -1977,27 +2253,46 @@ padding: 0 15px 15px 15px;
 
 }
 
+
 .lead-container .ticket_address{
 	color:#FFF;
 	font-weight:bold;
 	line-height: 25px;
 	margin-top:15px;
 	font-size: 13pt;
-	margin-left:15px;
+	padding-left:15px;
 	font-family:'Dosis', sans-serif;
+
 }
+
 .lead-container .ticket_desc{
 	color:#FFF;
 	font-size:12px;
 	margin-top:15px;
 	margin-left:15px;
+	white-space: nowrap;
 
-	line-height: 25px;
+	line-height: 30px;
 	font-family:'Dosis', sans-serif;
 
 }
 
+#search-container{
+	color: #FFF;
+	-webkit-border-radius: 4px 4px 0 0;
+	-moz-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+	background-color: #3498DB;
+	padding-bottom:0px;
+	line-height: 5px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-webkit-box-shadow: -0px 5px 20px rgba(0,0,0, 0.2);
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);	
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);	
 
+}
 .lead-container .ticket_desc br{
 	color:#FFF;
 	font-size:12px;
@@ -2032,14 +2327,17 @@ Timeline
 	position: relative;
 	overflow: hidden;
 	padding: 10px;
-	background:#BCD4F1;
+	background:#ecf0f1;
 	margin: 25px 0 0 0;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 	padding-top: 16px;
-	border:1px solid #5F7C9C;
+	border:1px solid #3498db;
 	min-height: 45px;
+	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);			
 }
 .timeline{
 	margin-top: 50px;
@@ -2136,7 +2434,7 @@ top:10px;
 	color:#FFF;
 	text-decoration:underline;
 }
-.picture-head, .comment-head{
+.picture-head{
 	background:#3498db;
 	/*height:30px;*/
 	color:#FFF;
@@ -2150,6 +2448,24 @@ top:10px;
 	font-size: 1.2em;
 	font-weight: normal;
 }
+
+
+.comment-head{
+	background:#2980b9;
+	/*height:30px;*/
+	color:#FFF;
+	padding:7px 10px;
+	-webkit-border-top-left-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	font-size: 1.2em;
+	font-weight: normal;
+}
+
+
 .picture-head{
 	margin-bottom:10px;
 }
@@ -2182,7 +2498,6 @@ margin-top: -9px;
 	font-size:16px;
 	line-height: 16px !important;
 	font-style: italic;
-	padding: 10px;
 	text-align:justify;
 	font-family: 'Dosis', sans-serif;
 
@@ -2345,7 +2660,8 @@ label strong{
 	margin-top: 10px;
 }
 
-.paginate_disabled_previous, .paginate_disabled_next{
+.paginate_disabled_previous, .paginate_disabled_next,
+.paginate_enabled_previous, .paginate_enabled_next{
 	color:white;
 }
 
@@ -2544,11 +2860,21 @@ input[type=checkbox].invalid, input[type=radio].invalid{
 .lead-container.btn-group.open .btn.dropdown-toggle{
 	background:#FFDB00;
 }
+#report-subscription .checkbox {
+	color:#7e7e7e;
+}
+
+#mail-pdf-citizen label, #mail-pdf-citizen span, .modal-body label {
+	color:#7e7e7e;
+}
+
+
+
+
 .lead-container .dropdown-menu>li>a:hover,
 .lead-container .dropdown-menu>li>a:focus,
 .lead-container .dropdown-submenu:hover>a,
 .lead-container .dropdown-submenu:focus>a{
-	background:#9AB7DA;
 }
 .incidentActions .dropdown-menu>.active>a, .incidentActions .dropdown-menu>.active>a:hover, .incidentActions .dropdown-menu>.active>a:focus{
 	background:#3498db;
@@ -2654,18 +2980,25 @@ clear:both;
 	font-family: "Dosis" sans-serif;
 	font-size: 16px;
 	color:#2c3e50;
-	text-align: center;
+	text-align: left;
 	background-color: #3498db;
-	padding-top:10px;
-	width:97%;
-	padding-left: 20px;
+	padding-top:20px;
+	padding-left: 10px;
 	padding-right:10px;
-	padding-bottom: 60px;
--webkit-border-radius: 0px 0px 5px 5px;
--moz-border-radius: 0px 0px 5px 5px;
-border-radius: 0px 0px 5px 5px;
+	padding-bottom: 40px;
+	-webkit-border-radius: 0px 0px 5px 5px;
+	-moz-border-radius: 0px 0px 5px 5px;
+	border-radius: 0px 0px 5px 5px;
+	margin-bottom:10px;
 
 }
+
+.paginate_disabled_previous,
+.paginate_disabled_next {
+	color:red;
+
+}
+
 .table-content{
 	position: absolute;
 	top: 44px;
@@ -2737,16 +3070,33 @@ border-radius: 0px 0px 5px 5px;
 	color: rgb(58, 201, 92);
 }
 #result-table td.s2, td.s4, td.s5, td.s6, td.s7 {
-	color: orange;
+	color: #e67e22;
+	font-size: 13pt;
+	white-space: nowrap;
+	padding-top:10px;
+	padding-bottom:10px;
 }
 #result-table td.s1 {
-	color: red;
+	color: #e74c3c;
+	white-space: nowrap;
+	font-size: 13pt;
+	padding-top:10px;
+	padding-bottom:10px;
+
 }
 #result-table .number_filter {
 	width: 40px;
 }
 #result-table .select_filter {
 	width: 130px;
+}
+
+table.dataTable tr.odd {
+	background-color: #ecf0f1;
+}
+
+
+.dataTables_filter  {
 }
 #result-table .text_filter {
 	width: 140px;
@@ -2797,26 +3147,46 @@ table.dataTable thead th {
 .one_incident.master .ticket_address{
 	color:#FFF;
 	font-weight: bold;
+		color:#FFF;
+	font-weight:bold;
+	line-height: 25px;
+	margin-top:15px;
+	font-size: 13pt;
+	font-family:'Dosis', sans-serif;
 }
 .one_incident.master .span4.loc_desc{
 	width: 325px;
 	padding: 0 0 10px 35px;
 }
 .one_incident.master .ticket_number{
-	color:#BCD4F1;
-	font-size: 12px;
+	color:white;
+	font-family:'Dosis', sans-serif;
+	font-size: 16pt;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding: 10px;
+	background-color: rgba(86,125,151,0.5);
+	display: inline-block;
 }
+
 .one_incident.master .ticket_desc{
-	font-size: 12px;
 	color:#FFF;
+	font-size:12px;
+	margin-top:15px;
+	white-space: nowrap;
+
+	line-height: 30px;
+	font-family:'Dosis', sans-serif;
 }
 .one_incident.master .comment-incident{
 	color:#FFF;
 }
 .one_incident.master .thumbnail{
 	width: auto;
-	height: 80px;
+	height: 120px;
 	margin: 12px auto;
+	margin-top:20px;
 }
 
 .modal form {
@@ -3290,4 +3660,12 @@ form {
 	.promoStore {
 		display: none;
 	}
+}
+
+.control-group label {
+	font-family: "Dosis" sans-serif;
+	font-size: 15px;
+	color:#2c3e50;
+	line-height:15px;
+	margin-left:12px;
 }

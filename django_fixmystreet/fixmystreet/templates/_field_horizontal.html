@@ -1,7 +1,7 @@
 {% load tags i18n %}
 <div class="control-group{% if field.field.required %} required{% endif %}">
     {% if field.field.widget|classname == "Textarea" %}
-        <label for="id_{{ field.html_name }}">{{ field.label }}</label>
+        <label for="id_{{ field.html_name }}" style="color:red">{{ field.label }}</label>
         {% input_class field 'input-block-level' %}
         <span class="help-block">{{ field.help_text }}</span>
         {{ field.errors }}
