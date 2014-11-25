@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("fixmystreet", "0001_initial"),
+    )
+
     def forwards(self, orm):
         # Adding model 'WebhookConfig'
         db.create_table(u'webhooks_webhookconfig', (
