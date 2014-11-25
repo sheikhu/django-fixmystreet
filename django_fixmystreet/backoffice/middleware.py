@@ -2,9 +2,7 @@ import re
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.conf import settings
 
-from django_fixmystreet.fixmystreet.models import FMSUser
 
 
 
@@ -19,6 +17,7 @@ class LoginRequiredMiddleware:
     loaded. You'll get an error if they aren't.
     """
     def process_request(self, request):
+        from django.conf import settings
         request.backoffice = False
         if re.compile(settings.LOGIN_REQUIRED_URL).search(request.path_info):
             if request.user.is_authenticated():
@@ -32,6 +31,7 @@ class LoadUserMiddleware:
     """
     """
     def process_request(self, request):
+        from django_fixmystreet.fixmystreet.models import FMSUser
         if request.user.is_authenticated():
             try:
                 request.fmsuser = request.user.fmsuser
