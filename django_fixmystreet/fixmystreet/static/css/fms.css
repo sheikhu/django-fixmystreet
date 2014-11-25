@@ -2234,8 +2234,6 @@ padding: 0 15px 15px 15px;
 .visilibility {
 	font-size: 11pt;
 	font-family:'Dosis';
-	margin-left:15px;
-	mar
 
 }
 
@@ -2260,7 +2258,6 @@ padding: 0 15px 15px 15px;
 	line-height: 25px;
 	margin-top:15px;
 	font-size: 13pt;
-	padding-left:15px;
 	font-family:'Dosis', sans-serif;
 
 }
@@ -2269,7 +2266,6 @@ padding: 0 15px 15px 15px;
 	color:#FFF;
 	font-size:12px;
 	margin-top:15px;
-	margin-left:15px;
 	white-space: nowrap;
 
 	line-height: 30px;

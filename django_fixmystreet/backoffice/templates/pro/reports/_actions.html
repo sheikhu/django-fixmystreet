@@ -522,7 +522,7 @@ $('.dropdown-toggle').click(function(e) {
         <div class="modal-body">
             <form id="update_cat_form" method="POST" action="{% url 'update_category_for_report' report.id %}">
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         <select id="main_cat_select" name="main_category">
                             <option value="0">{% trans "Select a Category" %}</option>
                             {% for cat in category_list%}
@@ -535,13 +535,10 @@ $('.dropdown-toggle').click(function(e) {
                 </tr>
                 <br/><br/>
                 <tr>
-                    <td colspan="2">
+                <div style="width:100%; margin-top:50px;" align="right">
                         <input class="btn" type="button" name="submit" value="{% trans 'Annuler' %}" onclick="cancelCategoryUpdate()">
-                    </td>
-                    <td colspan="2">
                         <input class="btn" type="submit" name="submit" value="{% trans 'Accepter' %}">
-                    </td>
-                </tr>
+                </div>
             </form>
         </div>
     </div>

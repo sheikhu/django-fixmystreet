@@ -21,25 +21,25 @@
 <!-- #######################JQUERY INIT METHOD #################### -->
 <!-- ############################################################## -->
 {% block script %}
-    <script>
-        var mapOptions = {
-            zoomControl: false,
-            layersControl: false,
-        };
-    </script>
-    {{ block.super }}
-    <script>
-        $(document).ready(function() {
-            var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x: {{ report.point.x }}, y: {{ report.point.y }}});
-            var marker = fms.map.addIncident({
-                type: '{{ report.get_status_for_js_map }}',
-                latlng: latlng,
-            }, {popup: null});
-            fms.map.centerOnMarker(marker);
-            var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
-            document.getElementById("wgs84").innerHTML="L: " + res.x + " <br/>l: "+res.y;
-        });
-    </script>
+<script>
+    var mapOptions = {
+        zoomControl: false,
+        layersControl: false,
+    };
+</script>
+{{ block.super }}
+<script>
+    $(document).ready(function() {
+        var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x: {{ report.point.x }}, y: {{ report.point.y }}});
+        var marker = fms.map.addIncident({
+            type: '{{ report.get_status_for_js_map }}',
+            latlng: latlng,
+        }, {popup: null});
+        fms.map.centerOnMarker(marker);
+        var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
+        document.getElementById("wgs84").innerHTML="L: " + res.x + " <br/>l: "+res.y;
+    });
+</script>
 {% endblock %}
 
 {% block nav %}
@@ -48,16 +48,18 @@
 {% block lng %}{% endblock %}
 
 {% block css %}
-    {{ block.super }}
-    <style>
-        body {
-            font-family: arial;
-        } 
-        header {
-            height: 100px;
-            width: auto;
-            background-color: white;
-        }
+{{ block.super }}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<style>
+    body {
+        font-family: 'Dosis';
+    } 
+    header {
+        height: 100px;
+        width: auto;
+        background-color: white;
+    }
         /*body{
             width: 100%;
         }*/
@@ -311,246 +313,252 @@
             padding-bottom:5px;
         }
     </style>
-{% endblock %}
+    {% endblock %}
 
-{% block content %}
+    {% block content %}
     {% if BACKOFFICE %}
-        <img id="banner-pro" src="{% static 'images/fixmystreet-pro.png' %}" alt="{% trans 'Fix My Street Pro' %}">
     {% endif %}
-    <div id="map" class="pdf">
+
+  
+
+    <div id="map" style="margin-left:25px; margin-top:20px; border:4px dotted #414347;" class="pdf">
     </div>
-    <div id="right-side-map" class='pdf'>
+
+    <div id="right-side-map" class='pdf' style="    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+    background-color:black;
+    padding-top:25px;
+    padding-bottom:25px;
+    padding-left:15px;
+    margin-top:20px;
+    border:4px dotted #3498db; width:50%; padding:25px;">
     <!--
         Title
     -->
-        <h1 style="position:relative;">
-            {% if report.is_created %}
-                <span class="ticket_number red_border">
-                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
-                </span>
-            {% elif report.is_in_progress %}
-                <span class="ticket_number orange_border">
-                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
-                </span>
-            {% elif report.is_refused or report.is_temporary %}
-                <span class="ticket_number gray_border">
-                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
-                </span>
-            {% else %}
-                <span class="ticket_number green_border">
-                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
-                </span>
-            {% endif %}
+    <h1 style="position:relative;">
+        {% if report.is_created %}
+        <span class="ticket_number red_border">
+            <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+        </span>
+        {% elif report.is_in_progress %}
+        <span class="ticket_number orange_border">
+            <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+        </span>
+        {% elif report.is_refused or report.is_temporary %}
+        <span class="ticket_number gray_border">
+            <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+        </span>
+        {% else %}
+        <span class="ticket_number green_border">
+            <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+        </span>
+        {% endif %}
         </h1>
     <!--
         Icons
     -->
-        <ul class='iconsPopup'>
-            {% if report.responsible_entity.id == 20 %}
-                <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src="{% static 'images/pdf/regional.png' %}" /></a></li>
+    <ul class='iconsPopup'>
+        {% if report.responsible_entity.id == 20 %}
+        <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src="{% static 'images/pdf/regional.png' %}" /></a></li>
+        {% endif %}
+
+        {% if report.is_pro %}
+        <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src="{% static 'images/pdf/pro.png' %}" /></a></li>
+        {% endif %}
+
+        {% if report.contractor != None %}
+        <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src="{% static 'images/pdf/assigne.png' %}" /></a></li>
+        {% endif %}
+
+        {% if report.date_planned %}
+        <li class='datePlanned_on'>
+            <!--a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a-->
+            <img src="{% static 'images/pdf/planned.png' %} /> {{report.date_planned|date:"m/Y"}}
+        </li>
+        {% endif %}
+
+        {% if BACKOFFICE %}
+        <li>
+            {% if report.get_priority = 0 %}
+            <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/pdf/prior_0.png' %}" class="priorityLevel" /></a>
+            {% elif report.get_priority <= 2 %}
+            <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{% static 'images/pdf/prior_1.png' %}" class="priorityLevel" /></a>
+            {% elif report.get_priority <= 8 %}
+            <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a medium priority" %}'><img src="{% static 'images/pdf/prior_2.png' %}" class="priorityLevel" /></a>
+            {% else %}
+            <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{% static 'images/pdf/prior_3.png' %}" class="priorityLevel" /></a>
             {% endif %}
+        </li>
+        {% if report.is_solved %}
+        <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="{% static 'images/pdf/resolu.png' %}" /></a></li>
+        {% endif %}
 
-            {% if report.is_pro %}
-                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src="{% static 'images/pdf/pro.png' %}" /></a></li>
-            {% endif %}
+        {% endif %}
 
-            {% if report.contractor != None %}
-                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src="{% static 'images/pdf/assigne.png' %}" /></a></li>
-            {% endif %}
-
-            {% if report.date_planned %}
-                <li class='datePlanned_on'>
-                    <!--a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a-->
-                    <img src="{% static 'images/pdf/planned.png' %} /> {{report.date_planned|date:"m/Y"}}
-                </li>
-            {% endif %}
-
-            {% if BACKOFFICE %}
-                <li>
-                {% if report.get_priority = 0 %}
-                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/pdf/prior_0.png' %}" class="priorityLevel" /></a>
-                {% elif report.get_priority <= 2 %}
-                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{% static 'images/pdf/prior_1.png' %}" class="priorityLevel" /></a>
-                {% elif report.get_priority <= 8 %}
-                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a medium priority" %}'><img src="{% static 'images/pdf/prior_2.png' %}" class="priorityLevel" /></a>
-                {% else %}
-                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{% static 'images/pdf/prior_3.png' %}" class="priorityLevel" /></a>
-                {% endif %}
-                </li>
-                {% if report.is_solved %}
-                    <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="{% static 'images/pdf/resolu.png' %}" /></a></li>
-                {% endif %}
-
-            {% endif %}
-
-        </ul>
+    </ul>
     <div class="clearFloat"></div>
+<!--
+    Adress
+-->
+<div class="adress">
+    <p style="font-size:18px; line-height:21px;";>{{report.address}}, {{report.address_number}} <br />
+        {{report.postalcode}} {{report.get_address_commune_name}}</p>
+        {% if privacy == 'private' and report.false_address %}
+        <p>{{ report.false_address }}</p>
+        {% endif %}
+    <p style="color:#3498db;">{{report.display_category}}</p>
+
+    </div>
     <!--
-        Categories
-    -->
-        <div class="categories">
-            <p>{{report.display_category}}</p>
-        </div>
-    <!--
-        Adress
-    -->
-        <div class="adress">
-            <p>{{report.address}}, {{report.address_number}} <br />
-                {{report.postalcode}} {{report.get_address_commune_name}}</p>
-            {% if privacy == 'private' and report.false_address %}
-                <p>{{ report.false_address }}</p>
+    Geolocalisation
+-->
+<div class="geolocalisation">
+    <table>
+        <tr>
+            <th>{% trans 'Lambert 72 Belgium'%}</th>
+            <th>WGS84</th>
+        </tr>
+        <tr>
+            <td><p>L:{{report.point.x}}<br/> l:{{report.point.y}}</p></td>
+            <td><p id="wgs84"></p></td>
+        </tr>
+    </table>
+</div>
+
+<!--
+    Details
+-->
+<div class="incidentDetails">
+
+    {% if BACKOFFICE %}
+    <ul class="">
+
+        <!-- ROW PRO 1 -->
+        <li>
+            <strong>
+                {% trans 'Visibility' %} :
+            </strong>
+            {{ report.private|yesno:_("pro,public") }}
+        </li>
+
+        <!-- ROW PRO 2 -->
+        <li>
+            {#                {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}#}
+            {#                    <strong>Posted by</strong> {{by}} on {{on}}#}
+            {#                {% endblocktrans %}#}
+            <strong>{% trans "Posted by:" %}</strong> {{ report.get_creator.get_full_name }} {% trans "on" context "date" %} {{report.created|date:"d/m/Y"}}
+
+            {% if not report.is_pro %}
+            - {{ report.citizen.get_quality_display }}
+            ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.get_creator.fmsuser.telephone}})
             {% endif %}
-        </div>
-    <!--
-        Geolocalisation
-    -->
-        <div class="geolocalisation">
-            <table>
-                <tr>
-                    <th>{% trans 'Lambert 72 Belgium'%}</th>
-                    <th>WGS84</th>
-                </tr>
-                <tr>
-                    <td><p>L:{{report.point.x}}<br/> l:{{report.point.y}}</p></td>
-                    <td><p id="wgs84"></p></td>
-                </tr>
-            </table>
-        </div>
-
-    <!--
-        Details
-    -->
-        <div class="incidentDetails">
-
-{% if BACKOFFICE %}
-            <ul class="">
-
-            <!-- ROW PRO 1 -->
-            <li>
-                <strong>
-                    {% trans 'Visibility' %} :
-                </strong>
-                {{ report.private|yesno:_("pro,public") }}
-            </li>
-
-            <!-- ROW PRO 2 -->
-            <li>
-{#                {% blocktrans with by=report.get_creator.get_full_name on=report.created|date:"d/m/Y" mail=report.get_creator.email %}#}
-{#                    <strong>Posted by</strong> {{by}} on {{on}}#}
-{#                {% endblocktrans %}#}
-                <strong>{% trans "Posted by:" %}</strong> {{ report.get_creator.get_full_name }} {% trans "on" context "date" %} {{report.created|date:"d/m/Y"}}
-
-                {% if not report.is_pro %}
-                    - {{ report.citizen.get_quality_display }}
-                    ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.get_creator.fmsuser.telephone}})
-                {% endif %}
-            </li>
-            <!-- ROW PRO 3 -->
-            <li>
+        </li>
+        <!-- ROW PRO 3 -->
+        <li>
             <strong>{% trans "Responsible:" %}</strong>
             <!-- responsible-name=report.responsible_department.contact_user, responsible-group=report.responsible_department, responsible-entity=report.responsible_entity -->
             {{report.responsible_department.contact_user.get_full_name}} -
             {{report.responsible_department.name }} -
             {{report.responsible_entity.name}}
             {% if report.responsible_department.phone %}
-                ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
+            ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
             {% endif %}
-            </li>
-            <!-- ROW PRO 4 -->
-            <li>
-                <th><strong>{% trans "Status:" %}</strong></th>
-                <td>{{ report.get_status_display }}</td>
-                {% trans 'on' %}
-                {{report.last_history_status_event.event_at|date:"d/m/Y"}}
+        </li>
+        <!-- ROW PRO 4 -->
+        <li>
+            <th><strong>{% trans "Status:" %}</strong></th>
+            <td>{{ report.get_status_display }}</td>
+            {% trans 'on' %}
+            {{report.last_history_status_event.event_at|date:"d/m/Y"}}
 
-                {% if report.is_contractor_or_applicant_assigned %}
-                    {{report.contractor.name}}
-                    {% if report.contractor.phone %}
-                        ({{report.contractor.phone}})
-                    {% endif %}
-                {% endif %}
-            </li>
-            <!-- ROW PRO 5 -->
-            {% if report.merged_with %}
-                <li>
-                    <strong>
-                        {% trans "Merged on" %}
-                    </strong>
-                    {{report.last_history_event.event_at|date:"d/m/Y"}}
-                    {% trans "with incident" %}
-                     <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
-                        {{report.merged_with.id}}
-                    </a>
-                </li>
+            {% if report.is_contractor_or_applicant_assigned %}
+            {{report.contractor.name}}
+            {% if report.contractor.phone %}
+            ({{report.contractor.phone}})
             {% endif %}
+            {% endif %}
+        </li>
+        <!-- ROW PRO 5 -->
+        {% if report.merged_with %}
+        <li>
+            <strong>
+                {% trans "Merged on" %}
+            </strong>
+            {{report.last_history_event.event_at|date:"d/m/Y"}}
+            {% trans "with incident" %}
+            <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
+                {{report.merged_with.id}}
+            </a>
+        </li>
+        {% endif %}
 
-            </ul>
-{% else %}
- <!-- ROW CIT 1 -->
-                            <p>
-                                <strong>{% trans "Posted on" %}</strong>:
-                               {{report.created|date:"d/m/Y"}}
-                            </p>
-                            <!-- ROW CIT 2 -->
-                            <p>
-                                <strong>{% trans "Responsible:" %}</strong>
-                                <!-- responsible-name, responsible-group, responsible-entity -->
-                                {{report.responsible_department.name }} -
-                                {{report.responsible_entity.name}}
-                                {% if report.responsible_department.phone %}
-                                    ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
-                                {% endif %}
-                            </p>
-                            <!-- ROW CIT 3 -->
-                            <p>
-                                <th><strong>{% trans "Status:" %}</strong></th>
-                                <td>{{ report.get_public_status_display }}</td>
-                                {% if report.is_contractor_or_applicant_assigned and report.contractor.type == 'A' %}
-                                    {{report.contractor.name}}
-                                {% endif %}
-                            </p>
-                            <!-- ROW CIT 4 -->
-                            {% if report.merged_with %}
-                            <p>
-                                {% trans "Merged on" %}
-                                {{report.last_history_event.event_at|date:"d/m/Y"}}
-                                {% trans "with incident" %}
-                                <a href="{% url 'report_show' report.get_slug report.merged_with.id %}">
-                                    {{report.merged_with.id}}
-                                </a>
-                            </p>
-                            {% endif %}
-{% endif %}
-        </div>
+    </ul>
+    {% else %}
+    <!-- ROW CIT 1 -->
+    <p>
+        <strong>{% trans "Posted on" %}</strong>:
+        {{report.created|date:"d/m/Y"}}
+    </p>
+    <!-- ROW CIT 2 -->
+    <p>
+        <strong>{% trans "Responsible:" %}</strong>
+        <!-- responsible-name, responsible-group, responsible-entity -->
+        {{report.responsible_department.name }} -
+        {{report.responsible_entity.name}}
+        {% if report.responsible_department.phone %}
+        ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
+        {% endif %}
+    </p>
+    <!-- ROW CIT 3 -->
+    <p>
+        <th><strong>{% trans "Status:" %}</strong></th>
+        <td>{{ report.get_public_status_display }}</td>
+        {% if report.is_contractor_or_applicant_assigned and report.contractor.type == 'A' %}
+        {{report.contractor.name}}
+        {% endif %}
+    </p>
+    <!-- ROW CIT 4 -->
+    {% if report.merged_with %}
+    <p>
+        {% trans "Merged on" %}
+        {{report.last_history_event.event_at|date:"d/m/Y"}}
+        {% trans "with incident" %}
+        <a href="{% url 'report_show' report.get_slug report.merged_with.id %}">
+            {{report.merged_with.id}}
+        </a>
+    </p>
+    {% endif %}
+    {% endif %}
+</div>
 
-    </div>
-    <div class="clearFloat"></div>
+</div>
+<div class="clearFloat"></div>
 
-    <!--
-        Comments
-    -->
-    <div class="comments">
-        <h2>{% trans 'Comments and pictures' %}</h2>
-        {% for attachment in comments %}
-            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
-        {% endfor %}
+<!--
+    Comments
+-->
+<div class="comments" style="margin-left:25px; margin-top:25px;">
+    <h1>{% trans 'Comments and pictures' %}</h1><br/>
+    {% for attachment in comments %}
+    {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
+    {% endfor %}
 
-        {% for attachment in files %}
-            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
-        {% endfor %}
-    </div>
+    {% for attachment in files %}
+    {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
+    {% endfor %}
+</div>
 
-    <div class="clearFloat"></div>
+<div class="clearFloat"></div>
 
-    <!--
-        History
-    -->
-        <div class="history">
-            <h2>{% trans 'History' %}</h2>
-            {% include "reports/_activity_list.html" with privacy=privacy %}
-        </div>
+<!--
+    History
+-->
+<div class="history" style="margin-left:25px;>
+    <h1>{% trans 'History' %}</h1><br/>
+    {% include "reports/_activity_list.html" with privacy=privacy %}
+</div>
 
-    {% block footer %}{% endblock %}
+{% block footer %}{% endblock %}
 
 
 {% endblock %}
