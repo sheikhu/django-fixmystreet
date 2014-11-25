@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-24 17:04+0100\n"
+"POT-Creation-Date: 2014-11-25 09:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2777,32 +2777,32 @@ msgstr ""
 
 #: webhooks/inbound.py:146
 #, python-brace-format
-msgid "Incident assignment was accepted by {third_party}."
+msgid "Report assignment was accepted by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:152
 #, python-brace-format
-msgid "Incident assignment was rejected by {third_party}."
+msgid "Report assignment was rejected by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:158
 #, python-brace-format
-msgid "Incident assignment was closed by {third_party}."
+msgid "Report assignment was closed by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:175
 #, python-brace-format
-msgid "Incident transfer was accepted by {third_party}."
+msgid "Report transfer was accepted by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:181
 #, python-brace-format
-msgid "Incident transfer was rejected by {third_party}."
+msgid "Report transfer was rejected by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:199
 #, python-brace-format
-msgid "Incident transfer was closed by {third_party}."
+msgid "Report transfer was closed by {third_party}."
 msgstr ""
 
 #: webhooks/models.py:11

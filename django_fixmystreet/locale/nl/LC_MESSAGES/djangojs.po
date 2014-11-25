@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-04 11:23+0100\n"
-"PO-Revision-Date: 2014-11-04 10:22+0000\n"
+"POT-Creation-Date: 2014-11-25 09:49+0100\n"
+"PO-Revision-Date: 2014-11-25 08:49+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -32,11 +32,11 @@ msgid "Please contact the municipality"
 msgstr ""
 
 #: fixmystreet/static/js/new_report.js:164
-#: fixmystreet/static/js/new_report.js:232
+#: fixmystreet/static/js/new_report.js:237
 msgid "Unable to locate this address"
 msgstr ""
 
-#: fixmystreet/static/js/new_report.js:230
+#: fixmystreet/static/js/new_report.js:235
 msgid "Error"
 msgstr ""
 
@@ -206,11 +206,11 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: fixmystreet/static/js/leaflet/leaflet-fms.js:712
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:714
 msgid "Incident filter"
 msgstr ""
 
-#: fixmystreet/static/js/leaflet/leaflet-fms.js:1927
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:1932
 msgid "Brussels"
 msgstr "Brussel"
 
