@@ -115,7 +115,7 @@
                     {% for l in LANGUAGES %}
                     {% get_language_info for l.0 as lang %}
                     <a class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
-                    href="{% url 'update_current_language' %}?from={{ request.get_full_path }}&language={{ lang.code }}"
+                    href="{% url 'update_current_language' %}?from={{ request.get_full_path|urlencode }}&language={{ lang.code }}"
                     title="{{ lang.name_local }}">{{ lang.code }}</a>
                     {% endfor %}
 
