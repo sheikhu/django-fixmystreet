@@ -197,7 +197,10 @@ def changeManager(request, report_id):
     transfer_form = TransferForm(request.POST)
 
     if transfer_form.is_valid():
-        transfer_form.save(report, request.user)
+        try:
+            transfer_form.save(report, request.user)
+        except:
+            messages.add_message(request, messages.ERROR, _("organisation entity TRANSFER : Generic error"))
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
@@ -221,11 +224,8 @@ def changeContractor(request, report_id):
 
     try:
         report.save()
-    # except MaxRetryError as e:
-    #     messages.add_message(request, messages.ERROR, _("contractor assign : Max retry error"))
-    except Exception as e:
-        logger.exception("organisation entity assign :" + e.message)
-        messages.add_message(request, messages.ERROR, _("organisation entity assign : Generic error"))
+    except:
+        messages.add_message(request, messages.ERROR, _("organisation entity ASSIGN : Generic error"))
 
 
     if "pro" in request.path:

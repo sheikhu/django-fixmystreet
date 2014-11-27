@@ -12,6 +12,9 @@ from ..fixmystreet.models import OrganisationEntity
 from ..fixmystreet.utils import sign_message
 from .models import WebhookConfig
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class AbstractBaseOutWebhook(object):
     """
@@ -38,14 +41,9 @@ class AbstractBaseOutWebhook(object):
             try:
                 response = self._send_request(endpoint, payload)
                 if response.status_code != requests.codes.ok:
-                    message = u"Invalid status code ({}).".format(response.status_code)
-                    response_data = response.json()
-                    if response_data.get("detail"):
-                        message = u"{} Message: {}".format(message, response_data["detail"])
-                    self._handle_error(message, response, endpoint)
+                    self._handle_error(response, endpoint)
             except ValueError, e:
-                message = "Exception: {}".format(e)
-                self._handle_error(message, response, endpoint)
+                self._handle_error(response, endpoint, e=e)
 
     def get_endpoints(self):
         """Retrieves the configuration for each endpoints registered for the current ``resource.hook.action``."""
@@ -78,9 +76,19 @@ class AbstractBaseOutWebhook(object):
             "data": {},
         }
 
-    def _handle_error(self, message, response, endpoint):
+    def _handle_error(self, response, endpoint, e=None):
         """Handles errors during requests to endpoints."""
-        pass  # @TODO: What to do? Just logging? Send a mail? Endpoint admin email in config? Try again later?
+    #    pass  # @TODO: What to do? Just logging? Send a mail? Endpoint admin email in config? Try again later?
+        message = ""
+        if e:
+            message = u"Exception: {}".format(e.message)
+            logger.exception(message)
+        else:
+            message = u"FMS-Proxy : Invalid status code ({}) on {}.".format(response.status_code, endpoint["url"])
+            response_data = response.json()
+            if response_data.get("detail"):
+                message += u"{} Message: {}".format(message, response_data["detail"])
+            logger.error(message)
 
     def _send_request(self, endpoint, payload, headers=None):
         """

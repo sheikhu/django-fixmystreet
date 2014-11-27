@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-26 09:29+0100\n"
-"PO-Revision-Date: 2014-11-26 08:29+0000\n"
+"POT-Creation-Date: 2014-11-26 16:38+0100\n"
+"PO-Revision-Date: 2014-11-26 15:38+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -1523,8 +1523,12 @@ msgid ""
 "to the citizens."
 msgstr ""
 
+#: backoffice/views/reports/updates.py:203
+msgid "organisation entity TRANSFER : Generic error"
+msgstr ""
+
 #: backoffice/views/reports/updates.py:228
-msgid "organisation entity assign : Generic error"
+msgid "organisation entity ASSIGN : Generic error"
 msgstr ""
 
 #: fixmystreet/admin.py:185

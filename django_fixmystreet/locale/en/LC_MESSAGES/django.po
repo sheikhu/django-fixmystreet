@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-26 09:29+0100\n"
+"POT-Creation-Date: 2014-11-26 16:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1519,8 +1519,12 @@ msgid ""
 "to the citizens."
 msgstr ""
 
+#: backoffice/views/reports/updates.py:203
+msgid "organisation entity TRANSFER : Generic error"
+msgstr ""
+
 #: backoffice/views/reports/updates.py:228
-msgid "organisation entity assign : Generic error"
+msgid "organisation entity ASSIGN : Generic error"
 msgstr ""
 
 #: fixmystreet/admin.py:185

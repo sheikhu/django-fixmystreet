@@ -72,7 +72,7 @@ class TransferForm(forms.Form):
             report.responsible_entity = OrganisationEntity.objects.get(id=orgId)
             report.responsible_department = None
         else:
-            raise Exception('missing department or entity paramettre')
+            raise Exception('missing department or entity parameter')
 
         # Contractor reset when transfering from one entity to another.
         report.contractor = None
