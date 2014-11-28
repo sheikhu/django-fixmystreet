@@ -44,7 +44,7 @@ class AbstractBaseOutWebhook(object):
                 message = u"Exception: Connection to endpoint {} failed. {}".format(endpoint["url"], e.message)
                 e.args += (message,) # message needs to be a tuple to be added to args
                 raise
-                #@FIXME: Raising the error breaks the
+                #@FIXME: Raising the error breaks the loop so if there is more than one endpoint and the first one raise an error, the others will not be managed.
 
             if response.status_code != requests.codes.ok:
                 message = u"Invalid status code ({}) on {}.".format(response.status_code, endpoint["url"])
