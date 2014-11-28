@@ -1176,6 +1176,7 @@ class Report(UserTrackedModel):
             "s_c": self.secondary_category.secondary_category_class.id
         }
 
+    #deprecated! Need to remove app fmsproxy before removing function
     #returns the fms proxy entity such as Belgacom, Osiris, etc if there is one (None otherwise)
     def get_organisation_entity_with_fms_proxy(self):
         if self.contractor and self.contractor.fmsproxy:
@@ -1187,6 +1188,7 @@ class Report(UserTrackedModel):
         else:
             return None
 
+    #deprecated! Need to remove app fmsproxy before removing function
     #returns if the report is at the moment associated to a fms proxy entity (Belgacom, osiris, etc)
     def waiting_for_organisation_entity(self):
         if self.is_in_progress() and self.get_organisation_entity_with_fms_proxy():
