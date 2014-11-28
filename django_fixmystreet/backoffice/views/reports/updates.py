@@ -199,8 +199,9 @@ def changeManager(request, report_id):
     if transfer_form.is_valid():
         try:
             transfer_form.save(report, request.user)
-        except:
+        except Exception, e:
             messages.add_message(request, messages.ERROR, _("organisation entity TRANSFER : Generic error"))
+            logger.exception(e)
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 

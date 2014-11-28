@@ -26,6 +26,12 @@ class PublicApiView(APIView):
             context["detail"] = u"Access or action forbidden."
         return Response(context, status=status.HTTP_403_FORBIDDEN)
 
+    def _get_response_500(self, context=None):
+        context = context or {}
+        if "detail" not in context:
+            context["detail"] = u"Internal server error."
+        return Response(context, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class PrivateApiView(PublicApiView):
 
