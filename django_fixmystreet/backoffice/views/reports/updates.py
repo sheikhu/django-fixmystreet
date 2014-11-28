@@ -224,8 +224,9 @@ def changeContractor(request, report_id):
 
     try:
         report.save()
-    except:
+    except Exception, e:
         messages.add_message(request, messages.ERROR, _("organisation entity ASSIGN : Generic error"))
+        logger.exception(e)
 
 
     if "pro" in request.path:

@@ -40,10 +40,21 @@ class AbstractBaseOutWebhook(object):
         for endpoint in endpoints:
             try:
                 response = self._send_request(endpoint, payload)
-                if response.status_code != requests.codes.ok:
-                    self._handle_error(response, endpoint)
-            except ValueError, e:
-                self._handle_error(response, endpoint, e=e)
+            except Exception, e:
+                message = u"Exception: Connection to endpoint {} failed. {}".format(endpoint["url"], e.message)
+                e.args += (message,) # message needs to be a tuple to be added to args
+                raise
+
+            if response.status_code != requests.codes.ok:
+                message = u"Invalid status code ({}) on {}.".format(response.status_code, endpoint["url"])
+                try:
+                    response_data = response.json()
+                    if response_data.get("detail"):
+                        message += u"{} Message: {}".format(message, response_data["detail"])
+                except ValueError, e:
+                    pass
+                raise Exception(message)
+
 
     def get_endpoints(self):
         """Retrieves the configuration for each endpoints registered for the current ``resource.hook.action``."""
@@ -75,20 +86,6 @@ class AbstractBaseOutWebhook(object):
             },
             "data": {},
         }
-
-    def _handle_error(self, response, endpoint, e=None):
-        """Handles errors during requests to endpoints."""
-    #    pass  # @TODO: What to do? Just logging? Send a mail? Endpoint admin email in config? Try again later?
-        message = ""
-        if e:
-            message = u"Exception: {}".format(e.message)
-            logger.exception(message)
-        else:
-            message = u"FMS-Proxy : Invalid status code ({}) on {}.".format(response.status_code, endpoint["url"])
-            response_data = response.json()
-            if response_data.get("detail"):
-                message += u"{} Message: {}".format(message, response_data["detail"])
-            logger.error(message)
 
     def _send_request(self, endpoint, payload, headers=None):
         """
