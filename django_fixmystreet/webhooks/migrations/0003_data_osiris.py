@@ -37,7 +37,8 @@ class Migration(SchemaMigration):
                 last_name='Osiris',
                 email=organisation_entity.email,
                 applicant=True,
-                organisation=organisation_entity
+                organisation=organisation_entity,
+                is_active=True
             )
 
             # Get django objects

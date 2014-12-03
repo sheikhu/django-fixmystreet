@@ -30,7 +30,8 @@ class Migration(SchemaMigration):
             user = orm['fixmystreet.FMSUser'].objects.create(
                 username='belgacom_icare',
                 last_name='Belgacom iCare',
-                email=organisation_entity.email
+                email=organisation_entity.email,
+                is_active=True
             )
 
             # Get django objects
