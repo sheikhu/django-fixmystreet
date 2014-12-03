@@ -12,6 +12,9 @@ from ..fixmystreet.models import OrganisationEntity
 from ..fixmystreet.utils import sign_message
 from .models import WebhookConfig
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class AbstractBaseOutWebhook(object):
     """
@@ -37,15 +40,22 @@ class AbstractBaseOutWebhook(object):
         for endpoint in endpoints:
             try:
                 response = self._send_request(endpoint, payload)
-                if response.status_code != requests.codes.ok:
-                    message = u"Invalid status code ({}).".format(response.status_code)
+            except Exception, e:
+                message = u"Exception: Connection to endpoint {} failed. {}".format(endpoint["url"], e.message)
+                e.args += (message,) # message needs to be a tuple to be added to args
+                raise
+                #@FIXME: Raising the error breaks the loop so if there is more than one endpoint and the first one raise an error, the others will not be managed.
+
+            if response.status_code != requests.codes.ok:
+                message = u"Invalid status code ({}) on {}.".format(response.status_code, endpoint["url"])
+                try:
                     response_data = response.json()
                     if response_data.get("detail"):
-                        message = u"{} Message: {}".format(message, response_data["detail"])
-                    self._handle_error(message, response, endpoint)
-            except ValueError, e:
-                message = "Exception: {}".format(e)
-                self._handle_error(message, response, endpoint)
+                        message += u"{} Message: {}".format(message, response_data["detail"])
+                except ValueError, e:
+                    pass
+                raise Exception(message)
+
 
     def get_endpoints(self):
         """Retrieves the configuration for each endpoints registered for the current ``resource.hook.action``."""
@@ -77,10 +87,6 @@ class AbstractBaseOutWebhook(object):
             },
             "data": {},
         }
-
-    def _handle_error(self, message, response, endpoint):
-        """Handles errors during requests to endpoints."""
-        pass  # @TODO: What to do? Just logging? Send a mail? Endpoint admin email in config? Try again later?
 
     def _send_request(self, endpoint, payload, headers=None):
         """

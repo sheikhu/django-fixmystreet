@@ -4,43 +4,52 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+from rest_framework.authtoken.models import Token
+
+from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity
+
 
 class Migration(SchemaMigration):
 
-    depends_on = (
-        ("fixmystreet", "0059_fmsproxy"),
-    )
-
     def forwards(self, orm):
-        # Adding model 'WebhookConfig'
-        db.create_table(u'webhooks_webhookconfig', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('resource', self.gf('django.db.models.fields.SlugField')(max_length=30)),
-            ('hook', self.gf('django.db.models.fields.SlugField')(max_length=30)),
-            ('action', self.gf('django.db.models.fields.SlugField')(max_length=30)),
-            ('third_party', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['fixmystreet.OrganisationEntity'], blank=True)),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('data', self.gf('django.db.models.fields.TextField')(default='{}', blank=True)),
-        ))
-        db.send_create_signal(u'webhooks', ['WebhookConfig'])
+        if not db.dry_run:
+            organisation_entity = orm['fixmystreet.OrganisationEntity'].objects.create(
+                name_fr='Osiris',
+                name_nl='Osiris',
+                slug_fr='osiris',
+                slug_nl='osiris',
+                email='',  # @TODO: Which email to use?
+                type=OrganisationEntity.APPLICANT,
+                active=True
+            )
+            department = orm['fixmystreet.OrganisationEntity'].objects.create(
+                name_fr='Osiris Department',
+                name_nl='Osiris Department',
+                slug_fr='osiris-department',
+                slug_nl='osiris-department',
+                email=organisation_entity.email,
+                type=OrganisationEntity.DEPARTMENT,
+                dependency=organisation_entity,
+                active=True
+            )
+            user = orm['fixmystreet.FMSUser'].objects.create(
+                username=organisation_entity.slug_fr,
+                last_name='Osiris',
+                email=organisation_entity.email,
+                applicant=True,
+                organisation=organisation_entity
+            )
 
-        # Adding unique constraint on 'WebhookConfig', fields ['resource', 'hook', 'action', 'third_party']
-        db.create_unique(u'webhooks_webhookconfig', ['resource', 'hook', 'action', 'third_party_id'])
+            # Get django objects
+            user = FMSUser.objects.get(id=user.id)
+            department = OrganisationEntity.objects.get(id=department.id)
 
-        # Adding index on 'WebhookConfig', fields ['resource', 'hook', 'action']
-        db.create_index(u'webhooks_webhookconfig', ['resource', 'hook', 'action'])
+            user.memberships.create(organisation=department)
+            token = Token.objects.create(user=user)
 
 
     def backwards(self, orm):
-        # Removing index on 'WebhookConfig', fields ['resource', 'hook', 'action']
-        db.delete_index(u'webhooks_webhookconfig', ['resource', 'hook', 'action'])
-
-        # Removing unique constraint on 'WebhookConfig', fields ['resource', 'hook', 'action', 'third_party']
-        db.delete_unique(u'webhooks_webhookconfig', ['resource', 'hook', 'action', 'third_party_id'])
-
-        # Deleting model 'WebhookConfig'
-        db.delete_table(u'webhooks_webhookconfig')
-
+        pass
 
     models = {
         u'auth.group': {

@@ -101,10 +101,6 @@ LANGUAGES = (
     ('nl', gettext('Dutch')),
 )
 
-TEMPLATE_DIRS = (
-    "/home/jsanchezpando/Projects/django-fixmystreet/env/lib/python2.7/site-packages/django_simple_history-1.3.0-py2.7.egg/simple_history/templates/",
-)
-
 # include request object in template to determine active page
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
@@ -148,6 +144,10 @@ INSTALLED_APPS = (
     'simple_history',
     'django_extensions',
     'ckeditor',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
     'django_fixmystreet.fmsproxy',
@@ -156,8 +156,6 @@ INSTALLED_APPS = (
     'django_fixmystreet.webhooks',
     'mobileserverstatus',
     'piston',
-    'rest_framework',
-    'rest_framework.authtoken',
 )
 
 TEMPLATE_LOADERS = (
@@ -223,7 +221,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['console', 'mail_admins'],
             'level': 'INFO',
             'propagate': True,
         },
@@ -233,7 +231,7 @@ LOGGING = {
             'propagate': False,
         },
         'django_fixmystreet': {
-            'handlers': ['console'],
+            'handlers': ['console', 'mail_admins'],
             'level': 'INFO',
         }
     }
@@ -242,7 +240,6 @@ LOGGING = {
 if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
     SITE_ID = 3
     ALLOWED_HOSTS = ("*", )
-    EMAIL_HOST = "localhost"
 
 elif ENVIRONMENT == "staging":
     SITE_ID = 2

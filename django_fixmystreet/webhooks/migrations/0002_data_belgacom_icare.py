@@ -4,6 +4,10 @@ from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+from rest_framework.authtoken.models import Token
+
+from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity
+
 
 class Migration(SchemaMigration):
 
@@ -12,35 +16,33 @@ class Migration(SchemaMigration):
     )
 
     def forwards(self, orm):
-        # Adding model 'WebhookConfig'
-        db.create_table(u'webhooks_webhookconfig', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('resource', self.gf('django.db.models.fields.SlugField')(max_length=30)),
-            ('hook', self.gf('django.db.models.fields.SlugField')(max_length=30)),
-            ('action', self.gf('django.db.models.fields.SlugField')(max_length=30)),
-            ('third_party', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['fixmystreet.OrganisationEntity'], blank=True)),
-            ('url', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('data', self.gf('django.db.models.fields.TextField')(default='{}', blank=True)),
-        ))
-        db.send_create_signal(u'webhooks', ['WebhookConfig'])
+        if not db.dry_run:
+            organisation_entity, status = orm['fixmystreet.OrganisationEntity'].objects.get_or_create(
+                name_fr='Belgacom',
+                name_nl='Belgacom',
+                slug_fr='belgacom',
+                slug_nl='belgacom',
+                email='helpdesk.chantiers.bxl@belgacom.be',
+                type=OrganisationEntity.APPLICANT,
+                active=True
+            )
 
-        # Adding unique constraint on 'WebhookConfig', fields ['resource', 'hook', 'action', 'third_party']
-        db.create_unique(u'webhooks_webhookconfig', ['resource', 'hook', 'action', 'third_party_id'])
+            user = orm['fixmystreet.FMSUser'].objects.create(
+                username='belgacom_icare',
+                last_name='Belgacom iCare',
+                email=organisation_entity.email
+            )
 
-        # Adding index on 'WebhookConfig', fields ['resource', 'hook', 'action']
-        db.create_index(u'webhooks_webhookconfig', ['resource', 'hook', 'action'])
+            # Get django objects
+            user = FMSUser.objects.get(id=user.id)
+            organisation_entity = OrganisationEntity.objects.get(id=organisation_entity.id)
+
+            user.memberships.create(organisation=organisation_entity)
+            token = Token.objects.create(user=user)
 
 
     def backwards(self, orm):
-        # Removing index on 'WebhookConfig', fields ['resource', 'hook', 'action']
-        db.delete_index(u'webhooks_webhookconfig', ['resource', 'hook', 'action'])
-
-        # Removing unique constraint on 'WebhookConfig', fields ['resource', 'hook', 'action', 'third_party']
-        db.delete_unique(u'webhooks_webhookconfig', ['resource', 'hook', 'action', 'third_party_id'])
-
-        # Deleting model 'WebhookConfig'
-        db.delete_table(u'webhooks_webhookconfig')
-
+        pass
 
     models = {
         u'auth.group': {
