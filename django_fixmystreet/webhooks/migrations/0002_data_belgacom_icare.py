@@ -6,17 +6,24 @@ from django.db import models
 
 from rest_framework.authtoken.models import Token
 
+from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity
+
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
         if not db.dry_run:
-            organisation_entity = orm.OrganisationEntity.objects.get(slug_fr='belgacom')
-            user = orm.FMSUser.objects.create(
+            organisation_entity = orm['fixmystreet.OrganisationEntity'].objects.get(slug_fr='belgacom')
+            user = orm['fixmystreet.FMSUser'].objects.create(
                 username='belgacom_icare',
                 last_name='Belgacom iCare',
                 email=organisation_entity.email
             )
+
+            # Get django objects
+            user = FMSUser.objects.get(id=user.id)
+            organisation_entity = OrganisationEntity.objects.get(id=organisation_entity.id)
+
             user.memberships.create(organisation=organisation_entity)
             token = Token.objects.create(user=user)
 

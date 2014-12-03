@@ -6,12 +6,14 @@ from django.db import models
 
 from rest_framework.authtoken.models import Token
 
+from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity
+
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
         if not db.dry_run:
-            organisation_entity = orm.OrganisationEntity.objects.create(
+            organisation_entity = orm['fixmystreet.OrganisationEntity'].objects.create(
                 name_fr='Osiris',
                 name_nl='Osiris',
                 slug_fr='osiris',
@@ -20,7 +22,7 @@ class Migration(SchemaMigration):
                 type=OrganisationEntity.APPLICANT,
                 active=True
             )
-            department = orm.OrganisationEntity.objects.create(
+            department = orm['fixmystreet.OrganisationEntity'].objects.create(
                 name_fr='Osiris Department',
                 name_nl='Osiris Department',
                 slug_fr='osiris-department',
@@ -30,13 +32,18 @@ class Migration(SchemaMigration):
                 dependency=organisation_entity,
                 active=True
             )
-            user = orm.FMSUser.objects.create(
+            user = orm['fixmystreet.FMSUser'].objects.create(
                 username=organisation_entity.slug_fr,
                 last_name='Osiris',
                 email=organisation_entity.email,
                 applicant=True,
                 organisation=organisation_entity
             )
+
+            # Get django objects
+            user = FMSUser.objects.get(id=user.id)
+            department = OrganisationEntity.objects.get(id=department.id)
+
             user.memberships.create(organisation=department)
             token = Token.objects.create(user=user)
 
