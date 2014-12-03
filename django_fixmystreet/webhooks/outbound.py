@@ -42,7 +42,7 @@ class AbstractBaseOutWebhook(object):
                 response = self._send_request(endpoint, payload)
             except Exception, e:
                 message = u"Exception: Connection to endpoint {} failed. {}".format(endpoint["url"], e.message)
-                e.args += (message,) # message needs to be a tuple to be added to args
+                e.args += (message,)  # message needs to be a tuple to be added to args
                 raise
                 #@FIXME: Raising the error breaks the loop so if there is more than one endpoint and the first one raise an error, the others will not be managed.
 

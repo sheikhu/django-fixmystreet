@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-25 09:49+0100\n"
-"PO-Revision-Date: 2014-11-25 08:49+0000\n"
-"Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2014-12-03 11:40+0100\n"
+"PO-Revision-Date: 2014-12-01 15:56+0000\n"
+"Last-Translator: lafif <lafif@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,19 +81,19 @@ msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:82
 msgid "Orthographic"
-msgstr ""
+msgstr "Luchtfoto"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:98
 msgid "Regional roads"
-msgstr ""
+msgstr "Gewestelijke wegen"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:118
 msgid "Municipal boundaries"
-msgstr ""
+msgstr "Gemeentelijke grenzen"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:217
 msgid "Report #{{ data.id }}"
-msgstr ""
+msgstr "Incident #{{ data.id }}"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:241
 msgid "This incident is located on a regional zone"
@@ -135,11 +135,11 @@ msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:271
 msgid "Details"
-msgstr ""
+msgstr "Beschrijving"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:280
 msgid "Place me at the exact position of the incident"
-msgstr ""
+msgstr "Plaats mij op de exacte plaats van het probleem"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:288
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:307
@@ -160,11 +160,11 @@ msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:323
 msgid "No results"
-msgstr ""
+msgstr "Geen resultaten"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:325
 msgid "{{ data.results.length }} results"
-msgstr ""
+msgstr "{{ data.results.length }} resultaten"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:330
 msgid "No corresponding address has been found."
@@ -180,7 +180,7 @@ msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:386
 msgid "Expand"
-msgstr ""
+msgstr "Vergroten"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:387
 msgid "Reduce"
@@ -189,17 +189,17 @@ msgstr ""
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:424
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:426
 msgid "Created"
-msgstr ""
+msgstr "Gemeld"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:429
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:431
 msgid "In progress"
-msgstr ""
+msgstr "In behandeling"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:434
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:436
 msgid "Closed"
-msgstr ""
+msgstr "Afgesloten"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:439
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:441
@@ -208,7 +208,7 @@ msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:714
 msgid "Incident filter"
-msgstr ""
+msgstr "Filteren"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:1932
 msgid "Brussels"

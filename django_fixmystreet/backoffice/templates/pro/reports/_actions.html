@@ -163,7 +163,7 @@ function validateCategories() {
 }
 
 function close(){
-    var r=confirm("Are you sure you want to close this report?");
+    var r=confirm("{% trans 'Are you sure you want to close this report?' %}");
     if (r==true){
         window.location = "{% url 'report_close_pro' report.id %}";
     }
