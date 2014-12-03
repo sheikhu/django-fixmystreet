@@ -433,7 +433,7 @@ HOME
 
 
 .modal-header h3 {
-	font-size:20pt;
+	font-size:18pt;
 	color: white;
 	font-family: 'Dosis', sans-serif;
 
@@ -1366,7 +1366,7 @@ color:#495E77;
 
 
 .nav-tabs1-icon {
-	margin-bottom:0;
+	margin-bottom:0;list_in_progress
 	border-bottom:0;
 }
 
@@ -1388,7 +1388,7 @@ color:#495E77;
 }
 
 .nav-tabs>li{
-	width:240px;
+	width:241px;
 
 }
 .nav-tabs > .active > a,
@@ -1444,7 +1444,7 @@ color:#495E77;
 	color:#2c3e50;
 	font-family: 'Dosis', sans-serif;
 	margin: 0;
-	padding: 15px 10px;
+	padding: 15px 15px;
 }
 @media (max-width: 1200px) {
 	.last_reports {
@@ -2150,6 +2150,10 @@ padding: 0 15px 15px 15px;
 
 }
 
+#newertoMergeNumber, #newertoMergeCategory, #newertoMergeAddress {
+
+	color:white;
+}
 
 .incidentDetailsStatus2 {
 
@@ -2163,7 +2167,7 @@ padding: 0 15px 15px 15px;
 	color:#2c3e50;
 	padding-top:15px;
 	margin-top:20px;
-	width:40%;
+	width:38%;
 	margin-bottom:15px;
 }
 
@@ -2386,7 +2390,7 @@ clear:left;
 	clear:left;
 }
 .timeline .right:before{
-	border-color:transparent #3498db transparent transparent;
+	border-color:transparent #2980b9 transparent transparent;
 	right:100%;
 	top:10px;
 }
@@ -2864,8 +2868,10 @@ input[type=checkbox].invalid, input[type=radio].invalid{
 	color:#7e7e7e;
 }
 
+.modal-body{
+	max-height:450px;
 
-
+}
 
 .lead-container .dropdown-menu>li>a:hover,
 .lead-container .dropdown-menu>li>a:focus,
