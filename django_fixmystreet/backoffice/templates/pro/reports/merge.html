@@ -248,7 +248,7 @@
                             <div class="one_incident">
                                 <div class="row">
                                     <!-- Address and categories -->
-                                    <div class="span4 loc_desc">
+                                    <div class="span3 loc_desc" style="margin-left:45px;">
                                         <!-- Distance -->
                                         <p class="distance">{% trans "to" context "distance" %} {{ report.distance.m|floatformat:"0" }} m</p>
                                         <img src="{% static report.get_marker %}" class="report-counter"/>
@@ -262,7 +262,7 @@
                                         </span><br />
 
                                     </div>
-                                    <!-- Photos -->
+                                    <!-- Map -->
                                     <div class="span1 picture">
                                         {% if report.thumbnail_pro %}
                                             <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
@@ -270,6 +270,15 @@
                                             <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />
                                         {% endif %}
                                     </div>
+                                    <!-- Pictures -->
+
+                                    <div class="span1 picture">
+                                        {% if report.thumbnail_pro %}
+                                            <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
+                                        {% else %}
+                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />
+                                        {% endif %}
+                                    </div>                                    
                                     <!-- Comments -->
                                     <div class="span4 incidentDetailsStatus2">
                                         {% for attachment in report.attachments.all %}
@@ -320,8 +329,7 @@
         </div>
         <div id="mergeModalBody" class="modal-body">
             <div class="text-center well" id="olderToMerge" style="color:white;">
-                <p style="color:white;">
-                    {% trans 'Report' %} :
+                <p style="color:#2c3e50;">
                     <strong>
                         <img id="oldertoMergeMarker" src="" class="report-counter"/>
                         N°<span id="oldertoMergeNumber"></span>
@@ -335,11 +343,11 @@
             <div align="center">
                    <h3> {% trans "Will be merged with the report" %} :</h3>
             </div>
-            <div class="text-center well" id="newerToMerge">
+            <div class="text-center well" id="newerToMerge" style="color:white;">
                 <p>
                     <strong>
                         <img id="newertoMergeMarker" src="" class="report-counter"/>
-                        N°<span id="newertoMergeNumber"></span>
+                        <span style="color:white;">N°</span><span id="newertoMergeNumber"></span>
                         <br/>
                         <span id="newertoMergeCategory"></span>
                         <br/>

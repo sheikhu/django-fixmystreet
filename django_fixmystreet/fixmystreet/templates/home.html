@@ -55,8 +55,8 @@
                     <h2 class="brand">{% trans 'Last 30 days' %}</h2>
                 </li>
                 <li>
-                    <a href="#list_created" data-toggle="tab">
-                            <img src="{% static 'images/attention1.png' %}" style="float:left;"/>
+                    <a href="#list_created" data-toggle="tab" style="margin-left:-2px;">
+                            <img src="{% static 'images/attention1.png' %}" style="float:left; margin-left:-5px;"/>
                         <span class="num_reports list_created_color">
                             {{ report_counts.recent_new }}
                         </span>
@@ -64,8 +64,8 @@
                     </a>
                 </li>
                 <li class="active">
-                    <a href="#list_in_progress" data-toggle="tab">
-                        <img src="{% static 'images/worker5.png' %}" style="float:left;"/>
+                    <a href="#list_in_progress" data-toggle="tab" style="margin-left:-2px;">
+                        <img src="{% static 'images/worker5.png' %}" style="float:left; margin-left:-5px;"/>
                         <span class="num_reports list_in_progress_color">
                             {{ report_counts.recent_updated }}
                         </span>
@@ -73,8 +73,8 @@
                     </a>
                 </li>
                 <li >
-                    <a href="#list_closed" data-toggle="tab">
-                        <img src="{% static 'images/approved.png' %}" style="float:left;"/>
+                    <a href="#list_closed" data-toggle="tab" style="margin-left:-2px;">
+                        <img src="{% static 'images/approved.png' %}" style="float:left; margin-left:-5px;"/>
                         <span class="num_reports list_closed_color">
                             {{ report_counts.recent_fixed }}
                         </span>

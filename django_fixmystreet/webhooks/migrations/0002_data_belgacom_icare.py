@@ -11,9 +11,22 @@ from django_fixmystreet.fixmystreet.models import FMSUser, OrganisationEntity
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("fixmystreet", "0059_fmsproxy"),
+    )
+
     def forwards(self, orm):
         if not db.dry_run:
-            organisation_entity = orm['fixmystreet.OrganisationEntity'].objects.get(slug_fr='belgacom')
+            organisation_entity, status = orm['fixmystreet.OrganisationEntity'].objects.get_or_create(
+                name_fr='Belgacom',
+                name_nl='Belgacom',
+                slug_fr='belgacom',
+                slug_nl='belgacom',
+                email='helpdesk.chantiers.bxl@belgacom.be',
+                type=OrganisationEntity.APPLICANT,
+                active=True
+            )
+
             user = orm['fixmystreet.FMSUser'].objects.create(
                 username='belgacom_icare',
                 last_name='Belgacom iCare',

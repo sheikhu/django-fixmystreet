@@ -8,7 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     depends_on = (
-        ("fixmystreet", "0001_initial"),
+        ("fixmystreet", "0059_fmsproxy"),
     )
 
     def forwards(self, orm):

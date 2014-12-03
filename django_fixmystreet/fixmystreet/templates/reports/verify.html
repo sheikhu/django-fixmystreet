@@ -176,7 +176,7 @@
                             {% else %}
                                 {% url "report_new" as report_url %}
                             {% endif %} 
-                        <div style="margin-right:20px;">
+                        <div style="margin-right:20px; margin-top:-15px;">
                             <a class="btn_continue pull-right" href='{{ report_url }}?x={{ request.GET.x }}&y={{ request.GET.y }}'>{% trans "Continuez à encoder" %}</a>
                             <span class="txt_continue pull-right">{% trans 'Aucun de ces incidents ne correspond à votre incident ?' %}</span>
                         </div>

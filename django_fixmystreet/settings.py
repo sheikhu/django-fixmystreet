@@ -144,6 +144,10 @@ INSTALLED_APPS = (
     'simple_history',
     'django_extensions',
     'ckeditor',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+
     'django_fixmystreet.fixmystreet',
     'django_fixmystreet.backoffice',
     'django_fixmystreet.fmsproxy',
@@ -152,8 +156,6 @@ INSTALLED_APPS = (
     'django_fixmystreet.webhooks',
     'mobileserverstatus',
     'piston',
-    'rest_framework',
-    'rest_framework.authtoken',
 )
 
 TEMPLATE_LOADERS = (

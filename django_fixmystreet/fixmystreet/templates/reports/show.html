@@ -161,7 +161,7 @@ $(function(event) {
                                 <br />
                               <span class="ticket_address">
                             {{ report.address }}, {{ report.address_number }}<br />
-                            <span class="marginadress">{{ report.postalcode }} {{ report.get_address_commune_name }}</span>
+                            <span>{{ report.postalcode }} {{ report.get_address_commune_name }}</span>
                             {% if report.false_address %}
                                 <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{{ report.false_address }}'>
                                     <img src="{% static 'images/icon-false-address.png' %}" />
