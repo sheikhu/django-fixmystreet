@@ -109,7 +109,7 @@
                             </li>
                         </ul>
                     </li>
-                    {% endif %}   
+                    {% endif %}
 
                     {% get_available_languages as LANGUAGES %}
                     {% for l in LANGUAGES %}
@@ -128,7 +128,7 @@
                     <a class="brand" href="{% url 'home_pro' %}">
                         {% endif %}
                         <img id="banner" src="{% static 'images/'|add:LANGUAGE_CODE|add:'/logo_fixmystreet.png' %}" alt="{% trans 'Fix My Street' %}" class="banner">
-                        
+
                         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -145,12 +145,12 @@
                                     <a class="{% is_active_menu 'view' %}" href="{% url 'report_index' %}">
                                         {% trans "View Reports" %}
                                     </a>
-                                    
-                                    
+
+
                                 </li>
                                 <div class="promoStore">
-                                    <a href="#"><img src="{% static 'images/apple.png' %}" alt="SEO" /></a>
-                                    <a href="#"><img src="{% static 'images/playstore.png' %}" alt="SEO" /></a>
+                                    <a href="https://itunes.apple.com/be/app/fixmy-street-bruxelles/id624618373?ls=1&mt=8" target="_blank"><img src="{% static 'images/apple.png' %}" alt="Fix My Street Apple store" /></a>
+                                    <a href="https://play.google.com/store/apps/details?id=be.irisnet.fixmystreet" target="_blank"><img src="{% static 'images/playstore.png' %}" alt="Fix My Street Google play" /></a>
                                 </div>
                                 {% else %}
                                 <li class="nav-group">
@@ -163,7 +163,7 @@
                                 </li>
 
                                 {% endif %}
-                                
+
                             </ul>
                         </nav>
                         {% endblock %}
@@ -173,7 +173,7 @@
 
             {% block header-banner %}
             {% endblock %}
-            
+
             {% block map %}
             {% endblock %}
 
