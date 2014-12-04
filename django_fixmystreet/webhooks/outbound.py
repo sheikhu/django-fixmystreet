@@ -69,7 +69,10 @@ class AbstractBaseOutWebhook(object):
             filters["third_party"] = self.third_party
 
         # Always return a list.
-        return WebhookConfig.objects.filter(**filters).values("url", "data")
+        # /!\ As ``data`` is a JSONField, we cannot use ``values()`` because it doesn't unserialize string to Python.
+        items = WebhookConfig.objects.filter(**filters)
+        endpoints = [{"url": i.url, "data": i.data} for i in items]
+        return endpoints
 
     def get_payload(self):
         """
