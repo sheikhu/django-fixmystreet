@@ -456,7 +456,7 @@ $(function(){
                 $searchButton.prop('disabled',false);
                 if(response.status == "noresult" || response.status == "success")
                 {
-                    $proposalMessage.html('<span class="error-msg">' + gettext('No corresponding address has been found') + '.</span>').slideDown();
+                    $proposalMessage.html('<span class="error-msg">' + gettext('No corresponding address has been found.') + '.</span>').slideDown();
                 }
                 else
                 {

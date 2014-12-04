@@ -327,7 +327,7 @@ L.FixMyStreet.TEMPLATES.searchPanel =
   '</div>' +
   '<div class="fmsmap-panel-body clearfix">' +
     '{% if (data.results.length === 0) { %}' +
-      '<p>' + gettext('No corresponding address has been found.') + '</p>' +
+      '<p style="margin-top:23px">' + gettext('No corresponding address has been found.') + '</p>' +
       '<p>' + gettext('Please refine your search criteria.') + '</p>' +
     '{% } else { %}' +
       '<ul>' +

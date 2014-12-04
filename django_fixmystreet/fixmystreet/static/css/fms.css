@@ -1366,7 +1366,7 @@ color:#495E77;
 
 
 .nav-tabs1-icon {
-	margin-bottom:0;list_in_progress
+	margin-bottom:0;
 	border-bottom:0;
 }
 
@@ -1377,7 +1377,7 @@ color:#495E77;
 .nav-tabs>li>a{
 	border:1px solid #5F7C9C;
 	border-bottom:0;
-	font-family:'Dosis', sans-serif;
+	font-family:'Dosis',  sans-serif;
 	font-size:14px;
 	text-transform:uppercase;
 	color:#8c9899;
@@ -2126,6 +2126,7 @@ padding: 0 15px 15px 15px;
 .modal-body textarea {
 	width:97%;
 }
+
 .modal #createNewReport{
 	float:left;
 }
@@ -2188,9 +2189,9 @@ padding: 0 15px 15px 15px;
 	color:#2c3e50;
 	width: 100%;
 	margin-top:20px;
-	 overflow: overlay; /* les dépassements seront masqués */
-	 white-space: normal;
-	 line-height: 15px;
+	overflow: overlay; /* les dépassements seront masqués */
+	white-space: normal;
+	line-height: 15px;
 
 }
 
@@ -2585,14 +2586,14 @@ NEW REPORT
 }
 
 label, .help-block {
-	font-family: "Dosis" sans-serif;
+	font-family: "Dosis", sans-serif;
 	font-size: 15px;
 	color:white;
 	line-height:15px;
 	margin-left:12px;
 }
 label strong{
-	font-family: "Dosis" sans-serif;
+	font-family: "Dosis", sans-serif;
 	font-size: 15px;
 	color:#2c3e50;
 }
@@ -2982,7 +2983,7 @@ clear:both;
 .dataTables_wrapper{
 	position: relative;
 	z-index: 1;
-	font-family: "Dosis" sans-serif;
+	font-family: "Dosis", sans-serif;
 	font-size: 16px;
 	color:#2c3e50;
 	text-align: left;
@@ -3439,7 +3440,7 @@ p.switch_verify.btn-group   {
 
 .icon2-list_in_progress  {
 	box-shadow: 0 0 0 4px #e67e22;
-	-webkit-box-shadow: 0 0 0 4x #e67e22;
+	-webkit-box-shadow: 0 0 0 4px #e67e22;
 	-moz-box-shadow: 0 0 0 4px #e67e22;
 }
 
@@ -3668,9 +3669,13 @@ form {
 }
 
 .control-group label {
-	font-family: "Dosis" sans-serif;
+	font-family: "Dosis", sans-serif;
 	font-size: 15px;
 	color:#2c3e50;
 	line-height:15px;
 	margin-left:12px;
+}
+
+#sel_refuse {
+	width:97%;
 }

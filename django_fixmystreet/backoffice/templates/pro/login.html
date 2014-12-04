@@ -13,7 +13,7 @@
 		{% include "_form_horizontal.html" with form=form %}
 
 		<div class="login-btns">
-			<input type="submit" value="login" class='btn btn-large btn-login'/>
+			<input type="submit" value="{% trans 'login' %}" class='btn btn-large btn-login'/>
 	    	<p>
 		        <a class="foroget-pwd" href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans 'Forgot password?' %}</a>
 	    	</p>

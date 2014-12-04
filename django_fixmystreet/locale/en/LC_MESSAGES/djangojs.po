@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-03 17:45+0100\n"
+"POT-Creation-Date: 2014-12-04 15:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,6 +36,42 @@ msgstr ""
 
 #: fixmystreet/static/js/new_report.js:235
 msgid "Error"
+msgstr ""
+
+#: fixmystreet/static/js/report_refused.js:18
+msgid ""
+"L'incident que vous avez signalé n’est pas assez clairement décrit. Nous "
+"vous demandons d’expliquer le problème de la manière la plus précise "
+"possible, de préférence avec une ou plusieurs photos du problème et de "
+"l’endroit où il se trouve."
+msgstr ""
+
+#: fixmystreet/static/js/report_refused.js:19
+msgid ""
+"L'incident que vous avez signalé ne rentre dans le domaine d’application  de "
+"Fix My Street."
+msgstr ""
+
+#: fixmystreet/static/js/report_refused.js:20
+msgid ""
+"L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un "
+"projet de réaménagement et sera restauré durant la mise en œuvre du projet."
+msgstr ""
+
+#: fixmystreet/static/js/report_refused.js:21
+msgid ""
+"L'incident que vous avez signalé est sous la responsabilité de Bruxelles "
+"Propreté."
+msgstr ""
+
+#: fixmystreet/static/js/report_refused.js:22
+msgid ""
+"L'incident que vous avez signalé est sur une propriété privée et n'est pas "
+"la responsabilité de Fix My Street."
+msgstr ""
+
+#: fixmystreet/static/js/report_refused.js:23
+msgid "Cet incident à déjà été signalé et est en attente de traiement."
 msgstr ""
 
 #: fixmystreet/static/js/reports_show_pro.js:39
@@ -69,7 +105,8 @@ msgid "Move the cursor"
 msgstr ""
 
 #: fixmystreet/static/js/search.js:459
-msgid "No corresponding address has been found"
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:330
+msgid "No corresponding address has been found."
 msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:52
@@ -162,10 +199,6 @@ msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:325
 msgid "{{ data.results.length }} results"
-msgstr ""
-
-#: fixmystreet/static/js/leaflet/leaflet-fms.js:330
-msgid "No corresponding address has been found."
 msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:331

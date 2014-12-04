@@ -552,15 +552,15 @@ $('.dropdown-toggle').click(function(e) {
         <div class="modal-body">
             <form action="{% url 'report_false_address' report.id %}" method="POST">
                 <p>
-                    <label for="false_address">{% trans "Wrong address:" %}</label>
+                    <label for="false_address">{% trans "Corrected adress:" %}</label>
                     <textarea id="false_address" name="false_address" class="input-block-level">{{ report.false_address }}</textarea>
                 </p>
                 <p>
                     {% if report.false_address %}
-                    <input class="btn" type="submit" name="cancel" value="{% trans 'Cancel wrong address' %}" onclick="$('#false_address').val('');">
+                    <input class="btn" type="submit" name="cancel" value="{% trans 'Cancel correction' %}" onclick="$('#false_address').val('');">
                     {% endif %}
 
-                    <input class="btn btn-primary pull-right" type="submit" name="submit" value="{% trans 'Signal wrong address' %}">
+                    <input class="btn btn-primary pull-right" type="submit" name="submit" value="{% trans 'Confirm correction' %}">
                 </p>
             </form>
         </div>
@@ -573,11 +573,14 @@ $('.dropdown-toggle').click(function(e) {
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <form id="dialog" title="{% trans "Please enter more information about rejecting the report" %}" action="{% url 'report_refuse_pro' report.id %}" method="post">
             <!-- sel_refuse is managed in report_refused.js. Currently commented. Waiting for real data (see issue FMS-275)-->
-            <select name="sel_refuse" class="span5">
+            <select name="sel_refuse" id="sel_refuse" class="span12">
                 <option value="opt_refuse_0" selected="selected">{% trans "Select a pre-formatted reason" %}</option>
-                <option value="opt_refuse_1">test 1</option>
-                <option value="opt_refuse_2">test 2</option>
-                <option value="opt_refuse_3">test 3</option>
+                <option value="opt_refuse_1">{% trans "Description unclear" context "report_refuse" %}</option>
+                <option value="opt_refuse_2">{% trans "Not for Fix My Street" context "report_refuse" %}</option>
+                <option value="opt_refuse_3">{% trans "Part of a project, work, reorganization" context "report_refuse" %}</option>
+                <option value="opt_refuse_4">{% trans "Net.Brussels" context "report_refuse" %}</option>
+                <option value="opt_refuse_5">{% trans "Private domain" context "report_refuse" %}</option>
+                <option value="opt_refuse_6">{% trans "Already in progress" context "report_refuse" %}</option>
             </select>
             {% include "_form_horizontal.html" with form=refuse_form %}
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
