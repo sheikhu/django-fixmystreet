@@ -107,6 +107,9 @@ class AbstractBaseOutWebhook(object):
             # If the endpoint config contains a signature key, sign the request with it.
             if endpoint["data"].get("signature_key"):
                 headers["X-FMS-Signature"] = sign_message(endpoint["data"]["signature_key"], serialized_payload)
+            # If the endpoint config contains an authentication token, add an authorization header to the request.
+            if endpoint["data"].get("auth_token"):
+                headers["Authorization"] = "Token {}".format(endpoint["data"]["auth_token"])
 
         return requests.post(endpoint["url"], data=serialized_payload, headers=headers)
 
