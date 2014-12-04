@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=C0321,W0223
+# pylint: disable=C0321,E1120,E1123,W0223
 """
 Inbound webhook handlers.
 """
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
-from django_fixmystreet.fixmystreet.models import Report, ReportAttachment, ReportComment, ReportEventLog
+from django_fixmystreet.fixmystreet.models import FMSUser, Report, ReportAttachment, ReportComment, ReportEventLog
 from django_fixmystreet.fixmystreet.utils import check_responsible_permission, check_contractor_permission
 
 
@@ -108,7 +108,10 @@ class AbstractReportInWebhook(AbstractBaseInWebhook):
     def _add_comment(self, context):
         context["action_msg"] = context["action_msg"].format(third_party=self._third_party.name)
         formatted_comment = render_to_string("webhooks/report_comment.txt", context)
-        comment = ReportComment(report=self._report, text=formatted_comment, type=ReportAttachment.DOCUMENTATION)  # pylint: disable=E1123
+        fms_user = FMSUser.objects.get(pk=self._user.id)
+        comment = ReportComment(
+            report=self._report, text=formatted_comment, type=ReportAttachment.DOCUMENTATION, created_by=fms_user
+        )
         comment.save()
 
     def _user_has_permission(self):
