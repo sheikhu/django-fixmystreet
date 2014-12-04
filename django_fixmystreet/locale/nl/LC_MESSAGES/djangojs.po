@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-04 15:35+0100\n"
-"PO-Revision-Date: 2014-12-04 14:34+0000\n"
+"POT-Creation-Date: 2014-12-04 17:11+0100\n"
+"PO-Revision-Date: 2014-12-04 16:11+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -73,8 +73,8 @@ msgid ""
 msgstr "Het probleem wat u heeft gemeld bevindt zich op privé domein en valt buiten de verantwoordelijkheid van Fix My Street."
 
 #: fixmystreet/static/js/report_refused.js:23
-msgid "Cet incident à déjà été signalé et est en attente de traiement."
-msgstr "Het probleem wat u heeft gemeld werd reeds doorgegeven en is in behandeling."
+msgid "Cet incident a déjà été signalé et est en attente de traitement."
+msgstr ""
 
 #: fixmystreet/static/js/reports_show_pro.js:39
 msgid ""

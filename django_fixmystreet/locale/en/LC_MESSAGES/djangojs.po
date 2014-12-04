@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-04 15:42+0100\n"
+"POT-Creation-Date: 2014-12-04 17:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,7 +71,7 @@ msgid ""
 msgstr ""
 
 #: fixmystreet/static/js/report_refused.js:23
-msgid "Cet incident à déjà été signalé et est en attente de traiement."
+msgid "Cet incident a déjà été signalé et est en attente de traitement."
 msgstr ""
 
 #: fixmystreet/static/js/reports_show_pro.js:39
