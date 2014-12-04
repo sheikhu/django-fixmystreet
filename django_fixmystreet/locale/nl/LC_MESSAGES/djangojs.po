@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-03 11:40+0100\n"
-"PO-Revision-Date: 2014-12-01 15:56+0000\n"
-"Last-Translator: lafif <lafif@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2014-12-03 15:57+0100\n"
+"PO-Revision-Date: 2014-12-03 14:48+0000\n"
+"Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,24 +21,24 @@ msgstr ""
 
 #: fixmystreet/static/js/attachmentForms.js:108
 msgid "Filesize must be greater than 0"
-msgstr ""
+msgstr "De grootte van het bestand moet groter dan nul zijn"
 
 #: fixmystreet/static/js/map-view.js:161 fixmystreet/static/js/search.js:169
 msgid "Non-participating municipality"
-msgstr ""
+msgstr "Gemeente die niet deelneemt aan Fix My Street."
 
 #: fixmystreet/static/js/map-view.js:162 fixmystreet/static/js/search.js:170
 msgid "Please contact the municipality"
-msgstr ""
+msgstr "Neem a.u.b. contact op met de gemeente"
 
 #: fixmystreet/static/js/new_report.js:164
 #: fixmystreet/static/js/new_report.js:237
 msgid "Unable to locate this address"
-msgstr ""
+msgstr "Onmogelijk om het adres te localiseren"
 
 #: fixmystreet/static/js/new_report.js:235
 msgid "Error"
-msgstr ""
+msgstr "Fout"
 
 #: fixmystreet/static/js/reports_show_pro.js:39
 msgid ""
@@ -49,17 +49,17 @@ msgstr ""
 #: fixmystreet/static/js/search-address-view.js:86
 #: fixmystreet/static/js/search.js:470
 msgid "Unexpected error"
-msgstr ""
+msgstr "Onverwachte fout"
 
 #: fixmystreet/static/js/search-address-view.js:141
 #: fixmystreet/static/js/search.js:59
 msgid "This street is not listed in this municipality."
-msgstr ""
+msgstr "Deze straat maakt geen deel uit van deze gemeente"
 
 #: fixmystreet/static/js/search-address-view.js:144
 #: fixmystreet/static/js/search.js:61
 msgid "This street exists in several municipalities, please be more specific."
-msgstr ""
+msgstr "Deze straat komt voor in meerdere gemeenten, specificeer a.u.b."
 
 #: fixmystreet/static/js/search.js:160 fixmystreet/static/js/search.js.c:230
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:291
@@ -72,12 +72,12 @@ msgstr "Ga naar de exacte plaats van het probleem"
 
 #: fixmystreet/static/js/search.js:459
 msgid "No corresponding address has been found"
-msgstr ""
+msgstr "Er werd geen overeenstemmend adres gevonden."
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:52
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:67
 msgid "Street"
-msgstr ""
+msgstr "Straat"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:82
 msgid "Orthographic"
@@ -93,45 +93,45 @@ msgstr "Gemeentelijke grenzen"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:217
 msgid "Report #{{ data.id }}"
-msgstr "Incident #{{ data.id }}"
+msgstr "Incident Nr {{ data.id }}"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:241
 msgid "This incident is located on a regional zone"
-msgstr ""
+msgstr "Op een gewestelijke weg"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:244
 msgid "This incident has been signaled by a pro"
-msgstr ""
+msgstr "Dit incident werd gemeld door een professioneel"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:247
 msgid "This incident is assigned to"
-msgstr ""
+msgstr "Toegewezen aan"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:250
 msgid "This incident is planned"
-msgstr ""
+msgstr "Dit incident is gepland"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:255
 msgid "This incident has a low priority"
-msgstr ""
+msgstr "Lage prioriteit"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:256
 msgid "This incident has a medium priority"
-msgstr ""
+msgstr "Gemiddelde prioriteit"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:257
 msgid "This incident has a serious priority"
-msgstr ""
+msgstr "Hoge prioriteit"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:263
 msgid "This incident has been signaled as solved"
-msgstr ""
+msgstr "Dit incident is gemeld als opgelost"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:270
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:287
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:306
 msgid "Open Street View"
-msgstr ""
+msgstr "Open Street View"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:271
 msgid "Details"
@@ -144,7 +144,7 @@ msgstr "Plaats mij op de exacte plaats van het probleem"
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:288
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:307
 msgid "Center map"
-msgstr ""
+msgstr "Centreer map"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:299
 msgid "Choice {{ data.number }}"
@@ -156,7 +156,7 @@ msgstr ""
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:313
 msgid "New incident"
-msgstr ""
+msgstr "Nieuw incident"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:323
 msgid "No results"
@@ -168,15 +168,15 @@ msgstr "{{ data.results.length }} resultaten"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:330
 msgid "No corresponding address has been found."
-msgstr ""
+msgstr "Er werd geen overeenstemmend adres gevonden"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:331
 msgid "Please refine your search criteria."
-msgstr ""
+msgstr "Verfijn uw zoekcriteria"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:384
 msgid "Locate on map"
-msgstr ""
+msgstr "Lokaliseer op kaart"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:386
 msgid "Expand"
@@ -184,7 +184,7 @@ msgstr "Vergroten"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:387
 msgid "Reduce"
-msgstr ""
+msgstr "Verkleinen"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:424
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:426
@@ -204,7 +204,7 @@ msgstr "Afgesloten"
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:439
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:441
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:714
 msgid "Incident filter"

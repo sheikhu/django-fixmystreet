@@ -21,7 +21,7 @@ Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
 - Status {{status}}
 - Beheerder {{responsible}}
 
-U kunt het pdf-rapport van het probleem downloaden door op onderstaande link te klikken:
+U kunt het incident raadplegen door op onderstaande link te klikken :
 
 - {{display_url}}
 {% endblock %}

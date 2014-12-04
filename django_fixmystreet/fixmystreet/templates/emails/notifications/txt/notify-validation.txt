@@ -5,6 +5,10 @@
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
 
+Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
+
+- {{display_url}}
+
 Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :
 
 - {{unsubscribe_url}}
@@ -14,6 +18,10 @@ Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant s
 {{responsible}} heeft het probleem dat u gemeld heeft goedgekeurd.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+
+U kunt het incident raadplegen door op onderstaande link te klikken :
+
+- {{display_url}}
 
 Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven via onderstaande link:
 
