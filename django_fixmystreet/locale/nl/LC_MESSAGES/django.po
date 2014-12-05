@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-04 15:42+0100\n"
-"PO-Revision-Date: 2014-12-04 14:40+0000\n"
+"POT-Creation-Date: 2014-12-05 09:37+0100\n"
+"PO-Revision-Date: 2014-12-05 08:37+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -307,7 +307,7 @@ msgid "Configure gestionnaire categories"
 msgstr "Configureer de beheerder categorieën"
 
 #: backoffice/templates/pro/manager_category_configuration.html:73
-#: backoffice/templates/pro/reports/_actions.html:586
+#: backoffice/templates/pro/reports/_actions.html:585
 #: backoffice/templates/pro/reports/merge.html:313
 #: fixmystreet/templates/reports/_documentreport.html:49
 #: fixmystreet/templates/reports/_documentreport.html:72
@@ -616,7 +616,7 @@ msgid ""
 msgstr "Meld dat het probleem opgelost is. Door op deze knop te klikken, verstuurt u een e-mail naar de verantwoordelijke voor dit probleem."
 
 #: backoffice/templates/pro/reports/_actions.html:458
-#: backoffice/templates/pro/reports/_actions.html:587
+#: backoffice/templates/pro/reports/_actions.html:586
 #: fixmystreet/templates/reports/show.html:328
 msgid "Confirm"
 msgstr "Bevestigen"
@@ -690,15 +690,10 @@ msgstr "Maakt deel uit van een reorganisatie project"
 
 #: backoffice/templates/pro/reports/_actions.html:581
 msgctxt "report_refuse"
-msgid "Net.Brussels"
-msgstr "Net.Brussel"
-
-#: backoffice/templates/pro/reports/_actions.html:582
-msgctxt "report_refuse"
 msgid "Private domain"
 msgstr "Privé domein"
 
-#: backoffice/templates/pro/reports/_actions.html:583
+#: backoffice/templates/pro/reports/_actions.html:582
 msgctxt "report_refuse"
 msgid "Already in progress"
 msgstr "Reeds in behandeling"

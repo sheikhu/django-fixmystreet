@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-04 17:12+0100\n"
+"POT-Creation-Date: 2014-12-05 09:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -302,7 +302,7 @@ msgid "Configure gestionnaire categories"
 msgstr ""
 
 #: backoffice/templates/pro/manager_category_configuration.html:73
-#: backoffice/templates/pro/reports/_actions.html:586
+#: backoffice/templates/pro/reports/_actions.html:585
 #: backoffice/templates/pro/reports/merge.html:313
 #: fixmystreet/templates/reports/_documentreport.html:49
 #: fixmystreet/templates/reports/_documentreport.html:72
@@ -611,7 +611,7 @@ msgid ""
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:458
-#: backoffice/templates/pro/reports/_actions.html:587
+#: backoffice/templates/pro/reports/_actions.html:586
 #: fixmystreet/templates/reports/show.html:328
 msgid "Confirm"
 msgstr ""
@@ -685,15 +685,10 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:581
 msgctxt "report_refuse"
-msgid "Net.Brussels"
-msgstr ""
-
-#: backoffice/templates/pro/reports/_actions.html:582
-msgctxt "report_refuse"
 msgid "Private domain"
 msgstr ""
 
-#: backoffice/templates/pro/reports/_actions.html:583
+#: backoffice/templates/pro/reports/_actions.html:582
 msgctxt "report_refuse"
 msgid "Already in progress"
 msgstr ""

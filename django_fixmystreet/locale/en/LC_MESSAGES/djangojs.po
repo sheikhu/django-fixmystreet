@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-04 17:12+0100\n"
+"POT-Creation-Date: 2014-12-05 09:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,17 +60,11 @@ msgstr ""
 
 #: fixmystreet/static/js/report_refused.js:21
 msgid ""
-"L'incident que vous avez signalé est sous la responsabilité de Bruxelles "
-"Propreté."
-msgstr ""
-
-#: fixmystreet/static/js/report_refused.js:22
-msgid ""
 "L'incident que vous avez signalé est sur une propriété privée et n'est pas "
 "la responsabilité de Fix My Street."
 msgstr ""
 
-#: fixmystreet/static/js/report_refused.js:23
+#: fixmystreet/static/js/report_refused.js:22
 msgid "Cet incident a déjà été signalé et est en attente de traitement."
 msgstr ""
 

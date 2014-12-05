@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-04 17:11+0100\n"
-"PO-Revision-Date: 2014-12-04 16:11+0000\n"
+"POT-Creation-Date: 2014-12-05 09:37+0100\n"
+"PO-Revision-Date: 2014-12-05 08:37+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -58,23 +58,17 @@ msgstr "Het probleem wat u heeft gemeld valt niet onder de bevoegdheid van 'Fix 
 msgid ""
 "L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un"
 " projet de réaménagement et sera restauré durant la mise en œuvre du projet."
-msgstr "Het probleem wat u heeft gemeld op een plaats die deel uitmaakt van renovatie project en zal bij de uitvoering van het project worden hersteld."
+msgstr "Het probleem wat u heeft gemeld op een plaats die deel uitmaakt van reorganisatie project en zal bij de uitvoering van het project worden hersteld."
 
 #: fixmystreet/static/js/report_refused.js:21
-msgid ""
-"L'incident que vous avez signalé est sous la responsabilité de Bruxelles "
-"Propreté."
-msgstr "Het probleem wat u heeft gemeld valt onder de verantwoordelijkheid van Net Brussel."
-
-#: fixmystreet/static/js/report_refused.js:22
 msgid ""
 "L'incident que vous avez signalé est sur une propriété privée et n'est pas "
 "la responsabilité de Fix My Street."
 msgstr "Het probleem wat u heeft gemeld bevindt zich op privé domein en valt buiten de verantwoordelijkheid van Fix My Street."
 
-#: fixmystreet/static/js/report_refused.js:23
+#: fixmystreet/static/js/report_refused.js:22
 msgid "Cet incident a déjà été signalé et est en attente de traitement."
-msgstr ""
+msgstr "Het probleem wat u heeft gemeld werd reeds doorgegeven en is in behandeling."
 
 #: fixmystreet/static/js/reports_show_pro.js:39
 msgid ""
