@@ -243,11 +243,11 @@ L.FixMyStreet.TEMPLATES.incidentPopup =
             '{% if (data.icons.pro === true) { %}' +
               '<li><img src="' + STATIC_URL + 'images/pro_on.png" title="' + gettext('This incident has been signaled by a pro') + '"></li>' +
             '{% } %}' +
-            '{% if (data.icons.assigned === true) { %}' +
+            '{% if (data.icons.assigned === true) { console.log(data); %}' +
               '<li><img src="' + STATIC_URL + 'images/contractorAssigned_on.png" title="' + gettext('This incident is assigned to') + '"></li>' +
             '{% } %}' +
-            '{% if (data.icons.planned === true) { %}' +
-              '<li><img src="' + STATIC_URL + 'images/planned_on.png" title="' + gettext('This incident is planned') + '"></li>' +
+            '{% if (data.icons.date_planned != "") { %}' +
+              '<li class="datePlanned_on"><a class="myTooltip" data-placement="bottom" data-toggle="tooltip"> {{ data.icons.date_planned }} </a></li>' +
             '{% } %}' +
             '{% if (data.icons.priority) { %}' +
               '<li>' +

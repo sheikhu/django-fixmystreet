@@ -916,7 +916,7 @@ class Report(UserTrackedModel):
         icons = {
             "regionalRoads": self.is_regional(),
             "assigned": self.is_contractor_or_applicant_assigned(),
-            "planned": self.is_planned(),
+            "date_planned": self.get_date_planned(),
         }
         if pro:
             icons.update({

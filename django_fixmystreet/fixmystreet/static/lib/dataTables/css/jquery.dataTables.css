@@ -95,7 +95,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 	float: left;
 	cursor: pointer;
 	*cursor: hand;
-	color: white !important;
+	color:rgba(0,0,0,0.5) !important;
 }
 .paginate_disabled_previous:hover,
 .paginate_enabled_previous:hover,
@@ -112,7 +112,7 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 
 .paginate_disabled_previous,
 .paginate_disabled_next {
-	color: white;
+	color:rgba(0,0,0,0.5);
 }
 .paginate_disabled_previous,
 .paginate_enabled_previous {

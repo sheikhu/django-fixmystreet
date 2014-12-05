@@ -39,7 +39,6 @@ install: $(BIN_PATH)
 develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop -Z
 	$(BIN_PATH)/pip install -e .[dev]
-	sudo npm install -g testem
 	$(MAKE) migrate
 
 run: $(BIN_PATH)

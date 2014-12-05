@@ -155,7 +155,7 @@ INSTALLED_APPS = (
     'django_fixmystreet.api',
     'django_fixmystreet.webhooks',
     'mobileserverstatus',
-    'piston',
+    'piston', # if causes problem when installing --> fix using sudo pip install http://trac.transifex.org/files/deps/django-piston-0.2.3.tar.gz --upgrade
 )
 
 TEMPLATE_LOADERS = (
@@ -310,3 +310,24 @@ REST_FRAMEWORK = {
         'django_fixmystreet.api.utils.renderers.PythonToJSONRenderer',
     ),
 }
+
+CKEDITOR_CONFIGS = {
+   'default': {
+       'toolbar': [ ['Source','-','AjaxSave','Preview','-','Templates'],
+                    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print',
+                    'SpellChecker', 'Scayt'],
+                    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                    ['Styles','Format','Font','FontSize'],
+                    '/',
+                    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+                    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+                    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                    ['Link','Unlink','Anchor'],
+                    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar',
+                    'PageBreak'],
+                    ['Maximize', 'ShowBlocks','-','About']],
+       'height': 300,
+   },
+}
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, "uploads")
