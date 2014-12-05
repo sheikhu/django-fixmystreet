@@ -262,14 +262,15 @@
                                         </span><br />
 
                                     </div>
-                                    <!-- Map -->
-                                    <div class="span1 picture">
-                                        {% if report.thumbnail_pro %}
-                                            <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
-                                        {% else %}
-                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />
-                                        {% endif %}
-                                    </div>
+{# uncomment this when it shows the map in miniature                               #}
+{#                                    <!-- Map --> #}
+{#                                    <div class="span1 picture">#}
+{#                                        {% if report.thumbnail_pro %}#}
+{#                                            <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />#}
+{#                                        {% else %}#}
+{#                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />#}
+{#                                        {% endif %}#}
+{#                                    </div>#}
                                     <!-- Pictures -->
 
                                     <div class="span1 picture">
@@ -278,7 +279,7 @@
                                         {% else %}
                                             <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />
                                         {% endif %}
-                                    </div>                                    
+                                    </div>
                                     <!-- Comments -->
                                     <div class="span4 incidentDetailsStatus2">
                                         {% for attachment in report.attachments.all %}
