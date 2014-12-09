@@ -25,7 +25,7 @@
     <script>
         var mapOptions = {
             zoomControl: false,
-            layersControl: false,
+            layersControl: false
         };
     </script>
     {{ block.super }}
@@ -34,7 +34,7 @@
             var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x: {{ report.point.x }}, y: {{ report.point.y }}});
             var marker = fms.map.addIncident({
                 type: '{{ report.get_status_for_js_map }}',
-                latlng: latlng,
+                latlng: latlng
             }, {popup: null});
             fms.map.centerOnMarker(marker);
             var res = UtilGeolocation.convertCoordinatesToWGS84({{report.point.x}},{{report.point.y}});
@@ -362,13 +362,13 @@
             {% if report.date_planned %}
                 <li class='datePlanned_on'>
                     <!--a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a-->
-                    <img src="{% static 'images/pdf/planned.png' %} /> {{report.date_planned|date:"m/Y"}}
+                    <img src="{% static 'images/pdf/planned.png' %}" /> {{report.date_planned|date:"m/Y"}}
                 </li>
             {% endif %}
 
             {% if BACKOFFICE %}
                 <li>
-                {% if report.get_priority = 0 %}
+                {% if report.get_priority == 0 %}
                     <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/pdf/prior_0.png' %}" class="priorityLevel" /></a>
                 {% elif report.get_priority <= 2 %}
                     <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{% static 'images/pdf/prior_1.png' %}" class="priorityLevel" /></a>
