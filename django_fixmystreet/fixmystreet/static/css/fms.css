@@ -3506,7 +3506,8 @@ p.switch_verify.btn-group   {
 #containerHomePhotoIncident .homeWrappingPicture .defectPic {
 	width: 100%;
 	vertical-align: middle;
-	margin-top: -20%;
+	height: 100%;
+
 }
 
 #containerHomeText #adress span {
