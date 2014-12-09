@@ -1238,9 +1238,10 @@ def init_regional_street(sender, instance, **kwargs):
 @receiver(pre_save, sender=Report)
 def report_auto_assign_responsible(sender, instance, **kwargs):
     # Auto-dispatching according to group and regional or communal address
-    if instance.secondary_category.get_organisation(instance.address_regional):
-        instance.responsible_department = instance.secondary_category.get_organisation(instance.address_regional)
-        instance.responsible_entity     = instance.responsible_department.dependency
+    entity = instance.secondary_category.get_organisation(instance.address_regional)
+
+    if entity:
+        instance.responsible_entity = entity
 
 
 @receiver(pre_save, sender=Report)
@@ -1988,8 +1989,8 @@ class ReportCategory(UserTrackedModel):
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     public = models.BooleanField(default=True)
 
-    organisation_communal = models.ForeignKey(OrganisationEntity, related_name="categories_communal", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.DEPARTMENT}, null=True, blank=True)
-    organisation_regional = models.ForeignKey(OrganisationEntity, related_name="categories_regional", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.DEPARTMENT, "dependency__type": OrganisationEntity.REGION}, null=True, blank=True)
+    organisation_communal = models.ForeignKey(OrganisationEntity, related_name="categories_communal", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.REGION}, null=True, blank=True)
+    organisation_regional = models.ForeignKey(OrganisationEntity, related_name="categories_regional", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.REGION}, null=True, blank=True)
 
     def __unicode__(self):
         return self.category_class.name + ":" + self.name
