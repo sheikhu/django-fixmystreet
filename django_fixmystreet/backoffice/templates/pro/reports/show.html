@@ -196,18 +196,35 @@
                     self.classList.remove('loading');
                 }
             });
-}
+        }
 
-$('#mail-pdf-pro').submit(function(event) {
-    sendPdf.call(this, event);
-});
+        $('#mail-pdf-pro').submit(function(event) {
+            sendPdf.call(this, event);
+        });
 
-$('#mail-pdf-citizen').submit(function(event) {
-    sendPdf.call(this, event);
-});
-});
-</script>
-<script src="{% static 'js/reports_show_pro.js' %}"></script>
+        $('#mail-pdf-citizen').submit(function(event) {
+            sendPdf.call(this, event);
+        });
+
+        $('.dropdown-menu li a').mouseover(function(evt) {
+            evt.stopPropagation();
+
+            var $this = $(this);
+            $this.closest('li').siblings().each(function() {
+                jQuery(this).removeClass('open');
+            });
+            $this.closest('li').addClass('open');
+        });
+
+        $('.dropdown-toggle').click(function(e) {
+            jQuery(this).parent().find('li').each(function() {
+                jQuery(this).removeClass('open');
+            });
+        });
+
+    });
+    </script>
+    <script src="{% static 'js/reports_show_pro.js' %}"></script>
 
 {% endblock %}
 {% endblock %}
@@ -271,7 +288,7 @@ $('#mail-pdf-citizen').submit(function(event) {
                                 <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src="{% static 'images/pro_on.png' %}" /></a></li>
                                 {% endif %}
                                 {% if BACKOFFICE %}
-                                
+
                                     {% if report.third_party_responsibility %}
                                     <li class="third_party_resp"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "A third party is responsible" %}'><img src="{% static 'images/car97.png' %}" /></a></a></li>
                                     {% endif %}
@@ -314,7 +331,7 @@ $('#mail-pdf-citizen').submit(function(event) {
 
                             </span>
 
-                            
+
                             <!--/div-->
                             <span class="visilibility"><br/>{% trans 'Visibility' %} : {{ report.private|yesno:_("pro,public") }}<br/><br/></span>
                         </div>
