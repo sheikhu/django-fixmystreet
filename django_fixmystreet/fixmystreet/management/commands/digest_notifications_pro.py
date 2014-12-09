@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 from optparse import make_option
 
 from django.db.models import Q
+from django_fixmystreet.fixmystreet.models import FMSUser
 
 from django_fixmystreet.fixmystreet.utils import send_digest
 
@@ -73,5 +74,12 @@ class Command(BaseCommand):
             if not options['send']:
                 continue
 
-            # Render and send the digest by mail
-            send_digest(user, activity, activities_list, YESTERDAY)
+            for recipient in recipients:
+                # Because recipients are email and can be a user or group email, have to mock a user
+                user = FMSUser()
+                user.email = recipient
+                user.is_pro = lambda: True
+                user.last_used_language = "fr"
+
+                # Render and send the digest by mail
+                send_digest(user, activity, activities_list, YESTERDAY)
