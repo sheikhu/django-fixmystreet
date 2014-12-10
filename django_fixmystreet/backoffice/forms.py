@@ -28,10 +28,12 @@ class ManagersListForm(forms.Form):
 
         super(ManagersListForm, self).__init__(*args, **kwargs)
 
+
 class PriorityForm(forms.ModelForm):
     class Meta:
         model = Report
         fields = ('gravity', 'probability',)
+
 
 class TransferForm(forms.Form):
     NO_SUBSCRIPTION         = 0
@@ -80,6 +82,7 @@ class TransferForm(forms.Form):
         report.status = Report.MANAGER_ASSIGNED
         report.save()
 
+
 class FmsUserForm(forms.ModelForm):
     required_css_class = 'required'
 
@@ -97,15 +100,15 @@ class FmsUserForm(forms.ModelForm):
             'contractor'
         )
 
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=True)
+    first_name = forms.CharField(required=False, label=_("Firstname"))
+    last_name = forms.CharField(required=True, label=_("Lastname"))
     email = forms.EmailField(required=True, label=_('Email'))
-    telephone = forms.CharField(max_length="20")
+    telephone = forms.CharField(max_length="20", label=_("Phone"))
     is_active = forms.BooleanField(
         required=False,
         initial=True,
-        help_text="only active users can login.",
-        label="Active"
+        help_text=_("Only active users can login."),
+        label=_("Active")
     )
 
     # leader = forms.BooleanField(required=False)
@@ -248,10 +251,10 @@ class GroupForm(forms.ModelForm):
         model = OrganisationEntity
         fields = ('name_fr', 'name_nl', 'phone', 'email', 'type')
 
-    name_fr = forms.CharField()
-    name_nl = forms.CharField()
+    name_fr = forms.CharField(label=_("Name FR"))
+    name_nl = forms.CharField(label=_("Name NL"))
 
-    phone = forms.CharField(required=True)
+    phone = forms.CharField(required=True, label=_("Phone"))
     email = forms.EmailField(required=True, label=_('Email'))
 
     type = forms.ChoiceField(widget=forms.RadioSelect, choices=OrganisationEntity.ENTITY_TYPE_GROUP)
@@ -267,7 +270,8 @@ class GroupForm(forms.ModelForm):
             users_qs = users_qs.filter(organisation=self.instance.dependency)
             users_qs = users_qs.order_by('last_name', 'first_name')
 
-            self.fields['users'] = forms.ModelChoiceField(required=False, queryset=users_qs)
+            self.fields['users'] = forms.ModelChoiceField(required=False, queryset=users_qs, label=_("Users"))
+
 
 class GroupMailConfigForm(forms.ModelForm):
 
@@ -278,10 +282,10 @@ class GroupMailConfigForm(forms.ModelForm):
         (True, _('Once a day')),
         (False, _('In real time'))
     )
-    digest_created    = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES)
-    digest_inprogress = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES)
-    digest_closed     = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES)
-    digest_other      = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES)
+    digest_created    = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES, label=_('Digest created'))
+    digest_inprogress = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES, label=_('Digest in progress'))
+    digest_closed     = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES, label=_('Digest closed'))
+    digest_other      = forms.ChoiceField(widget=forms.RadioSelect, choices=DIGEST_CHOICES, label=_('Digest other'))
 
     def clean(self):
         """

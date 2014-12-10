@@ -329,14 +329,14 @@ def organisationentity_delete(sender, instance, **kwargs):
 class GroupMailConfig(models.Model):
 
     # Notifications can be sent to group, members or both
-    notify_group   = models.BooleanField(default=True)
-    notify_members = models.BooleanField(default=False)
+    notify_group   = models.BooleanField(default=True, verbose_name=_("Notify group"))
+    notify_members = models.BooleanField(default=False, verbose_name=_("Notify members"))
 
     # Digest if True (or real-time mail if False) for each status
-    digest_created    = models.BooleanField(default=False)
-    digest_inprogress = models.BooleanField(default=False)
-    digest_closed     = models.BooleanField(default=False)
-    digest_other      = models.BooleanField(default=False)
+    digest_created    = models.BooleanField(default=False, verbose_name=_('Digest created'))
+    digest_inprogress = models.BooleanField(default=False, verbose_name=_('Digest in progress'))
+    digest_closed     = models.BooleanField(default=False, verbose_name=_('Digest closed'))
+    digest_other      = models.BooleanField(default=False, verbose_name=_('Digest other'))
 
     # This config is related to this group:
     group = models.ForeignKey(OrganisationEntity, limit_choices_to={"type": OrganisationEntity.DEPARTMENT}, unique=True)
