@@ -174,6 +174,8 @@ class ReportHandler(BaseHandler):
             else:
                 report = self.create_citizen(request)
 
+            if isinstance(report, HttpResponse):
+                return report
             # Set source
             report.source = Report.SOURCES['MOBILE']
             report.save()
