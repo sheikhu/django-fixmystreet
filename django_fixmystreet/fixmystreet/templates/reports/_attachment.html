@@ -76,8 +76,8 @@
         </div>
     
         <div>
-            <div style="float:left; width:40%; padding: 10px;">
-
+            <div style="{% if not pdf_style %} float:left; width:40%;{% endif %} padding: 10px;">
+{#            <div style="float:left; width:40%; padding: 10px;">#}
 
                 {% if attachment.reportfile.is_image %}
                     <img id='imgtoshow' src='{{attachment.reportfile.image.url}}' class="view-image"/>
@@ -93,7 +93,7 @@
                     </a>
                 {% endif %}
             </div>
-            <div style="float:right; width:51%; padding: 15px; line-height:25px; text-align:justify; white-space:initial;"><img src="{% static 'images/comment-leffe-bg.png' %}" class="comment-deco" />
+            <div style="{% if not pdf_style %}float:right; width:51%;{% endif %} padding: 15px; line-height:25px; text-align:justify; white-space:initial;"><img src="{% static 'images/comment-leffe-bg.png' %}" class="comment-deco" />
                 {{attachment.reportfile.title}}
                 <img src="{% static 'images/comment-bg.png' %}" class="comment-deco" style="float:right" />
             </div>

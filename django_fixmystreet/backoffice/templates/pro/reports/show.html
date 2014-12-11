@@ -599,7 +599,7 @@
     <ul id="report_updates" class="timeline">
         {% for attachment in report.active_attachments_pro %}
         {% if not attachment.is_confidential or fms_user.can_see_confidential %}
-        {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit report_is_created=report.is_created %}
+        {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit report_is_created=report.is_created pdf_style=False %}
         {% endif %}
         {% endfor %}
     </ul>

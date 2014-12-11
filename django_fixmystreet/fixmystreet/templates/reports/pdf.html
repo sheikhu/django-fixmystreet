@@ -533,11 +533,11 @@
     <div class="comments">
         <h2>{% trans 'Comments and pictures' %}</h2>
         {% for attachment in comments %}
-            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
+            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=False %}
         {% endfor %}
 
         {% for attachment in files %}
-            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=Flase %}
+            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=False pdf_style=True %}
         {% endfor %}
     </div>
 
