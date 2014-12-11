@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-10 11:38+0100\n"
+"POT-Creation-Date: 2014-12-11 16:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,6 +125,7 @@ msgid "In progress and assigned"
 msgstr ""
 
 #: backoffice/forms.py:238 backoffice/templates/pro/home.html:82
+#: fixmystreet/models.py:2266
 msgid "Closed"
 msgstr ""
 
@@ -573,7 +574,7 @@ msgstr ""
 #: backoffice/templates/pro/reports/table_content.html:41
 #: fixmystreet/models.py:675 fixmystreet/models.py:676
 #: fixmystreet/templates/emails/digest.html:42
-#: fixmystreet/templates/emails/digest.html:80
+#: fixmystreet/templates/emails/digest.html:84
 msgid "Category"
 msgstr ""
 
@@ -624,7 +625,7 @@ msgstr ""
 #: backoffice/templates/pro/reports/table.html:378
 #: backoffice/templates/pro/reports/table_content.html:46
 #: fixmystreet/templates/emails/digest.html:43
-#: fixmystreet/templates/emails/digest.html:81
+#: fixmystreet/templates/emails/digest.html:85
 msgid "Address"
 msgstr ""
 
@@ -634,7 +635,6 @@ msgid "Reject"
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:364
-#: fixmystreet/models.py:2266
 msgid "Close"
 msgstr ""
 
@@ -1287,7 +1287,7 @@ msgstr ""
 #: backoffice/templates/pro/reports/table_content.html:49
 #: backoffice/templates/pro/reports/table_content.html:60
 #: fixmystreet/templates/emails/digest.html:41
-#: fixmystreet/templates/emails/digest.html:79
+#: fixmystreet/templates/emails/digest.html:83
 msgid "Status"
 msgstr ""
 
@@ -1732,6 +1732,7 @@ msgid "Created"
 msgstr ""
 
 #: fixmystreet/models.py:629 fixmystreet/models.py:885
+#: fixmystreet/models.py:2265
 msgid "Refused"
 msgstr ""
 
@@ -1888,12 +1889,8 @@ msgstr ""
 msgid "Badly repaired"
 msgstr ""
 
-#: fixmystreet/models.py:2265
-msgid "Refuse"
-msgstr ""
-
 #: fixmystreet/models.py:2267
-msgid "Mark as Done"
+msgid "Marked as Done"
 msgstr ""
 
 #: fixmystreet/models.py:2268
@@ -2499,19 +2496,19 @@ msgid "The Fix My Street Team"
 msgstr ""
 
 #: fixmystreet/templates/emails/digest.html:32
-#: fixmystreet/templates/emails/digest.html:70
+#: fixmystreet/templates/emails/digest.html:74
 msgid ""
 "Veuillez trouver ci-dessous un résumé de l'activité lié à vos abonnements "
 "sur Fix My Street."
 msgstr ""
 
 #: fixmystreet/templates/emails/digest.html:34
-#: fixmystreet/templates/emails/digest.html:72
+#: fixmystreet/templates/emails/digest.html:76
 msgid "Date"
 msgstr ""
 
 #: fixmystreet/templates/emails/digest.html:39
-#: fixmystreet/templates/emails/digest.html:77
+#: fixmystreet/templates/emails/digest.html:81
 msgid "Time"
 msgstr ""
 

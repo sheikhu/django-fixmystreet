@@ -2262,9 +2262,9 @@ class ReportEventLog(models.Model):
     BECAME_PUBLIC = 22
 
     EVENT_TYPE_CHOICES = (
-        (REFUSE, _("Refuse")),
-        (CLOSE, _("Close")),
-        (SOLVE_REQUEST, _("Mark as Done")),
+        (REFUSE, _("Refused")),
+        (CLOSE, _("Closed")),
+        (SOLVE_REQUEST, _("Marked as Done")),
         (MANAGER_ASSIGNED, _("Manager assigned")),
         # (MANAGER_CHANGED,_("Manager changed")),
         (VALID, _("Valid")),

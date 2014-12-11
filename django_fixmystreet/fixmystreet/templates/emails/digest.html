@@ -50,11 +50,15 @@
             <tr>
                 <td>{{ activity.event_at|date:"H:i" }}</td>
                 <td>
-                    <a href="{{ display_url }}">
-                        #{{ activity.report.id }}
+                    {% if user_is_pro %}
+                        <a href="{{ activity.report.get_absolute_url_pro }}">
+                    {% else %}
+                        <a href="{{ activity.report.get_absolute_url }}">
+                    {% endif %}
+                    #{{ activity.report.id }}
                     </a>
                 </td>
-                <td>{{ activity.get_status }}</td>
+                <td>{{ activity.get_status}}</td>
                 <td>{{ activity.report.display_category }}</td>
                 <td>{{ activity.report.display_address }}</td>
             </tr>
@@ -88,8 +92,12 @@
             <tr>
                 <td>{{ activity.event_at|date:"H:i" }}</td>
                 <td>
-                    <a href="{{ display_url }}">
-                        #{{ activity.report.id }}
+                    {% if user_is_pro %}
+                        <a href="{{ activity.report.get_absolute_url_pro }}">
+                    {% else %}
+                        <a href="{{ activity.report.get_absolute_url }}">
+                    {% endif %}
+                    #{{ activity.report.id }}
                     </a>
                 </td>
                 <td>{{ activity.get_status }}</td>

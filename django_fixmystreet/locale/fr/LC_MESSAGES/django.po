@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-10 11:35+0100\n"
-"PO-Revision-Date: 2014-12-10 10:34+0000\n"
+"POT-Creation-Date: 2014-12-11 15:58+0100\n"
+"PO-Revision-Date: 2014-12-11 14:58+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -133,6 +133,7 @@ msgid "In progress and assigned"
 msgstr "Mis à jour et assigné"
 
 #: backoffice/forms.py:238 backoffice/templates/pro/home.html:82
+#: fixmystreet/models.py:2266
 msgid "Closed"
 msgstr "Clôturé"
 
@@ -581,7 +582,7 @@ msgstr "Priorité"
 #: backoffice/templates/pro/reports/table_content.html:41
 #: fixmystreet/models.py:675 fixmystreet/models.py:676
 #: fixmystreet/templates/emails/digest.html:42
-#: fixmystreet/templates/emails/digest.html:80
+#: fixmystreet/templates/emails/digest.html:84
 msgid "Category"
 msgstr "Catégorie"
 
@@ -632,7 +633,7 @@ msgstr "Responsabilité d'un tiers"
 #: backoffice/templates/pro/reports/table.html:378
 #: backoffice/templates/pro/reports/table_content.html:46
 #: fixmystreet/templates/emails/digest.html:43
-#: fixmystreet/templates/emails/digest.html:81
+#: fixmystreet/templates/emails/digest.html:85
 msgid "Address"
 msgstr "Adresse"
 
@@ -642,9 +643,8 @@ msgid "Reject"
 msgstr "Sans suite"
 
 #: backoffice/templates/pro/reports/_actions.html:364
-#: fixmystreet/models.py:2266
 msgid "Close"
-msgstr "Clôturer"
+msgstr "Clôturé"
 
 #: backoffice/templates/pro/reports/_actions.html:375
 #: fixmystreet/templates/reports/show.html:310
@@ -1294,7 +1294,7 @@ msgstr "Commune"
 #: backoffice/templates/pro/reports/table_content.html:49
 #: backoffice/templates/pro/reports/table_content.html:60
 #: fixmystreet/templates/emails/digest.html:41
-#: fixmystreet/templates/emails/digest.html:79
+#: fixmystreet/templates/emails/digest.html:83
 msgid "Status"
 msgstr "Statut"
 
@@ -1739,6 +1739,7 @@ msgid "Created"
 msgstr "Signalé"
 
 #: fixmystreet/models.py:629 fixmystreet/models.py:885
+#: fixmystreet/models.py:2265
 msgid "Refused"
 msgstr "Sans suite"
 
@@ -1895,13 +1896,9 @@ msgstr "Pas réparé"
 msgid "Badly repaired"
 msgstr "Mal réparé"
 
-#: fixmystreet/models.py:2265
-msgid "Refuse"
-msgstr "Déclaré sans suite"
-
 #: fixmystreet/models.py:2267
-msgid "Mark as Done"
-msgstr "Marquer comme résolu"
+msgid "Marked as Done"
+msgstr "Signalé comme résolu"
 
 #: fixmystreet/models.py:2268
 msgid "Manager assigned"
@@ -2503,19 +2500,19 @@ msgid "The Fix My Street Team"
 msgstr "L'équipe Fix My Street"
 
 #: fixmystreet/templates/emails/digest.html:32
-#: fixmystreet/templates/emails/digest.html:70
+#: fixmystreet/templates/emails/digest.html:74
 msgid ""
 "Veuillez trouver ci-dessous un résumé de l'activité lié à vos abonnements "
 "sur Fix My Street."
 msgstr "Veuillez trouver ci-dessous un résumé de l'activité lié à vos abonnements sur Fix My Street."
 
 #: fixmystreet/templates/emails/digest.html:34
-#: fixmystreet/templates/emails/digest.html:72
+#: fixmystreet/templates/emails/digest.html:76
 msgid "Date"
 msgstr "Date"
 
 #: fixmystreet/templates/emails/digest.html:39
-#: fixmystreet/templates/emails/digest.html:77
+#: fixmystreet/templates/emails/digest.html:81
 msgid "Time"
 msgstr "Heure"
 

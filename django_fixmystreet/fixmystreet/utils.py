@@ -531,14 +531,14 @@ def send_digest(user, activity, activities_list, date_digest):
     # Activate the last language used by the user
     activate(user.last_used_language)
 
-    if user.is_pro():
-        display_url     = lambda: "{0}{1}".format(SITE_URL, activity.report.get_absolute_url_pro())
-        unsubscribe_url = lambda: "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[activity.report.id]))
-    else:
-        display_url     = lambda: "{0}{1}".format(SITE_URL, activity.report.get_absolute_url())
-        unsubscribe_url = lambda: "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[activity.report.id]), user.email)
+    # if user.is_pro():
+    #     display_url     = lambda: "{0}{1}".format(SITE_URL, activity.report.get_absolute_url_pro())
+    #     unsubscribe_url = lambda: "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[activity.report.id]))
+    # else:
+    #     display_url     = lambda: "{0}{1}".format(SITE_URL, activity.report.get_absolute_url())
+    #     unsubscribe_url = lambda: "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[activity.report.id]), user.email)
 
-    digests_subscriptions = render_to_string("emails/digest.html", {'activities_list': activities_list, 'display_url': display_url, 'unsubscribe_url': unsubscribe_url, 'date_digest': date_digest})
+    digests_subscriptions = render_to_string("emails/digest.html", {'user_is_pro': user.is_pro(), 'activities_list': activities_list, 'date_digest': date_digest})
 
     logger.info('Sending digest to %s' % user.email)
 
