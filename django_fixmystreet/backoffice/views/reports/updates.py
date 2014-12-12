@@ -63,7 +63,8 @@ def refuse(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
-@responsible_permission
+# Every one should be capable to mark as done
+# @responsible_permission
 def fixed(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 

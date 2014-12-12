@@ -9,6 +9,7 @@ import re
 import logging
 from threading import local
 
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseForbidden, QueryDict
 from django.db.models.signals import post_save
 from django.template.loader import render_to_string
@@ -517,7 +518,7 @@ def responsible_permission(func):
 
         if not check_responsible_permission(request.user, report):
                 # or (report.contractor is not None and report.contractor.fmsproxy is not None):
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+            raise PermissionDenied
 
         return func(request, report_id)
 
