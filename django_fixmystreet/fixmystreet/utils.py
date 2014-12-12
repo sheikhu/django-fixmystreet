@@ -539,7 +539,7 @@ def send_digest(user, activity, activities_list, date_digest):
     #     display_url     = lambda: "{0}{1}".format(SITE_URL, activity.report.get_absolute_url())
     #     unsubscribe_url = lambda: "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[activity.report.id]), user.email)
 
-    digests_subscriptions = render_to_string("emails/digest.html", {'user_is_pro': user.is_pro(), 'activities_list': activities_list, 'date_digest': date_digest})
+    digests_subscriptions = render_to_string("emails/digest.html", {'site_url': SITE_URL, 'user_is_pro': user.is_pro(), 'activities_list': activities_list, 'date_digest': date_digest})
 
     logger.info('Sending digest to %s' % user.email)
 

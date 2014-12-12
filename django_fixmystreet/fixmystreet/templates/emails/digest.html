@@ -51,9 +51,9 @@
                 <td>{{ activity.event_at|date:"H:i" }}</td>
                 <td>
                     {% if user_is_pro %}
-                        <a href="{{ activity.report.get_absolute_url_pro }}">
+                        <a href="{{ site_url }}{{ activity.report.get_absolute_url_pro }}">
                     {% else %}
-                        <a href="{{ activity.report.get_absolute_url }}">
+                        <a href="{{ site_url }}{{ activity.report.get_absolute_url }}">
                     {% endif %}
                     #{{ activity.report.id }}
                     </a>
@@ -93,9 +93,9 @@
                 <td>{{ activity.event_at|date:"H:i" }}</td>
                 <td>
                     {% if user_is_pro %}
-                        <a href="{{ activity.report.get_absolute_url_pro }}">
+                        <a href="{{ site_url }}{{ activity.report.get_absolute_url_pro }}">
                     {% else %}
-                        <a href="{{ activity.report.get_absolute_url }}">
+                        <a href="{{ site_url }}{{ activity.report.get_absolute_url }}">
                     {% endif %}
                     #{{ activity.report.id }}
                     </a>
