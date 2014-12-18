@@ -60,7 +60,7 @@ def new(request):
                     comment.is_new_report = True
                     comment.save()
 
-                files = file_formset.save()
+                files = file_formset.save(commit=False)
 
                 for report_file in files:
                     report_file.created_by = user
