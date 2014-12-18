@@ -2205,7 +2205,7 @@ class ReportNotification(models.Model):
             if files:
                 for f in files:
                     if f.file_type == ReportFile.IMAGE:
-                        msg.attach(f.file.name, f.file.read(), 'image/png')
+                        msg.attach(f.file.name, f.image.read(), 'image/png')
 
             msg.send()
             self.success = True
