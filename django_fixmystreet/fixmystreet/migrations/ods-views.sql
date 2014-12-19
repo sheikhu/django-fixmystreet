@@ -95,8 +95,7 @@ CREATE OR REPLACE VIEW ods_dim_user AS SELECT
     manager as manager_flag,
     leader as entity_flag
 FROM fixmystreet_fmsuser fmsuser
-    LEFT JOIN auth_user u ON user_ptr_id=u.id
-    WHERE agent OR manager OR leader;
+    LEFT JOIN auth_user u ON user_ptr_id=u.id;
 
 
 CREATE OR REPLACE VIEW ods_dim_manager AS SELECT
