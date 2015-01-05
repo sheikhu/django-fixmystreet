@@ -50,7 +50,7 @@ dev_require = [
 
     # this following package depend on system requirements,
     # must be installed on system for prod
-    'pillow',
+    'pillow==2.7.0',
     'psycopg2'
 ]
 
