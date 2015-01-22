@@ -20,3 +20,4 @@ sel_refuse_content['opt_refuse_2'] = gettext("L'incident que vous avez signalé 
 sel_refuse_content['opt_refuse_3'] = gettext("L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un projet de réaménagement et sera restauré durant la mise en œuvre du projet.");
 sel_refuse_content['opt_refuse_4'] = gettext("L'incident que vous avez signalé est sur une propriété privée et n'est pas la responsabilité de Fix My Street.");
 sel_refuse_content['opt_refuse_5'] = gettext("Cet incident a déjà été signalé et est en attente de traitement.");
+sel_refuse_content['opt_refuse_6'] = gettext("Not for Sibelga eclairage");
