@@ -26,7 +26,7 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     r.address_number as address_number,
     created_by.organisation_id as created_by_entity_id,
     CASE
-        WHEN (r.created_by_id IS NULL AND r.citizen_id IS NOT NULL) THEN 0
+        WHEN (r.created_by_id IS NULL AND r.citizen_id IS NOT NULL) THEN r.citizen_id
         WHEN (r.created_by_id IS NULL) THEN -1
         ELSE r.created_by_id
     END as created_by_user_id,
@@ -66,7 +66,7 @@ FROM fixmystreet_historicalreport r
     LEFT JOIN fixmystreet_fmsuser citizen ON r.citizen_id=citizen.user_ptr_id
     LEFT JOIN fixmystreet_reportcategory category ON r.secondary_category_id=category.id
     LEFT JOIN fixmystreet_zipcode zipcode ON r.postalcode=zipcode.code
-    WHERE original_report.merged_with_id IS NULL
+    WHERE original_report.merged_with_id IS NULL;
     ;
 --     LEFT JOIN fixmystreet_historicalreport previous_row ON previous_row.history_id = (
 --         SELECT Max(previous_rows.history_id)
