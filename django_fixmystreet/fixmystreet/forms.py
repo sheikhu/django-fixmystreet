@@ -24,7 +24,6 @@ mark_safe_lazy = lazy(mark_safe, six.text_type)
 
 def secondaryCategoryChoices(show_private):
     choices = []
-    choices.append(('', _("Select a secondary Category")))
     category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().order_by('name_' + get_language())
 
     for category_class in category_classes:
@@ -37,8 +36,11 @@ def secondaryCategoryChoices(show_private):
         for category in categories:
             values.append((category.id, category.name))
 
+        # Hack to add before to avoid Ecalirage to be first
         if len(categories):
-            choices.append((category_class.name, values))
+            choices.insert(0, (category_class.name, values))
+
+    choices.insert(0, ('', _("Select a secondary Category")))
 
     return choices
 
