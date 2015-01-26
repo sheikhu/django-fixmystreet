@@ -91,7 +91,7 @@ class FMSUserAdmin(SimpleHistoryAdmin):
     inlines = (
         UserMembershipsInline,
         # NotificationsInline,
-        UserEventsInline
+        # UserEventsInline
     )
     readonly_fields = ("date_joined", "last_login", "created", "created_by", "modified", "modified_by", "password", "username")
     search_fields = ("username", "email", "first_name", "last_name")
