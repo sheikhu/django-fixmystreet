@@ -773,3 +773,49 @@ class MailTest(FMSTestCase):
 
         # No mail sent in real-time
         self.assertEquals(len(mail.outbox), 0)
+
+    def test_recipient_for_everyone(self):
+        """
+        recipients must contains everyone (group, manager and manager4)
+        """
+        recipients = self.group_mail_config.get_manager_recipients()
+        self.assertEquals(len(recipients), 3)
+        self.assertIn(self.group.email, recipients)
+        self.assertIn(self.manager.email, recipients)
+        self.assertIn(self.manager4.email, recipients)
+
+    def test_recipient_exclude_author(self):
+        """
+        recipients must contains everyone (group, manager and manager4)
+        """
+        recipients = self.group_mail_config.get_manager_recipients(self.manager)
+        self.assertEquals(len(recipients), 2)
+        self.assertIn(self.group.email, recipients)
+        self.assertIn(self.manager4.email, recipients)
+
+    def test_recipient_for_manager_as_group(self):
+        """
+        if email group is same as manager then recipients
+        must contains ony once this email (distinct values)
+        (group email and manager4)
+        """
+        self.group.email = self.manager.email
+        self.group.save()
+        self.group_mail_config.notify_group = False
+        self.group_mail_config.save()
+
+        recipients = self.group_mail_config.get_manager_recipients()
+        self.assertEquals(len(recipients), 2)
+        self.assertIn(self.manager.email, recipients)
+        self.assertIn(self.manager4.email, recipients)
+
+    def test_recipient_for_manager_as_group_author(self):
+        """
+        if email group is same as manager then recipients and also is the author
+        this email must be excluded
+        """
+        self.group.email = self.manager.email
+        recipients = self.group_mail_config.get_manager_recipients(self.manager)
+        self.assertEquals(len(recipients), 2)
+        self.assertIn(self.manager4.email, recipients)
+        self.assertIn(self.group.email, recipients)

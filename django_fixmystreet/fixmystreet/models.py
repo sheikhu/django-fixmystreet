@@ -343,16 +343,18 @@ class GroupMailConfig(models.Model):
 
     def get_manager_recipients(self, author=None):
         recipients = []
+        exclude_mails = []
 
         # If the config mail allow the group to be notified
         if self.notify_group:
-            recipients = [self.group.email]
+            recipients.append(self.group.email)
 
         # If the config mail allow the members of the group to be notified
         if self.notify_members:
 
-            # Not send the email twice if the group has the same email address than a member
-            exclude_mails=[self.group.email]
+            if self.notify_group:
+                # Not send the email twice if the group has the same email address than a member
+                exclude_mails.append(self.group.email)
 
             # Do not notify author if he is a PRO
             if author and author.is_pro():
@@ -362,6 +364,7 @@ class GroupMailConfig(models.Model):
             recipients += UserOrganisationMembership.objects.filter(organisation=self.group).exclude(user__email__in=exclude_mails).values_list('user__email', flat=True)
 
         return recipients
+
 
 class UserOrganisationMembership(UserTrackedModel):
     user = models.ForeignKey(FMSUser, related_name='memberships', null=True, blank=True)
