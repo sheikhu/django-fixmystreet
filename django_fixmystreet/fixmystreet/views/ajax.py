@@ -2,7 +2,7 @@ import os
 import json
 
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
@@ -52,7 +52,11 @@ def uploadFile(request):
 
 
 def get_report_popup_details(request):
-    report = Report.objects.all().related_fields().visible().public().transform(DEFAULT_SRID).get(id=request.REQUEST.get("id"))
+    try:
+        report = Report.objects.all().related_fields().visible().public().transform(DEFAULT_SRID).get(id=request.REQUEST.get("id"))
+    except Report.DoesNotExist:
+        return HttpResponseNotFound()
+
     response = {
         "id": report.id,
         "type": report.get_status_for_js_map(),
