@@ -1240,6 +1240,10 @@ def init_regional_street(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Report)
 def report_auto_assign_responsible(sender, instance, **kwargs):
+    # Do not auto assign if it's NOT a new report
+    if Report.objects.filter(pk=instance.pk).exists():
+        return
+
     # Auto-dispatching according to group and regional or communal address
     entity = instance.secondary_category.get_organisation(instance.address_regional)
 
