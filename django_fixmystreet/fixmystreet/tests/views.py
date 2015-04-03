@@ -724,18 +724,30 @@ class ReportViewsTest(FMSTestCase):
         self.assertEqual(report.responsible_entity         , report_not_reopen.responsible_entity)
         self.assertEqual(report.responsible_department     , report_not_reopen.responsible_department)
 
-    def auto_assign(self):
+    def test_auto_assign(self):
         # Associate a category to an organisation for auto-dispatching
-        organisation            = OrganisationEntity()
-        organisation.name_fr    = "My group"
-        organisation.type       = OrganisationEntity.DEPARTMENT
-        organisation.dependency = OrganisationEntity.objects.exclude(type__in=OrganisationEntity.ENTITY_TYPE)[0]
-        organisation.email      = "no-reply@cirb.irisnet.be"
-        organisation.save()
+        entity            = OrganisationEntity()
+        entity.name_fr    = "My entity"
+        entity.type       = OrganisationEntity.COMMUNE
+        entity.email      = "entity@cirb.irisnet.be"
+        entity.save()
+
+        # Associate a category to an organisation for auto-dispatching
+        department            = OrganisationEntity()
+        department.name_fr    = "My group"
+        department.type       = OrganisationEntity.DEPARTMENT
+        department.dependency = entity
+        department.email      = "department@cirb.irisnet.be"
+        department.save()
+
+        self.group_mail_config.group = department
+        self.group_mail_config.save()
 
         category                       = ReportCategory.objects.get(id=self.sample_post['report-category'])
-        category.organisation_communal = organisation
+        category.organisation_communal = entity
         category.save()
+
+        department.dispatch_categories.add(category)
 
         # Create new report
         url = "%s?x=148360&y=171177" % reverse('report_new')
@@ -746,21 +758,10 @@ class ReportViewsTest(FMSTestCase):
 
         # Auto-dispatching working for commune
         self.assertFalse(report.is_regional())
-        self.assertEqual(report.responsible_department, organisation)
+        self.assertEqual(report.responsible_department, department)
+        self.assertEqual(report.responsible_entity, entity)
 
-    def auto_assign_irrelevant(self):
-        # Associate a category to an organisation for auto-dispatching
-        organisation            = OrganisationEntity()
-        organisation.name_fr    = "My group"
-        organisation.type       = OrganisationEntity.DEPARTMENT
-        organisation.dependency = OrganisationEntity.objects.exclude(type__in=OrganisationEntity.ENTITY_TYPE)[0]
-        organisation.email      = "no-reply@cirb.irisnet.be"
-        organisation.save()
-
-        category                       = ReportCategory.objects.get(id=self.sample_post['report-category'])
-        category.organisation_regional = organisation
-        category.save()
-
+    def test_not_auto_assign_if_report_already_exists(self):
         # Create new report
         url = "%s?x=148360&y=171177" % reverse('report_new')
         response = self.client.post(url, self.sample_post, follow=True)
@@ -768,6 +769,41 @@ class ReportViewsTest(FMSTestCase):
 
         report = response.context['report']
 
-        # Auto-dispatching working for commune
+        # Associate a category to an organisation for auto-dispatching
+        entity            = OrganisationEntity()
+        entity.name_fr    = "My entity"
+        entity.type       = OrganisationEntity.COMMUNE
+        entity.email      = "entity@cirb.irisnet.be"
+        entity.save()
+
+        # Associate a category to an organisation for auto-dispatching
+        department            = OrganisationEntity()
+        department.name_fr    = "My group"
+        department.type       = OrganisationEntity.DEPARTMENT
+        department.dependency = entity
+        department.email      = "department@cirb.irisnet.be"
+        department.save()
+
+        self.group_mail_config.group = department
+        self.group_mail_config.save()
+
+        category                       = ReportCategory.objects.get(id=self.sample_post['report-category'])
+        category.organisation_communal = entity
+        category.save()
+
+        department.dispatch_categories.add(category)
+
+        # Assign report to another entity
+        report.responsible_entity = self.group.dependency
+        report.responsible_department = None
+        report.save()
+
+        # Check it's not auto-dispatching
+        report = Report.objects.get(id=report.id)
+
         self.assertFalse(report.is_regional())
-        self.assertNotEqual(report.responsible_department, organisation)
+        self.assertNotEqual(report.responsible_department, department)
+        self.assertNotEqual(report.responsible_entity, entity)
+
+        self.assertEqual(report.responsible_entity, self.group.dependency)
+        self.assertEqual(report.responsible_department, self.group)

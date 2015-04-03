@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# afuca <afuca@cirb.irisnet.be>, 2014
+# afuca <afuca@cirb.irisnet.be>, 2014-2015
 # ccorbesier <ccorbesier@cirb.irisnet.be>, 2013-2014
 # dfranklin <DFranklin@cirb.irisnet.be>, 2014
 # Jonathan Sanchez <jsanchezpando@cirb.irisnet.be>, 2013-2014
@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-11 15:58+0100\n"
-"PO-Revision-Date: 2014-12-11 14:58+0000\n"
-"Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2015-01-22 11:46+0100\n"
+"PO-Revision-Date: 2015-01-22 10:45+0000\n"
+"Last-Translator: afuca <afuca@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -364,7 +364,7 @@ msgid "Configure gestionnaire categories"
 msgstr "Configuration des catégories des gestionnaires"
 
 #: backoffice/templates/pro/manager_category_configuration.html:73
-#: backoffice/templates/pro/reports/_actions.html:512
+#: backoffice/templates/pro/reports/_actions.html:513
 #: backoffice/templates/pro/reports/merge.html:314
 #: fixmystreet/templates/reports/_documentreport.html:49
 #: fixmystreet/templates/reports/_documentreport.html:72
@@ -664,7 +664,7 @@ msgid ""
 msgstr "Signalez la résolution de l'incident. En cliquant sur ce bouton, vous envoyez un mail de confirmation au gestionnaire de voirie"
 
 #: backoffice/templates/pro/reports/_actions.html:385
-#: backoffice/templates/pro/reports/_actions.html:513
+#: backoffice/templates/pro/reports/_actions.html:514
 #: fixmystreet/templates/reports/show.html:328
 msgid "Confirm"
 msgstr "Confirmer"
@@ -745,6 +745,11 @@ msgstr "Domaine privé"
 msgctxt "report_refuse"
 msgid "Already in progress"
 msgstr "Déjà en cours de traitement"
+
+#: backoffice/templates/pro/reports/_actions.html:510
+msgctxt "report_refuse"
+msgid "Not for Sibelga eclairage"
+msgstr "Ne concerne pas Sibelga Eclairage Public"
 
 #: backoffice/templates/pro/reports/merge.html:5
 msgid "Reports reported in the same area"
@@ -1497,12 +1502,10 @@ msgid "Cannot set a private category to a public report"
 msgstr "Impossible d'attribuer une catégorie privée à un incident public"
 
 #: backoffice/views/ajax.py:131
-#, python-brace-format
 msgid "'{email}' is not a valid email address."
 msgstr "'{email}' n'est pas une adresse mail valide."
 
 #: backoffice/views/ajax.py:145
-#, python-brace-format
 msgid "Successfully sent to '{email}'."
 msgstr "Envoyé avec succès à '{email}'."
 
@@ -1591,17 +1594,17 @@ msgstr "Vous êtes désinscrit"
 msgid "You were not subscribed."
 msgstr "Vous n'êtes pas inscrit"
 
-#: backoffice/views/reports/updates.py:168
+#: backoffice/views/reports/updates.py:169
 msgid ""
 "Cannot turn incident public. The category of this incident may not be shown "
 "to the citizens."
 msgstr "Impossible de rendre cet incident public car sa catégorie ne peut être affichée aux citoyens."
 
-#: backoffice/views/reports/updates.py:203
+#: backoffice/views/reports/updates.py:204
 msgid "organisation entity TRANSFER : Generic error"
 msgstr "L'entité à laquelle vous essayez de transférer cet incident est momentanément indisponible. Veuillez réessayer plus tard. Si le problème persiste, veuillez contacter le support irisline@irisnet.be."
 
-#: backoffice/views/reports/updates.py:229
+#: backoffice/views/reports/updates.py:230
 msgid "organisation entity ASSIGN : Generic error"
 msgstr "L'entité à laquelle vous essayez d'assigner cet incident est momentanément indisponible. Veuillez réessayer plus tard. Si le problème persiste, veuillez contacter le support irisline@irisnet.be."
 
@@ -1871,8 +1874,8 @@ msgid "ANONYMOUS"
 msgstr "Anonyme"
 
 #: fixmystreet/models.py:1695 fixmystreet/models.py:2226
-#: fixmystreet/models.py:2345 fixmystreet/utils.py:206
-#: fixmystreet/utils.py:225 fixmystreet/utils.py:304
+#: fixmystreet/models.py:2345 fixmystreet/utils.py:207
+#: fixmystreet/utils.py:226 fixmystreet/utils.py:305
 #: fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:131
 #: fixmystreet/tests/history.py:849 fixmystreet/tests/history.py:853
@@ -1953,12 +1956,10 @@ msgid "Became public"
 msgstr "Mis à public"
 
 #: fixmystreet/models.py:2289
-#, python-brace-format
 msgid "Report refused by {user}"
 msgstr "Incident invalidé par {user}"
 
 #: fixmystreet/models.py:2290
-#, python-brace-format
 msgid "Report closed by {user}"
 msgstr "Incident clôturé par {user}"
 
@@ -1967,82 +1968,66 @@ msgid "Report pointed as solved"
 msgstr "Incident signalé comme résolu par {user}"
 
 #: fixmystreet/models.py:2292
-#, python-brace-format
 msgid "Report as been assigned to {related_new}"
 msgstr "Incident assigné à {related_new}"
 
 #: fixmystreet/models.py:2294
-#, python-brace-format
 msgid "Report has been approved by {user}"
 msgstr "Incident validé par {user}"
 
 #: fixmystreet/models.py:2295
-#, python-brace-format
 msgid "{related_new} is responsible for the report"
 msgstr "Incident assigné à {related_new}"
 
 #: fixmystreet/models.py:2297
-#, python-brace-format
 msgid "Applicant {related_new} is assigned to the report"
 msgstr "Incident assigné à {related_new}"
 
 #: fixmystreet/models.py:2298
-#, python-brace-format
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr "Incident de {related_old} assigné à {related_new}"
 
 #: fixmystreet/models.py:2299
-#, python-brace-format
 msgid "Contractor {related_new} is assigned to the report"
 msgstr "Incident assigné à l'éxécuteur de travaux : {related_new}"
 
 #: fixmystreet/models.py:2300
-#, python-brace-format
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr "Incident de {related_old} assigné à l'éxécuteur de travaux : {related_new}"
 
 #: fixmystreet/models.py:2302
-#, python-brace-format
 msgid "Report created by {user}"
 msgstr "Incident signalé par {user}"
 
 #: fixmystreet/models.py:2303
-#, python-brace-format
 msgid "Report updated by {user}"
 msgstr "Incident mis à jour par {user}"
 
 #: fixmystreet/models.py:2304
-#, python-brace-format
 msgid "Informations published by {user}"
 msgstr "Informations publiées par {user}"
 
 #: fixmystreet/models.py:2305
-#, python-brace-format
 msgid "Report planned to {date_planned}"
 msgstr "Planifié pour le {date_planned}"
 
 #: fixmystreet/models.py:2306
-#, python-brace-format
 msgid "Report merged with report #{merged_with_id}"
 msgstr "Incident fusionné avec l'incident : #{merged_with_id}"
 
 #: fixmystreet/models.py:2307
-#, python-brace-format
 msgid "Report reopen by {user}"
 msgstr "Incident réouvert par {user}"
 
 #: fixmystreet/models.py:2308
-#, python-brace-format
 msgid "Request to reopen report made by {user}"
 msgstr "Demande de réouverture de l’incident par {user}"
 
 #: fixmystreet/models.py:2309
-#, python-brace-format
 msgid "Report became private by {user}"
 msgstr "Incident mis à privé par {user}"
 
 #: fixmystreet/models.py:2310
-#, python-brace-format
 msgid "Report became public by {user}"
 msgstr "Incident mis à public par {user}"
 
@@ -2110,75 +2095,75 @@ msgstr ""
 msgid "^report/(\\d+)/pdf/(pro)?"
 msgstr ""
 
-#: fixmystreet/utils.py:230
+#: fixmystreet/utils.py:231
 msgid "acknowledge-creation"
 msgstr "signalé sur Fix My Street"
 
-#: fixmystreet/utils.py:232
+#: fixmystreet/utils.py:233
 msgid "announcement-affectation"
 msgstr "en traitement sur Fix My Street a changé de gestionnaire"
 
-#: fixmystreet/utils.py:233
+#: fixmystreet/utils.py:234
 msgid "announcement-processed"
 msgstr "clôturé sur Fix My Street"
 
-#: fixmystreet/utils.py:235
+#: fixmystreet/utils.py:236
 msgid "informations_published"
 msgstr "infos publiées sur Fix My Street"
 
-#: fixmystreet/utils.py:237
+#: fixmystreet/utils.py:238
 msgid "mail-pdf"
 msgstr "{user} a envoyé ce PDF"
 
-#: fixmystreet/utils.py:238
+#: fixmystreet/utils.py:239
 msgid "mark-as-done"
 msgstr "signalé comme resolu sur Fix My Street"
 
-#: fixmystreet/utils.py:240
+#: fixmystreet/utils.py:241
 msgid "notify-affectation"
 msgstr "vous a été assigné sur Fix My Street"
 
-#: fixmystreet/utils.py:241
+#: fixmystreet/utils.py:242
 msgid "notify-became-private"
 msgstr "devenue privé sur Fix My Street"
 
-#: fixmystreet/utils.py:242
+#: fixmystreet/utils.py:243
 msgid "notify-creation"
 msgstr "signalé sur Fix My Street"
 
-#: fixmystreet/utils.py:243
+#: fixmystreet/utils.py:244
 msgid "notify-merged"
 msgstr "fusionné sur Fix My Street"
 
-#: fixmystreet/utils.py:244
+#: fixmystreet/utils.py:245
 msgid "notify-planned"
 msgstr "planifié sur Fix My Street"
 
-#: fixmystreet/utils.py:245
+#: fixmystreet/utils.py:246
 msgid "notify-refused"
 msgstr "invalidé sur Fix My Street"
 
-#: fixmystreet/utils.py:246
+#: fixmystreet/utils.py:247
 msgid "notify-reopen"
 msgstr "réouverture sur Fix My Street"
 
-#: fixmystreet/utils.py:247
+#: fixmystreet/utils.py:248
 msgid "notify-subscription"
 msgstr "abonnement sur Fix My Street"
 
-#: fixmystreet/utils.py:248
+#: fixmystreet/utils.py:249
 msgid "notify-updates"
 msgstr "vous a été mis à jour sur Fix My Street"
 
-#: fixmystreet/utils.py:249
+#: fixmystreet/utils.py:250
 msgid "notify-validation"
 msgstr "validé sur Fix My Street"
 
-#: fixmystreet/utils.py:250
+#: fixmystreet/utils.py:251
 msgid "notify-reopen-request"
 msgstr "demande de réouverture"
 
-#: fixmystreet/utils.py:549
+#: fixmystreet/utils.py:550
 msgid "Digest of the day on Fix My Street"
 msgstr "Résumé journalier de Fix My Street"
 
@@ -2863,32 +2848,26 @@ msgid "External reference"
 msgstr "Référence externe"
 
 #: webhooks/inbound.py:149
-#, python-brace-format
 msgid "Report assignment was accepted by {third_party}."
 msgstr "La demande d'assignation de l'incident a été acceptée par {third_party}."
 
 #: webhooks/inbound.py:155
-#, python-brace-format
 msgid "Report assignment was rejected by {third_party}."
 msgstr "La demande d'assignation de l'incident a été rejetée par {third_party}."
 
 #: webhooks/inbound.py:161
-#, python-brace-format
 msgid "Report assignment was closed by {third_party}."
 msgstr "L'assignation de l'incident a été clôturée par {third_party}."
 
 #: webhooks/inbound.py:178
-#, python-brace-format
 msgid "Report transfer was accepted by {third_party}."
 msgstr "La demande de transfert de l'incident a été acceptée par {third_party}."
 
 #: webhooks/inbound.py:184
-#, python-brace-format
 msgid "Report transfer was rejected by {third_party}."
 msgstr "La demande de transfert de l'incident a été rejetée par {third_party}."
 
 #: webhooks/inbound.py:202
-#, python-brace-format
 msgid "Report transfer was closed by {third_party}."
 msgstr "Le transfert de l'incident a été clôturé par {third_party}."
 

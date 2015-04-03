@@ -60,6 +60,9 @@ def page(request):
 
 
 def update_current_language(request):
+    if 'from' not in request.REQUEST or 'language' not in request.REQUEST:
+        raise Http404()
+
     url = request.REQUEST.get("from")
     language = request.REQUEST.get("language")
     resolve_match = resolve(urlparse(url).path)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-11 16:15+0100\n"
+"POT-Creation-Date: 2015-01-22 11:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -356,7 +356,7 @@ msgid "Configure gestionnaire categories"
 msgstr ""
 
 #: backoffice/templates/pro/manager_category_configuration.html:73
-#: backoffice/templates/pro/reports/_actions.html:512
+#: backoffice/templates/pro/reports/_actions.html:513
 #: backoffice/templates/pro/reports/merge.html:314
 #: fixmystreet/templates/reports/_documentreport.html:49
 #: fixmystreet/templates/reports/_documentreport.html:72
@@ -656,7 +656,7 @@ msgid ""
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:385
-#: backoffice/templates/pro/reports/_actions.html:513
+#: backoffice/templates/pro/reports/_actions.html:514
 #: fixmystreet/templates/reports/show.html:328
 msgid "Confirm"
 msgstr ""
@@ -736,6 +736,11 @@ msgstr ""
 #: backoffice/templates/pro/reports/_actions.html:509
 msgctxt "report_refuse"
 msgid "Already in progress"
+msgstr ""
+
+#: backoffice/templates/pro/reports/_actions.html:510
+msgctxt "report_refuse"
+msgid "Not for Sibelga eclairage"
 msgstr ""
 
 #: backoffice/templates/pro/reports/merge.html:5
@@ -1490,12 +1495,10 @@ msgid "Cannot set a private category to a public report"
 msgstr ""
 
 #: backoffice/views/ajax.py:131
-#, python-brace-format
 msgid "'{email}' is not a valid email address."
 msgstr ""
 
 #: backoffice/views/ajax.py:145
-#, python-brace-format
 msgid "Successfully sent to '{email}'."
 msgstr ""
 
@@ -1584,17 +1587,17 @@ msgstr ""
 msgid "You were not subscribed."
 msgstr ""
 
-#: backoffice/views/reports/updates.py:168
+#: backoffice/views/reports/updates.py:169
 msgid ""
 "Cannot turn incident public. The category of this incident may not be shown "
 "to the citizens."
 msgstr ""
 
-#: backoffice/views/reports/updates.py:203
+#: backoffice/views/reports/updates.py:204
 msgid "organisation entity TRANSFER : Generic error"
 msgstr ""
 
-#: backoffice/views/reports/updates.py:229
+#: backoffice/views/reports/updates.py:230
 msgid "organisation entity ASSIGN : Generic error"
 msgstr ""
 
@@ -1864,8 +1867,8 @@ msgid "ANONYMOUS"
 msgstr ""
 
 #: fixmystreet/models.py:1695 fixmystreet/models.py:2226
-#: fixmystreet/models.py:2345 fixmystreet/utils.py:206
-#: fixmystreet/utils.py:225 fixmystreet/utils.py:304
+#: fixmystreet/models.py:2345 fixmystreet/utils.py:207
+#: fixmystreet/utils.py:226 fixmystreet/utils.py:305
 #: fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:131
 #: fixmystreet/tests/history.py:849 fixmystreet/tests/history.py:853
@@ -1946,12 +1949,10 @@ msgid "Became public"
 msgstr ""
 
 #: fixmystreet/models.py:2289
-#, python-brace-format
 msgid "Report refused by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:2290
-#, python-brace-format
 msgid "Report closed by {user}"
 msgstr ""
 
@@ -1960,82 +1961,66 @@ msgid "Report pointed as solved"
 msgstr ""
 
 #: fixmystreet/models.py:2292
-#, python-brace-format
 msgid "Report as been assigned to {related_new}"
 msgstr ""
 
 #: fixmystreet/models.py:2294
-#, python-brace-format
 msgid "Report has been approved by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:2295
-#, python-brace-format
 msgid "{related_new} is responsible for the report"
 msgstr ""
 
 #: fixmystreet/models.py:2297
-#, python-brace-format
 msgid "Applicant {related_new} is assigned to the report"
 msgstr ""
 
 #: fixmystreet/models.py:2298
-#, python-brace-format
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr ""
 
 #: fixmystreet/models.py:2299
-#, python-brace-format
 msgid "Contractor {related_new} is assigned to the report"
 msgstr ""
 
 #: fixmystreet/models.py:2300
-#, python-brace-format
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr ""
 
 #: fixmystreet/models.py:2302
-#, python-brace-format
 msgid "Report created by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:2303
-#, python-brace-format
 msgid "Report updated by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:2304
-#, python-brace-format
 msgid "Informations published by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:2305
-#, python-brace-format
 msgid "Report planned to {date_planned}"
 msgstr ""
 
 #: fixmystreet/models.py:2306
-#, python-brace-format
 msgid "Report merged with report #{merged_with_id}"
 msgstr ""
 
 #: fixmystreet/models.py:2307
-#, python-brace-format
 msgid "Report reopen by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:2308
-#, python-brace-format
 msgid "Request to reopen report made by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:2309
-#, python-brace-format
 msgid "Report became private by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:2310
-#, python-brace-format
 msgid "Report became public by {user}"
 msgstr ""
 
@@ -2103,75 +2088,75 @@ msgstr ""
 msgid "^report/(\\d+)/pdf/(pro)?"
 msgstr ""
 
-#: fixmystreet/utils.py:230
+#: fixmystreet/utils.py:231
 msgid "acknowledge-creation"
 msgstr ""
 
-#: fixmystreet/utils.py:232
+#: fixmystreet/utils.py:233
 msgid "announcement-affectation"
 msgstr ""
 
-#: fixmystreet/utils.py:233
+#: fixmystreet/utils.py:234
 msgid "announcement-processed"
 msgstr ""
 
-#: fixmystreet/utils.py:235
+#: fixmystreet/utils.py:236
 msgid "informations_published"
 msgstr ""
 
-#: fixmystreet/utils.py:237
+#: fixmystreet/utils.py:238
 msgid "mail-pdf"
 msgstr ""
 
-#: fixmystreet/utils.py:238
+#: fixmystreet/utils.py:239
 msgid "mark-as-done"
 msgstr ""
 
-#: fixmystreet/utils.py:240
+#: fixmystreet/utils.py:241
 msgid "notify-affectation"
 msgstr ""
 
-#: fixmystreet/utils.py:241
+#: fixmystreet/utils.py:242
 msgid "notify-became-private"
 msgstr ""
 
-#: fixmystreet/utils.py:242
+#: fixmystreet/utils.py:243
 msgid "notify-creation"
 msgstr ""
 
-#: fixmystreet/utils.py:243
+#: fixmystreet/utils.py:244
 msgid "notify-merged"
 msgstr ""
 
-#: fixmystreet/utils.py:244
+#: fixmystreet/utils.py:245
 msgid "notify-planned"
 msgstr ""
 
-#: fixmystreet/utils.py:245
+#: fixmystreet/utils.py:246
 msgid "notify-refused"
 msgstr ""
 
-#: fixmystreet/utils.py:246
+#: fixmystreet/utils.py:247
 msgid "notify-reopen"
 msgstr ""
 
-#: fixmystreet/utils.py:247
+#: fixmystreet/utils.py:248
 msgid "notify-subscription"
 msgstr ""
 
-#: fixmystreet/utils.py:248
+#: fixmystreet/utils.py:249
 msgid "notify-updates"
 msgstr ""
 
-#: fixmystreet/utils.py:249
+#: fixmystreet/utils.py:250
 msgid "notify-validation"
 msgstr ""
 
-#: fixmystreet/utils.py:250
+#: fixmystreet/utils.py:251
 msgid "notify-reopen-request"
 msgstr ""
 
-#: fixmystreet/utils.py:549
+#: fixmystreet/utils.py:550
 msgid "Digest of the day on Fix My Street"
 msgstr ""
 
@@ -2860,32 +2845,26 @@ msgid "External reference"
 msgstr ""
 
 #: webhooks/inbound.py:149
-#, python-brace-format
 msgid "Report assignment was accepted by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:155
-#, python-brace-format
 msgid "Report assignment was rejected by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:161
-#, python-brace-format
 msgid "Report assignment was closed by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:178
-#, python-brace-format
 msgid "Report transfer was accepted by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:184
-#, python-brace-format
 msgid "Report transfer was rejected by {third_party}."
 msgstr ""
 
 #: webhooks/inbound.py:202
-#, python-brace-format
 msgid "Report transfer was closed by {third_party}."
 msgstr ""
 

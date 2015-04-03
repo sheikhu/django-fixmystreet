@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# afuca <afuca@cirb.irisnet.be>, 2015
 # dfranklin <DFranklin@cirb.irisnet.be>, 2014
 # lafif <lafif@cirb.irisnet.be>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-09 10:42+0100\n"
-"PO-Revision-Date: 2014-12-09 09:42+0000\n"
-"Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2015-01-22 11:49+0100\n"
+"PO-Revision-Date: 2015-01-22 10:49+0000\n"
+"Last-Translator: afuca <afuca@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,6 +70,10 @@ msgstr "Het probleem wat u heeft gemeld bevindt zich op privé domein en valt bu
 #: fixmystreet/static/js/report_refused.js:22
 msgid "Cet incident a déjà été signalé et est en attente de traitement."
 msgstr "Het probleem wat u heeft gemeld werd reeds doorgegeven en is in behandeling."
+
+#: fixmystreet/static/js/report_refused.js:23
+msgid "Not for Sibelga eclairage"
+msgstr "Niet voor Sibelga openbare verlichting"
 
 #: fixmystreet/static/js/reports_show_pro.js:39
 msgid ""
