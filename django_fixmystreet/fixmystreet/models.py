@@ -158,7 +158,7 @@ class FMSUser(User):
 
     def get_display_name(self):
         if not self.first_name and not self.last_name:
-            return _('A citizen')
+            return unicode(_(u'A citizen'))
         else:
             return self.get_full_name()
 
