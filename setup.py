@@ -36,6 +36,7 @@ install_requires = [
     'djangorestframework==2.4.4',
     'python-dateutil==1.5',
     'django-ckeditor==4.4.6',
+    'python-logstash==0.4.2',
 ]
 
 dev_require = [

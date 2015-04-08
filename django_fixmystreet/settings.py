@@ -191,6 +191,7 @@ else:
         print "WARNING: running `make install` in local?"
         print e
 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -217,21 +218,32 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler',
-        }
+        },
+        'logstash': {
+            'level': 'DEBUG',
+            'class': 'logstash.LogstashHandler',
+            'host': 'lg.irisnet.be',  #lg.irisnet.be / 195.244.165.207
+            'port': 10514,  # Default value: 5959
+            # 'filters': ['require_debug_false'],
+            'version': 1,  # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
+            # 'message_type': 'logstash',  # 'type' field in logstash message. Default value: 'logstash'.
+            # 'fqdn': False,  # Fully qualified domain name. Default value: false.
+            'tags': ['fixmystreet'],  # list of tags. Default: None.
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'mail_admins'],
+            'handlers': ['console', 'mail_admins', 'logstash'],
             'level': 'INFO',
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['console', 'mail_admins'],
+            'handlers': ['console', 'mail_admins', 'logstash'],
             'level': 'INFO',
             'propagate': False,
         },
         'django_fixmystreet': {
-            'handlers': ['console', 'mail_admins'],
+            'handlers': ['console', 'mail_admins', 'logstash'],
             'level': 'INFO',
         }
     }
