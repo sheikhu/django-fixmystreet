@@ -224,11 +224,11 @@ LOGGING = {
             'class': 'logstash.LogstashHandler',
             'host': 'lg.irisnet.be',  #lg.irisnet.be / 195.244.165.207
             'port': 10514,  # Default value: 5959
-            # 'filters': ['require_debug_false'],
+            'filters': ['require_debug_false'],
             'version': 1,  # Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
             # 'message_type': 'logstash',  # 'type' field in logstash message. Default value: 'logstash'.
             # 'fqdn': False,  # Fully qualified domain name. Default value: false.
-            'tags': ['fixmystreet'],  # list of tags. Default: None.
+            'tags': ['fixmystreet', 'django', ENVIRONMENT],  # list of tags. Default: None.
         },
     },
     'loggers': {
