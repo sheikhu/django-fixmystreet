@@ -23,7 +23,7 @@ def reporting_list(request, message=""):
         ls = os.listdir(reporting_root)
 
         for path in ls:
-            xls_file = re.search(r'xls$', path)
+            xls_file = re.search(r'xlsx$', path)
             if xls_file or re.match(r"\d+_\d+\.\w+", path):
                 f = {
                     'path': path,
