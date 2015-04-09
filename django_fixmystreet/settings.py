@@ -192,6 +192,12 @@ else:
         print e
 
 
+handlers = None
+if ENVIRONMENT == 'production':
+    handlers = ['console', 'mail_admins']
+else:
+    handlers = ['console', 'mail_admins', 'logstash']
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -233,17 +239,17 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'mail_admins', 'logstash'],
+            'handlers': handlers,
             'level': 'INFO',
             'propagate': True,
         },
         'django.request': {
-            'handlers': ['console', 'mail_admins', 'logstash'],
+            'handlers': handlers,
             'level': 'INFO',
             'propagate': False,
         },
         'django_fixmystreet': {
-            'handlers': ['console', 'mail_admins', 'logstash'],
+            'handlers': handlers,
             'level': 'INFO',
         }
     }
