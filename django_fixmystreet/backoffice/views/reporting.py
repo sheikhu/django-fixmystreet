@@ -1,5 +1,5 @@
 import os, re
-from datetime import date
+from datetime import date, datetime
 
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
@@ -24,12 +24,18 @@ def reporting_list(request, message=""):
 
         for path in ls:
             xls_file = re.search(r'xlsx$', path)
-            if xls_file or re.match(r"\d+_\d+\.\w+", path):
+
+            archive_file_date = None
+            archive_file_date_match = re.match(r"\d+_(\d+)\.\w+", path)
+            if archive_file_date_match:
+                archive_file_date = datetime.strptime(archive_file_date_match.group(1), '%y%m')
+
+            if xls_file or archive_file_date:
                 f = {
                     'path': path,
                     'stat': os.stat(os.path.join(reporting_root, path))
                 }
-                f['modified_date'] = date.fromtimestamp(int(f['stat'].st_mtime))
+                f['modified_date'] = archive_file_date or date.fromtimestamp(int(f['stat'].st_mtime))
 
                 # Check if xls or pdf
                 if xls_file:
