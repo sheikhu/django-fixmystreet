@@ -11,6 +11,8 @@
     var allowed_file_types = [];
     for (var k in file_types) { allowed_file_types = allowed_file_types.concat(file_types[k]); }
     var file_max_size = 10000000, // 10MB
+        file_max_size_total = 20000000, // 20MB
+        file_size_total = 0,
         file_count = 0,
         inputfile_count = 0;
 
@@ -95,6 +97,7 @@
             $("#id_files-TOTAL_FORMS").val(file_count);
         };
 
+
         for (var i = 0; i < inputFile.files.length; i++) {
             var file = inputFile.files[i];
 
@@ -104,16 +107,25 @@
             }
 
             // validation of the file
+            if(allowed_file_types.indexOf(file.type)==-1 ){
+                $('#file-type-error').modal();
+                continue;
+            }
             if(file.size === 0) {
                 alert(gettext('Filesize must be greater than 0'));
                 continue;
             }
-            else if(file.size > file_max_size) {
+            if(file.size > file_max_size) {
                 $('#file-too-large-error').modal();
                 continue;
             }
-            else if(allowed_file_types.indexOf(file.type)==-1 ){
-                $('#file-type-error').modal();
+
+            // Add this file size to the total of current selected files
+            file_size_total += file.size;
+            if(file_size_total > file_max_size_total) {
+                // Total is too much, decrease this file size from the current total
+                file_size_total -= file.size;
+                $('#file-total-too-large-error').modal();
                 continue;
             }
 

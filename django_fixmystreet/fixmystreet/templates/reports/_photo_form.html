@@ -45,7 +45,7 @@
                     </span>
                 </div>
 
-                
+
             </div>
         </div>
     </div>
@@ -60,6 +60,20 @@
         <p class="lead">
             <strong>
                 {% trans "File too large: 10 Mb per image maximum." %}
+            </strong>
+        </p>
+    </div>
+</div>
+
+<div id="file-total-too-large-error" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>{% trans "Validation error" %}</h3>
+    </div>
+    <div class="modal-body">
+        <p class="lead">
+            <strong>
+                {% trans "Total file too large: total 20 Mb maximum." %}
             </strong>
         </p>
     </div>
