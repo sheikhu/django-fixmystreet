@@ -3,18 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# afuca <afuca@cirb.irisnet.be>, 2014-2015
+# afuca <afuca@cirb.brussels>, 2014-2015
 # dfranklin <DFranklin@cirb.irisnet.be>, 2014
 # Jonathan Sanchez <jsanchezpando@cirb.irisnet.be>, 2014
-# lafif <lafif@cirb.irisnet.be>, 2014
+# lafif <lafif@cirb.irisnet.be>, 2014-2015
 # tdesany2 <transifex@desany.eu>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-04 11:48+0200\n"
-"PO-Revision-Date: 2015-05-04 09:49+0000\n"
-"Last-Translator: afuca <afuca@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2015-05-06 15:06+0200\n"
+"PO-Revision-Date: 2015-05-06 12:58+0000\n"
+"Last-Translator: lafif <lafif@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2625,7 +2625,7 @@ msgstr "Het bestand is te zwaar : maximum 10 Mb per foto."
 
 #: fixmystreet/templates/reports/_photo_form.html:76
 msgid "Total file too large: total 20 Mb maximum."
-msgstr ""
+msgstr "Het bestand is te zwaar : maximum 20 Mb."
 
 #: fixmystreet/templates/reports/_photo_form.html:90
 msgid ""
