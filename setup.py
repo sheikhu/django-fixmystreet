@@ -75,9 +75,7 @@ setup(
     zip_safe=False,
     install_requires=install_requires,
     dependency_links=[
-        'https://pypi.python.org/packages/source/d/django-piston/django-piston-0.2.3.tar.gz#md5=8b040d426793cf22ce89543e059cd6e1#egg=django-piston-0.2.3',
-        'https://github.com/cirb/mobileserverstatus/archive/1.0.zip#egg=mobileserverstatus-1.0',
-        'http://trac.transifex.org/files/deps/django-piston-0.2.3.tar.gz#egg=piston'
+        'https://github.com/cirb/mobileserverstatus/archive/1.0.zip#egg=mobileserverstatus-1.0'
     ],
     extras_require={
         'dev': dev_require
