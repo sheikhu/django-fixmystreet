@@ -106,7 +106,7 @@
             var file = inputFile.files[i];
 
             if (!file) {
-                //~ AddFileToView(form_new, null);
+                AddFileToView(form_new, null);
                 continue;
             }
 
