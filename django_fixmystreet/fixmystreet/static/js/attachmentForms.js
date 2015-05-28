@@ -86,8 +86,11 @@
 
             var removeThumbnail = form_new.find('.removeThumbnail')[0];
             removeThumbnail.addEventListener('click', function() {
-                $(this).closest('.row-fluid').remove();
-                // @TODO: Remove file from <input:file>
+                $(this).closest('.row-fluid').parent().parent().remove();
+                file_size_total -= file.size;
+
+                file_count--;
+                $("#id_files-TOTAL_FORMS").val(file_count);
             });
 
             AddFileToView(form_new, file);
@@ -98,11 +101,12 @@
         };
 
 
+        var fileFailed = false;
         for (var i = 0; i < inputFile.files.length; i++) {
             var file = inputFile.files[i];
 
             if (!file) {
-                AddFileToView(form_new, null);
+                //~ AddFileToView(form_new, null);
                 continue;
             }
 
@@ -117,6 +121,7 @@
             }
             if(file.size > file_max_size) {
                 $('#file-too-large-error').modal();
+                fileFailed = true;
                 continue;
             }
 
@@ -126,22 +131,15 @@
                 // Total is too much, decrease this file size from the current total
                 file_size_total -= file.size;
                 $('#file-total-too-large-error').modal();
+                fileFailed = true;
                 continue;
             }
 
             $.fileExif(file, exifCallback);
+        }
 
-            /*if(file.lastModifiedDate) {
-                // Append file creation date
-                var fileDate = new Date(file.lastModifiedDate);
-                day = fileDate.getDate();
-                month = fileDate.getMonth()+1;
-                year = fileDate.getFullYear();
-                hour = fileDate.getHours();
-                minute = fileDate.getMinutes();
-
-                form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
-            }*/
+        if (fileFailed) {
+            return;
         }
 
         var oldInput = $(inputFile).remove();
