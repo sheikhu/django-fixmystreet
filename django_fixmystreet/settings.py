@@ -263,7 +263,7 @@ elif ENVIRONMENT == "staging":
     SITE_ID = 2
     ALLOWED_HOSTS = ("fixmystreet.irisnetlab.be", )
 
-elif ENVIRONMENT == "production":
+elif ENVIRONMENT == "production" or ENVIRONMENT == "prod":
     SITE_ID = 1
     ALLOWED_HOSTS = ("fixmystreet.irisnet.be", )
 
