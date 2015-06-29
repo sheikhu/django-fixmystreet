@@ -65,7 +65,13 @@ def reporting_download(request, path):
     try:
         reporting_file_path = os.path.join(settings.REPORTING_ROOT, str(organisation.id), str(path))
 
-        reporting_file_type, reporting_file_encoding =  mimetypes.guess_type(reporting_file_path)
+        # Tricky stuff: the reports coming from BO platform are Windows generated and do not support mimetype.
+        # So, force the correct xlsx mimetype
+        xls_file = re.search(r'xlsx$', path)
+        if xls_file:
+            reporting_file_type, reporting_file_encoding = ('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', None)
+        else:
+            reporting_file_type, reporting_file_encoding =  mimetypes.guess_type(reporting_file_path)
 
         reporting_file = open(reporting_file_path, 'r')
         response = HttpResponse(reporting_file.read(), mimetype=reporting_file_type)
