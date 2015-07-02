@@ -23,7 +23,7 @@ if ENVIRONMENT != "production":
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 if ENVIRONMENT == "staging":
-    EMAIL_BACKEND = 'middleware.smtpforward.EmailBackend'
+    EMAIL_BACKEND = 'django_fixmystreet.middleware.smtpforward.EmailBackend'
     TO_LIST = 'django.dev@cirb.irisnet.be'
 
 
