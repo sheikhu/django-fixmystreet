@@ -18,7 +18,7 @@ if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
 else:
     DEBUG = False
 
-if ENVIRONMENT != "production":
+if ENVIRONMENT != "production" and ENVIRONMENT != "prod":
     #disable mail in non-production environment
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -193,7 +193,7 @@ else:
 
 
 handlers = None
-if ENVIRONMENT == 'production':
+if ENVIRONMENT == 'production' or ENVIRONMENT == "prod":
     handlers = ['console', 'mail_admins']
 else:
     handlers = ['console', 'mail_admins', 'logstash']
@@ -272,7 +272,7 @@ try:
 except ImportError:
     pass
 
-if ENVIRONMENT != "production" and EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
+if ENVIRONMENT != "production" and ENVIRONMENT != "prod" and EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
     #disable mail in non-production environment
     raise Exception('Are you a fool ???? Do not send email as if you were in prod!!!')
 
@@ -294,7 +294,7 @@ if not 'DATABASES' in locals():
 if 'EMAIL_ADMIN' in os.environ:
     EMAIL_ADMIN = os.environ['EMAIL_ADMIN']
 else:
-    EMAIL_ADMIN = 'jsanchezpando@cirb.irisnet.be'
+    EMAIL_ADMIN = 'django.dev@cirb.irisnet.be'
 ADMIN_EMAIL = EMAIL_ADMIN
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
