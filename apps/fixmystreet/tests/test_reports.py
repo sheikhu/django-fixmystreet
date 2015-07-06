@@ -101,7 +101,18 @@ class NotificationTest(FMSTestCase):
         self.citizen.save()
 
     def testReportFileType(self):
-        new_report = Report(status=Report.CREATED, category=self.category, description='Just a test', postalcode=1000)
+        new_report = Report(
+            status=Report.CREATED,
+            secondary_category=self.secondary_category,
+            category=self.category,
+            description='Just a test',
+            postalcode=1000,
+            address='my address',
+            point=dict_to_point({"x": '149776', "y": '170105'}),
+            address_number='6h',
+            created_by=self.manager_etterbeek
+        )
+        new_report.save()
 
         reportFile = ReportFile(file_type=ReportFile.PDF, report=new_report)
         self.assertTrue(reportFile.is_pdf())

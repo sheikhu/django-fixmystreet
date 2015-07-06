@@ -779,7 +779,7 @@ class Report(UserTrackedModel):
         return self.territorial_entity().name
 
     def display_category(self):
-        return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name
+        return "%s / %s : %s" % (self.category.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name)
 
     def display_address(self):
         return "%s, %s (%s %s)" % (self.address, self.address_number, self.postalcode, self.get_address_commune_name())
