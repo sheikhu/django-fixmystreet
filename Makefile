@@ -23,10 +23,9 @@ $(BIN_PATH):
 	curl https://bootstrap.pypa.io/get-pip.py  | $(BIN_PATH)/python
 
 clean:
-	cd $(INSTALL_PATH); rm -rf bin lib lib64 include # virtualenv
-	rm -rf bin libs bootstrap.py src # buildout
-	rm -rf reports # Jenkins
-	rm -rf build dist static
+	rm -rf $(INSTALL_PATH)
+	rm -rf reports
+	rm -rf static
 
 collectstatic:
 	$(BIN_PATH)/manage.py collectstatic --noinput
