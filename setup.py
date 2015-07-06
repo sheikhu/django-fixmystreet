@@ -1,7 +1,7 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
 
-version = '3.0.62.dev0'
+version = '4.0.0.dev0'
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -12,47 +12,41 @@ long_description = '\n\n'.join([
 ])
 
 install_requires = [
-    'django==1.5.12',
-    'django-transmeta==0.6.9',
-    'django-stdimage==0.2.2',
-    'south==1.0.1',
-    'django-extensions==1.0.1',
-    'docutils==0.11',
-    'simplejson==1.9.3',
-    'transifex-client==0.11.1.beta',
+    'django==1.8.2',
 
-    'django-extensions==1.0.1',
-    'django-stdimage==0.2.2',
-    'django-transmeta==0.6.9',
-
-    'django-simple-history==1.3.0',
-    'django-piston==0.2.3',
-    'gunicorn==18.0',
-    'setproctitle==1.1.8',
-
-    'mobileserverstatus==1.0',
-
-    'requests==2.4.3',
-    'djangorestframework==2.4.4',
-    'python-dateutil==1.5',
     'django-ckeditor==4.4.6',
+    'django-extensions==1.5.5',
+    #~ 'django-piston==0.2.3',
+    'djangorestframework==2.4.4',
+    'django-simple-history==1.6.2',
+    'django-stdimage==0.2.2',
+    'django-transmeta==0.6.9',
+
+    'python-dateutil==1.5',
     'python-logstash==0.4.2',
+
+    'docutils==0.11',
+    'gunicorn==18.0',
+    'mobileserverstatus==1.0.2',
+    'requests==2.4.3',
+    'setproctitle==1.1.8',
+    'transifex-client==0.11.1.beta',
 ]
 
 dev_require = [
-    'django-debug-toolbar==0.9.4',
-    'ipython',
-    'zest.releaser==3.50',
-    # 'django-pdb'
+    'django-debug-toolbar==1.3.2',
     # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
     'django-jenkins==0.15.0',
+
     'coverage',
     'flake8',
-
+    'ipython',
     # this following package depend on system requirements,
     # must be installed on system for prod
     'pillow==2.7.0',
-    'psycopg2'
+    'psycopg2==2.6.1',
+
+    'zest.releaser==3.50',
 ]
 
 setup(
@@ -70,12 +64,12 @@ setup(
     author_email='TODO@cirb.irisnet.be',
     url='',
     license='GPL',
-    packages=['django_fixmystreet'],
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
     dependency_links=[
-        'https://github.com/cirb/mobileserverstatus/archive/1.0.zip#egg=mobileserverstatus-1.0'
+        'https://github.com/cirb/mobileserverstatus/archive/1.0.2.zip#egg=mobileserverstatus-1.0.2'
     ],
     extras_require={
         'dev': dev_require

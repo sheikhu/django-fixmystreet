@@ -1,5 +1,5 @@
 .PHONY        = install init html-doc install develop test jenkins createdb dropdb scratchdb clean
-APP_NAME      = fixmystreet backoffice fmsproxy
+APP_NAME      = apps.fixmystreet apps.backoffice apps.fmsproxy
 INSTALL_PATH  = $(abspath env)
 BIN_PATH      = $(INSTALL_PATH)/bin
 SRC_ROOT      = django_fixmystreet
@@ -25,12 +25,12 @@ $(BIN_PATH):
 collectstatic:
 	$(BIN_PATH)/manage.py collectstatic --noinput
 
-django_fixmystreet/local_settings.py:
-	cp django_fixmystreet/local_settings_staging.py django_fixmystreet/local_settings.py
-	edit django_fixmystreet/local_settings.py
+fixmystreet/local_settings.py:
+	cp fixmystreet/local_settings_staging.py fixmystreet/local_settings.py
+	edit fixmystreet/local_settings.py
 
 migrate:
-	$(BIN_PATH)/manage.py syncdb --migrate
+	$(BIN_PATH)/manage.py migrate
 
 install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop -Z
@@ -45,18 +45,17 @@ run: $(BIN_PATH)
 	$(BIN_PATH)/manage.py runserver
 
 # generate new migration script
-schemamigration:
-	$(BIN_PATH)/manage.py schemamigration $(APP_NAME) --auto
+migrations:
+	$(BIN_PATH)/manage.py makemigrations
 
 test: $(BIN_PATH)/manage.py
 	$(BIN_PATH)/manage.py test $(APP_NAME)
-	$(MAKE) test-js
 
 test-js:
-	testem ci -t django_fixmystreet/fixmystreet/static/tests/index.html
+	testem ci -t apps/fixmystreet/static/tests/index.html
 
 test-js-tdd:
-	testem tdd -t django_fixmystreet/fixmystreet/static/tests/index.html
+	testem tdd -t apps/fixmystreet/static/tests/index.html
 
 lint:
 	$(BIN_PATH)/flake8 --exclude migrations $(SRC_ROOT) || echo "lint errors"
