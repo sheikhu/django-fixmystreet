@@ -1,95 +1,87 @@
 # Django settings for fixmystreet project.
-import os
-import sys
-import subprocess
+import os, sys, subprocess
 
-PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = PROJECT_PATH
 
-# supported value of ENVIRONMENT are dev, jenkins, staging, production
+# PATH
+PROJECT_PATH   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR       = PROJECT_PATH
+REPORTING_ROOT = os.environ.get('REPORTING_ROOT', os.path.join(BASE_DIR, 'reporting'))
+LOCALE_PATHS   = (os.path.join(PROJECT_PATH, 'locale'),)
+
+
+# ENVIRONMENT
 if "ENV" in os.environ:
     ENVIRONMENT = os.environ['ENV']
 else:
     ENVIRONMENT = "local"
 
-if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
-    DEBUG = True
-    TEMPLATE_DEBUG = True
-else:
-    DEBUG = False
 
-if ENVIRONMENT != "production" and ENVIRONMENT != "prod":
-    #disable mail in non-production environment
+# Manage settings according to environment
+if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
+    DEBUG          = True
+    TEMPLATE_DEBUG = True
+
+    # Disable mail in non-production environment
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-if ENVIRONMENT == "staging":
+    SITE_ID = 3
+    ALLOWED_HOSTS = ("*", )
+
+elif ENVIRONMENT == "staging":
     EMAIL_BACKEND = 'middleware.smtpforward.EmailBackend'
-    TO_LIST = 'django.dev@cirb.irisnet.be'
+    TO_LIST       = 'django.dev@cirb.irisnet.be'
+    SITE_ID       = 2
+    ALLOWED_HOSTS = ("fixmystreet.irisnetlab.be", )
+
+else:
+    DEBUG         = False
+    SITE_ID       = 1
+    ALLOWED_HOSTS = ("fixmystreet.irisnet.be", )
 
 
-LOGIN_REQUIRED_URL = '^/(.*)/pro/'
+# VERSION
+import pkg_resources
+VERSION = pkg_resources.require("django-fixmystreet")[0].version
 
-LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'fr')
-GA_CODE = os.environ.get('GA_CODE', '')
-SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
-ADMINS = (('Django Dev Team', 'django.dev@cirb.irisnet.be'),)
-SERVER_EMAIL = "fixmystreet@cirb.irisnet.be"
 
-EMAIL_SUBJECT_PREFIX = "[DJA-{0}] ".format(ENVIRONMENT[0:4])
-
+# MEDIA
 MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
-REPORTING_ROOT = os.environ.get('REPORTING_ROOT', os.path.join(BASE_DIR, 'reporting'))
-
-# CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, 'uploads')
-CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
+MEDIA_URL  = '/media/'
 
 
+# STATIC
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL  = '/static/'
 
-LOCALE_PATHS = (os.path.join(PROJECT_PATH, 'locale'),)
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-DEFAULT_FROM_EMAIL = "Fix My Street<noreply@fixmystreet.irisnet.be>"
+if not DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
-MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
 
-POSTGIS_TEMPLATE = 'template_postgis'
+# SOME DJANGO VAR
+ADMINS                = (('Django Dev Team', 'django.dev@cirb.irisnet.be'),)
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX       = r'^/.*'
+DATE_FORMAT           = "d-m-Y H:i"
+DATETIME_FORMAT       = "d-m-Y H:i"
+LOGIN_REQUIRED_URL    = '^/(.*)/pro/'
+GA_CODE               = os.environ.get('GA_CODE', '')
+ROOT_URLCONF          = 'fixmystreet_project.urls'
+SECRET_KEY            = os.environ.get('SECRET_KEY', 'dev')
+SESSION_SERIALIZER    = 'django.contrib.sessions.serializers.PickleSerializer'
+TIME_ZONE             = 'Europe/Brussels'
 
-PROXY_URL = "http://gis.irisnet.be/"
-URBIS_URL = "/urbis/"
-if ENVIRONMENT == "local":
-    URBIS_URL = PROXY_URL
-
-TIME_ZONE = 'Europe/Brussels'
-
-FILE_UPLOAD_PERMISSIONS = 0644
-DATE_FORMAT = "d-m-Y H:i"
-DATETIME_FORMAT = "d-m-Y H:i"
 
 # Max file upload size
 MAX_UPLOAD_SIZE = "15000000"
+FILE_UPLOAD_PERMISSIONS = 0644
 
-#Max number of items per pagination
-MAX_ITEMS_PAGE = 10
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-
+# LANGUAGES
 USE_I18N = True
-REGISTRATION_OPEN = False
-ROOT_URLCONF = 'fixmystreet_project.urls'
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_URLS_REGEX = r'^/.*'
-
-
-if ENVIRONMENT == "local":
-    proc = subprocess.Popen('{0} {1}/setup.py --version'.format(sys.executable, PROJECT_PATH), stdout=subprocess.PIPE, shell=True)
-    (out, err) = proc.communicate()
-    VERSION = out
-else:
-    import pkg_resources
-    VERSION = pkg_resources.require("django-fixmystreet")[0].version
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'fr')
 
 gettext = lambda s: s
 LANGUAGES = (
@@ -98,7 +90,7 @@ LANGUAGES = (
     ('nl', gettext('Dutch')),
 )
 
-# include request object in template to determine active page
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.media',
@@ -109,6 +101,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'apps.fixmystreet.context_processor.domain',
     'apps.fixmystreet.context_processor.environment',
 )
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -121,6 +114,7 @@ MIDDLEWARE_CLASSES = (
     'apps.fixmystreet.utils.CurrentUserMiddleware',
     'apps.fixmystreet.utils.CorsMiddleware',
 )
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -151,6 +145,7 @@ INSTALLED_APPS = (
     'mobileserverstatus',
 )
 
+
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
@@ -158,26 +153,7 @@ TEMPLATE_LOADERS = (
 )
 
 
-if ENVIRONMENT != 'local' and ENVIRONMENT != 'jenkins':
-    INSTALLED_APPS += ('gunicorn', )
-else:
-    try:
-        __import__('debug_toolbar')
-        INSTALLED_APPS += ('debug_toolbar', )
-        MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-
-        __import__('django_jenkins')
-        INSTALLED_APPS += ('django_jenkins',)
-        PROJECT_APPS = ('fixmystreet',)
-        JENKINS_TASKS = (
-            'django_jenkins.tasks.run_flake8',
-            'django_jenkins.tasks.with_coverage',
-        )
-    except ImportError, e:
-        print "WARNING: running `make install` in local?"
-        print e
-
-
+# LOGGING
 handlers = None
 if ENVIRONMENT == 'production' or ENVIRONMENT == "prod":
     handlers = ['console', 'mail_admins']
@@ -241,27 +217,29 @@ LOGGING = {
     }
 }
 
-if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
-    SITE_ID = 3
-    ALLOWED_HOSTS = ("*", )
 
-elif ENVIRONMENT == "staging":
-    SITE_ID = 2
-    ALLOWED_HOSTS = ("fixmystreet.irisnetlab.be", )
+# EMAIL
+if 'EMAIL_ADMIN' in os.environ:
+    EMAIL_ADMIN = os.environ['EMAIL_ADMIN']
+else:
+    EMAIL_ADMIN = 'django.dev@cirb.irisnet.be'
 
-elif ENVIRONMENT == "production" or ENVIRONMENT == "prod":
-    SITE_ID = 1
-    ALLOWED_HOSTS = ("fixmystreet.irisnet.be", )
+ADMIN_EMAIL          = EMAIL_ADMIN
+DEFAULT_FROM_EMAIL   = "Fix My Street<noreply@fixmystreet.irisnet.be>"
+EMAIL_HOST           = os.environ.get('EMAIL_HOST', 'localhost')
+EMAIL_SUBJECT_PREFIX = "[DJA-{0}] ".format(ENVIRONMENT[0:4])
+SERVER_EMAIL         = "fixmystreet@cirb.irisnet.be"
 
+
+# Load local settings
 try:
-    from local_settings import * # flake8: noqa
+    from local_settings import *
 except ImportError:
     pass
 
-if ENVIRONMENT != "production" and ENVIRONMENT != "prod" and EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
-    #disable mail in non-production environment
-    raise Exception('Are you a fool ???? Do not send email as if you were in prod!!!')
 
+# DATABASES
+POSTGIS_TEMPLATE = 'template_postgis'
 
 if not 'DATABASES' in locals():
     DATABASES = {
@@ -277,16 +255,17 @@ if not 'DATABASES' in locals():
             }
         }
     }
-if 'EMAIL_ADMIN' in os.environ:
-    EMAIL_ADMIN = os.environ['EMAIL_ADMIN']
-else:
-    EMAIL_ADMIN = 'django.dev@cirb.irisnet.be'
-ADMIN_EMAIL = EMAIL_ADMIN
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-if not DEBUG:
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
+# URBIS
+PROXY_URL = "http://gis.irisnet.be/"
+URBIS_URL = "/urbis/"
+
+if ENVIRONMENT == "local":
+    URBIS_URL = PROXY_URL
+
+
+# FMSPROXY
 if 'FMSPROXY_URL' in os.environ:
     FMSPROXY_URL = os.environ['FMSPROXY_URL']
 
@@ -295,6 +274,7 @@ if 'FMSPROXY_REQUEST_SIGNATURE_KEY' in os.environ:
 
 if 'PDF_PRO_TOKEN_KEY' in os.environ:
     PDF_PRO_TOKEN_KEY = os.environ['PDF_PRO_TOKEN_KEY']
+
 
 # API
 REST_FRAMEWORK = {
@@ -315,6 +295,9 @@ REST_FRAMEWORK = {
     ),
 }
 
+
+# CKEDITOR
+CKEDITOR_UPLOAD_PATH = MEDIA_ROOT
 CKEDITOR_CONFIGS = {
    'default': {
        'toolbar': [ ['Source','-','AjaxSave','Preview','-','Templates'],
@@ -335,3 +318,34 @@ CKEDITOR_CONFIGS = {
 }
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
 CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, "uploads")
+
+
+# DJANGO-REGISTRATION
+REGISTRATION_OPEN = False
+
+
+# DEBUG TOOLBAR
+if ENVIRONMENT != 'local' and ENVIRONMENT != 'jenkins':
+    INSTALLED_APPS += ('gunicorn', )
+else:
+    try:
+        __import__('debug_toolbar')
+        INSTALLED_APPS += ('debug_toolbar', )
+        MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+
+        __import__('django_jenkins')
+        INSTALLED_APPS += ('django_jenkins',)
+        PROJECT_APPS = ('fixmystreet',)
+        JENKINS_TASKS = (
+            'django_jenkins.tasks.run_flake8',
+            'django_jenkins.tasks.with_coverage',
+        )
+    except ImportError, e:
+        print "WARNING: running `make install` in local?"
+        print e
+
+
+# SETTINGS SECURITY
+if ENVIRONMENT != "production" and ENVIRONMENT != "prod" and EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
+    #disable mail in non-production environment
+    raise Exception('Are you a fool ???? Do not send email as if you were in prod!!!')
