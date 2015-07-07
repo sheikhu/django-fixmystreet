@@ -339,7 +339,7 @@ class GroupMailConfig(models.Model):
     digest_other      = models.BooleanField(default=False, verbose_name=_('Digest other'))
 
     # This config is related to this group:
-    group = models.ForeignKey(OrganisationEntity, limit_choices_to={"type": OrganisationEntity.DEPARTMENT}, unique=True)
+    group = models.OneToOneField(OrganisationEntity, limit_choices_to={"type": OrganisationEntity.DEPARTMENT})
 
     def get_manager_recipients(self, author=None):
         recipients = []
@@ -671,7 +671,7 @@ class Report(UserTrackedModel):
     point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=_("Location"))
     address_number = models.CharField(max_length=255, verbose_name=_("Address Number"))
-    address_number_as_int = models.IntegerField(max_length=255)
+    address_number_as_int = models.IntegerField()
     address_regional = models.BooleanField(default=False)
     postalcode = models.CharField(max_length=4, verbose_name=_("Postal Code"))
     description = models.TextField(null=True, blank=True)
@@ -707,7 +707,7 @@ class Report(UserTrackedModel):
     )
 
     contractor = models.ForeignKey(OrganisationEntity, related_name='assigned_reports', null=True, blank=True)
-    previous_managers = models.ManyToManyField('FMSUser', related_name='previous_reports', null=True, blank=True)
+    previous_managers = models.ManyToManyField('FMSUser', related_name='previous_reports', blank=True)
 
     merged_with = models.ForeignKey('Report', related_name='merged_reports', null=True, blank=True)
 
