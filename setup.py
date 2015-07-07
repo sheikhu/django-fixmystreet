@@ -14,20 +14,20 @@ long_description = '\n\n'.join([
 install_requires = [
     'django==1.8.2',
 
-    'django-ckeditor==4.4.6',
+    'django-ckeditor==4.4.8',
     'django-extensions==1.5.5',
-    'djangorestframework==2.4.4',
+    'djangorestframework==2.4.5',
     'django-simple-history==1.6.2',
     'django-stdimage==0.2.2',
-    'django-transmeta==0.6.9',
+    'django-transmeta==0.7.3',
 
     'python-dateutil==1.5',
-    'python-logstash==0.4.2',
+    'python-logstash==0.4.5',
 
-    'docutils==0.11',
+    'docutils==0.12',
     'gunicorn==18.0',
     'mobileserverstatus==1.0.2',
-    'requests==2.4.3',
+    'requests==2.7.0',
     'setproctitle==1.1.8',
     'transifex-client==0.11.1.beta',
 ]
