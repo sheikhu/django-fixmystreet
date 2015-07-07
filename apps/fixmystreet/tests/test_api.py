@@ -118,40 +118,6 @@ class ApiTest(FMSTestCase):
             'citizen-lastname': self.citizen.last_name
         }
 
-        """
-        self.steven = self.users['100003558692539']
-
-        params = {
-            'client_id': settings.FACEBOOK_APP_ID,
-            'client_secret': settings.FACEBOOK_API_SECRET,
-            'grant_type': 'client_credentials'
-        }
-        url='https://graph.facebook.com/oauth/access_token?{0}'.format(urlencode(params))
-        request = Request(url)
-        try:
-            response = urlparse.parse_qs(urlopen(request).read())
-            self.app_access_token = response['access_token'][0]
-            #print settings.FACEBOOK_APP_ID,self.app_access_token
-        except HTTPError as e:
-            print e.code
-            print json.loads(e.read())['error']['message']
-            raise e
-
-        url = 'https://graph.facebook.com/{0}/accounts/test-users?access_token={1}'\
-                .format(settings.FACEBOOK_APP_ID,self.app_access_token)
-        try:
-            response = json.loads(urlopen(url).read())
-            for user in response['data']:
-                if user['id'] not in self.users:
-                    self.users[user['id']] = {}
-                self.users[user['id']]['access_token'] = user['access_token']
-            # print self.users
-        except HTTPError as e:
-            print e.code
-            print json.loads(e.read())['error']['message']
-            raise e
-        """
-
     def testCreateReportCitizen(self):
         #Create a client to launch requests
         client = Client()
@@ -181,6 +147,7 @@ class ApiTest(FMSTestCase):
 
         #Create a client to launch requests
         client = Client()
+
         #Get the request response
         response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
         response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
@@ -262,16 +229,6 @@ class ApiTest(FMSTestCase):
         self.assertEqual(response['Content-Type'], 'application/json')
         #Load the response data as JSON object
         result = json.loads(response.content)
-
-    """
-    def testLoadReports(self):
-        client = Client()
-        response = client.get(reverse('api_reports'), {'x':1000,'y':1000}, follow=True)
-        self.assertEqual(response.status_code, 200)
-        result = json.loads(response.content)
-        self.assertEquals(result['status'], 'success')
-        self.assertEquals(len(result['results']), 13) # sample contains 14 reports but 1 is fixed
-    """
 
     def test_login_user(self):
         params = {

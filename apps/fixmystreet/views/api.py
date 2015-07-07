@@ -174,6 +174,119 @@ def reports_pro(request):
     })
 
 
+from apps.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm, ReportCommentForm
+from apps.fixmystreet.utils import RequestFingerprint
+from django.core.serializers.json import DjangoJSONEncoder
+
+def create_report(request):
+    fingerprint = RequestFingerprint(request)
+
+    if not fingerprint.is_duplicate():
+        fingerprint.save()
+
+        # Check if citizen or pro
+        if request.POST.get('username', False):
+            report = create_pro(request)
+        else:
+            report = create_citizen(request)
+
+        if isinstance(report, HttpResponse):
+            return report
+
+        # Set source
+        report.source = Report.SOURCES['MOBILE']
+        report.save()
+
+        # Return json response
+        response = {
+            'id': report.id,
+            'point': [report.point.x, report.point.y],
+            'status': report.status,
+            'get_public_status_display': report.get_public_status_display(),
+            'get_status_display': report.get_status_display(),
+            'created': report.created,
+            'created_by': report.created_by.get_display_name() if report.created_by else "",
+            'is_pro': report.is_pro(),
+            'contractor': report.contractor,
+            'category': report.category.name,
+            'secondary_category': report.secondary_category.name,
+            'address': report.display_address(),
+            'address_number': report.address_number,
+            'address_regional': report.is_regional(),
+            'postalcode': report.postalcode,
+            'source': report.source,
+        }
+
+        return HttpResponse(json.dumps(response, cls=DjangoJSONEncoder), content_type="application/json; charset=utf-8")
+
+    response = { "error" : "Duplicate fingerprint"}
+    return HttpResponse(json.dumps(response, cls=DjangoJSONEncoder), content_type="application/json; charset=utf-8")
+
+def create_citizen(request):
+    # Get user in DB or create it
+    try:
+        citizen = FMSUser.objects.get(email=request.POST.get('citizen-email'))
+    except FMSUser.DoesNotExist:
+        citizen_form = CitizenForm(request.POST, prefix='citizen')
+
+        if not citizen_form.is_valid():
+            return HttpResponse(unicode(citizen_form.errors), status=400)
+
+        citizen = citizen_form.save()
+
+    # Create report
+    report_form = CitizenReportForm(request.POST, prefix='report')
+    comment_form = ReportCommentForm(request.POST, prefix='comment')
+
+    if not report_form.is_valid():
+        return HttpResponse(unicode(report_form.errors), status=400)
+
+    report = report_form.save(commit=False)
+    report.citizen = citizen
+    report.save()
+
+    # Subscribe if wanted
+    if (request.POST.get('subscription') == 'true'):
+        report.subscribe_author_ws()
+
+    # Create the comment if exists
+    if ((request.POST["comment-text"] or comment_form.is_valid()) and request.POST["comment-text"] != ''):
+        comment = comment_form.save(commit=False)
+        comment.created_by = citizen
+        comment.report = report
+        comment.save()
+
+    return report
+
+def create_pro(request):
+    # Login the user
+    user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+
+    if user and user.is_active:
+        login(request, user)
+    else:
+        return HttpResponseForbidden('invalid username or password')
+
+    # Create report
+    report_form = ProReportForm(request.POST, prefix='report')
+    comment_form = ReportCommentForm(request.POST, prefix='comment')
+
+    if not report_form.is_valid():
+        return HttpResponse(unicode(report_form.errors), status=400)
+    report = report_form.save(commit=False)
+
+    report.private = True
+    report.save()
+    report.subscribe_author()
+
+    # Create the comment if exists
+    if ((request.POST["comment-text"] or comment_form.is_valid()) and request.POST["comment-text"] != ''):
+        comment = comment_form.save(commit=False)
+        comment.report = report
+        comment.save()
+
+    return report
+
 @csrf_exempt
 def create_report_photo(request):
     '''This method is used to create citizens reports. Validation included.'''

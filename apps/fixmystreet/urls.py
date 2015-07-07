@@ -1,10 +1,6 @@
 from django.conf.urls import patterns, url
 from django.utils.translation import ugettext_lazy as _
 
-#~ from piston.resource import Resource
-
-#~ from apps.fixmystreet.api import ReportHandler
-#from apps.fixmystreet.views.api import CitizenReportHandler, ProReportHandler
 
 urlpatterns = patterns(
     'apps.fixmystreet.views.main',
@@ -86,11 +82,15 @@ urlpatterns += patterns(
     url(r'^api/reports/pro/nearest/$', 'near_reports_pro', name='api_reports'),
     url(r'^api/reports/citizen/$', 'reports_citizen', name='api_reports'),
     url(r'^api/reports/pro/$', 'reports_pro', name='api_reports'),
+
     url(r'^api/login/$', 'login_user', name='login_user'),
     url(r'^api/logout/$', 'logout_user', name='logout_user'),
+
     url(r'^api/load_categories/$', 'load_categories', name='load_categories'),
     url(r'^api/load_zipcodes/$', 'load_zipcodes', name='load_zipcodes'),
-    #~ url(r'^api/create-report/$', Resource(ReportHandler), name="create_report_citizen"), # django-piston
+
+    url(r'^api/create-report/$', 'create_report', name="create_report_citizen"),
     url(r'^api/create_report_photo/$', 'create_report_photo', name='create_report_photo'),
+
     url(r'^api/commit-report/$', 'commit_report', name='commit_report'),
 )
