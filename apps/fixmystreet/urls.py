@@ -86,7 +86,6 @@ urlpatterns += patterns(
     url(r'^api/reports/pro/nearest/$', 'near_reports_pro', name='api_reports'),
     url(r'^api/reports/citizen/$', 'reports_citizen', name='api_reports'),
     url(r'^api/reports/pro/$', 'reports_pro', name='api_reports'),
-    #url(_(r'^api/report/new/$'), 'create_report',name='api_report_new'),
     url(r'^api/login/$', 'login_user', name='login_user'),
     url(r'^api/logout/$', 'logout_user', name='logout_user'),
     url(r'^api/load_categories/$', 'load_categories', name='load_categories'),

@@ -1,12 +1,6 @@
 from django.conf.urls import patterns, url
 from django.utils.translation import ugettext_lazy as _
 
-#~ from piston.resource import Resource
-
-#~ from apps.fixmystreet.api import ReportHandler
-
-# from apps.backoffice.views.users import CreateUser
-
 
 urlpatterns = patterns(
     'apps.backoffice.views.main',
@@ -99,10 +93,6 @@ urlpatterns += patterns(
     url(r'^users/(?P<user_id>\d+)/$', 'edit_user', name='edit_user'),
     url(r'^users/create$', 'create_user', name='create_user'),
     url(r'^users/(?P<user_id>\d+)/delete$', 'delete_user', name="delete_user"),
-
-    # url(r'^contractors/$', 'list_contractors', name='list_contractors'),
-    # url(r'^contractors/create$', 'create_contractor', name='create_contractor'),
-    # url(r'^contractors/(?P<contractor_id>\d+)/delete$', 'delete_contractor', name='delete_contractor'),
 )
 
 urlpatterns += patterns(
@@ -117,14 +107,6 @@ urlpatterns += patterns(
     url(r'^groups/membership/remove/(?P<membership_id>\d+)/$', 'remove_membership', name='remove_membership'),
     url(r'^groups/membership/contact/(?P<membership_id>\d+)/$', 'contact_membership', name='contact_membership'),
 )
-
-# Django piston
-#~ urlpatterns += patterns(
-    #~ '',
-    #~ url(r'^export_file/reports/(?P<emitter_format>.+)/(?P<id>\d+)', Resource(ReportHandler), name="export_report"),
-    #~ url(r'^export_file/reports/(?P<emitter_format>.+)/fromtime/(?P<time_ago>.+)', Resource(ReportHandler), name="export_report"),
-    #~ url(r'^export_file/reports/(?P<emitter_format>.+)', Resource(ReportHandler), name="export_report"),
-#~ )
 
 urlpatterns += patterns(
     'apps.backoffice.views.reporting',
