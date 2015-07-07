@@ -29,16 +29,16 @@ def entity_reports(request):
         to_date            = request.POST.get('to_date')
     except ValueError:
         #Catching malformed input request data
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_INVALID_REQUEST","request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_INVALID_REQUEST","request":request.POST}),content_type='application/json')
     #Invalid request. Expected values are not present
     if (entity_username == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_USERNAME","request":request.POST})	,content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_USERNAME","request":request.POST})	,content_type='application/json')
     if (entity_pass == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_PASS","request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_PASS","request":request.POST}),content_type='application/json')
     if (from_date == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_FROM","request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_FROM","request":request.POST}),content_type='application/json')
     if (to_date == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_TO","request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_TO","request":request.POST}),content_type='application/json')
 
     #Verify than the difference betweendate from and to is max 365 days
     ###################################################################
@@ -46,7 +46,7 @@ def entity_reports(request):
     d2 = datetime.strptime(to_date, "%Y-%m-%d")
     date_diff = abs((d2 - d1).days)
     if (date_diff > 365):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MORE_THAN_365_DAYS_REQUESTED","request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MORE_THAN_365_DAYS_REQUESTED","request":request.POST}),content_type='application/json')
 
     #Get objects in the DB to verify if it exists
     #############################################
@@ -54,23 +54,23 @@ def entity_reports(request):
         entity_object   = FMSUser.objects.get(username=entity_username)
     except ObjectDoesNotExist:
         #The report is unknown
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_FOUND","entity": entity_username}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_FOUND","entity": entity_username}),content_type='application/json')
 
     #Verify is the given user are actives
     if entity_object.is_active == False:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_REPORT_ENTITY_IS_NOT_ACTIVE","entity": entity_username}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_REPORT_ENTITY_IS_NOT_ACTIVE","entity": entity_username}),content_type='application/json')
     
     #Verify if the given entity username has the right entity / Leader
     ##################################################################
     if (not entity_object.leader):
         #Bad role
-        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_LEADER","entity": entity_username}),content_type='application/json')
+        return HttpResponseForbidden(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_LEADER","entity": entity_username}),content_type='application/json')
 
     #Verify entity password
     #############################################
     if entity_object.check_password(entity_pass) == False:
         #Bad Password
-        return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_BAD_PASSWORD","entity": entity_username}),content_type='application/json')
+        return HttpResponseForbidden(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_BAD_PASSWORD","entity": entity_username}),content_type='application/json')
 
     #If everything is ok, then return all requested reports as XML 
     ##############################################################
@@ -100,16 +100,16 @@ def contractor_reports(request):
             to_date            = request.POST.get('to_date')
         except ValueError:
             #Catching malformed input request data
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_INVALID_REQUEST","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_INVALID_REQUEST","request":request.POST}),content_type='application/json')
         #Invalid request. Expected values are not present
         if (entity_username == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_USERNAME","request":request.POST})	,content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_USERNAME","request":request.POST})	,content_type='application/json')
         if (entity_pass == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_PASS","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_PASS","request":request.POST}),content_type='application/json')
         if (from_date == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_FROM","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_FROM","request":request.POST}),content_type='application/json')
         if (to_date == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_TO","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_TO","request":request.POST}),content_type='application/json')
 
         #Get objects in the DB to verify if it exists
         #############################################
@@ -117,23 +117,23 @@ def contractor_reports(request):
             entity_object   = FMSUser.objects.get(username=entity_username)
         except ObjectDoesNotExist:
             #The report is unknown
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_FOUND","entity": entity_username}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_FOUND","entity": entity_username}),content_type='application/json')
 
         #Verify is the given user are actives
         if entity_object.is_active == False:
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_REPORT_ENTITY_IS_NOT_ACTIVE","entity": entity_username}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_REPORT_ENTITY_IS_NOT_ACTIVE","entity": entity_username}),content_type='application/json')
         
         #Verify if the given entity username has the right entity / Leader
         ##################################################################
         if (not entity_object.leader):
             #Bad role
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_LEADER","entity": entity_username}),content_type='application/json')
+            return HttpResponseForbidden(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_LEADER","entity": entity_username}),content_type='application/json')
 
         #Verify entity password
         #############################################
         if entity_object.check_password(entity_pass) == False:
             #Bad Password
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_BAD_PASSWORD","entity": entity_username}),content_type='application/json')
+            return HttpResponseForbidden(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_BAD_PASSWORD","entity": entity_username}),content_type='application/json')
 
         #If everything is ok, then return all requested reports as XML 
         ##############################################################
@@ -164,16 +164,16 @@ def manager_reports(request):
             to_date            = request.POST.get('to_date')
         except ValueError:
             #Catching malformed input request data
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_INVALID_REQUEST","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_INVALID_REQUEST","request":request.POST}),content_type='application/json')
         #Invalid request. Expected values are not present
         if (entity_username == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_USERNAME","request":request.POST})	,content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_USERNAME","request":request.POST})	,content_type='application/json')
         if (entity_pass == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_PASS","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_ENTITY_PASS","request":request.POST}),content_type='application/json')
         if (from_date == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_FROM","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_FROM","request":request.POST}),content_type='application/json')
         if (to_date == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_TO","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_MISSING_DATE_TO","request":request.POST}),content_type='application/json')
 
         #Get objects in the DB to verify if it exists
         #############################################
@@ -181,23 +181,23 @@ def manager_reports(request):
             entity_object   = FMSUser.objects.get(username=entity_username)
         except ObjectDoesNotExist:
             #The report is unknown
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_FOUND","entity": entity_username}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_FOUND","entity": entity_username}),content_type='application/json')
 
         #Verify is the given user are actives
         if entity_object.is_active == False:
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_REPORT_ENTITY_IS_NOT_ACTIVE","entity": entity_username}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_REPORT_ENTITY_IS_NOT_ACTIVE","entity": entity_username}),content_type='application/json')
         
         #Verify if the given entity username has the right entity / Leader
         ##################################################################
         if (not entity_object.leader):
             #Bad role
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_LEADER","entity": entity_username}),content_type='application/json')
+            return HttpResponseForbidden(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_NOT_LEADER","entity": entity_username}),content_type='application/json')
 
         #Verify entity password
         #############################################
         if entity_object.check_password(entity_pass) == False:
             #Bad Password
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_BAD_PASSWORD","entity": entity_username}),content_type='application/json')
+            return HttpResponseForbidden(json.dumps({"error_key":"ERROR_EXPORT_ENTITY_REPORTS_ENTITY_BAD_PASSWORD","entity": entity_username}),content_type='application/json')
 
         #If everything is ok, then return all requested reports as XML 
         ##############################################################

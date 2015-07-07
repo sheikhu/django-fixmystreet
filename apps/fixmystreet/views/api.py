@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 def load_zipcodes(request):
         '''load_zipcodes is a method used by the mobiles to retrieve all usable zipcodes'''
         zips = ZipCode.participates.filter(hide=False)
-        return HttpResponse(simplejson.dumps([{'c':z.code, 'p':z.commune.phone} for z in zips]), content_type='application/json')
+        return HttpResponse(json.dumps([{'c':z.code, 'p':z.commune.phone} for z in zips]), content_type='application/json')
 
 def load_categories(request):
         '''load_categories is a method used by the mobiles to load available categories and dependencies'''
@@ -48,24 +48,24 @@ def login_user(request):
             user_password = request.POST.get('password')
         except ValueError:
             #Catching malformed input request data
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_LOGIN_INVALID_REQUEST","request":request.POST}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_LOGIN_INVALID_REQUEST","request":request.POST}),content_type='application/json')
 
 
         #Invalid request. Expected values are not present
         if (user_name == None or user_password == None):
-            return HttpResponseBadRequest(simplejson.dumps({"error_key":"ERROR_LOGIN_INVALID_PARAMETERS","username":user_name}),content_type='application/json')
+            return HttpResponseBadRequest(json.dumps({"error_key":"ERROR_LOGIN_INVALID_PARAMETERS","username":user_name}),content_type='application/json')
 
         try:
             #Search user
             user_object   = FMSUser.objects.get(username=user_name)
             if user_object.check_password(user_password) == False:
                 #Bad Password
-                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_BAD_PASSWORD","username": user_name}),content_type='application/json')
+                return HttpResponseForbidden(json.dumps({"error_key":"ERROR_LOGIN_BAD_PASSWORD","username": user_name}),content_type='application/json')
             if not user_object.is_active:
-                return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_USER_NOT_ACTIVE","username": user_name}),content_type='application/json')
+                return HttpResponseForbidden(json.dumps({"error_key":"ERROR_LOGIN_USER_NOT_ACTIVE","username": user_name}),content_type='application/json')
         except ObjectDoesNotExist:
             #The user has not the right to access the login section (Based user/pass combination
-            return HttpResponseForbidden(simplejson.dumps({"error_key":"ERROR_LOGIN_NOT_FOUND","username": user_name}),content_type='application/json')
+            return HttpResponseForbidden(json.dumps({"error_key":"ERROR_LOGIN_NOT_FOUND","username": user_name}),content_type='application/json')
 
         #Login the user (for internal correct usage)
         user = authenticate(username=user_name, password=user_password)
@@ -180,22 +180,22 @@ def create_report_photo(request):
     #Test the submit content size (max 2MB)
 
     if (int(request.META.get('CONTENT_LENGTH')) > 15000000):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_EXCEED_SIZE", "request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key": "ERROR_REPORT_FILE_EXCEED_SIZE", "request":request.POST}),content_type='application/json')
 
     data_report_id = request.POST.get('report_id')
     data_file_content = request.FILES.get('report_file')
 
     #Verify that everything has been posted to create a citizen report.
     if (data_report_id == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_MISSING_DATA_REPORT_ID", "request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key": "ERROR_REPORT_FILE_MISSING_DATA_REPORT_ID", "request":request.POST}),content_type='application/json')
     if (data_file_content == None):
-        return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_MISSING_DATA_REPORT_FILE", "request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key": "ERROR_REPORT_FILE_MISSING_DATA_REPORT_FILE", "request":request.POST}),content_type='application/json')
 
     try:
         #Retrieve the report
         reference_report = Report.objects.get(id=data_report_id)
     except Exception:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_NOT_FOUND", "request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key": "ERROR_REPORT_FILE_NOT_FOUND", "request":request.POST}),content_type='application/json')
 
     report_file = ReportFile()
     try:
@@ -210,7 +210,7 @@ def create_report_photo(request):
         #Save given data
         report_file.save()
     except Exception:
-        return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_PROBLEM_DATA", "request":request.POST}),content_type='application/json')
+        return HttpResponseBadRequest(json.dumps({"error_key": "ERROR_REPORT_FILE_PROBLEM_DATA", "request":request.POST}),content_type='application/json')
 
     #Return the report ID
     return JsonHttpResponse({

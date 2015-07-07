@@ -134,13 +134,13 @@ class ApiTest(FMSTestCase):
             #print settings.FACEBOOK_APP_ID,self.app_access_token
         except HTTPError as e:
             print e.code
-            print simplejson.loads(e.read())['error']['message']
+            print json.loads(e.read())['error']['message']
             raise e
 
         url = 'https://graph.facebook.com/{0}/accounts/test-users?access_token={1}'\
                 .format(settings.FACEBOOK_APP_ID,self.app_access_token)
         try:
-            response = simplejson.loads(urlopen(url).read())
+            response = json.loads(urlopen(url).read())
             for user in response['data']:
                 if user['id'] not in self.users:
                     self.users[user['id']] = {}
@@ -148,7 +148,7 @@ class ApiTest(FMSTestCase):
             # print self.users
         except HTTPError as e:
             print e.code
-            print simplejson.loads(e.read())['error']['message']
+            print json.loads(e.read())['error']['message']
             raise e
         """
 
@@ -168,7 +168,7 @@ class ApiTest(FMSTestCase):
         self.assertEqual(1, len(Report.objects.all()))
 
         #Load the response data as JSON object
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
 
         # Get in the DB the created report
         report = Report.objects.get(id=result['id'])
@@ -190,7 +190,7 @@ class ApiTest(FMSTestCase):
         self.assertEqual(1, len(Report.objects.all()))
 
         #Load the response data as JSON object
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
 
     def testCreateReportPro(self):
         self.sample_post['username'] = self.manager.username
@@ -206,7 +206,7 @@ class ApiTest(FMSTestCase):
         }, follow=True)
         self.assertEqual(response.status_code, 200)
         #Load the response data as JSON object
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
         self.assertIn('email', result)
 
         response = client.post(reverse('create_report_citizen'), self.sample_post, follow=True)
@@ -217,7 +217,7 @@ class ApiTest(FMSTestCase):
         self.assertEqual(response['Content-Type'], 'application/json; charset=utf-8')
 
         #Load the response data as JSON object
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
 
         #Verify if the report_id is returned by the webservice
         self.assertTrue(result['id'])
@@ -261,14 +261,14 @@ class ApiTest(FMSTestCase):
         #Test if the response if JSON structured.
         self.assertEqual(response['Content-Type'], 'application/json')
         #Load the response data as JSON object
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
 
     """
     def testLoadReports(self):
         client = Client()
         response = client.get(reverse('api_reports'), {'x':1000,'y':1000}, follow=True)
         self.assertEqual(response.status_code, 200)
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
         self.assertEquals(result['status'], 'success')
         self.assertEquals(len(result['results']), 13) # sample contains 14 reports but 1 is fixed
     """
@@ -282,7 +282,7 @@ class ApiTest(FMSTestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
         self.assertEqual(result['id'], self.manager.id)
         self.assertEqual(result['first_name'], self.manager.first_name)
 
@@ -295,7 +295,7 @@ class ApiTest(FMSTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
         self.assertEqual("ERROR_LOGIN_INVALID_PARAMETERS", result["error_key"])
 
     def test_login_user_fail_empty_field(self):
@@ -306,7 +306,7 @@ class ApiTest(FMSTestCase):
 
         self.assertEqual(response.status_code, 400)
 
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
         self.assertEqual("ERROR_LOGIN_INVALID_PARAMETERS", result["error_key"])
 
     def test_login_user_bad_username(self):
@@ -318,7 +318,7 @@ class ApiTest(FMSTestCase):
 
         self.assertEqual(response.status_code, 403)
 
-        result = simplejson.loads(response.content)
+        result = json.loads(response.content)
         self.assertEqual("ERROR_LOGIN_INVALID_PARAMETERS", result["error_key"])
 
     def test_logout_user(self):

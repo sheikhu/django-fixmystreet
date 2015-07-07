@@ -16,7 +16,6 @@ install_requires = [
 
     'django-ckeditor==4.4.6',
     'django-extensions==1.5.5',
-    #~ 'django-piston==0.2.3',
     'djangorestframework==2.4.4',
     'django-simple-history==1.6.2',
     'django-stdimage==0.2.2',

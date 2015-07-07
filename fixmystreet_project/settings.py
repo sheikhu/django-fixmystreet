@@ -149,7 +149,6 @@ INSTALLED_APPS = (
     'apps.api',
     'apps.webhooks',
     'mobileserverstatus',
-    #~ 'piston', # if causes problem when installing --> fix using sudo pip install http://trac.transifex.org/files/deps/django-piston-0.2.3.tar.gz --upgrade
 )
 
 TEMPLATE_LOADERS = (
@@ -157,10 +156,6 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
     'django.template.loaders.eggs.Loader'
 )
-
-# AUTHENTICATION_BACKENDS = (
-#     'django.contrib.auth.backends.ModelBackend',
-# )
 
 
 if ENVIRONMENT != 'local' and ENVIRONMENT != 'jenkins':

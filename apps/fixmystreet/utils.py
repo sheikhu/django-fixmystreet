@@ -190,7 +190,7 @@ class CurrentUserMiddleware:
             if user and user.is_active:
                 login(request, user)
             else:
-                return HttpResponseForbidden(simplejson.dumps({"error_key": "ERROR_LOGIN_INVALID_PARAMETERS", "username": request.POST.get('username')}), content_type='application/json')
+                return HttpResponseForbidden(json.dumps({"error_key": "ERROR_LOGIN_INVALID_PARAMETERS", "username": request.POST.get('username')}), content_type='application/json')
 
             set_current_user(user.fmsuser)
             request.fmsuser = user.fmsuser

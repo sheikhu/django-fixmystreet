@@ -77,22 +77,21 @@ urlpatterns += patterns(
     url(r'^ajax/map/filter/', 'filter_map', name="filter_map"),
 )
 
-# django-piston
-#~ urlpatterns += patterns(
-    #~ 'apps.fixmystreet.views.api',
-    #~ url(r'^api/reports/$', 'reports_pro', name='api_reports'),
-    #~ url(r'^api/reports/mobile/$', 'reports_pro_mobile', name='api_reports'),
-    #~ url(r'^api/reports/map/$', 'reports_pro', name='api_reports'),
-    #~ url(r'^api/reports/citizen/nearest/$', 'near_reports_citizen', name='api_reports'),
-    #~ url(r'^api/reports/pro/nearest/$', 'near_reports_pro', name='api_reports'),
-    #~ url(r'^api/reports/citizen/$', 'reports_citizen', name='api_reports'),
-    #~ url(r'^api/reports/pro/$', 'reports_pro', name='api_reports'),
-    #~ #url(_(r'^api/report/new/$'), 'create_report',name='api_report_new'),
-    #~ url(r'^api/login/$', 'login_user', name='login_user'),
-    #~ url(r'^api/logout/$', 'logout_user', name='logout_user'),
-    #~ url(r'^api/load_categories/$', 'load_categories', name='load_categories'),
-    #~ url(r'^api/load_zipcodes/$', 'load_zipcodes', name='load_zipcodes'),
-    #~ url(r'^api/create-report/$', Resource(ReportHandler), name="create_report_citizen"),
-    #~ url(r'^api/create_report_photo/$', 'create_report_photo', name='create_report_photo'),
-    #~ url(r'^api/commit-report/$', 'commit_report', name='commit_report'),
-#~ )
+urlpatterns += patterns(
+    'apps.fixmystreet.views.api',
+    url(r'^api/reports/$', 'reports_pro', name='api_reports'),
+    url(r'^api/reports/mobile/$', 'reports_pro_mobile', name='api_reports'),
+    url(r'^api/reports/map/$', 'reports_pro', name='api_reports'),
+    url(r'^api/reports/citizen/nearest/$', 'near_reports_citizen', name='api_reports'),
+    url(r'^api/reports/pro/nearest/$', 'near_reports_pro', name='api_reports'),
+    url(r'^api/reports/citizen/$', 'reports_citizen', name='api_reports'),
+    url(r'^api/reports/pro/$', 'reports_pro', name='api_reports'),
+    #url(_(r'^api/report/new/$'), 'create_report',name='api_report_new'),
+    url(r'^api/login/$', 'login_user', name='login_user'),
+    url(r'^api/logout/$', 'logout_user', name='logout_user'),
+    url(r'^api/load_categories/$', 'load_categories', name='load_categories'),
+    url(r'^api/load_zipcodes/$', 'load_zipcodes', name='load_zipcodes'),
+    #~ url(r'^api/create-report/$', Resource(ReportHandler), name="create_report_citizen"), # django-piston
+    url(r'^api/create_report_photo/$', 'create_report_photo', name='create_report_photo'),
+    url(r'^api/commit-report/$', 'commit_report', name='commit_report'),
+)
