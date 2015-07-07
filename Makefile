@@ -2,7 +2,7 @@
 APP_NAME      = apps.fixmystreet apps.backoffice apps.fmsproxy
 INSTALL_PATH  = $(abspath env)
 BIN_PATH      = $(INSTALL_PATH)/bin
-SRC_ROOT      = django_fixmystreet
+SRC_ROOT      = apps
 
 USER          = fixmystreet
 GROUP         = fixmystreet
