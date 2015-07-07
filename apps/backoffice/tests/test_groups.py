@@ -89,16 +89,16 @@ class GroupsTest(FMSTestCase):
             'type': 'D',
 
             ### Mail Config ###
-            'groupmailconfig_set-TOTAL_FORMS'   : u'1',
-            'groupmailconfig_set-INITIAL_FORMS' : u'1',
-            'groupmailconfig_set-MAX_NUM_FORMS' : u'1',
+            'groupmailconfig-TOTAL_FORMS'   : u'1',
+            'groupmailconfig-INITIAL_FORMS' : u'1',
+            'groupmailconfig-MAX_NUM_FORMS' : u'1',
 
-            'groupmailconfig_set-0-notify_group'      : True,
-            'groupmailconfig_set-0-notify_members'    : True,
-            'groupmailconfig_set-0-digest_created'    : True,
-            'groupmailconfig_set-0-digest_inprogress' : True,
-            'groupmailconfig_set-0-digest_closed'     : True,
-            'groupmailconfig_set-0-digest_other'      : True,
+            'groupmailconfig-0-notify_group'      : True,
+            'groupmailconfig-0-notify_members'    : True,
+            'groupmailconfig-0-digest_created'    : True,
+            'groupmailconfig-0-digest_inprogress' : True,
+            'groupmailconfig-0-digest_closed'     : True,
+            'groupmailconfig-0-digest_other'      : True,
         }
         self.editgroup_post2 = {
             'name_fr': 'groupe2nouveau',
@@ -188,8 +188,8 @@ class GroupsTest(FMSTestCase):
     def testEditGroups(self):
         self.client.login(username='leader@a.com', password='test')
 
-        self.editgroup_post['groupmailconfig_set-0-group'] = self.group1.id
-        self.editgroup_post['groupmailconfig_set-0-id']    = self.group_mail_config1.id
+        self.editgroup_post['groupmailconfig-0-group'] = self.group1.id
+        self.editgroup_post['groupmailconfig-0-id']    = self.group_mail_config1.id
 
         response = self.client.post(reverse('edit_group', args=[self.group1.id]), self.editgroup_post)
         self.assertEquals(response.status_code, 302)
