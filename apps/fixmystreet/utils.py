@@ -24,7 +24,6 @@ from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import fromstr
 from django.http import Http404
 
-from south.modelsinspector import add_introspection_rules
 import transmeta
 from stdimage import StdImageField
 
