@@ -1,6 +1,5 @@
 from unittest import skip
 from datetime import datetime
-from django.utils.safestring import mark_safe
 
 from django.test.client import Client
 from django.core.urlresolvers import reverse
@@ -11,7 +10,7 @@ from apps.fixmystreet.models import (
     Report, ReportCategory, OrganisationEntity, FMSUser,
     OrganisationEntitySurface, GroupMailConfig,
     ReportComment, ReportAttachment)
-from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.translation import ugettext_lazy as ugettext
 from django.utils.html import escape
 
 class ReportViewsTest(FMSTestCase):

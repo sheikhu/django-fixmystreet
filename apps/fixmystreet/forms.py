@@ -1,5 +1,3 @@
-import datetime
-
 from django import forms
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -14,7 +12,7 @@ from apps.fixmystreet.models import (
     ReportMainCategoryClass, Report,
     ReportFile, ReportComment,
     ReportCategory, ReportSecondaryCategoryClass, FMSUser, ReportReopenReason)
-from apps.fixmystreet.utils import dict_to_point, get_current_user
+from apps.fixmystreet.utils import dict_to_point
 
 # tricky stuff
 from django.utils.functional import lazy

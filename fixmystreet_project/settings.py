@@ -1,5 +1,5 @@
 # Django settings for fixmystreet project.
-import os, sys, subprocess
+import os
 
 
 # PATH

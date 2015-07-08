@@ -1,8 +1,7 @@
 from django.test.client import Client
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-from apps.fixmystreet.models import Report, ReportCategory, OrganisationEntity, FMSUser
+from apps.fixmystreet.models import OrganisationEntity, FMSUser
 from apps.fixmystreet.tests import FMSTestCase
 
 class ReportProViewsTest(FMSTestCase):

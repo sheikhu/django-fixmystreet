@@ -9,7 +9,6 @@ from django.views.decorators.cache import never_cache
 from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from urlparse import urljoin
 
 
 logger = logging.getLogger(__name__)

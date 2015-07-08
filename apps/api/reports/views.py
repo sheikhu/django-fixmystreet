@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=C0103,W0613,W0622
-from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.fmsproxy.models import AssignmentHandler, \

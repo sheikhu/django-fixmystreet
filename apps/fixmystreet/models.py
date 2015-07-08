@@ -3,7 +3,6 @@ from exceptions import Exception
 import logging
 import re
 import datetime
-import requests
 
 from datetime import timedelta
 
@@ -408,8 +407,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
     # kwds = report_point, report_category, report_date, created (optional), closed (optional), ignore_distance (optional)
     def rank(self, *arg, **kwds):
         DISTANCE_MAX = 50
-        created      = False
-        closed       = False
+
         params       = {
             'created' : False,
             'closed'  : False,
@@ -1511,8 +1509,6 @@ def report_notify_report_merged(sender, instance, **kwargs):
         event_log_user = report.modified_by
 
         if report.merged_with and report.__former['merged_with'] != report.merged_with:
-            creator = report.citizen or report.created_by
-
             # Create event merge
             ReportEventLog(
                 report=report,
@@ -1536,7 +1532,6 @@ def report_notify_report_private(sender, instance, **kwargs):
 
     if not kwargs['raw']:
         report = instance
-        event_log_user = report.modified_by
 
         if (not kwargs['created'] and report.private and (not report.__former['private'])):
             # Inform all subscribers in real-time
@@ -1557,7 +1552,6 @@ def report_notify_report_public(sender, instance, **kwargs):
 
     if not kwargs['raw']:
         report = instance
-        event_log_user = report.modified_by
 
         if (not kwargs['created'] and not report.private and (report.__former['private'])):
             # Inform all subscribers in real-time

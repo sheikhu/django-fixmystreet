@@ -1,4 +1,3 @@
-import json
 import csv
 import tempfile
 import datetime
@@ -7,7 +6,6 @@ import hmac
 import json
 import os
 import re
-import logging
 from threading import local
 
 from django.core.exceptions import PermissionDenied
@@ -16,7 +14,7 @@ from django.db.models.signals import post_save
 from django.template.loader import render_to_string
 from django.shortcuts import render_to_response
 from django.conf import settings
-from django.template.defaultfilters import slugify, urlize, date as date_filter
+from django.template.defaultfilters import slugify, date as date_filter
 from django.utils.translation import ugettext as _
 from django.utils.translation import activate, deactivate, get_language
 from django.contrib.sites.models import Site
@@ -247,7 +245,6 @@ def transform_notification_template(template_mail, report, user, old_responsible
         "user": user
     }
     title = list()
-    content = list()
 
     data["report"] = report
     data["created_at"] = date_filter(report.created)
@@ -478,7 +475,6 @@ def hack_multi_file(request):
     return request_files
 
 # Decorator: only responsibles can do some action
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 
 

@@ -5,7 +5,6 @@ from django import template
 from django.core.urlresolvers import resolve
 from django.template.defaultfilters import floatformat
 
-from apps.fixmystreet.models import FMSUser
 from apps.fixmystreet import models
 
 

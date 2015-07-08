@@ -1,6 +1,5 @@
 from django.core import mail
 from django.core.urlresolvers import reverse
-from django.utils import unittest
 
 from apps.fixmystreet.models import OrganisationEntity, FMSUser
 from apps.fixmystreet.tests import FMSTestCase

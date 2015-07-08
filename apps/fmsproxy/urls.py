@@ -1,4 +1,4 @@
-from django.conf.urls import url, patterns, include
+from django.conf.urls import patterns
 
 urlpatterns = patterns('apps.fmsproxy.views',
     (r'^accept/(?P<report_id>\d+)/$', 'accept'),

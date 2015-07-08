@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import Polygon
 
 from apps.fixmystreet.models import (
-    Report, OrganisationEntity, FMSUser, ReportCategory,
+    Report, OrganisationEntity, FMSUser,
     UserOrganisationMembership, OrganisationEntitySurface,
     GroupMailConfig
 )

@@ -1,8 +1,8 @@
 from django.contrib.gis.geos import Polygon
 
 from apps.fixmystreet.models import (
-    Report, ReportCategory, ReportMainCategoryClass, OrganisationEntity,
-    FMSUser, ReportFile, UserOrganisationMembership,
+    Report, ReportCategory, OrganisationEntity,
+    FMSUser, UserOrganisationMembership,
     OrganisationEntitySurface, GroupMailConfig
 )
 from apps.fixmystreet.tests import FMSTestCase

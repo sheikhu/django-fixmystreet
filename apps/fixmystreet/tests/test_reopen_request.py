@@ -1,13 +1,11 @@
 from django.test.client import Client
-from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.core import mail
-from django.utils.translation import ugettext_lazy as _, gettext, ugettext
+from django.utils.translation import ugettext_lazy as gettext
 from apps.backoffice.views.reports.main import ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED, \
     ERROR_MSG_REOPEN_REQUEST_90_DAYS, SUCCESS_MSG_REOPEN_REQUEST_CONFIRM
 
 from apps.fixmystreet.models import (
-    Report, ReportCategory, OrganisationEntity, ReportAttachment,
+    Report, ReportCategory, OrganisationEntity,
     FMSUser, OrganisationEntitySurface,
     GroupMailConfig, ReportComment, ReportEventLog)
 from apps.fixmystreet.tests import FMSTestCase

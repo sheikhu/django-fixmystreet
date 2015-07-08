@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=C0330
-from django.conf.urls import url, patterns, include
+from django.conf.urls import url, patterns
 
 from .hooks.views import HooksView
 

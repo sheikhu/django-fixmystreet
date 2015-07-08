@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import json
 from urlparse import urlparse
 
 from django.core.urlresolvers import reverse, resolve

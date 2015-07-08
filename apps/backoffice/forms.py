@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
-from apps.fixmystreet.models import FMSUser, GroupMailConfig, OrganisationEntity, Report, ReportComment, ReportSubscription, UserOrganisationMembership
+from apps.fixmystreet.models import FMSUser, GroupMailConfig, OrganisationEntity, Report, ReportSubscription, UserOrganisationMembership
 
 #Increase username size
 AuthenticationForm.base_fields['username'].max_length = 150
