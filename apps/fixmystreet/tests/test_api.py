@@ -39,6 +39,7 @@ class ApiTest(FMSTestCase):
         user = FMSUser(
             is_active=True,
             password="test",
+            email="pro@machin.brol",
             first_name="zaza",
             telephone="00000000",
             last_used_language="fr",
