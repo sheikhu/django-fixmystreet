@@ -2538,16 +2538,6 @@ class OrganisationEntitySurface(models.Model):
     objects = models.GeoManager()
 
 
-class MailNotificationTemplate(models.Model):
-    name = models.CharField(max_length=50, help_text="Technical name")
-    __metaclass__ = TransMeta
-    content = models.TextField(blank=True, verbose_name="Content")
-    title = models.CharField(max_length=100, blank=True, verbose_name="Subject")
-
-    class Meta:
-        translate = ('content', 'title')
-
-
 class Page(models.Model):
     __metaclass__ = TransMeta
 
