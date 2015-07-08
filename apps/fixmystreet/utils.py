@@ -98,20 +98,6 @@ class FixStdImageField(StdImageField):
         super(FixStdImageField, self).contribute_to_class(cls, name)
 
 
-add_introspection_rules(
-    [
-        (
-            (FixStdImageField, ),
-            [],
-            {
-                "verbose_name": ["verbose_name", {"default": None}],
-                "name":         ["name",         {"default": None}],
-            },
-        ),
-    ],
-    ["^apps.fixmystreet.utils.FixStdImageField", ])
-
-
 def render_to_pdf(*args, **kwargs):
     context_instance = kwargs.get('context_instance', None)
     if 'request' in context_instance and 'output' in context_instance.get('request').GET:
