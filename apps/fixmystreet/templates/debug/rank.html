@@ -1,63 +1,10 @@
-<style>
-    * {
-        font-family:Arial, Helvetica, sans-serif;
-    }
-    .original td {
-        background: #ededed;
-        font-weight: bold;
-    }
-    .same {
-        font-weight: bold;
-    }
-    .same td {
-        background: #FCF8E3;
-    }
-    i {
-        opacity: 0.6;
-    }
-    a {
-        color:#666;
-        text-decoration:normal;
-    }
-    table {
-        color:#666;
-        font-size:14px;
-        background:#eaebec;
-        margin:20px;
-        border:1px;
-    }
-    table caption {
-        padding: 1em;
-
-        font-size: 16px;
-        font-weight: bold;
-    }
-    table th {
-        padding:21px 25px 22px 25px;
-        border-top:1px;
-        border-bottom:1px;
-
-        background: #ededed;
-    }
-    table tr {
-        text-align: center;
-        padding-left:20px;
-    }
-    table td {
-        padding:18px;
-
-        background: #fafafa;
-    }
-    table tr:hover td {
-        background: #f2f2f2;
-    }
-    table tfoot td {
-        background:#eaebec;
-
-        font-weight: bold;
-    }
-</style>
-
+<!DOCTYPE html>
+{% load static from staticfiles %}
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/debug/rank.css' %}">
+</head>
+<body>
 <table>
 
     <caption>
@@ -70,75 +17,75 @@
     </caption>
 
     <thead>
-        <tr>
-            <th></th>
-            <th>ID</th>
-            <th>RANK</th>
-            <th>RANK DISTANCE</th>
-            <th>RANK CATEGORY</th>
-            <th>RANK DATE</th>
-            <th>RANK SOURCE</th>
-            <th>RANK STATUS</th>
-        </tr>
+    <tr>
+        <th></th>
+        <th>ID</th>
+        <th>RANK</th>
+        <th>RANK DISTANCE</th>
+        <th>RANK CATEGORY</th>
+        <th>RANK DATE</th>
+        <th>RANK SOURCE</th>
+        <th>RANK STATUS</th>
+    </tr>
     </thead>
 
     <tbody>
-        <tr class="original">
-            <td></td>
-            <td><a href="{% url 'report_show_pro' report.merged_with.get_slug report.merged_with.id %}" target="_blank">{{ report.merged_with.id }}</a></td>
-            <td></td>
-            <td></td>
-            <td>{{ report.merged_with.get_category_path }}</td>
-            <td>{{ report.merged_with.created }}</td>
-            <td></td>
-            <td></td>
-        </tr>
+    <tr class="original">
+        <td></td>
+        <td><a href="{% url 'report_show_pro' report.merged_with.get_slug report.merged_with.id %}" target="_blank">{{ report.merged_with.id }}</a></td>
+        <td></td>
+        <td></td>
+        <td>{{ report.merged_with.get_category_path }}</td>
+        <td>{{ report.merged_with.created }}</td>
+        <td></td>
+        <td></td>
+    </tr>
 
-        {% for ranked in reports_ranked %}
+    {% for ranked in reports_ranked %}
 
-            {% ifequal ranked.id report.id %}
-                <tr class="same" >
-            {% else %}
-                <tr>
-            {% endifequal %}
+        {% ifequal ranked.id report.id %}
+            <tr class="same" >
+                {% else %}
+            <tr>
+        {% endifequal %}
 
-                <td>{{ forloop.counter }}</td>
-                <td><a href="{% url 'report_show_pro' ranked.get_slug ranked.id %}" target="_blank">{{ ranked.id }}</a></td>
-                <td>{{ ranked.rank|floatformat:2 }}</td>
-                <td>
-                    {{ ranked.rank_distance|floatformat:2 }}
-                    <br/>
-                    <i>{{ ranked.distance.m|floatformat }}m</i>
-                </td>
-                <td>
-                    {{ ranked.rank_catego }}
-                    <br/>
-                    <i>{{ ranked.get_category_path }}</i>
-                </td>
-                <td>
-                    {{ ranked.rank_date|floatformat:2 }}
-                    <br/>
-                    <i>{{ ranked.created }}</i>
-                </td>
-                <td>{{ ranked.rank_source }}</td>
-                <td>{{ ranked.rank_status }}</td>
-            </tr>
-        {% endfor %}
+    <td>{{ forloop.counter }}</td>
+    <td><a href="{% url 'report_show_pro' ranked.get_slug ranked.id %}" target="_blank">{{ ranked.id }}</a></td>
+    <td>{{ ranked.rank|floatformat:2 }}</td>
+    <td>
+        {{ ranked.rank_distance|floatformat:2 }}
+        <br/>
+        <i>{{ ranked.distance.m|floatformat }}m</i>
+    </td>
+    <td>
+        {{ ranked.rank_catego }}
+        <br/>
+        <i>{{ ranked.get_category_path }}</i>
+    </td>
+    <td>
+        {{ ranked.rank_date|floatformat:2 }}
+        <br/>
+        <i>{{ ranked.created }}</i>
+    </td>
+    <td>{{ ranked.rank_source }}</td>
+    <td>{{ ranked.rank_status }}</td>
+    </tr>
+    {% endfor %}
 
     </tbody>
 
     <tfoot>
-        <tr>
-            <td>Total {{ total }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+    <tr>
+        <td>Total {{ total }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
     </tfoot>
 
 </table>
-
-<br/>
+</body>
+</html>
