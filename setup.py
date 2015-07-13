@@ -21,7 +21,7 @@ install_requires = [
     'django-stdimage==0.2.2',
     'django-transmeta==0.7.3',
 
-    'python-dateutil==1.5',
+    'python-dateutil==2.4.2',
     'python-logstash==0.4.5',
 
     'docutils==0.12',
