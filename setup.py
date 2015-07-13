@@ -14,7 +14,7 @@ long_description = '\n\n'.join([
 install_requires = [
     'django==1.8.3',
 
-    'django-ckeditor==4.4.8',
+    'django-ckeditor==4.5.0',
     'django-extensions==1.5.5',
     'djangorestframework==3.1.3',
     'django-simple-history==1.6.2',
