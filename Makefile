@@ -26,6 +26,8 @@ clean:
 	rm -rf $(INSTALL_PATH)
 	rm -rf reports
 	rm -rf static
+	rm -rf *.egg-info
+	rm -rf setuptools-*.zip
 
 collectstatic:
 	$(BIN_PATH)/manage.py collectstatic --noinput
