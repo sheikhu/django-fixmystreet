@@ -71,6 +71,7 @@ ROOT_URLCONF          = 'fixmystreet_project.urls'
 SECRET_KEY            = os.environ.get('SECRET_KEY', 'dev')
 SESSION_SERIALIZER    = 'django.contrib.sessions.serializers.PickleSerializer'
 TIME_ZONE             = 'Europe/Brussels'
+DEBUGTOOLBAR_ACTIVE   = True # Can be overrided in local_settings
 
 
 # Max file upload size
@@ -342,9 +343,10 @@ if ENVIRONMENT != 'local' and ENVIRONMENT != 'jenkins':
     INSTALLED_APPS += ('gunicorn', )
 else:
     try:
-        __import__('debug_toolbar')
-        INSTALLED_APPS += ('debug_toolbar', )
-        MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+        if DEBUGTOOLBAR_ACTIVE:
+            __import__('debug_toolbar')
+            INSTALLED_APPS += ('debug_toolbar', )
+            MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
         __import__('django_jenkins')
         INSTALLED_APPS += ('django_jenkins',)
