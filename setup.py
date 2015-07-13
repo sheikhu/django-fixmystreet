@@ -42,7 +42,7 @@ dev_require = [
     'ipython',
     # this following package depend on system requirements,
     # must be installed on system for prod
-    'pillow==2.7.0',
+    'pillow==2.9.0',
     'psycopg2==2.6.1',
 
     'zest.releaser==3.50',
