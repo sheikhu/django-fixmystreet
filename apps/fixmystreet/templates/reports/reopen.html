@@ -14,46 +14,14 @@
     /******************************/
     /* QUERY READY INITIALIZATION */
     /******************************/
-    $(function(){
-        fms.currentMap = new fms.Map('map', {
-            apiLang:     LANGUAGE_CODE,
-            localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-            urbisUrl:    WMS_SERVICE_URL,
-            origin:{
-                x:{{ report.point.x }},
-                y:{{ report.point.y }}
-            }
-        });
+    // Initialization of variables used in reopen.js
+    var REPORT_POINT_X = {{ report.point.x }};
+    var REPORT_POINT_Y = {{ report.point.y }};
+    var REPORT_STATUS_FOR_JS_MAP = '{{ report.get_status_for_js_map }}';
 
-        var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
-
-        {% if BACKOFFICE %}
-            reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
-        {%endif%}
-        var markers = [];
-        markers.push(fms.currentMap.addReport(reportJSON, 1, {% if BACKOFFICE %}true{%else%}false{%endif%}, true));
-        fms.currentMap.markersLayer.addFeatures(markers);
-
-
-        document.getElementById('btn-streetview').addEventListener('click', function(){
-            var p = UtilGeolocation.convertCoordinatesToWGS84({{ report.point.x}}, {{ report.point.y}});
-            window.open( 'https://maps.google.be/maps?q=' + p.y +','+ p.x +'&layer=c&z=17&iwloc=A&sll='+ p.y + ',' + p.x + '&cbp=13,240.6,0,0,0&cbll=' + p.y + ',' + p.x,'_blank');
-        })
-    });
-
-    $(function(event) {
-    $("#btn-toggle-map a").click(function(evt) {
-        evt.preventDefault();
-        var mapEl = $('#map');
-        if (mapEl.hasClass('map-big')) {
-            mapEl.removeClass('map-big');
-        } else {
-            mapEl.addClass('map-big');
-        }
-    });
-});
 
     </script>
+    <script src="{% static 'js/templates/reports/reopen.js' %}"></script>
 {% endblock %}
 
 {% endblock %} <!--endblock script-->
