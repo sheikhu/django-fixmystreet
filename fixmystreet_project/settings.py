@@ -326,9 +326,9 @@ if ENVIRONMENT != 'local' and ENVIRONMENT != 'jenkins':
     INSTALLED_APPS += ('gunicorn', )
 else:
     try:
-        # __import__('debug_toolbar')
-        # INSTALLED_APPS += ('debug_toolbar', )
-        # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+        __import__('debug_toolbar')
+        INSTALLED_APPS += ('debug_toolbar', )
+        MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
         __import__('django_jenkins')
         INSTALLED_APPS += ('django_jenkins',)
