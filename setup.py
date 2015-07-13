@@ -21,7 +21,7 @@ install_requires = [
     'django-stdimage==0.2.2',
     'django-transmeta==0.7.3',
 
-    'python-dateutil==1.5',
+    'python-dateutil==2.4.2',
     'python-logstash==0.4.5',
 
     'docutils==0.12',
@@ -34,8 +34,7 @@ install_requires = [
 
 dev_require = [
     'django-debug-toolbar==1.3.2',
-    # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
-    'django-jenkins==0.15.0',
+    'django-jenkins==0.17.0',
 
     'coverage',
     'flake8',
