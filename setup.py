@@ -35,7 +35,7 @@ install_requires = [
 dev_require = [
     'django-debug-toolbar==1.3.2',
     # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
-    'django-jenkins==0.15.0',
+    'django-jenkins==0.17.0',
 
     'coverage',
     'flake8',
