@@ -1,20 +1,13 @@
 from django.contrib.auth.models import User
 
-from apps.fixmystreet.models import ReportCategory, OrganisationEntity, FMSUser
+from apps.fixmystreet.models import FMSUser
 from apps.fixmystreet.tests import FMSTestCase
+from apps.fixmystreet.forms import CitizenForm
 
 class FMSUserTest(FMSTestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user('admin', 'test@fixmystreet.irisnet.be', 'pwd')
-        self.user.save()
-
-        # these are from the fixtures file.
-        self.category = ReportCategory.objects.all()[0]
-        self.categoryclass = self.category.category_class
-
-        self.commune = OrganisationEntity(name='test ward')
-        #Create a FMSUser
+        # Create a FMSUser
         self.fmsuser = FMSUser(
             telephone="0123456789",
             last_used_language="fr",
@@ -66,3 +59,56 @@ class FMSUserTest(FMSTestCase):
        self.assertFalse(self.fmsuser.leader)
        self.assertFalse(self.fmsuser.applicant)
        self.assertFalse(self.fmsuser.contractor)
+
+    def test_double_citizen_case_insensitive(self):
+        citizen_data = {
+            "email"    : "user@fms.be",
+            "last_name": "user",
+            "telephone": "123456789",
+            "quality"  : 1
+        }
+
+        # Create first citizen
+        citizen_form = CitizenForm(citizen_data)
+
+        # Form has to be valid
+        self.assertTrue(citizen_form.is_valid())
+        citizen_form.save()
+
+        # Create second citizen with a caps in email
+        citizen_data['email'] = citizen_data['email'].upper()
+        citizen_form          = CitizenForm(citizen_data)
+
+        # Form has to be valid
+        self.assertTrue(citizen_form.is_valid())
+        citizen_form.save()
+
+        # And only one user with the same email case insensitive is created (it's the same citizen in both cases)
+        self.assertEqual(1, FMSUser.objects.filter(username__iexact=citizen_data['email']).count())
+
+    def test_citizen_with_pro_email(self):
+        manager = FMSUser(
+            is_active=True,
+            telephone="0123456789",
+            last_used_language="fr",
+            password='test',
+            first_name="manager",
+            last_name="manager",
+            email="manager@a.com",
+            manager=True
+        )
+        manager.save()
+
+        citizen_data = {
+            "email"    : manager.email,
+            "last_name": "user",
+            "telephone": "123456789",
+            "quality"  : 1
+        }
+
+        # Create a citizen user
+        citizen_form = CitizenForm(citizen_data)
+
+        # Form has to be INVALID because the citizen use a pro email
+        self.assertFalse(citizen_form.is_valid())
+        self.assertTrue(citizen_form.errors)

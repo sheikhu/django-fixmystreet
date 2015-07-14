@@ -147,10 +147,6 @@ class FmsUserCreateForm(FmsUserForm):
 
         return self.instance
 
-    def validate_unique(self):
-        """ disable unique validation, save will retrieve existing instance """
-        pass
-
     def retrive_user(self):
         try:
             user = FMSUser.objects.get(email=self.cleaned_data['email'])

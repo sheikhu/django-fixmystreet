@@ -97,14 +97,19 @@
             {% input_class citizen_form.last_name 'input-block-level' %}
         </div>
     </div>
+
     <div class="control-group required">
         <label for="email" class="control-label">
-         <span class="dosisformblue">{% trans 'Email' %}</span>
-     </label>
-     <div class="controls">
-        {% input_class citizen_form.email 'input-block-level' %}
+            <span class="dosisformblue">{% trans 'Email' %}</span>
+        </label>
+        <div class="controls">
+            {% input_class citizen_form.email 'input-block-level' %}
+
+            {% if citizen_form.email.errors %}
+                <span class="text-error">{{ citizen_form.email.errors }}</span>
+            {% endif %}
+        </div>
     </div>
-</div>
 
 </div>
 
@@ -127,7 +132,7 @@
     {% input_class citizen_form.telephone 'input-block-level' %}
 </div>
 </div>
-</div>    
+</div>
 
 
 {% endif %}
@@ -165,7 +170,7 @@
 
 {% endif %}
 
-<div id="required-note" class="notificationtextlittle" >{% trans "* This fields are required" %} 
+<div id="required-note" class="notificationtextlittle" >{% trans "* This fields are required" %}
  {% if report_form %}
  {% trans "The report will be send to you by mail." %}
  {% endif %}</div>

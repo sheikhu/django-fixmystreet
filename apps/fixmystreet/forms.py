@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.utils.translation import get_language
 from django.utils.safestring import mark_safe
 
@@ -192,7 +192,6 @@ class CitizenForm(forms.Form):
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
     email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={'type': 'email', 'class': 'validate-email'}))
     quality = forms.ChoiceField(label=_('Quality'), widget=forms.Select, choices=qualities)
-    #citizen_firstname = forms.CharField(max_length="30", label=_('Firstname'))
 
     def clean(self):
         cleaned_data = super(CitizenForm, self).clean()
@@ -200,6 +199,23 @@ class CitizenForm(forms.Form):
             if isinstance(cleaned_data[k], basestring):
                 cleaned_data[k] = cleaned_data[k].strip()
         return cleaned_data
+
+    def clean_email(self):
+        # Force and ensure that email is case insensitive
+        email = self.cleaned_data["email"].lower()
+
+        try:
+            user = FMSUser.objects.get(email__iexact=email)
+
+            if user.is_pro():
+                raise ValidationError("You cannot use a pro email as citizen")
+
+        except FMSUser.DoesNotExist:
+            pass
+        except FMSUser.MultipleObjectsReturned:
+            raise ValidationError("Duplicated user. Tell irisline@irisnet.be.")
+
+        return email
 
     def save(self):
         try:
@@ -217,10 +233,6 @@ class CitizenForm(forms.Form):
             instance = FMSUser.objects.create(**data)
 
         return instance
-
-    def validate_unique(self):
-        """ disable unique validation, save will retrieve existing instance """
-        pass
 
 
 class ContactForm(forms.Form):

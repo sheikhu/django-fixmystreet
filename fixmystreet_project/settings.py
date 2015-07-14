@@ -73,6 +73,8 @@ SESSION_SERIALIZER    = 'django.contrib.sessions.serializers.PickleSerializer'
 TIME_ZONE             = 'Europe/Brussels'
 DEBUGTOOLBAR_ACTIVE   = True # Can be overrided in local_settings
 
+# Use a custom backend case insensitive for auth
+AUTHENTICATION_BACKENDS = ('middleware.backends.CaseInsensitiveModelBackend',)
 
 # Max file upload size
 MAX_UPLOAD_SIZE = "15000000"
