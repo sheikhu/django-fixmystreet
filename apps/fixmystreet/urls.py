@@ -25,10 +25,11 @@ urlpatterns += patterns(
         'template_name': 'admin/registration/password_reset_form.html'
     }),
     (r'^accounts/password/reset/done/$', 'password_reset_done', {'template_name': 'admin/registration/password_reset_done.html'}),
-    (r'^accounts/password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'password_reset_confirm', {
+    url(r'^accounts/password/reset/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>.+)/$', 'password_reset_confirm', {
         'post_reset_redirect': '/accounts/password/done/',
         'template_name': 'admin/registration/password_reset_confirm.html'
-    }),
+    }, name='password_reset_confirm'),
+
     (r'^accounts/password/done/$', 'password_reset_complete', {'template_name': 'admin/registration/password_reset_complete.html'}),
 )
 
