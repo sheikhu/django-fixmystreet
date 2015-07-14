@@ -28,22 +28,23 @@ install_requires = [
     'gunicorn==18.0',
     'mobileserverstatus==1.0.2',
     'requests==2.7.0',
-    'setproctitle==1.1.8',
+    'setproctitle==1.1.8', # Is it still used?
     'transifex-client==0.11.1.beta',
 ]
 
 dev_require = [
     'django-debug-toolbar==1.3.2',
-    'django-jenkins==0.17.0',
-
-    'coverage',
-    'flake8',
     'ipython',
-    # this following package depend on system requirements,
+
+    # These following packages depend on system requirements,
     # must be installed on system for prod
     'pillow==2.9.0',
     'psycopg2==2.6.1',
 
+    # Jenkins
+    'django-jenkins==0.17.0',
+    'coverage',
+    'flake8',
     'zest.releaser==3.50',
 ]
 
