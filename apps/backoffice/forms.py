@@ -117,6 +117,20 @@ class FmsUserForm(forms.ModelForm):
     manager = forms.BooleanField(required=False)
     contractor = forms.BooleanField(required=False)
 
+    def clean_email(self):
+        # Force and ensure that email is case insensitive
+        email = self.cleaned_data["email"].lower()
+
+        try:
+            user = FMSUser.objects.get(email__iexact=email)
+
+        except FMSUser.DoesNotExist:
+            pass
+        except FMSUser.MultipleObjectsReturned:
+            raise ValidationError("Duplicated user")
+
+        return email
+
 
 class FmsUserCreateForm(FmsUserForm):
 

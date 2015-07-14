@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 
 from apps.fixmystreet.models import OrganisationEntity, FMSUser
 from apps.fixmystreet.tests import FMSTestCase
+from apps.backoffice.forms import FmsUserForm
 
 class UsersTest(FMSTestCase):
 
@@ -208,3 +209,49 @@ class UsersTest(FMSTestCase):
         self.assertEquals(users.count(), 2)
         self.assertFalse(can_create)
         self.assertIn(self.manager, users)
+
+    def test_double_pro_case_insensitive(self):
+        pro_data = {
+            "email"    : "user@fms.be",
+            "last_name": "user",
+            "telephone": "123456789",
+            "quality"  : 1
+        }
+
+        # Create first pro
+        pro_form = FmsUserForm(pro_data)
+
+        # Form has to be valid
+        self.assertTrue(pro_form.is_valid())
+        pro_form.save()
+
+        # Create second pro with a caps in email
+        pro_data['email'] = pro_data['email'].upper()
+        pro_form          = FmsUserForm(pro_data)
+
+        # Form has to be INVALID because the email is already existing
+        self.assertFalse(pro_form.is_valid())
+        self.assertTrue(pro_form.errors)
+
+    def test_pro_with_citizen_email(self):
+        citizen = FMSUser(
+            telephone="0123456789",
+            first_name="citizen",
+            last_name="citizen",
+            email="citizen@a.com",
+        )
+        citizen.save()
+
+        pro_data = {
+            "email"    : citizen.email,
+            "last_name": "user",
+            "telephone": "123456789",
+            "quality"  : 1
+        }
+
+        # Create a pro user
+        pro_form = FmsUserForm(pro_data)
+
+        # Form has to be INVALID because a citizen uses this email
+        self.assertFalse(pro_form.is_valid())
+        self.assertTrue(pro_form.errors)

@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate
 from django.utils.translation import get_language
 from django.utils.safestring import mark_safe
 
@@ -213,7 +213,7 @@ class CitizenForm(forms.Form):
         except FMSUser.DoesNotExist:
             pass
         except FMSUser.MultipleObjectsReturned:
-            raise ValidationError("Duplicated user. Tell irisline@irisnet.be.")
+            raise ValidationError("Duplicated user")
 
         return email
 
