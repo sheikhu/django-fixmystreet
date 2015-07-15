@@ -14,24 +14,17 @@
 
     <script type="text/javascript">
 
-        var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
+        var ERROR_MSG = "{% trans 'Unable to send your request.' %}";
+        var REPORT_CAT_ID = "{{report.category.id}}";
+        var SUBSCRIBED = "{{ subscribed }}";
 
+        var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
+        var URL_REPORT_UPDATE_ATTACHMENT = "{% url 'report_update_attachment' report.id %}";
+        var URL_SEND_PDF = "{% url 'send_pdf' report.id %}";
+        var URL_SEC_CAT_FOR_MAIN_CAT = "{% url 'secondary_category_for_main_category' %}";
+        var URL_UNSUBSCRIBE_PRO = "{% url 'unsubscribe_pro' report.id %}";
+        var URL_SUBSCRIBE_PRO = "{% url 'subscribe_pro' report.id %}";
         $(function(){
-            $(".changeStatus").delegate("input[type=radio]", "click", function(){
-                var id = $(this).data('attachmentId');
-                var level = $(this).val();
-                var elem = $(this).closest('.changeStatus');
-                elem.addClass('loading');
-                $.get('{% url "report_update_attachment" report.id %}?attachmentId='+id+'&updateType='+level)
-                .success(function (result) {
-                    console.log(elem);
-                    elem.html(result);
-                }).error(function () {
-                    alert("Somethings went wrong...");
-                }).done(function(){
-                    elem.removeClass('loading');
-                });
-            });
             /*Set the contractor dropdown*/
             $('#report_responsible_impetrant_contractor_select').val('{{report.contractor.id}}');
             var markers = [];
@@ -44,187 +37,10 @@
                 markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%}, true));
                 fms.currentMap.markersLayer.addFeatures(markers);
             {% endfor %}
-            //Clear the comment textarea after each POST
-            $("#id_comment-text").val('');
-
-            $.ajax({
-                url:"{% url 'secondary_category_for_main_category' %}?main_category="+"{{report.category.id}}",
-                type:"GET",
-                success:function(data){
-                    sortAndAppendSecCat(data);
-                }
-            });
-
-            $('#main_cat_select').change(function(){
-                if(this.value !== "0"){
-                    $("#sec_cat_select").removeAttr("disabled");
-                    $("#sec_cat_select").empty();
-
-                    $.ajax({
-                        url:"{% url 'secondary_category_for_main_category' %}?main_category="+this.value,
-                        type:"GET",
-                        success:function(data){
-                            sortAndAppendSecCat(data);
-                        }
-                    });
-                }
-                else {
-                    $("#sec_cat_select").attr("disabled","disabled");
-                }
-            });
-
-            $("#main_cat_select").val("{{report.category.id}}");
-
-            $(".update_text").find('#imgtoshow').exifLoad(someCallback);
-
-            $('.priority select').change(function () {
-                $("#prio_result").html(parseInt($("#id_probability").val()) * parseInt($("#id_gravity").val()));
-            });
-
-            $('#update_cat_form').submit(function(e){
-                if(validateCategories()==false) {
-                    e.preventDefault();
-                }
-            });
-
-            /*Set the checked value*/
-            {% if report.private %}
-            $('#id_private').attr("checked", "checked");
-            {% else %}
-            $('#id_public').attr("checked", "checked");
-            {% endif %}
-
-            {% if subscribed %}
-            $("#id_pro-subscription").attr("value","on").prop('checked', true);
-            {% else %}
-            $("#id_pro-subscription").attr("value","off");
-            {% endif %}
-
-            $("#id_pro-subscription").change(function(){
-                if($(this).attr("value")== "on"){
-                    $(this).attr("value","off");
-                    $.ajax("{% url 'unsubscribe_pro' report.id %}")
-                }
-                else{
-                    $(this).attr("value","on");
-                    $.ajax("{% url 'subscribe_pro' report.id %}");
-                }
-            });
-
-        // $("#grav").val("{{report.gravity}}");
-        // $("#prob").val("{{report.probability}}");
-    });
-
-    window.onload = function() {
-        // Handle 'I want to create a new report' checkbox
-        var createNewReport = document.getElementById('createNewReport');
-
-        if (createNewReport) {
-            messageButton.addEventListener('click', function() {
-                if (createNewReport.checked) {
-                    window.location.href = "/";
-                }
-            });
-        }
-    }
-
-    /**
-     * ExifCallback method
-     */
-     var someCallback = function(exifObject, index) {
-        // realy used ???
-        if (exifObject && exifObject.DateTimeOriginal){
-            textAreas = $(".update_text").find('#imagedate');
-            var datetosplit = exifObject.DateTimeOriginal;
-            var splitted = datetosplit.split(/[:,\/ ]/)
-            var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
-            textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];
-        }
-    }
-
-    function setStatusMessage(e, type, msg) {
-        var $e = $(e);
-        $e.html(msg);
-        $e.parent().removeClass(function (index, css) { return (css.match(/\balert-\S+/g) || []).join(' '); })
-        .addClass('alert-' + type);
-    }
-
-    $(document).ready(function() {
-
-        function sendPdf(event) {
-            event.preventDefault();
-
-            this.classList.add('loading');
-
-            var self = this;
-            var url  = "{% url 'send_pdf' report.id %}";
-
-            var statusMessage = document.getElementById(self.id + '-status');
-            var status        = statusMessage.parentNode;
-
-            var formData = $(this).serialize();
-            if (!formData) {
-                {% trans "Unable to send your request." as error_message %}
-                setStatusMessage(statusMessage, 'error', '{{ error_message|escapejs }}');
-                return;
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: formData,
-                success: function(response) {
-                    console.log("send mail success");
-                    var statusType = response.status == 'success' ? 'success' : 'error';
-                    var msg = '<strong>' + response.message + '</strong>';
-                    for (var i = 0; i < response.logMessages.length; i++) {
-                        msg += '<br />' + response.logMessages[i];
-                    }
-                    setStatusMessage(statusMessage, statusType, msg);
-                },
-                error: function(response) {
-                    console.log("send mail error");
-                    setStatusMessage(statusMessage, 'error', '{% trans "Error" %}');
-                },
-                complete: function() {
-                    status.classList.remove('hidden');
-
-                    setTimeout(function() {
-                        status.classList.add('hidden');
-                    }, 5000);
-
-                    self.classList.remove('loading');
-                }
-            });
-        }
-
-        $('#mail-pdf-pro').submit(function(event) {
-            sendPdf.call(this, event);
-        });
-
-        $('#mail-pdf-citizen').submit(function(event) {
-            sendPdf.call(this, event);
-        });
-
-        $('.dropdown-menu li a').mouseover(function(evt) {
-            evt.stopPropagation();
-
-            var $this = $(this);
-            $this.closest('li').siblings().each(function() {
-                jQuery(this).removeClass('open');
-            });
-            $this.closest('li').addClass('open');
-        });
-
-        $('.dropdown-toggle').click(function(e) {
-            jQuery(this).parent().find('li').each(function() {
-                jQuery(this).removeClass('open');
-            });
-        });
-
     });
     </script>
-    <script src="{% static 'js/reports_show_pro.js' %}"></script>
+
+    <script src="{% static 'js/templates/reports/pro_show.js' %}"></script>
 
 {% endblock %}
 {% endblock %}

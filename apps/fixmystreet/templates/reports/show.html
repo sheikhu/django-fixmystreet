@@ -39,7 +39,7 @@ $(function(){
         reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
     {%endif%}
 
-    $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
+{#    $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");#}
     //Clear the comment textarea after each POST
     //$("#id_comment-text").val('');
 

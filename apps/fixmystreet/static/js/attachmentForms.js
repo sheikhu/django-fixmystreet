@@ -86,7 +86,7 @@
 
             var removeThumbnail = form_new.find('.removeThumbnail')[0];
             removeThumbnail.addEventListener('click', function() {
-                $(this).closest('.row-fluid').parent().parent().remove();
+                $(this).closest('.row-fluid').parent().remove();
                 file_size_total -= file.size;
 
                 file_count--;

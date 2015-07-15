@@ -16,10 +16,12 @@
 <script src="{% static 'js/categorySelection.js' %}"></script>
 <script src="{% static 'js/new_report.js' %}"></script>
 <script src="{% static 'js/jquery.exif.js' %}"></script>
+<script src="{% static 'js/checkbox_value.js' %}"></script>
 
 <script>
     var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
-
+    var zips = {{ all_zips.to_JSON|dict_to_json|safe }};
+    console.log(zips);
     var zipcodes = new Object();
 
     {% for zip in all_zips %}
@@ -28,26 +30,6 @@
     zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
     zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
     {% endfor %}
-
-    $(function(){
-        $("input:checkbox").attr("value","off");
-        $("input:checkbox").bind("change",function(){
-
-            if ($(this).attr("value")!="on"){
-                $(this).attr("value","on");
-            }
-            else {
-                if($(this).attr("checked")=="checked"){
-                    $(this).attr("value","on");
-                    return false;
-                }
-                $(this).attr("value","off");
-            }
-        });
-
-        $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
-    });
-
 
     var categories = {
         {% for category_class in category_classes %}
@@ -82,7 +64,7 @@
                     <div class="addressMarker">
                         <span id="address-text" class="pull-right"></span><br/>
                         <span id="citycode-text" class="pull-right"></span>
-                    <div>
+                    </div>
 
 
                 </div>

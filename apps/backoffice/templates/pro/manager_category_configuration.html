@@ -1,5 +1,6 @@
 {% extends "pro/base.html" %}
 {% load i18n %}
+{% load static from staticfiles %}
 {% load tags %}
 {% block title %}
 {% trans 'Default manager configuration' %}
@@ -8,36 +9,12 @@
 {{ block.super }}
 
 <script>
-$(document).ready(function(){
-
-  $.each($(".matrixButton"),function(idx,value){
-    if($(value).text().indexOf("No manager selected")!=-1){
-      $(value).addClass("emptySelection");
-    }
-  });
-
-  /*Hide empty selection zones*/
-  if($("#54").is("button")){
-    $('#54').hide();
-  }
-  if($("#38").is("button")){
-    $('#38').hide();
-  }
-  if($("#58").is("button")){
-    $('#58').hide();
-  }
-});
-
+    var SHOW_MODAL = {% if categories %}true{% else %} false {% endif %};
 </script>
-{% if categories %}
-    <script>
-    $(function() {
-        $("#dialog").modal();
-    });
-    </script>
-  {% endif %}
-{% endblock %}
 
+<script src="{% static 'js/templates/manager_category_configuration.js' %}"></script>
+
+{% endblock %}
 
 {% block content %}
 
@@ -93,24 +70,23 @@ $(document).ready(function(){
                 <tr>
                     <td class="firstItem">{{ line.secondCategory.name }}</td>
 
-                        {% for mainCategory in line.mainCategories %}
-                            <td>
-                            {% if not mainCategory.groups %}
-                                no group
-                            {% else %}
-                                <a id="{{mainCategory.id}}{{line.secondCategory.id}}" class="matrixButton" href="{% url 'gestionnaire_selection_dialog' %}?main={{mainCategory.id}}&second={{line.secondCategory.id}}">
-                                    <ul>
-                                        {% for group in mainCategory.groups %}
-                                            <li {% if group|length != 1 %}class="dispatchingNotCorrect"{% endif %}>
-                                                <small>{{ group.0.name }}</small>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </a>
-                            {% endif %}
-                            </td>
-                        {% endfor %}
-
+                    {% for mainCategory in line.mainCategories %}
+                        <td>
+                        {% if not mainCategory.groups %}
+                            no group
+                        {% else %}
+                            <a id="{{mainCategory.id}}{{line.secondCategory.id}}" class="matrixButton" href="{% url 'gestionnaire_selection_dialog' %}?main={{mainCategory.id}}&second={{line.secondCategory.id}}">
+                                <ul>
+                                    {% for group in mainCategory.groups %}
+                                        <li {% if group|length != 1 %}class="dispatchingNotCorrect"{% endif %}>
+                                            <small>{{ group.0.name }}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </a>
+                        {% endif %}
+                        </td>
+                    {% endfor %}
                 </tr>
             {% endfor %}
         </table>

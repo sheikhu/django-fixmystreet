@@ -28,24 +28,27 @@
     zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
     {% endfor %}
 
-    $(function(){
-        $("input:checkbox").attr("value","off");
-        $("input:checkbox").bind("change",function(){
 
-            if ($(this).attr("value")!="on"){
-                $(this).attr("value","on");
-            }
-            else {
-                if($(this).attr("checked")=="checked"){
-                    $(this).attr("value","on");
-                    return false;
-                }
-                $(this).attr("value","off");
-            }
-        });
+{#    following code not working and probably useless. To be removed with FMS-510 #}
 
-        $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");
-    });
+{#    $(function(){#}
+{#        $("input:checkbox").attr("value","off");#}
+{#        $("input:checkbox").bind("change",function(){#}
+{##}
+{#            if ($(this).attr("value")!="on"){#}
+{#                $(this).attr("value","on");#}
+{#            }#}
+{#            else {#}
+{#                if($(this).attr("checked")=="checked"){#}
+{#                    $(this).attr("value","on");#}
+{#                    return false;#}
+{#                }#}
+{#                $(this).attr("value","off");#}
+{#            }#}
+{#        });#}
+{##}
+{#        $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");#}
+{#    });#}
 
 
     var categories = {

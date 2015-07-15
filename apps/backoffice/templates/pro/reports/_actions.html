@@ -1,153 +1,35 @@
 {% load i18n %}
+{% load static from staticfiles %}
 {% load tags %}
 
+<script type="text/javascript" src="{% url 'jsi18n' %}"></script>
 <script type="text/javascript">
 
-function setThirdPartyResponsibility(boolVal) {
-    if(boolVal){ //asking to switch the incident cause to a third party
-        var r2=confirm("{% trans 'Are you sure you want to declare that the source of this incident is a third party' %}");
-    }
-    else{ //source of incident is not a third party
-        var r2=confirm("{% trans 'Are you sure you want to declare that the source of this incident is not a third party' %}");
-    }
-    if (r2==true){
-        window.location = '{% url "report_change_switch_third_party_responsibility" report.id %}?thirdPartyResponsibility=' + boolVal;
-    }
-}
+var REPORT_SEC_CAT_ID = "{{report.secondary_category.id}}";
+var REPORT_GRAVITY = "{{report.gravity}}";
+var REPORT_PROBABILITY = "{{report.probability}}";
 
-function setPrivate() {
-    var r2=confirm("{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}");
-    if (r2==true){
-        window.location = '{% url "report_change_switch_privacy" report.id %}?privacy=true';
-    }
-}
+/********************************** URLS *****************************/
 
-function setPublic() {
-    window.location = '{% url "report_change_switch_privacy" report.id %}?privacy=false';
-}
-
-function confirmTransfer(url, manId) {
-    $('#modalTransfer form').attr('action', url);
-    $('#modalTransfer form input[name="man_id"]').val(manId);
-    $('#modalTransfer').modal()
-}
-
-function confirmAssign(argUrl) {
-    var r=confirm("Are you sure you want to change the contractor/applicant?");
-    if (r==true){
-        window.location = argUrl
-    }
-}
-
-function cancelCategoryUpdate() {
-    //Close modal Window
-    $('#modalCategory').modal('hide');
-}
-
-function sortAndAppendSecCat(data) {
-    // Sort sec_cat
-    var sortedSecCat = data.sort(function(a,b) {
-        var aSecCat = a["s_c_n_"+LANGUAGE_CODE] + a["n_"+LANGUAGE_CODE];
-        var bSecCat = b["s_c_n_"+LANGUAGE_CODE] + b["n_"+LANGUAGE_CODE];
-
-        return aSecCat == bSecCat ? 0 : aSecCat < bSecCat ? -1 : 1;
-    });
-
-    // Create select with optgroups
-    var currentOptGroup = null;
-    for(var i = 0; i<sortedSecCat.length;++i) {
-        if (sortedSecCat[i]["s_c_n_"+LANGUAGE_CODE] != currentOptGroup) {
-            // Close previous optgroup if not the first
-            if (currentOptGroup) {
-                $("#sec_cat_select").append('</optgroup>');
-            }
-            // Add new optgroup
-            $("#sec_cat_select").append('<optgroup label="' + sortedSecCat[i]["s_c_n_"+LANGUAGE_CODE] + '">');
-
-            currentOptGroup = sortedSecCat[i]["s_c_n_"+LANGUAGE_CODE];
-        }
-
-        // options
-        var option = "<option value='"+sortedSecCat[i].id+"'>" + sortedSecCat[i]["n_"+LANGUAGE_CODE] + "</option>";
-        $("#sec_cat_select").append(option);
-    }
-    // Close previous optgroup if exists
-    if (currentOptGroup) {
-        $("#sec_cat_select").append('</optgroup>');
-    }
-
-    $("#sec_cat_select").prepend("<option value='0'>{% trans 'Select a Category' %}</option>");
-
-    $("#sec_cat_select").val("{{report.secondary_category.id}}");
-}
+var THIRD_PARTY_RESPONSIBILITY_URL = "{% url 'report_change_switch_third_party_responsibility' report.id %}";
+var SWITCH_PRIVACY_URL = "{% url 'report_change_switch_privacy' report.id %}";
+var CLOSE_REPORT_URL = "{% url 'report_close_pro' report.id %}";
+var UPDATE_PRIORITY_URL = "{% url 'report_update_priority' report.id %}";
+var PLANNED_URL = "{% url 'report_planned_pro' report.id %}";
 
 
-function validateCategories() {
-    var valid = true;
-    var form =  $('#update_cat_form');
-    form.find('#main_cat_select, #sec_cat_select').each(function(ind, field) {
-        var value = true;
-        var field = $(field);
-        if(field.val() == 0){
-            valid = false;
-            field.addClass('invalid');
-        }else {
-            field.removeClass('invalid');
-        }
-    });
+/******************TRANS TO BE MOVED IN JS TRANSIFEX ****************/
 
-    if(!valid) {
-        form.find('.invalid select').first().focus();
-        form.find('.required-error-msg').fadeIn();
-        form.addClass('required-invalid');
-    }
-    return valid;
-}
+var TRAD_THIRD_PARTY_TRUE = "{% trans 'Are you sure you want to declare that the source of this incident is a third party' %}";
+var TRAD_THIRD_PARTY_FALSE = "{% trans 'Are you sure you want to declare that the source of this incident is not a third party' %}";
+var TRAD_SET_PRIVATE = "{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}";
+var TRAD_SELECT_CATEGORY = "{% trans 'Select a Category' %}";
+var TRAD_REPORT_CLOSE = "{% trans 'Are you sure you want to close this report?' %}";
 
-function close(){
-    var r=confirm("{% trans 'Are you sure you want to close this report?' %}");
-    if (r==true){
-        window.location = "{% url 'report_close_pro' report.id %}";
-    }
-}
-
-
-function cancelPriorityUpdate(){
-    //Restore original values
-    $("#id_probability").val("{{report.gravity}}");
-    $("#id_gravity").val("{{report.probability}}");
-    //Close modal Window
-    $('#modalPriority').modal('hide');
-}
-
-function persistPriorityUpdate(){
-    var a = parseInt($("#id_probability").val());
-    var b = parseInt($("#id_gravity").val());
-
-    window.location = "{% url 'report_update_priority' report.id %}"+"?gravity="+a+"&probability="+b
-    /*$.ajax({url:"{% url 'report_update_priority' report.id %}",
-        data:{"gravity":a,"probability":b},
-        type:'GET',
-        datatype:"json",
-        success: function(data){
-
-            //Close modal Window
-            $('#modalPriority').modal('hide');
-        }
-    });*/
-}
-
-function planned(){
-    var date_planned = document.getElementById('date_planned').value;
-
-    if (date_planned) {
-        var url = "{% url 'report_planned_pro' report.id %}?date_planned=" + date_planned;
-        window.location = url;
-    }
-}
-
+/********************************************************************/
 </script>
 
+<script src ="{% static 'js/templates/reports/pro__actions.js' %}"></script>
 
 <!-- Actions -->
 {% if report.is_in_progress %}

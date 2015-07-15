@@ -12,3 +12,5 @@ media/photos/
 media/files/
 hieradata/
 reporting/
+
+fixmystreet_project/local_settings.py

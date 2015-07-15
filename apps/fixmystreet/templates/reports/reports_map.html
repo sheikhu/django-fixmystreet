@@ -33,77 +33,8 @@
                 zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
                 zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
             {% endfor %}
-
-            $(function(){
-                fms.map.addIncidentTypeControl();
-
-                // fms.currentMap = new fms.Map('map', {
-                //     apiLang:     LANGUAGE_CODE,
-                //     localizeUrl: URBIS_URL + '/service/urbis/Rest/Localize/getaddressfromxy',
-                //     urbisUrl:    WMS_SERVICE_URL
-                // });
-
-                //     var markers = [];
-                //
-                //     function applyFilter() {
-                //         //Show loading icon
-                //         // $('#map-loading').show();
-                //
-                //         // Remove all popups
-                //         while(fms.currentMap.map.popups.length) {
-                //              fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
-                //         }
-                //
-                //         // Apply filter
-                //         // fms.filterMapWithStatus();//function () {
-                //         //     $('#map-loading').hide();
-                //         // });
-                //     }
-                //     window.onload = function() {
-                //
-                //         var statusToggleCreated    = document.getElementById('statusToggleCreated');
-                //         var statusToggleInProgress = document.getElementById('statusToggleInProgress');
-                //         var statusToggleClosed     = document.getElementById('statusToggleClosed');
-                //
-                //         statusToggleCreated.addEventListener('change', function(){
-                //             fms.currentMap.toogleCreated(this.checked);
-                //             applyFilter();
-                //         });
-                //         statusToggleInProgress.addEventListener('change', function(){
-                //             fms.currentMap.toogleInProgress(this.checked);
-                //             applyFilter();
-                //         });
-                //         statusToggleClosed.addEventListener('change', function(){
-                //             fms.currentMap.toogleClosed(this.checked);
-                //             applyFilter();
-                //         });
-                //
-                //         // Init map with all reports
-                //         fms.statusFilter = ['created', 'in_progress', 'closed'];
-                //         fms.filterMapWithStatus(function () {
-                //             $('#map-loading').hide();
-                //         });
-                //     }
-                fms.loadAllIncidents();
-            });
-            //
-            // // Override some function from search.js
-            // function cleanMap() {
-            //     // Remove all popups
-            //     while(fms.currentMap.map.popups.length) {
-            //          fms.currentMap.map.removePopup(fms.currentMap.map.popups[0]);
-            //     }
-            //
-            //     // Remove all features
-            //     if (fms.currentMap.homepageMarkersLayer) {
-            //         fms.currentMap.homepageMarkersLayer.destroyFeatures();
-            //     }
-            //
-            //     // Hide results
-            //     $proposalContainer = $('#proposal-container');
-            //     $proposalContainer.slideUp();
-            // }
         </script>
+        <script src="{% static 'js/templates/reports/reports_map.js' %}"></script>
     {% endblock %}
 {% endblock %}
 
