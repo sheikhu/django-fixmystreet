@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.utils.translation import get_language
 from django.utils.safestring import mark_safe
 
@@ -351,4 +351,31 @@ class LoginForm(forms.Form):
 
         return self.cleaned_data
 
+from django.contrib.auth.forms import PasswordResetForm
+class FMSPasswordResetForm(PasswordResetForm):
+    """
+    Override PasswordResetForm to display an error message if the email is incorrect
+    """
+    error_messages = {
+        'unknown': _("That email address doesn't have an associated "
+                     "user account. Are you sure you've registered?"),
+        'unusable': _("The user account associated with this email "
+                      "address cannot reset the password."),
+    }
 
+    def clean_email(self):
+        """
+        Validates that an active user exists with the given email address.
+        """
+        UserModel = get_user_model()
+        email = self.cleaned_data["email"]
+        users_cache = UserModel._default_manager.filter(email__iexact=email)
+        if not len(users_cache):
+            raise forms.ValidationError(self.error_messages['unknown'])
+        if not any(user.is_active for user in users_cache):
+            # none of the filtered users are active
+            raise forms.ValidationError(self.error_messages['unknown'])
+        if any((user.password == "!")
+               for user in users_cache):
+            raise forms.ValidationError(self.error_messages['unusable'])
+        return email

@@ -18,11 +18,13 @@ urlpatterns += patterns(
     url(r'^login/$', 'login_view', name='login'),
 )
 
+from apps.fixmystreet.forms import FMSPasswordResetForm
 urlpatterns += patterns(
     'django.contrib.auth.views',
     (r'^accounts/password/reset/$', 'password_reset', {
         'post_reset_redirect': '/accounts/password/reset/done/',
-        'template_name': 'admin/registration/password_reset_form.html'
+        'template_name': 'admin/registration/password_reset_form.html',
+        'password_reset_form': FMSPasswordResetForm
     }),
     (r'^accounts/password/reset/done/$', 'password_reset_done', {'template_name': 'admin/registration/password_reset_done.html'}),
     url(r'^accounts/password/reset/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>.+)/$', 'password_reset_confirm', {
