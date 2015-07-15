@@ -216,6 +216,9 @@
 .fmsmap-search-result-icon.hover {
   margin-top: -52px !important;
   margin-left: -20px !important;
+}
+.fmsmap-search-result-icon:hover img,
+.fmsmap-search-result-icon.hover img {
   width: 40px !important;
 }
 .fmsmap-search-result-icon:hover .number,
