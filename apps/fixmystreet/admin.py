@@ -1,20 +1,6 @@
-
-
 from django.contrib import admin
 from django.core import urlresolvers
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.contrib import messages
-from django.contrib.auth.forms import AdminPasswordChangeForm
 from django.contrib.auth.models import User, Group
-from django.views.decorators.debug import sensitive_post_parameters
-from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _
-from django.utils.html import escape
-from django.utils.safestring import mark_safe
-from django.template.response import TemplateResponse
-from django.conf.urls import patterns, url
 
 from simple_history.admin import SimpleHistoryAdmin
 
@@ -150,66 +136,6 @@ class FMSUserAdmin(SimpleHistoryAdmin):
     actions = (
         export_as_csv_action(fields=list_display),
     )
-
-    def get_urls(self):
-        urls = super(FMSUserAdmin, self).get_urls()
-
-        urls += patterns(
-            '',
-            (
-                r'^(\d+)/reset-password/$',
-                self.admin_site.admin_view(self.reset_password)
-            ),
-        )
-        user_mock_urls = []
-        for user_url in urls:
-            if user_url.name and 'fixmystreet_fmsuser' in user_url.name:
-                user_mock_urls.append(url(
-                    user_url._regex,
-                    user_url.callback,
-                    name=user_url.name.replace('fixmystreet_fmsuser', 'auth_user')
-                ))
-        urls += patterns('', *user_mock_urls)
-
-        return urls
-
-    @method_decorator(sensitive_post_parameters())
-    def reset_password(self, request, id, form_url=''):
-        if not self.has_change_permission(request):
-            raise PermissionDenied
-        user = get_object_or_404(self.queryset(request), pk=id)
-        if request.method == 'POST':
-            form = AdminPasswordChangeForm(user, request.POST)
-            if form.is_valid():
-                form.save()
-                msg = _('Password changed successfully.')
-                messages.success(request, msg)
-                return HttpResponseRedirect('..')
-        else:
-            form = AdminPasswordChangeForm(user)
-
-        fieldsets = [(None, {'fields': form.base_fields.keys()})]
-        adminForm = admin.helpers.AdminForm(form, fieldsets, {})
-
-        context = {
-            'title': _('Change password: %s') % escape(user.username),
-            'adminForm': adminForm,
-            'form_url': mark_safe(form_url),
-            'form': form,
-            'is_popup': '_popup' in request.REQUEST,
-            'add': True,
-            'change': False,
-            'has_delete_permission': False,
-            'has_change_permission': True,
-            'has_absolute_url': False,
-            'opts': self.model._meta,
-            'original': user,
-            'save_as': False,
-            'show_save': True,
-        }
-        return TemplateResponse(request, [
-            'admin/auth/user/change_password.html'
-        ], context, current_app=self.admin_site.name)
 
 admin.site.register(FMSUser, FMSUserAdmin)
 
