@@ -1144,9 +1144,11 @@ L.FixMyStreet.SearchResultIcon = L.FixMyStreet.NumberedIcon.extend({
     var $div = $(div);
     $div.attr('data-search-result', this.options.index);  // Doesn't work with .data('search-result')
     $div.mouseover(function (evt) {
+      $div.find('img').attr('src', STATIC_URL + 'images/pin-blue-L.png');
       $('.fmsmap-panel-search').find('[data-search-result="' + $(this).data('search-result') + '"]').addClass('hover');
     });
     $div.mouseout(function (evt) {
+       $div.find('img').attr('src', STATIC_URL + 'images/pin-blue-XS.png');
       $('.fmsmap-panel-search').find('[data-search-result="' + $(this).data('search-result') + '"]').removeClass('hover');
     });
     return div;
@@ -1684,10 +1686,14 @@ L.FixMyStreet.SearchPanel = L.FixMyStreet.Panel.extend({
     });
 
     this.$container.delegate('li[data-search-result]', 'mouseover', function (evt) {
-      $('.fmsmap-search-result-icon[data-search-result="' + $(this).data('search-result') + '"]').addClass('hover');
+        var $mapIcon = $('.fmsmap-search-result-icon[data-search-result="' + $(this).data('search-result') + '"]');
+        $mapIcon.addClass('hover');
+        $mapIcon.find('img').attr('src', STATIC_URL + 'images/pin-blue-L.png');
     });
     this.$container.delegate('li[data-search-result]', 'mouseout', function (evt) {
-      $('.fmsmap-search-result-icon[data-search-result="' + $(this).data('search-result') + '"]').removeClass('hover');
+        var $mapIcon = $('.fmsmap-search-result-icon[data-search-result="' + $(this).data('search-result') + '"]');
+        $mapIcon.removeClass('hover');
+        $mapIcon.find('img').attr('src', STATIC_URL + 'images/pin-blue-XS.png');
     });
     this.$container.delegate('li[data-search-result]', 'click', function (evt) {
       var model = that._map.searchResults[$(this).data('search-result')].model;

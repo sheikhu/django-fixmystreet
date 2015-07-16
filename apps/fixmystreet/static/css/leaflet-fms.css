@@ -217,10 +217,10 @@
   margin-top: -52px !important;
   margin-left: -20px !important;
 }
-.fmsmap-search-result-icon:hover img,
-.fmsmap-search-result-icon.hover img {
-  width: 40px !important;
-}
+/*.fmsmap-search-result-icon:hover img,*/
+/*.fmsmap-search-result-icon.hover img {*/
+  /*width: 40px !important;*/
+/*}*/
 .fmsmap-search-result-icon:hover .number,
 .fmsmap-search-result-icon.hover .number {
   font-size: 21px;
@@ -228,10 +228,10 @@
   line-height: 30px;
   width: 30px;
 }
-.fmsmap-search-result-icon:hover > img,
-.fmsmap-search-result-icon.hover > img {
-  content: url('../images/pin-blue-L.png');
-}
+/*.fmsmap-search-result-icon:hover > img,*/
+/*.fmsmap-search-result-icon.hover > img {*/
+  /*content: url('../images/pin-blue-L.png');*/
+/*}*/
 
 
 /* POP-UPS */
