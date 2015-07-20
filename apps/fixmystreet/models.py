@@ -2430,61 +2430,6 @@ class ZipCode(models.Model):
         translate = ('name', )
 
 
-class FaqEntry(models.Model):
-    __metaclass__ = TransMeta
-
-    q = models.CharField(_('Question'), max_length=200)
-    a = models.TextField(_('Answere'), blank=True, null=True)
-    slug = models.SlugField(null=True, blank=True)
-    order = models.IntegerField(null=True, blank=True)
-
-    class Meta:
-        ordering = ["order"]
-        verbose_name_plural = 'faq entries'
-        translate = ('q', 'a')
-
-
-@receiver(pre_save, sender=FaqEntry)
-def save(sender, instance, **kwargs):
-    if not instance.order:
-        instance.order = FaqEntry.objects.all().aggregate(models.Max('order'))['order__max'] + 1
-
-
-class FaqMgr(object):
-
-    def incr_order(self, faq_entry):
-        if faq_entry.order == 1:
-            return
-        other = FaqEntry.objects.get(order=faq_entry.order - 1)
-        self.swap_order(other[0], faq_entry)
-
-    def decr_order(self, faq_entry):
-        other = FaqEntry.objects.filter(order=faq_entry.order + 1)
-        if len(other) == 0:
-            return
-        self.swap_order(other[0], faq_entry)
-
-    def swap_order(self, entry1, entry2):
-        entry1.order = entry2.order
-        entry2.order = entry1.order
-        entry1.save()
-        entry2.save()
-
-
-class ListItem(models.Model):
-    """
-    Only for sql selection purpose
-    """
-    __metaclass__ = TransMeta
-    label = models.CharField(verbose_name=_('Label'), max_length=100, null=False)
-    model_class = models.CharField(verbose_name=_('Related model class name'), max_length=100, null=False)
-    model_field = models.CharField(verbose_name=_('Related model field'), max_length=100, null=False)
-    code = models.CharField(max_length=50, null=False)
-
-    class Meta:
-        translate = ('label', )
-
-
 # to import fresh datas:
 #
 # ogr2ogr -a_srs EPSG:31370 -overwrite -f "PostgreSQL" -nln public.urbis \
