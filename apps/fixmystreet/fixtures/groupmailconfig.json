@@ -1,0 +1,28 @@
+[
+{
+  "fields": {
+    "notify_members": false,
+    "group": 27,
+    "digest_closed": false,
+    "digest_other": false,
+    "digest_created": false,
+    "digest_inprogress": false,
+    "notify_group": true
+  },
+  "model": "fixmystreet.groupmailconfig",
+  "pk": 1
+},
+{
+  "fields": {
+    "notify_members": false,
+    "group": 26,
+    "digest_closed": false,
+    "digest_other": false,
+    "digest_created": false,
+    "digest_inprogress": false,
+    "notify_group": true
+  },
+  "model": "fixmystreet.groupmailconfig",
+  "pk": 2
+}
+]
