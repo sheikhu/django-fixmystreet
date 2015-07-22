@@ -197,11 +197,6 @@ def update(request, report_id):
         report.fixed_at = datetime.datetime.now()
         report.save()
 
-        if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-        else:
-            return HttpResponseRedirect(report.get_absolute_url())
-
     return HttpResponseRedirect(report.get_absolute_url())
 
 
