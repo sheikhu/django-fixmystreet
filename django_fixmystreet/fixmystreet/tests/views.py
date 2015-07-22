@@ -499,7 +499,6 @@ class ReportViewsTest(FMSTestCase):
         self.assertEqual(report.status, Report.SOLVED)
         self.assertFalse(ReportComment.objects.filter(type=ReportAttachment.MARK_AS_DONE, report=report).exists())
 
-
     def test_mark_done_as_pro(self):
         """Tests marking report as done."""
 
@@ -521,6 +520,57 @@ class ReportViewsTest(FMSTestCase):
         self.assertTrue(report.fixed_at)
         self.assertTrue(ReportComment.objects.filter(type=ReportAttachment.MARK_AS_DONE, report=report).exists())
         self.assertEquals(report.status, Report.SOLVED)
+    def test_mark_done_as_user_denied(self):
+        """Tests marking report not done if denied."""
+
+        url = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report = response.context['report']
+
+        self.client.login(username='manager@a.com', password='test')
+        url      = reverse('report_accept_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+
+        # Change status to refused
+        report.status = report.REFUSED
+        report.save()
+
+        # Try to mark as done as citizen
+        self.client.logout()
+        response = self.client.post(reverse('report_update', args=[report.id]), {'is_fixed': 'True'}, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        report = response.context['report']
+
+        self.assertFalse(report.fixed_at)
+        self.assertEqual(report.status, Report.REFUSED)
+        self.assertFalse(ReportComment.objects.filter(type=ReportAttachment.MARK_AS_DONE, report=report).exists())
+
+    def test_mark_done_as_pro_denied(self):
+        """Tests marking report as done."""
+
+        url      = "%s?x=148360&y=171177" % reverse('report_new')
+        response = self.client.post(url, self.sample_post, follow=True)
+        report   = response.context['report']
+
+        self.client.login(username='manager@a.com', password='test')
+        url = reverse('report_accept_pro', args=[report.id])
+        response = self.client.get(url, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        # Change status to refused
+        report.status = report.REFUSED
+        report.save()
+
+        # Try to mark as done as pro
+        response = self.client.post(reverse('report_fix_pro', args=[report.id]), {'text': 'commentaire'}, follow=True)
+        self.assertEquals(response.status_code, 200)
+
+        report = response.context['report']
+
+        self.assertFalse(report.fixed_at)
+        self.assertFalse(ReportComment.objects.filter(type=ReportAttachment.MARK_AS_DONE, report=report).exists())
+        self.assertEquals(report.status, Report.REFUSED)
 
     def test_search_ticket(self):
         """Tests searching ticket."""
