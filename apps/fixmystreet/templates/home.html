@@ -7,12 +7,6 @@
     <meta property="og:description" content="{% trans 'Meta description for home page' %}" />
 {% endblock %}
 
-{% block js_vars %}
-    {{ block.super }}
-    var NEW_INCIDENT_URL = '{% url "report_verify" %}';
-    var LOAD_INCIDENT_MODEL_URL = '{% url "get_report_popup_details" %}';
-{% endblock %}
-
 {% block script %}
     {{ block.super }}
     <script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>

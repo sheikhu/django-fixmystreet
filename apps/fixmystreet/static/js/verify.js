@@ -32,34 +32,23 @@
 (function() {
 
     var btnMap  = document.getElementById('btn-map');
-
+    var reportsAdded = false;
     btnMap.addEventListener('click', function() {
+        if(!reportsAdded){
+            for (var i=0, length=REPORT_JSON_LIST.length; i<length; i++) {
+                var report = REPORT_JSON_LIST[i];
+                var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x:  report.point.x , y:  report.point.y });
+                var marker = fms.map.addIncident({
+                        id: report.id,
+                        type: report.status,
+                        latlng: latlng,
+                    });
 
-        if (!fms.currentMap) {
-
-            fms.currentMap = new fms.Map('map', {
-                apiLang:     LANGUAGE_CODE,
-                localizeUrl: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
-                urbisUrl:    WMS_SERVICE_URL
-            });
-
-            var markers = [];
-            for (var i=0, length=reportJSONList.length; i<length; i++) {
-                var marker = fms.currentMap.addReport(reportJSONList[i], i +1, proVersion);
-
-                markers.push(marker);
             }
-
-            fms.currentMap.markersLayer.addFeatures(markers);
-
-            // Zoom to markers
-            var markersBound = fms.currentMap.markersLayer.getDataExtent();
-            fms.currentMap.map.zoomToExtent(markersBound);
-            // Harcode zoom because getDataExtent set zoom to max :(
-            fms.currentMap.map.zoomTo(7);
-
+            fms.map.addSizeToggle({state1: {size: 'small'}});
+            fms.map.fitToMarkers();
+            reportsAdded= true;
         }
-
     });
 
-})(document, LANGUAGE_CODE, URBIS_URL, WMS_SERVICE_URL, fms);
+})(document, fms);

@@ -19,7 +19,6 @@
 <script src="{% static 'js/checkbox_value.js' %}"></script>
 
 <script>
-    var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
     var zips = {{ all_zips.to_JSON|dict_to_json|safe }};
     console.log(zips);
     var zipcodes = new Object();

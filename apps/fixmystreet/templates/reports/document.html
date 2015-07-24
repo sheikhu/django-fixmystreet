@@ -17,8 +17,6 @@
 <script src="{% static 'js/jquery.exif.js' %}"></script>
 
 <script>
-    var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
-
     var zipcodes = new Object();
 
     {% for zip in all_zips %}

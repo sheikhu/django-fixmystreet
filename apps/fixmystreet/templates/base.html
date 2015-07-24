@@ -274,7 +274,13 @@
         var DEBUG = {% if request.GET.debug %}true{% else %}{{ DEBUG|yesno:"true,false" }}{% endif %};
         var BACKOFFICE = {{ BACKOFFICE|yesno:"true,false" }};
         var fms = {};
-        {% block js_vars %}{% endblock %}
+        if(BACKOFFICE){
+            var NEW_INCIDENT_URL = '{% url "report_verify_pro" %}';
+            var LOAD_INCIDENT_MODEL_URL = '{% url "get_report_popup_details_pro" %}';
+        }else{
+            var NEW_INCIDENT_URL = '{% url "report_verify" %}';
+            var LOAD_INCIDENT_MODEL_URL = '{% url "get_report_popup_details" %}';
+        }
     </script>
 
     <script type="text/javascript" src="{% static 'lib/jquery-1.8.3.min.js' %}"></script>

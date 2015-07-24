@@ -12,6 +12,7 @@
 {% block script %}
     {{ block.super }}
     <script>
+{#        var LOAD_INCIDENT_MODEL_URL = '{% url "get_report_popup_details_pro" %}';#}
         //Init variables used in pro_merge.js
         var postMethod  = "{% url 'report_do_merge_pro' report.id %}";
 
@@ -27,12 +28,12 @@
     <script src="{% static 'js/verify.js' %}"></script>
 
     <script>
-        var proVersion = {{ BACKOFFICE|yesno:'true,false' }};
-        var reportJSONList = [];
+        var REPORT_JSON_LIST = [];
 
         {% for report in reports_nearby %}
             var reportJSON = {{ report.marker_detail_short|dict_to_json|safe }};
-            reportJSONList.push(reportJSON);
+            REPORT_JSON_LIST.push(reportJSON);
+            console.log(REPORT_JSON_LIST);
         {% endfor %}
     </script>
 

@@ -11,15 +11,12 @@
     {{ block.super }}
 {% endblock %}
 
-{% block js_vars %}
-    {{ block.super }}
-    var NEW_INCIDENT_URL = '{% url "report_verify_pro" %}';
-    var LOAD_INCIDENT_MODEL_URL = '{% url "get_report_popup_details_pro" %}';
-    var INCIDENT_DETAIL_URL = '{% url "report_show_pro" "{slug}" "9999999999" %}';
-{% endblock %}
 
 {% block script %}
     {{ block.super }}
+    <script>
+        var INCIDENT_DETAIL_URL = '{% url "report_show_pro" "{slug}" "9999999999" %}';
+    </script>
     <script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>
     <script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
     <script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
