@@ -18,16 +18,7 @@
 
     {% block script_map %}
         {{ block.super }}
-        <script>
-            var zipcodes = new Object();
-
-            {% for zip in zipcodes %}
-                zipcodes[{{zip.code}}] = new Object();
-                zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-                zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-                zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
-            {% endfor %}
-        </script>
+        {% include "reports/_zipcodes.html" %}
         <script src="{% static 'js/templates/reports/reports_map.js' %}"></script>
     {% endblock %}
 {% endblock %}

@@ -7,14 +7,7 @@
 {% block script %}
 {{ block.super }}
 {% if not can_edit %}
-<script type="text/javascript">
-    $(function(){
-        $.each($("form :input"),function(idx,value) {
-            $(value).prop("disabled", true);
-        });
-        $("form :submit, form .btn, .helptext").hide();
-    });
-</script>
+    <script src="{% static 'js/templates/pro_auth_base.js' %}"></script>
 {% endif %}
 {% endblock %}
 

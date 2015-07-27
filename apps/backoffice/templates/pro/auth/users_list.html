@@ -13,22 +13,8 @@
 {{ block.super }}
 <script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
 <script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
-<script>
+<script src="{% static 'js/templates/pro_auth_users_list.js' %}"></script>
 
-$(document).ready(function() {
-    var table = $('#users-table').dataTable();
-
-    table.columnFilter({ sPlaceHolder: "head:after",
-        aoColumns: [
-             {type: "text"}, // name
-             {type: "text"}, // phone
-             {type: "text"}, // email
-             {type: "select"} // roles
-        ]
-    });
-});
-
-</script>
 {% endblock %}
 
 {% block content %}

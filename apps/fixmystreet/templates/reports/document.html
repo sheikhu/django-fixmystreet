@@ -16,53 +16,6 @@
 <script src="{% static 'js/categorySelection.js' %}"></script>
 <script src="{% static 'js/jquery.exif.js' %}"></script>
 
-<script>
-    var zipcodes = new Object();
-
-    {% for zip in all_zips %}
-    zipcodes[{{zip.code}}] = new Object();
-    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-    zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
-    {% endfor %}
-
-
-{#    following code not working and probably useless. To be removed with FMS-510 #}
-
-{#    $(function(){#}
-{#        $("input:checkbox").attr("value","off");#}
-{#        $("input:checkbox").bind("change",function(){#}
-{##}
-{#            if ($(this).attr("value")!="on"){#}
-{#                $(this).attr("value","on");#}
-{#            }#}
-{#            else {#}
-{#                if($(this).attr("checked")=="checked"){#}
-{#                    $(this).attr("value","on");#}
-{#                    return false;#}
-{#                }#}
-{#                $(this).attr("value","off");#}
-{#            }#}
-{#        });#}
-{##}
-{#        $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");#}
-{#    });#}
-
-
-    var categories = {
-        {% for category_class in category_classes %}
-        "{{ category_class.id }}": {
-            {% for category in category_class.categories.all %}
-                "{{ category.id }}": {
-                    "label": "{{ category.name }}",
-                    "class": "{{ category.secondary_category_class.id }}",
-                    "public": {{ category.public|yesno:"true,false" }}
-                }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-            }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    }
-</script>
 {% endblock %}
 
 {% block map %}

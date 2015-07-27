@@ -12,17 +12,9 @@
     <script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>
 
     {% block script-search %}
-        <script type="text/javascript">
-            var zipcodes = new Object();
-
-            {% for zip in all_zipcodes %}
-                zipcodes[{{zip.code}}] = new Object();
-                zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-                zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-                zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
-            {% endfor %}
-        </script>
+        {% include "reports/_zipcodes.html" %}
     {% endblock %}
+
 {% endblock %}
 
 {% block header-banner %}

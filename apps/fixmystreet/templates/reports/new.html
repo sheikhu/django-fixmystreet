@@ -18,30 +18,8 @@
 <script src="{% static 'js/jquery.exif.js' %}"></script>
 <script src="{% static 'js/checkbox_value.js' %}"></script>
 
-<script>
-    var zipcodes = new Object();
-
-    {% for zip in all_zips %}
-    zipcodes[{{zip.code}}] = new Object();
-    zipcodes[{{zip.code}}].participation = {{ zip.commune.active|yesno:"true,false" }};
-    zipcodes[{{zip.code}}].phone = " {{zip.commune.phone}} ";
-    zipcodes[{{zip.code}}].commune = "{{zip.commune.name}}";
-    {% endfor %}
-
-    var categories = {
-        {% for category_class in category_classes %}
-        "{{ category_class.id }}": {
-            {% for category in category_class.categories.all %}
-                "{{ category.id }}": {
-                    "label": "{{ category.name }}",
-                    "class": "{{ category.secondary_category_class.id }}",
-                    "public": {{ category.public|yesno:"true,false" }}
-                }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-            }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    }
-</script>
+{% include "reports/_zipcodes.html" %}
+{% include "reports/_categories.html" %}
 {% endblock %}
 
 {% block map %}

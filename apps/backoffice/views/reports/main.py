@@ -84,7 +84,7 @@ def new(request):
 
     return render_to_response("pro/reports/new.html", {
         "report": report,
-        "all_zips": ZipCode.objects.all(),
+        "zipcodes": ZipCode.objects.all(),
         "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all(),
         "report_form": report_form,
         "pnt": pnt,

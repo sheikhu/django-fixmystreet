@@ -96,7 +96,7 @@ def new(request):
     return render_to_response("reports/new.html", {
         "report": report,
         "available_zips": ZipCode.objects,
-        "all_zips": ZipCode.objects.all(),
+        "all_zipcodes": ZipCode.objects.all(),
         "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all().order_by(
             'name_' + get_language()),
         "comment_form": comment_form,
@@ -218,10 +218,13 @@ def search_ticket(request):
 
 
 def index(request):
+    zipcodes = ZipCode.objects.all()
     return render_to_response("reports/reports_map.html", {
         'location': request.GET.get("q"),
         'zipcode': request.GET.get("ward"),
-        'zipcodes': ZipCode.objects.filter(hide=False).order_by('name_' + get_language())
+        'zipcodes': zipcodes.filter(hide=False).order_by('name_' + get_language()),
+        'all_zipcodes': zipcodes
+
     }, context_instance=RequestContext(request))
 
 
