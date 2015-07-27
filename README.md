@@ -22,7 +22,6 @@ Installation
 $ git clone git@github.com:CIRB/django-fixmystreet.git
 $ make develop
 $ make run
-$ env/bin/manage.py shell
 ```
 
 On fresh Ubuntu install:
@@ -54,7 +53,7 @@ After install, create the database:
 ```bash
 
 $ make createdb
-$ bin/django loaddata sample # if you want some sample data to work with
+$ env/bin/manage.py loaddata apps/fixmystreet/fixtures/* # if you want some sample data to work with Bruxelles-ville and Anderlecht
 $ cp local_settings_staging.py local_settings.py # and edit db connection settings
 ```
 
@@ -74,12 +73,6 @@ DATABASE_USER
 DATABASE_PASSWORD
 DATABASE_PORT
 DATABASE_HOST
-```
-
-To initialize variables on the server:
-
-```bash
-$ . ~/env
 ```
 
 
@@ -108,16 +101,6 @@ Useful commands
 To generate po files, run the following command:
 
     $ make messages
-
-For sample data set loading:
-
-    $ env/bin/manage.py loaddata sample.json
-    $ cp -Rf media/photos-sample/ media/photos/
-
-    $ env/bin/manage.py testserver sample.json
-
-    $ env/bin/manage.py dumpdata mainapp.Report mainapp.ReportUpdate mainapp.ReportSubscriber --format json --indent 2 > mainapp/fixtures/sample.json
-
 
 To generate data model image:
 
