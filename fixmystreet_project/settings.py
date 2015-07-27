@@ -340,7 +340,7 @@ CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, "uploads")
 REGISTRATION_OPEN = False
 
 
-# DEBUG TOOLBAR
+# DEBUG TOOLBAR & JENKINS
 if ENVIRONMENT != 'local' and ENVIRONMENT != 'jenkins':
     INSTALLED_APPS += ('gunicorn', )
 else:

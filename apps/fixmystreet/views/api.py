@@ -41,8 +41,7 @@ def login_user(request):
         '''login_user is a method used by the mobiles to connect a user to the application'''
         user_name = None
         user_password = None
-        #import pdb;
-        #pdb.set_trace()
+
         try:
             user_name    = request.POST.get('username')
             user_password = request.POST.get('password')
