@@ -16,8 +16,6 @@
 <script src="{% static 'js/jquery.exif.js' %}"></script>
 <script src="{% static 'js/attachmentForms.js' %}"></script>
 <script>
-
-    var DETAILS_MODE = true;
     var REPORT_POINT_X = {{ report.point.x }};
     var REPORT_POINT_Y = {{ report.point.y }};
     var REPORT_STATUS_FOR_JS_MAP = '{{ report.get_status_for_js_map }}';
