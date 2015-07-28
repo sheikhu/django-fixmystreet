@@ -6,12 +6,12 @@ var mapOptions = {
 
 //show incident marker on map
 $(document).ready(function() {
-    var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x: REPORT_POINT_X, y: REPORT_POINT_Y});
+    var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x: REPORT_JSON.point.x, y: REPORT_JSON.point.y});
     var marker = fms.map.addIncident({
-        type: REPORT_STATUS_FOR_JS_MAP,
+        type: REPORT_JSON.status,
         latlng: latlng
     }, {popup: null});
     fms.map.centerOnMarker(marker);
-    var res = UtilGeolocation.convertCoordinatesToWGS84(REPORT_POINT_X,REPORT_POINT_Y);
+    var res = UtilGeolocation.convertCoordinatesToWGS84(REPORT_JSON.point.x,REPORT_JSON.point.y);
     document.getElementById("wgs84").innerHTML="L: " + res.x + " <br/>l: "+res.y;
 });

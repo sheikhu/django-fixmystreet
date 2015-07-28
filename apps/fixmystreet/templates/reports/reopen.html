@@ -15,9 +15,7 @@
     /* QUERY READY INITIALIZATION */
     /******************************/
     // Initialization of variables used in reopen.js
-    var REPORT_POINT_X = {{ report.point.x }};
-    var REPORT_POINT_Y = {{ report.point.y }};
-    var REPORT_STATUS_FOR_JS_MAP = '{{ report.get_status_for_js_map }}';
+    var REPORT_JSON = {{ report.marker_detail_short|dict_to_json|safe }};
 
 
     </script>
