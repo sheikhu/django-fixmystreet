@@ -17,84 +17,19 @@
 <script src="{% static 'js/attachmentForms.js' %}"></script>
 <script>
 
-var DETAILS_MODE = true;
+    var DETAILS_MODE = true;
+    var REPORT_POINT_X = {{ report.point.x }};
+    var REPORT_POINT_Y = {{ report.point.y }};
+    var REPORT_STATUS_FOR_JS_MAP = '{{ report.get_status_for_js_map }}';
+    {% trans "This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed." as str%}
+    var TRAD_MARK_AS_DONE_MOTIVATION = '{{ str|escapejs }}';
+</script>
 
-/******************************/
-/* QUERY READY INITIALIZATION */
-/******************************/
-$(function(){
-    $("#divMarkAsDone").hide();
-    var latlng = L.FixMyStreet.Util.urbisCoordsToLatLng({x: {{ report.point.x }}, y: {{ report.point.y }}});
-    var marker = fms.map.addIncident({
-        type: '{{ report.get_status_for_js_map }}',
-        latlng: latlng,
-    }, {popup: null});
-    fms.map.centerOnMarker(marker);
-    fms.map.addSizeToggle({state1: {size: 'small'}});
-    fms.map.addStreetViewButton({latlng: marker.getLatLng()});
+<script src="{% static 'js/templates/reports/show.js' %}"></script>
 
-    var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
-
-    {% if BACKOFFICE %}
-        reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
-    {%endif%}
-
-{#    $('#form-files').find('textarea').attr('placeholder',"{% trans 'Your file description' %}");#}
-    //Clear the comment textarea after each POST
-    //$("#id_comment-text").val('');
-
-    $("#show-history").click(function(evt) {
-        evt.preventDefault();
-        $("#history_popup").modal();
-    });
-
-    //If running internet explorer then apply an extra span5 to comment and file div sections. Otherwise nothing is shown
- //    if ($.browser.msie) {
-	// $('.report_update').addClass('span5');
- //    }
-
-    $($(".update_text").find('#imgtoshow')).exifLoad(someCallback);
-
-});
-function setFileCreationDate(){
-    var file = document.getElementById('id_file').files[0];
-    var file_creation_date = new Date(""+file.lastModifiedDate);
-    var dateString = file_creation_date.getFullYear() + "-"+ (file_creation_date.getMonth()+1) + "-" + file_creation_date.getDate()+ " " + file_creation_date.getHours()+":"+file_creation_date.getMinutes();
-
-    $("[name='file_creation_date']").val(dateString);
-}
-
-/**
- * Mark as done function
- */
-function markAsDone(){
-    // $("#divMarkAsDone").show();
-    {% trans "This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed." as str %}
-    $('#id_mark_as_done_motivation').val('{{ str|escapejs }}');
-}
+<script>
 
 
-var someCallback = function(exifObject, index) {
-    if (exifObject && exifObject.DateTimeOriginal){
-        textAreas = $($(".update_text").find('#imagedate'));
-        var datetosplit = exifObject.DateTimeOriginal;
-        var splitted = datetosplit.split(/[:,\/ ]/)
-        var pictureDate = new Date(splitted[0], splitted[1] -1, splitted[2], splitted[3], splitted[4], splitted[5], 0);
-        textAreas[index].innerHTML = splitted[2] + '-' + splitted[1] + '-' + splitted[0] + " " +splitted[3] + ":" +splitted[4];
-    }
-}
-
-$(function(event) {
-    $("#btn-toggle-map a").click(function(evt) {
-        evt.preventDefault();
-        var mapEl = $('#map');
-        if (mapEl.hasClass('map-big')) {
-            mapEl.removeClass('map-big');
-        } else {
-            mapEl.addClass('map-big');
-        }
-    });
-});
 
 </script>
 

@@ -24,18 +24,6 @@
         var URL_SEC_CAT_FOR_MAIN_CAT = "{% url 'secondary_category_for_main_category' %}";
         var URL_UNSUBSCRIBE_PRO = "{% url 'unsubscribe_pro' report.id %}";
         var URL_SUBSCRIBE_PRO = "{% url 'subscribe_pro' report.id %}";
-        $(function(){
-            var markers = [];
-            {% for report in reports %}
-                var reportJSON = $.extend({}, {{ report.to_JSON|dict_to_json|safe }}, {{ report.marker_detail_JSON|dict_to_json|safe }});
-
-                {% if BACKOFFICE %}
-                    reportJSON = $.extend(reportJSON, {{ report.marker_detail_pro_JSON|dict_to_json|safe }});
-                {%endif%}
-                markers.push(fms.currentMap.addReport(reportJSON, {{forloop.counter}}, {% if BACKOFFICE %}true{%else%}false{%endif%}, true));
-                fms.currentMap.markersLayer.addFeatures(markers);
-            {% endfor %}
-    });
     </script>
 
     <script src="{% static 'js/templates/reports/pro_show.js' %}"></script>
