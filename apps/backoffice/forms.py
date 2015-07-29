@@ -127,7 +127,7 @@ class FmsUserForm(forms.ModelForm):
         except FMSUser.DoesNotExist:
             pass
         except FMSUser.MultipleObjectsReturned:
-            raise ValidationError("Duplicated user")
+            raise ValidationError(_("Duplicate user"))
 
         return email
 

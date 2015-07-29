@@ -208,12 +208,12 @@ class CitizenForm(forms.Form):
             user = FMSUser.objects.get(email__iexact=email)
 
             if user.is_pro():
-                raise ValidationError("You cannot use a pro email as citizen")
+                raise ValidationError(_("You cannot use a pro email as citizen"))
 
         except FMSUser.DoesNotExist:
             pass
         except FMSUser.MultipleObjectsReturned:
-            raise ValidationError("Duplicated user")
+            raise ValidationError(_("Duplicate user"))
 
         return email
 
