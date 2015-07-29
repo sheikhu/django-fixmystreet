@@ -33,15 +33,6 @@ function setFileCreationDate(){
     $("[name='file_creation_date']").val(dateString);
 }
 
-/**
- * Mark as done function
- */
-function markAsDone(){
-    // $("#divMarkAsDone").show();
-
-    $('#id_mark_as_done_motivation').val(TRAD_MARK_AS_DONE_MOTIVATION);
-}
-
 
 var someCallback = function(exifObject, index) {
     if (exifObject && exifObject.DateTimeOriginal){

@@ -17,8 +17,6 @@
 <script src="{% static 'js/attachmentForms.js' %}"></script>
 <script>
     var REPORT_JSON = {{ report.marker_detail_short|dict_to_json|safe }};
-    {% trans "This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed." as str%}
-    var TRAD_MARK_AS_DONE_MOTIVATION = '{{ str|escapejs }}';
 </script>
 
 <script src="{% static 'js/templates/reports/show.js' %}"></script>
