@@ -2247,16 +2247,16 @@ padding: 0 15px 15px 15px;
 	display: inline-block;
 }
 .gray_border{
-	border: 2px solid #E0E0E0;
+	border: 3px solid #E0E0E0;
 }
 .orange_border{
-	border: 2px solid #F79422;
+	border: 3px solid #F79422;
 }
 .red_border{
-	border: 2px solid #C3272F;
+	border: 3px solid #C3272F;
 }
 .green_border{
-	border: 2px solid #3CB64B;
+	border: 3px solid #3CB64B;
 }
 .number_only{
 	font-weight:bold;
