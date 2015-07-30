@@ -1,3 +1,6 @@
+
+import logging
+
 from django import forms
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -19,6 +22,7 @@ from django.utils.functional import lazy
 from django.utils import six
 mark_safe_lazy = lazy(mark_safe, six.text_type)
 
+logger = logging.getLogger(__name__)
 
 def secondaryCategoryChoices(show_private):
     choices = []
@@ -213,6 +217,7 @@ class CitizenForm(forms.Form):
         except FMSUser.DoesNotExist:
             pass
         except FMSUser.MultipleObjectsReturned:
+            logger.error("Duplicate user : %s", email)
             raise ValidationError(_("Duplicate user"))
 
         return email
@@ -358,7 +363,7 @@ class FMSPasswordResetForm(PasswordResetForm):
     """
     error_messages = {
         'unknown': _("That email address doesn't have an associated "
-                     "user account. Are you sure you've registered?"),
+                     "user account."),
         'unusable': _("The user account associated with this email "
                       "address cannot reset the password."),
     }

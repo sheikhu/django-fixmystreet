@@ -4,7 +4,7 @@
 # 
 # Translators:
 # afuca <afuca@cirb.brussels>, 2014-2015
-# dfranklin <DFranklin@cirb.irisnet.be>, 2014
+# dfranklin <DFranklin@cirb.irisnet.be>, 2014-2015
 # Jonathan Sanchez <jsanchezpando@cirb.irisnet.be>, 2014
 # lafif <lafif@cirb.irisnet.be>, 2014-2015
 # tdesany2 <transifex@desany.eu>, 2014
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-29 15:55+0200\n"
-"PO-Revision-Date: 2015-07-29 13:55+0000\n"
+"POT-Creation-Date: 2015-07-30 15:43+0200\n"
+"PO-Revision-Date: 2015-07-30 13:30+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -48,18 +48,18 @@ msgstr "Voornaam"
 msgid "Lastname"
 msgstr "Achternaam"
 
-#: backoffice/forms.py:105 backoffice/forms.py:268
+#: backoffice/forms.py:105 backoffice/forms.py:269
 #: backoffice/templates/pro/auth/groups_list.html:27
 #: backoffice/templates/pro/auth/groups_list.html:32
 #: backoffice/templates/pro/auth/users_list.html:28
-#: backoffice/templates/pro/auth/users_list.html:34 fixmystreet/forms.py:193
-#: fixmystreet/forms.py:247
+#: backoffice/templates/pro/auth/users_list.html:34 fixmystreet/forms.py:197
+#: fixmystreet/forms.py:252
 #: fixmystreet/templates/reports/_documentreport.html:103
 #: fixmystreet/templates/reports/reopen.html:170
 msgid "Email"
 msgstr "E-mail"
 
-#: backoffice/forms.py:106 backoffice/forms.py:267
+#: backoffice/forms.py:106 backoffice/forms.py:268
 #: backoffice/templates/pro/auth/users_list.html:27
 #: backoffice/templates/pro/auth/users_list.html:33
 #: fixmystreet/templates/reports/_documentreport.html:129
@@ -75,91 +75,91 @@ msgstr "Alleen actieve gebruikers kunnen inloggen."
 msgid "Active"
 msgstr "Actief"
 
-#: backoffice/forms.py:130 fixmystreet/forms.py:216
+#: backoffice/forms.py:131 fixmystreet/forms.py:221
 msgid "Duplicate user"
 msgstr ""
 
-#: backoffice/forms.py:213 backoffice/forms.py:221 backoffice/forms.py:228
-#: backoffice/forms.py:234 backoffice/forms.py:239 backoffice/forms.py:250
+#: backoffice/forms.py:214 backoffice/forms.py:222 backoffice/forms.py:229
+#: backoffice/forms.py:235 backoffice/forms.py:240 backoffice/forms.py:251
 msgid "All reports in my entity"
 msgstr "Alle problemen van mijn entiteit"
 
-#: backoffice/forms.py:214 backoffice/forms.py:222 backoffice/forms.py:229
-#: backoffice/forms.py:235
+#: backoffice/forms.py:215 backoffice/forms.py:223 backoffice/forms.py:230
+#: backoffice/forms.py:236
 msgid "My responbsible reports"
 msgstr "Mijn incidenten"
 
-#: backoffice/forms.py:215
+#: backoffice/forms.py:216
 msgid "My responbsible reports as contractor"
 msgstr ""
 
-#: backoffice/forms.py:216 backoffice/forms.py:223 backoffice/forms.py:230
-#: backoffice/forms.py:236 backoffice/forms.py:239 backoffice/forms.py:250
+#: backoffice/forms.py:217 backoffice/forms.py:224 backoffice/forms.py:231
+#: backoffice/forms.py:237 backoffice/forms.py:240 backoffice/forms.py:251
 #: backoffice/templates/pro/reports/table.html:391
 msgid "My subscriptions"
 msgstr "Mijn abonnementen"
 
-#: backoffice/forms.py:217 backoffice/forms.py:224
+#: backoffice/forms.py:218 backoffice/forms.py:225
 msgid "My transfered reports"
 msgstr "Mijn overgedragen incidenten"
 
-#: backoffice/forms.py:244
+#: backoffice/forms.py:245
 msgid "All Status"
 msgstr "Alle statusen"
 
-#: backoffice/forms.py:245 backoffice/templates/pro/home.html:22
+#: backoffice/forms.py:246 backoffice/templates/pro/home.html:22
 msgid "Unpublished"
 msgstr "Niet gepubliceerd"
 
-#: backoffice/forms.py:246 backoffice/templates/pro/home.html:44
+#: backoffice/forms.py:247 backoffice/templates/pro/home.html:44
 #: fixmystreet/models.py:633 fixmystreet/models.py:634
 #: fixmystreet/models.py:890
 msgid "In progress"
 msgstr "In behandeling"
 
-#: backoffice/forms.py:247
+#: backoffice/forms.py:248
 msgid "In progress and assigned"
 msgstr "In behandeling en toegewezen"
 
-#: backoffice/forms.py:248 backoffice/templates/pro/home.html:67
+#: backoffice/forms.py:249 backoffice/templates/pro/home.html:67
 #: fixmystreet/models.py:2267
 msgid "Closed"
 msgstr "Afgesloten"
 
-#: backoffice/forms.py:264
+#: backoffice/forms.py:265
 msgid "Name FR"
 msgstr "Naam FR"
 
-#: backoffice/forms.py:265
+#: backoffice/forms.py:266
 msgid "Name NL"
 msgstr "Naam NL"
 
-#: backoffice/forms.py:283 backoffice/templates/pro/auth/base.html:20
+#: backoffice/forms.py:284 backoffice/templates/pro/auth/base.html:20
 #: fixmystreet/templates/base.html:71
 msgid "Users"
 msgstr "Gebruikers"
 
-#: backoffice/forms.py:293
+#: backoffice/forms.py:294
 msgid "Once a day"
 msgstr "Eenmaal per dag"
 
-#: backoffice/forms.py:294
+#: backoffice/forms.py:295
 msgid "In real time"
 msgstr "In real time"
 
-#: backoffice/forms.py:296 fixmystreet/models.py:335
+#: backoffice/forms.py:297 fixmystreet/models.py:335
 msgid "Digest created"
 msgstr "Verslag aangemaakt incidenten"
 
-#: backoffice/forms.py:297 fixmystreet/models.py:336
+#: backoffice/forms.py:298 fixmystreet/models.py:336
 msgid "Digest in progress"
 msgstr "Verslag incidenten in behandeling"
 
-#: backoffice/forms.py:298 fixmystreet/models.py:337
+#: backoffice/forms.py:299 fixmystreet/models.py:337
 msgid "Digest closed"
 msgstr "Verslag afgesloten incidenten"
 
-#: backoffice/forms.py:299 fixmystreet/models.py:338
+#: backoffice/forms.py:300 fixmystreet/models.py:338
 msgid "Digest other"
 msgstr "Verslag andere"
 
@@ -218,7 +218,7 @@ msgstr "Groep administratie"
 #: backoffice/templates/pro/auth/groups_list.html:26
 #: backoffice/templates/pro/auth/groups_list.html:31
 #: backoffice/templates/pro/auth/users_list.html:26
-#: backoffice/templates/pro/auth/users_list.html:32 fixmystreet/forms.py:244
+#: backoffice/templates/pro/auth/users_list.html:32 fixmystreet/forms.py:249
 #: fixmystreet/models.py:264 fixmystreet/models.py:1919
 #: fixmystreet/models.py:1953 fixmystreet/models.py:1986
 #: fixmystreet/templates/reports/_documentreport.html:94
@@ -372,8 +372,8 @@ msgid ""
 msgstr "Wenst U dit incident als privé in te voeren?"
 
 #: backoffice/templates/pro/reports/_actions.html:30
-#: backoffice/templates/pro/reports/_actions.html:340 fixmystreet/forms.py:70
-#: fixmystreet/forms.py:85
+#: backoffice/templates/pro/reports/_actions.html:340 fixmystreet/forms.py:74
+#: fixmystreet/forms.py:89
 msgid "Select a Category"
 msgstr "Plaats van het probleem"
 
@@ -920,7 +920,7 @@ msgid ""
 "                "
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:290 fixmystreet/forms.py:72
+#: backoffice/templates/pro/reports/show.html:290 fixmystreet/forms.py:76
 msgid "Subscription and report follow-up"
 msgstr "Ik wil de evolutie van de melding volgen en e-mailberichten hierover ontvangen"
 
@@ -1168,7 +1168,7 @@ msgstr "Laatste actie"
 
 #: backoffice/templates/pro/reports/table.html:371
 #: backoffice/templates/pro/reports/table_content.html:51
-#: fixmystreet/forms.py:194
+#: fixmystreet/forms.py:198
 #: fixmystreet/templates/reports/_documentreport.html:120
 #: fixmystreet/templates/reports/reopen.html:153
 msgid "Quality"
@@ -1596,83 +1596,81 @@ msgstr "Gebruiker met succes gewist "
 msgid "You can not delete this user"
 msgstr "Deze gebruiker kan niet worden gewist"
 
-#: fixmystreet/forms.py:25 fixmystreet/forms.py:71 fixmystreet/forms.py:117
+#: fixmystreet/forms.py:29 fixmystreet/forms.py:75 fixmystreet/forms.py:121
 msgid "Select a secondary Category"
 msgstr "Soort probleem"
 
-#: fixmystreet/forms.py:70 fixmystreet/forms.py:85 fixmystreet/forms.py:117
+#: fixmystreet/forms.py:74 fixmystreet/forms.py:89 fixmystreet/forms.py:121
 msgid "category"
 msgstr "categorie"
 
-#: fixmystreet/forms.py:71
+#: fixmystreet/forms.py:75
 msgid "Secondary category"
 msgstr "subcategorie"
 
-#: fixmystreet/forms.py:118
+#: fixmystreet/forms.py:122
 msgid "Private Report"
 msgstr "Privé rapport"
 
-#: fixmystreet/forms.py:147
+#: fixmystreet/forms.py:151
 msgid ""
 "I have read and accepted <a href=\"/terms-of-use/\" target=\"_blank\">the "
 "terms of use</a>"
 msgstr "Ik heb gelezen en ingestemd met de <a href=\"/nl/gebruiksvoorwaarden/\" target=\"_blank\">gebruiksvoorwaarden</a>"
 
-#: fixmystreet/forms.py:191
+#: fixmystreet/forms.py:195
 msgid "Identity"
 msgstr "Naam"
 
-#: fixmystreet/forms.py:192
+#: fixmystreet/forms.py:196
 msgid "Tel."
 msgstr "Telefoon"
 
-#: fixmystreet/forms.py:211
+#: fixmystreet/forms.py:215
 msgid "You cannot use a pro email as citizen"
-msgstr ""
+msgstr "Om dit e-mailadres te gebruiken moet u aangemeld zijn. "
 
-#: fixmystreet/forms.py:250
+#: fixmystreet/forms.py:255
 msgid "Message"
 msgstr "Boodschap"
 
-#: fixmystreet/forms.py:270
+#: fixmystreet/forms.py:275
 msgid "Your file description"
 msgstr "Legende bij de foto"
 
-#: fixmystreet/forms.py:313
+#: fixmystreet/forms.py:318
 msgid "Add a comment, please."
 msgstr "Voeg commentaar toe. Hoe gedetailleerder het commentaar, hoe sneller het probleem geïdentificeerd en behandeld kan worden."
 
-#: fixmystreet/forms.py:328
+#: fixmystreet/forms.py:333
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: fixmystreet/forms.py:329
+#: fixmystreet/forms.py:334
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: fixmystreet/forms.py:332 fixmystreet/tests/test_views.py:619
+#: fixmystreet/forms.py:337 fixmystreet/tests/test_views.py:619
 msgid ""
 "Please enter a correct username and password. Note that both fields are "
 "case-sensitive."
 msgstr "Geef aub. een correcte gebruikersnaam en paswoord in. Let op, de invulvelden zijn hoofdlettergevoelig. "
 
-#: fixmystreet/forms.py:334
+#: fixmystreet/forms.py:339
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
 msgstr "Het is mogelijk dat uw browser geconfigureerd is om geen cookies toe te laten. Het gebruik van cookies is noodzakelijk om u aan te melden. "
 
-#: fixmystreet/forms.py:336
+#: fixmystreet/forms.py:341
 msgid "This account is inactive."
 msgstr "Dit account is niet geactiveerd"
 
-#: fixmystreet/forms.py:360
-msgid ""
-"That email address doesn't have an associated user account. Are you sure "
-"you've registered?"
-msgstr ""
+#: fixmystreet/forms.py:365
+msgid "That email address doesn't have an associated user account."
+msgstr "Er werd geen gebruiker gevonden voor dit e-mailadres."
 
-#: fixmystreet/forms.py:362
+#: fixmystreet/forms.py:367
 msgid ""
 "The user account associated with this email address cannot reset the "
 "password."
