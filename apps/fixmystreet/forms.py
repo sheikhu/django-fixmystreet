@@ -217,7 +217,7 @@ class CitizenForm(forms.Form):
         except FMSUser.DoesNotExist:
             pass
         except FMSUser.MultipleObjectsReturned:
-            logger.error("Duplicate user : %s", email)
+            logger.error("Duplicate user : %s" % email)
             raise ValidationError(_("Duplicate user"))
 
         return email
