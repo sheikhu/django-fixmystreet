@@ -80,7 +80,7 @@
 {#            <div style="float:left; width:40%; padding: 10px;">#}
 
                 {% if attachment.reportfile.is_image %}
-                    <img id='imgtoshow' src='{{attachment.reportfile.image.url}}' class="view-image"/>
+                    <a href="{{attachment.reportfile.image.url}}" target="_blank"><img id='imgtoshow' src='{{attachment.reportfile.image.url}}' class="view-image"/></a>
                 {% else %}
                     <a href="{{attachment.reportfile.file.url}}" {% if attachment.reportfile.is_image %}data-lightbox="image-1"{% endif %} title="{{attachment.reportfile.title}}"><br/></br/><br/>
                         {% if attachment.reportfile.is_pdf %}
