@@ -152,26 +152,30 @@ def document(request, slug, report_id):
         # this checks update is_valid too
         if file_formset.is_valid() and (
                     not request.POST["comment-text"] or comment_form.is_valid()) and citizen_form.is_valid():
-            # this saves the update as part of the report.
-            citizen = citizen_form.save()
 
-            if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
-                comment = comment_form.save(commit=False)
-                comment.report = report
-                comment.created_by = citizen
-                comment.save()
+            if len(file_formset.files) == 0 and (not request.POST["comment-text"] or len(request.POST["comment-text"]) == 0):
+                messages.add_message(request, messages.ERROR, _("You must add a comment, a photo or a document to continue."))
+            else:
+                # this saves the update as part of the report.
+                citizen = citizen_form.save()
 
-            files = file_formset.save()
+                if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
+                    comment = comment_form.save(commit=False)
+                    comment.report = report
+                    comment.created_by = citizen
+                    comment.save()
 
-            for report_file in files:
-                report_file.created_by = citizen
-                report_file.save()
+                files = file_formset.save()
 
-            # if request.POST.get("citizen_subscription", False):
-            # ReportSubscription(report=report, subscriber=report.created_by).save()
+                for report_file in files:
+                    report_file.created_by = citizen
+                    report_file.save()
 
-            messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
-            return HttpResponseRedirect(report.get_absolute_url())
+                # if request.POST.get("citizen_subscription", False):
+                # ReportSubscription(report=report, subscriber=report.created_by).save()
+
+                messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
+                return HttpResponseRedirect(report.get_absolute_url())
     else:
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')

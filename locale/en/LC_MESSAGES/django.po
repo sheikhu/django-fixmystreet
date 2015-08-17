@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-30 15:43+0200\n"
+"POT-Creation-Date: 2015-08-14 16:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1528,22 +1528,26 @@ msgstr ""
 msgid "An error occured by opening file <strong>%s</strong>"
 msgstr ""
 
-#: backoffice/views/reports/main.py:71 fixmystreet/views/reports/main.py:81
+#: backoffice/views/reports/main.py:73 fixmystreet/views/reports/main.py:81
 msgid "Newly created report successfull"
 msgstr ""
 
-#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:339
-#: fixmystreet/views/reports/main.py:216 fixmystreet/views/reports/main.py:273
+#: backoffice/views/reports/main.py:146 backoffice/views/reports/main.py:344
+#: fixmystreet/views/reports/main.py:220 fixmystreet/views/reports/main.py:277
 msgid "No incident found with this ticket number"
 msgstr ""
 
-#: backoffice/views/reports/main.py:151
+#: backoffice/views/reports/main.py:153
 msgid "Report successfully deleted"
 msgstr ""
 
-#: backoffice/views/reports/main.py:181 backoffice/views/reports/main.py:273
-#: fixmystreet/views/reports/main.py:173
+#: backoffice/views/reports/main.py:183 backoffice/views/reports/main.py:278
+#: fixmystreet/views/reports/main.py:177
 msgid "You attachments has been sent"
+msgstr ""
+
+#: backoffice/views/reports/main.py:260 fixmystreet/views/reports/main.py:157
+msgid "You must add a comment, a photo or a document to continue."
 msgstr ""
 
 #: backoffice/views/reports/subscribers.py:24

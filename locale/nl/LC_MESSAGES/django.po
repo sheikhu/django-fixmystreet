@@ -12,10 +12,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-30 15:43+0200\n"
-"PO-Revision-Date: 2015-07-30 13:30+0000\n"
+"POT-Creation-Date: 2015-08-14 16:06+0200\n"
+"PO-Revision-Date: 2015-08-14 14:06+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
-"Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
+"Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1532,23 +1532,27 @@ msgstr "Reporting tijdelijk niet beschikbaar"
 msgid "An error occured by opening file <strong>%s</strong>"
 msgstr "Een fout is gebeurd bij het openen van <strong>%s</strong>"
 
-#: backoffice/views/reports/main.py:71 fixmystreet/views/reports/main.py:81
+#: backoffice/views/reports/main.py:73 fixmystreet/views/reports/main.py:81
 msgid "Newly created report successfull"
 msgstr "Bedankt! Uw probleem werd gemeld aan de bevoegde dienst. U ontvangt een e-mail met meer informatie."
 
-#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:339
-#: fixmystreet/views/reports/main.py:216 fixmystreet/views/reports/main.py:273
+#: backoffice/views/reports/main.py:146 backoffice/views/reports/main.py:344
+#: fixmystreet/views/reports/main.py:220 fixmystreet/views/reports/main.py:277
 msgid "No incident found with this ticket number"
 msgstr "Geen incident gevonden met dit nummer"
 
-#: backoffice/views/reports/main.py:151
+#: backoffice/views/reports/main.py:153
 msgid "Report successfully deleted"
 msgstr "Incident met succes gewist"
 
-#: backoffice/views/reports/main.py:181 backoffice/views/reports/main.py:273
-#: fixmystreet/views/reports/main.py:173
+#: backoffice/views/reports/main.py:183 backoffice/views/reports/main.py:278
+#: fixmystreet/views/reports/main.py:177
 msgid "You attachments has been sent"
 msgstr "Uw bijlagen zijn verzonden"
+
+#: backoffice/views/reports/main.py:260 fixmystreet/views/reports/main.py:157
+msgid "You must add a comment, a photo or a document to continue."
+msgstr "Om verder te gaan, gelieve een opmerking, foto of document toe te voegen. "
 
 #: backoffice/views/reports/subscribers.py:24
 msgid "You have unsubscribed successfully"

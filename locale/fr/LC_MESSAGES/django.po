@@ -15,10 +15,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-30 15:43+0200\n"
-"PO-Revision-Date: 2015-07-30 13:33+0000\n"
+"POT-Creation-Date: 2015-08-14 16:06+0200\n"
+"PO-Revision-Date: 2015-08-14 14:00+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
-"Language-Team: French (http://www.transifex.com/projects/p/django-fixmystreet/language/fr/)\n"
+"Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1535,23 +1535,27 @@ msgstr "Le reporting est indisponible pour le moment"
 msgid "An error occured by opening file <strong>%s</strong>"
 msgstr "Une erreur s'est produite en ouvrant le fichier <strong>%s</strong>"
 
-#: backoffice/views/reports/main.py:71 fixmystreet/views/reports/main.py:81
+#: backoffice/views/reports/main.py:73 fixmystreet/views/reports/main.py:81
 msgid "Newly created report successfull"
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné.\nUn mail contenant les informations du rapport vous a été envoyé"
 
-#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:339
-#: fixmystreet/views/reports/main.py:216 fixmystreet/views/reports/main.py:273
+#: backoffice/views/reports/main.py:146 backoffice/views/reports/main.py:344
+#: fixmystreet/views/reports/main.py:220 fixmystreet/views/reports/main.py:277
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
 
-#: backoffice/views/reports/main.py:151
+#: backoffice/views/reports/main.py:153
 msgid "Report successfully deleted"
 msgstr "Incident suppimé"
 
-#: backoffice/views/reports/main.py:181 backoffice/views/reports/main.py:273
-#: fixmystreet/views/reports/main.py:173
+#: backoffice/views/reports/main.py:183 backoffice/views/reports/main.py:278
+#: fixmystreet/views/reports/main.py:177
 msgid "You attachments has been sent"
 msgstr "Vos attachements ont été envoyés"
+
+#: backoffice/views/reports/main.py:260 fixmystreet/views/reports/main.py:157
+msgid "You must add a comment, a photo or a document to continue."
+msgstr "Vous devez ajouter un commentaire, une photo ou un document pour continuer."
 
 #: backoffice/views/reports/subscribers.py:24
 msgid "You have unsubscribed successfully"

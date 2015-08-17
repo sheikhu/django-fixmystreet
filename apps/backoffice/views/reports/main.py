@@ -84,7 +84,7 @@ def new(request):
 
     return render_to_response("pro/reports/new.html", {
         "report": report,
-        "zipcodes": ZipCode.objects.all(),
+        "all_zipcodes": ZipCode.objects.all(),
         "category_classes": ReportMainCategoryClass.objects.prefetch_related('categories').all(),
         "report_form": report_form,
         "pnt": pnt,
@@ -254,24 +254,27 @@ def document(request, slug, report_id):
 
         # this checks update is_valid too
         if file_formset.is_valid() and (not request.POST["comment-text"] or comment_form.is_valid()):
-            # this saves the update as part of the report.
+            if len(file_formset.files) == 0 and (not request.POST["comment-text"] or len(request.POST["comment-text"]) == 0):
+                messages.add_message(request, messages.ERROR, _("You must add a comment, a photo or a document to continue."))
+            else:
+                # this saves the update as part of the report.
 
-            user = FMSUser.objects.get(pk=request.user.id)
+                user = FMSUser.objects.get(pk=request.user.id)
 
-            if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
-                comment = comment_form.save(commit=False)
-                comment.report = report
-                comment.created_by = user
-                comment.save()
+                if request.POST["comment-text"] and len(request.POST["comment-text"]) > 0:
+                    comment = comment_form.save(commit=False)
+                    comment.report = report
+                    comment.created_by = user
+                    comment.save()
 
-            files = file_formset.save()
+                files = file_formset.save()
 
-            for report_file in files:
-                report_file.created_by = user
-                report_file.save()
+                for report_file in files:
+                    report_file.created_by = user
+                    report_file.save()
 
-            messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+                messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
+                return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
         comment_form = ReportCommentForm(prefix='comment')

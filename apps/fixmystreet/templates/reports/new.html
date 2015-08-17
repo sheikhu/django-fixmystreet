@@ -12,14 +12,14 @@
 
 {% block script %}
 {{ block.super }}
+{% include "reports/_zipcodes.html" %}
+{% include "reports/_categories.html" %}
 <script src="{% static 'js/attachmentForms.js' %}"></script>
 <script src="{% static 'js/categorySelection.js' %}"></script>
 <script src="{% static 'js/new_report.js' %}"></script>
 <script src="{% static 'js/jquery.exif.js' %}"></script>
 <script src="{% static 'js/checkbox_value.js' %}"></script>
 
-{% include "reports/_zipcodes.html" %}
-{% include "reports/_categories.html" %}
 {% endblock %}
 
 {% block map %}
