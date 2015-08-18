@@ -3,18 +3,18 @@
 {% load static from staticfiles %}
 
 {% block script %}
-{{ block.super }}
-<script>
-    var IS_MANAGER = {{ request.user.fmsuser.manager|yesno:"true,false" }};
-    var IS_LEADER = {{ request.user.fmsuser.leader|yesno:"true,false" }};
-    {% if group %}
-        var GROUP_ID = {{ group.id }};
-    {% else %}
-        var GROUP_ID = -1;
-    {% endif %}
-</script>
+    {{ block.super }}
+    <script>
+        var IS_MANAGER = {{ request.user.fmsuser.manager|yesno:"true,false" }};
+        var IS_LEADER = {{ request.user.fmsuser.leader|yesno:"true,false" }};
+        {% if group %}
+            var GROUP_ID = {{ group.id }};
+        {% else %}
+            var GROUP_ID = -1;
+        {% endif %}
+    </script>
 
-<script src="{% static 'js/templates/pro_auth_group_create.js' %}"></script>
+    <script src="{% static 'js/templates/pro_auth_group_create.js' %}"></script>
 {% endblock %}
 
 {% block title %}
@@ -24,53 +24,57 @@
         {% trans "Create group" %}
     {% endif %}
 {% endblock %}
-
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/group_create.css' %}">
+{% endblock %}
 {% block content %}
-{{ block.super }}
-<form action="" method="POST" id="report-form" class="form-horizontal" style="width:97%">
-    {% csrf_token %}
-    {% if group_form.instance.id %}
-        <h5>{% blocktrans with group.name as name and group.get_type_display as type %}Edit {{ name }} ({{ type }}){% endblocktrans %}</h5>
-    {% else %}
-        <h5>{% trans "Create group" %}</h5>
-    {% endif %}
 
 
-    <div class="controls">{{ group_form.errors }}</div>
+    {{ block.super }}
+    <form action="" method="POST" id="report-form" class="form-horizontal" style="width:97%">
+        {% csrf_token %}
+        {% if group_form.instance.id %}
+            <h5>{% blocktrans with group.name as name and group.get_type_display as type %}Edit {{ name }} ({{ type }}){% endblocktrans %}</h5>
+        {% else %}
+            <h5>{% trans "Create group" %}</h5>
+        {% endif %}
 
-    {% include "_form_horizontal.html" with form=group_form %}
 
-    <table id="memberships">
-        <!-- mouve table outside the form due to button vs form submit -->
-        {% for membership in memberships %}
-        <tr id="{{ membership.id }}" data-user="{{ membership.user.id }}">
-            <td><button class="delete" {% if membership.contact_user %}disabled="disabled"{% endif %}><i class="icon-remove"></i></button></td>
-            <td class="name">{{ membership.user }}</td>
-            <td><input type="radio" name="contact-user" class="contact" {% if membership.contact_user %}checked="checked"{% endif %}/></td>
-        </tr>
-        {% endfor %}
-        <tr class="hidden">
-            <td><button class="delete"><i class="icon-remove"></i></button></td>
-            <td class="name">template line</td>
-            <td><input type="radio" name="contact-user" class="contact" /></td>
-        </tr>
-    </table>
-    {% if group_mail_config_formset%}
-    <h2>{% trans "Mail config" %}</h2>
-    <div class="controls">
-        {{ group_mail_config_formset.as_p }}
-    </div>
-    {% endif %}
-    <div id="required-note" class="controls lead" style="white-space:nowrap">{% trans "* This fields are required" %}</div>
+        <div class="controls">{{ group_form.errors }}</div>
 
-    <div class="control-group">
-        <div class="controls pull-right">
-           <input type="submit" value="{% trans 'Save' %}" class="btn"/>
+        {% include "_form_horizontal.html" with form=group_form %}
 
-            {% if group.id %}
-                <a href="{% url 'delete_group' group.id %}" class="btn btn-danger">{% trans 'Delete' %}</a>
-            {% endif %}
+        <table id="memberships">
+            <!-- mouve table outside the form due to button vs form submit -->
+            {% for membership in memberships %}
+                <tr id="{{ membership.id }}" data-user="{{ membership.user.id }}">
+                    <td><button class="delete" {% if membership.contact_user %}disabled="disabled"{% endif %}><i class="icon-remove"></i></button></td>
+                    <td class="name">{{ membership.user }}</td>
+                    <td><input type="radio" name="contact-user" class="contact" {% if membership.contact_user %}checked="checked"{% endif %}/></td>
+                </tr>
+            {% endfor %}
+            <tr class="hidden">
+                <td><button class="delete"><i class="icon-remove"></i></button></td>
+                <td class="name">template line</td>
+                <td><input type="radio" name="contact-user" class="contact" /></td>
+            </tr>
+        </table>
+        {% if group_mail_config_formset%}
+            <h2>{% trans "Mail config" %}</h2>
+            <div class="controls">
+                {{ group_mail_config_formset.as_p }}
+            </div>
+        {% endif %}
+        <div id="required-note" class="controls lead" style="white-space:nowrap">{% trans "* This fields are required" %}</div>
+
+        <div class="control-group">
+            <div class="controls pull-right">
+                <input type="submit" value="{% trans 'Save' %}" class="btn"/>
+                {% if group.id %}
+                    <a href="{% url 'delete_group' group.id %}" class="btn btn-danger">{% trans 'Delete' %}</a>
+                {% endif %}
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 {% endblock %}

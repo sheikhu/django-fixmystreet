@@ -44,7 +44,8 @@ def create_group(request,):
             group = group_form.save(commit=False)
             group.dependency = request.fmsuser.organisation
             group.save()
-            group.save()
+            config = GroupMailConfig(group=group)
+            config.save()
 
             messages.add_message(request, messages.SUCCESS, _("Group has been created successfully"))
             return HttpResponseRedirect(reverse('list_groups'))
