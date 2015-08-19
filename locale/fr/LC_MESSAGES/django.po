@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-14 16:06+0200\n"
-"PO-Revision-Date: 2015-08-14 14:00+0000\n"
+"POT-Creation-Date: 2015-08-19 16:41+0200\n"
+"PO-Revision-Date: 2015-08-19 14:38+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -180,21 +180,21 @@ msgstr "Nouvel utilisateur"
 
 #: backoffice/templates/pro/auth/base.html:30
 #: backoffice/templates/pro/auth/group_create.html:24
-#: backoffice/templates/pro/auth/group_create.html:35
+#: backoffice/templates/pro/auth/group_create.html:40
 msgid "Create group"
 msgstr "Nouveau groupe"
 
 #: backoffice/templates/pro/auth/group_create.html:22
-#: backoffice/templates/pro/auth/group_create.html:33
+#: backoffice/templates/pro/auth/group_create.html:38
 #, python-format
 msgid "Edit %(name)s (%(type)s)"
 msgstr "Modifier %(name)s (%(type)s)"
 
-#: backoffice/templates/pro/auth/group_create.html:59
+#: backoffice/templates/pro/auth/group_create.html:64
 msgid "Mail config"
 msgstr "Configuration des courriels"
 
-#: backoffice/templates/pro/auth/group_create.html:64
+#: backoffice/templates/pro/auth/group_create.html:69
 #: backoffice/templates/pro/auth/user_edit.html:46
 #: fixmystreet/templates/contact/new.html:20
 #: fixmystreet/templates/reports/_documentreport.html:173
@@ -202,14 +202,14 @@ msgstr "Configuration des courriels"
 msgid "* This fields are required"
 msgstr " * Ces champs sont obligatoires.\nVos données personnelles seront uniquement utilisées par l'administration en vue de vous recontacter concernant le suivi de votre plainte."
 
-#: backoffice/templates/pro/auth/group_create.html:68
+#: backoffice/templates/pro/auth/group_create.html:73
 #: backoffice/templates/pro/auth/user_edit.html:50
 #: backoffice/templates/pro/manager_category_configuration.html:51
 #: fixmystreet/templates/contact/new.html:24
 msgid "Save"
 msgstr "Enregistrer"
 
-#: backoffice/templates/pro/auth/group_create.html:71
+#: backoffice/templates/pro/auth/group_create.html:75
 #: backoffice/templates/pro/auth/user_edit.html:52
 msgid "Delete"
 msgstr "Supprimer"
@@ -945,54 +945,54 @@ msgstr "Rapport PDF pro"
 msgid "mail pdf"
 msgstr "envoyer le PDF par mail"
 
-#: backoffice/templates/pro/reports/show.html:334
+#: backoffice/templates/pro/reports/show.html:372
 msgctxt "pro"
 msgid "send report pdf"
 msgstr "Envoyer le rapport pdf"
 
-#: backoffice/templates/pro/reports/show.html:343
-#: backoffice/templates/pro/reports/show.html:361
+#: backoffice/templates/pro/reports/show.html:383
+#: backoffice/templates/pro/reports/show.html:407
 msgid "enter mail address"
 msgstr "Adresse email"
 
-#: backoffice/templates/pro/reports/show.html:345
-#: backoffice/templates/pro/reports/show.html:363
+#: backoffice/templates/pro/reports/show.html:385
+#: backoffice/templates/pro/reports/show.html:409
 msgid "Type one or more email addresses, separated by a comma (,)."
 msgstr "Veuillez introduire une ou plusieurs adresses séparées par une virgule (,)."
 
-#: backoffice/templates/pro/reports/show.html:346
-#: backoffice/templates/pro/reports/show.html:364
+#: backoffice/templates/pro/reports/show.html:386
+#: backoffice/templates/pro/reports/show.html:410
 msgid "enter comment for mail"
 msgstr "Message:"
 
-#: backoffice/templates/pro/reports/show.html:348
-#: backoffice/templates/pro/reports/show.html:366
+#: backoffice/templates/pro/reports/show.html:388
+#: backoffice/templates/pro/reports/show.html:412
 msgid "send pdf"
 msgstr "Envoyer le PDF"
 
-#: backoffice/templates/pro/reports/show.html:353
+#: backoffice/templates/pro/reports/show.html:396
 msgid "send report pdf pro"
 msgstr "Envoyer le rapport pdf pro"
 
-#: backoffice/templates/pro/reports/show.html:376
+#: backoffice/templates/pro/reports/show.html:425
 #: fixmystreet/templates/admin/fixmystreet/fmsuser/change_form.html:7
 #: fixmystreet/templates/reports/pdf.html:267
 #: fixmystreet/templates/reports/show.html:283
 msgid "History"
 msgstr "Historique"
 
-#: backoffice/templates/pro/reports/show.html:376
+#: backoffice/templates/pro/reports/show.html:425
 #: fixmystreet/templates/reports/show.html:284
 msgid "incident "
 msgstr "Incident"
 
-#: backoffice/templates/pro/reports/show.html:382
+#: backoffice/templates/pro/reports/show.html:431
 #: fixmystreet/templates/base.html:216
 #: fixmystreet/templates/reports/show.html:292
 msgid "OK"
 msgstr "OK"
 
-#: backoffice/templates/pro/reports/show.html:390
+#: backoffice/templates/pro/reports/show.html:439
 #: fixmystreet/templates/reports/show.html:305
 msgid "Add"
 msgstr "Ajouter"
@@ -1490,39 +1490,43 @@ msgstr "^rapport/(\\d+)/se-desabonner/"
 msgid "Cannot set a private category to a public report"
 msgstr "Impossible d'attribuer une catégorie privée à un incident public"
 
-#: backoffice/views/ajax.py:131
+#: backoffice/views/ajax.py:106
+msgid "Add a valid email address."
+msgstr "Veuillez ajouter une adresse mail valide."
+
+#: backoffice/views/ajax.py:121 backoffice/views/ajax.py:165
+msgid "There were errors."
+msgstr "Il y a eu des erreurs."
+
+#: backoffice/views/ajax.py:122
 #, python-brace-format
 msgid "'{email}' is not a valid email address."
 msgstr "'{email}' n'est pas une adresse mail valide."
 
-#: backoffice/views/ajax.py:145
+#: backoffice/views/ajax.py:160
 #, python-brace-format
 msgid "Successfully sent to '{email}'."
 msgstr "Envoyé avec succès à '{email}'."
 
-#: backoffice/views/ajax.py:148
+#: backoffice/views/ajax.py:163
 msgid "PDF sent by email."
 msgstr "PDF envoyé par mail."
 
-#: backoffice/views/ajax.py:150
-msgid "There were errors."
-msgstr "Il y a eu des erreurs."
-
-#: backoffice/views/groups.py:49
+#: backoffice/views/groups.py:50
 msgid "Group has been created successfully"
 msgstr "Le groupe a été créé."
 
-#: backoffice/views/groups.py:77
+#: backoffice/views/groups.py:78
 msgid "Group has been updated successfully"
 msgstr "Le groupe a été mis à jour."
 
-#: backoffice/views/groups.py:100
+#: backoffice/views/groups.py:101
 msgid ""
 "Group has some reports or categories associated, remove them first and then "
 "try again"
 msgstr "Il reste des incidents et/ou catégories associés à ce groupe, veuillez les retirer et recommencer."
 
-#: backoffice/views/groups.py:107
+#: backoffice/views/groups.py:108
 msgid "Group has been deleted successfully"
 msgstr "Le groupe a été effacé avec succès."
 
@@ -1535,25 +1539,25 @@ msgstr "Le reporting est indisponible pour le moment"
 msgid "An error occured by opening file <strong>%s</strong>"
 msgstr "Une erreur s'est produite en ouvrant le fichier <strong>%s</strong>"
 
-#: backoffice/views/reports/main.py:73 fixmystreet/views/reports/main.py:81
+#: backoffice/views/reports/main.py:71 fixmystreet/views/reports/main.py:81
 msgid "Newly created report successfull"
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné.\nUn mail contenant les informations du rapport vous a été envoyé"
 
-#: backoffice/views/reports/main.py:146 backoffice/views/reports/main.py:344
+#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:342
 #: fixmystreet/views/reports/main.py:220 fixmystreet/views/reports/main.py:277
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
 
-#: backoffice/views/reports/main.py:153
+#: backoffice/views/reports/main.py:151
 msgid "Report successfully deleted"
 msgstr "Incident suppimé"
 
-#: backoffice/views/reports/main.py:183 backoffice/views/reports/main.py:278
+#: backoffice/views/reports/main.py:181 backoffice/views/reports/main.py:276
 #: fixmystreet/views/reports/main.py:177
 msgid "You attachments has been sent"
 msgstr "Vos attachements ont été envoyés"
 
-#: backoffice/views/reports/main.py:260 fixmystreet/views/reports/main.py:157
+#: backoffice/views/reports/main.py:258 fixmystreet/views/reports/main.py:157
 msgid "You must add a comment, a photo or a document to continue."
 msgstr "Vous devez ajouter un commentaire, une photo ou un document pour continuer."
 

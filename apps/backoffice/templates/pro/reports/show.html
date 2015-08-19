@@ -327,44 +327,93 @@
             {% trans 'mail pdf' %}
         </h4>
 
+{#        <div>#}
+{#            <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-citizen">#}
+{#                {% trans 'send report pdf' context 'pro' %}#}
+{#            </button>#}
+{##}
+{#            <form id="mail-pdf-citizen" class="collapse async-form" >#}
+{#                <div class="alert hidden">#}
+{#                    <span id="mail-pdf-citizen-status"></span>#}
+{#                </div>#}
+{##}
+{#                <input type="hidden" name="privacy" value="public"/>#}
+{#                <label for="pdf-email-citizen">{% trans 'enter mail address' %}</label>#}
+{#                <textarea id="pdf-email-citizen" name="to" class="input-block-level"></textarea>#}
+{#                <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>#}
+{#                <label for="pdf-comments-citizen">{% trans 'enter comment for mail' %}</label>#}
+{#                <textarea id="pdf-comments-citizen" name="comments" class="input-block-level"></textarea>#}
+{#                <input type="submit" class="btn pull-right" id="send_pdf_citizen_button" value="{% trans 'send pdf' %}"/>#}
+{#            </form>#}
+{#        </div>#}
+{#        <div>#}
+{#            <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-pro">#}
+{#                {% trans 'send report pdf pro' %}#}
+{#            </button>#}
+{#            <form id="mail-pdf-pro" class="collapse async-form">#}
+{#                <div class="alert hidden">#}
+{#                    <span id="mail-pdf-pro-status"></span>#}
+{#                </div>#}
+{##}
+{#                <input type="hidden" name="privacy" value="private"/>#}
+{#                <label for="pdf-email">{% trans 'enter mail address' %}</label>#}
+{#                <textarea id="pdf-email" name="to" class="input-block-level"></textarea>#}
+{#                <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>#}
+{#                <label for="pdf-comments">{% trans 'enter comment for mail' %}</label>#}
+{#                <textarea id="pdf-comments" name="comments" class="input-block-level"></textarea>#}
+{#                <input type="submit" class="btn pull-right" id="send_pdf_pro_button" value="{% trans 'send pdf' %}"/>#}
+{#            </form>#}
+{#        </div>#}
 
-
-        <div>
-            <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-citizen">
-                {% trans 'send report pdf' context 'pro' %}
-            </button>
-
-            <form id="mail-pdf-citizen" class="collapse async-form" >
-                <div class="alert hidden">
-                    <span id="mail-pdf-citizen-status"></span>
+        <div class="accordion" id="div-send-mail-pdf">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#div-send-mail-pdf" href="#collapse-pdf-citizen">
+                        {% trans 'send report pdf' context 'pro' %}
+                    </a>
                 </div>
+                <div id="collapse-pdf-citizen" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <form id="mail-pdf-citizen" class="async-form">
+                            <div class="alert hidden">
+                                <span id="mail-pdf-citizen-status"></span>
+                            </div>
 
-                <input type="hidden" name="privacy" value="public"/>
-                <label for="pdf-email-citizen">{% trans 'enter mail address' %}</label>
-                <textarea id="pdf-email-citizen" name="to" class="input-block-level"></textarea>
-                <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>
-                <label for="pdf-comments-citizen">{% trans 'enter comment for mail' %}</label>
-                <textarea id="pdf-comments-citizen" name="comments" class="input-block-level"></textarea>
-                <input type="submit" class="btn pull-right" id="send_pdf_citizen_button" value="{% trans 'send pdf' %}"/>
-            </form>
-        </div>
-        <div>
-            <button type="button" class="btn input-block-level" data-toggle="collapse" data-target="#mail-pdf-pro">
-                {% trans 'send report pdf pro' %}
-            </button>
-            <form id="mail-pdf-pro" class="collapse async-form">
-                <div class="alert hidden">
-                    <span id="mail-pdf-pro-status"></span>
+                            <input type="hidden" name="privacy" value="public"/>
+                            <label for="pdf-email-citizen">{% trans 'enter mail address' %}</label>
+                            <textarea id="pdf-email-citizen" name="to" class="input-block-level"></textarea>
+                            <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>
+                            <label for="pdf-comments-citizen">{% trans 'enter comment for mail' %}</label>
+                            <textarea id="pdf-comments-citizen" name="comments" class="input-block-level"></textarea>
+                            <input type="submit" class="btn pull-right" id="send_pdf_citizen_button" value="{% trans 'send pdf' %}"/>
+                        </form>
+                    </div>
                 </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#div-send-mail-pdf" href="#collapse-pdf-pro">
+                        {% trans 'send report pdf pro' %}
+                    </a>
+                </div>
+                <div id="collapse-pdf-pro" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <form id="mail-pdf-pro" class="async-form">
+                            <div class="alert hidden">
+                                <span id="mail-pdf-pro-status"></span>
+                            </div>
 
-                <input type="hidden" name="privacy" value="private"/>
-                <label for="pdf-email">{% trans 'enter mail address' %}</label>
-                <textarea id="pdf-email" name="to" class="input-block-level"></textarea>
-                <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>
-                <label for="pdf-comments">{% trans 'enter comment for mail' %}</label>
-                <textarea id="pdf-comments" name="comments" class="input-block-level"></textarea>
-                <input type="submit" class="btn pull-right" id="send_pdf_pro_button" value="{% trans 'send pdf' %}"/>
-            </form>
+                            <input type="hidden" name="privacy" value="private"/>
+                            <label for="pdf-email">{% trans 'enter mail address' %}</label>
+                            <textarea id="pdf-email" name="to" class="input-block-level"></textarea>
+                            <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>
+                            <label for="pdf-comments">{% trans 'enter comment for mail' %}</label>
+                            <textarea id="pdf-comments" name="comments" class="input-block-level"></textarea>
+                            <input type="submit" class="btn pull-right" id="send_pdf_pro_button" value="{% trans 'send pdf' %}"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
     </div>

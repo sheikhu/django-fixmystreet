@@ -1874,7 +1874,6 @@ SHOW REPORT
 .btn-group.open .btn.dropdown-toggle{
 	color: white;
 	background: #3498db;
-	)
 }
 
 .lead-container .btn,
@@ -2890,7 +2889,7 @@ input[type=checkbox].invalid, input[type=radio].invalid{
 	color:#7e7e7e;
 }
 
-#mail-pdf-citizen label, #mail-pdf-citizen span, .modal-body label {
+.modal-body label {
 	color:#7e7e7e;
 }
 
@@ -3700,4 +3699,35 @@ form {
 
 #sel_refuse {
 	width:97%;
+}
+
+#div-send-mail-pdf .accordion-heading {
+	font-family:'Dosis', sans-serif;
+	letter-spacing: -0.3px;
+	border:0;
+	text-transform: uppercase;
+	font-size:16px;
+    text-align:center;
+    border-radius: 4px;
+
+}
+
+#div-send-mail-pdf .accordion-heading a {
+    color: #2c3e50;
+	background: #ffdb00;
+    text-decoration: none;
+}
+
+#div-send-mail-pdf .accordion-heading a:hover{
+	color: white;
+	background: #3498db;
+    text-decoration: none;
+}
+
+#div-send-mail-pdf textarea{
+	width:100%;
+}
+
+#div-send-mail-pdf input[type=submit]{
+    margin-bottom:10px;
 }

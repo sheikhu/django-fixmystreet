@@ -99,6 +99,32 @@ def send_pdf(request, report_id):
     user = get_current_user()
     recipients = request.POST.get('to')
     comments = request.POST.get('comments', '')
+
+    # recipient can't be empty
+    if recipients.strip() == '':
+        to_return["status"] = "error"
+        to_return["message"] = _("Add a valid email address.")
+        return JsonHttpResponse(to_return)
+
+    recipients = re.compile("[\\s,;]+").split(recipients)
+
+    valid_recipients = []
+    for recipient in recipients:
+        recipient = recipient.strip()
+        if not recipient:
+            continue
+        try:
+            validate_email(recipient)
+            valid_recipients.append(recipient)
+        except ValidationError:
+            to_return["status"] = "error"
+            to_return["message"] = _("There were errors.")
+            to_return["logMessages"].append(_("'{email}' is not a valid email address.").format(email=recipient))
+            continue
+    #if no valid emails, no need to proceed
+    if len(valid_recipients) == 0:
+        return JsonHttpResponse(to_return)
+
     # Only set privacy as private if user is auth and privacy POST param is private
     if request.fmsuser.is_pro() and "private" == request.POST.get('privacy'):
         pro_version = True
@@ -118,20 +144,9 @@ def send_pdf(request, report_id):
     }, context_instance=RequestContext(request))
 
     subject, html, text = transform_notification_template("mail-pdf", report, user, comment=comments)
-    recepients = re.compile("[\\s,;]+").split(recipients)
 
-    for recepient in recepients:
-        recepient = recepient.strip()
-        if not recepient:
-            continue
-        try:
-            validate_email(recepient)
-        except ValidationError:
-            to_return["status"] = "error"
-            to_return["logMessages"].append(_("'{email}' is not a valid email address.").format(email=recepient))
-            continue
-
-        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, (recepient,))
+    for recipient in valid_recipients:
+        msg = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, (recipient,))
 
         if html:
             msg.attach_alternative(html, "text/html")
@@ -142,7 +157,7 @@ def send_pdf(request, report_id):
         msg.attach(name, pdffile.read(), 'application/pdf')
 
         msg.send()
-        to_return["logMessages"].append(_("Successfully sent to '{email}'.").format(email=recepient))
+        to_return["logMessages"].append(_("Successfully sent to '{email}'.").format(email=recipient))
 
     if to_return["status"] == "success":
         to_return["message"] = _("PDF sent by email.")

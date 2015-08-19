@@ -113,22 +113,24 @@ $(document).ready(function() {
             success: function(response) {
                 console.log("send mail success");
                 var statusType = response.status == 'success' ? 'success' : 'error';
-                var msg = '<strong>' + response.message + '</strong>';
+                var msg = '' + response.message;
                 for (var i = 0; i < response.logMessages.length; i++) {
                     msg += '<br />' + response.logMessages[i];
                 }
                 setStatusMessage(statusMessage, statusType, msg);
+                if(statusType=='success'){
+                    var list = self.getElementsByTagName('textarea');
+                    for (var i = 0; i<list.length; i++){
+                        list[i].value='';
+                    }
+                }
             },
             error: function(response) {
                 console.log("send mail error");
-                setStatusMessage(statusMessage, 'error', '{% trans "Error" %}');
+                setStatusMessage(statusMessage, 'error', gettext('Error'));
             },
             complete: function() {
                 status.classList.remove('hidden');
-
-                setTimeout(function() {
-                    status.classList.add('hidden');
-                }, 5000);
 
                 self.classList.remove('loading');
             }
