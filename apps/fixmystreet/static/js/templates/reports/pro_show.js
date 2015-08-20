@@ -145,6 +145,11 @@ $(document).ready(function() {
         sendPdf.call(this, event);
     });
 
+    //used for closing alerts message when sending PDF by mail
+    $('.close').click(function () {
+      $(this).parent().addClass('hidden'); // hides alert with Bootstrap CSS3 implem
+    });
+
     $('.dropdown-menu li a').mouseover(function(evt) {
         evt.stopPropagation();
 
