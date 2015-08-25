@@ -10,11 +10,16 @@
     };
     var allowed_file_types = [];
     for (var k in file_types) { allowed_file_types = allowed_file_types.concat(file_types[k]); }
-    var file_max_size = 10000000, // 10MB
-        file_max_size_total = 20000000, // 20MB
-        file_size_total = 0,
-        file_count = 0,
-        inputfile_count = 0;
+    var file_max_size = 10000000; // 10MB
+    var file_max_size_total = 20000000; // 20MB
+    var file_size_total = 0;
+    var file_count = 0;
+    var inputfile_count = 0;
+
+    //this is a counter of total files added, including those that were removed. this counter is necessary to properly name elements when adding a new file.
+    // Otherwise there were conflicts in names when adding, then removing, then adding files again.
+    var total_file_count = 0;
+
 
 
     $(function() {
@@ -73,8 +78,8 @@
                 minute = fileDate.getMinutes();
             }
 
-            var form_new = $($('#file-form-row-tpl').html().replace(/__prefix__/g, file_count));
-            form_new.find("#id_files-"+file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
+            var form_new = $($('#file-form-row-tpl').html().replace(/__prefix__/g, total_file_count));
+            form_new.find("#id_files-"+total_file_count+"-file_creation_date").val(year+"-"+month+"-"+day+" "+hour+":"+minute);
             form_new.removeClass('required').removeClass('invalid');
 
             form_new.find("[data-toggle=popover]").remove();
@@ -97,6 +102,7 @@
             filesContainer.append(form_new);
 
             file_count++;
+            total_file_count++;
             $("#id_files-TOTAL_FORMS").val(file_count);
         };
 
@@ -164,10 +170,10 @@
         //Determine the type of the submited file
         var type = (file && file.type) || null;
         //Structured Data of the file to add
-        var title = elem.find(":file").val();
-        if (title === ""){
-            title = file.name;
-        }
+        //var title = elem.find(":file").val();
+        //if (title === ""){
+        //    title = file.name;
+        //}
 
         var thumbnails = "";
         var imgContainer = elem.find(".thumb");

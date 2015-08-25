@@ -458,13 +458,19 @@ def hack_multi_file(request):
     # Sort the keys to keep the file index coherent with the JS side.
     files_keys.sort()
 
-    # Loop over uploaded files and keep only the ones that have not been removed by the user.
+    # Counter to loop over uploaded files and keep only the ones that have not been removed by the user.
     file_index = 0
+
+    #the following counter is used to create keys in the returned querydict. All the keys  must be contain concecutive numbers
+    #  otherwise there is a problem with the "cleaned_data" in the file_formset that will be created and the files
+    # are not added correctly. So yes, there must be 2 differents counters. Spaghetti code for the win.
+    qd_file_index = 0
     for k in files_keys:
         for f in request.FILES.getlist(k):
             # If there is a "title" field for this file_index, assume the file has not been removed from the form.
             if request.POST.has_key("files-{}-title".format(file_index)):
-                qd["files-{}-file".format(file_index)] = f
+                qd["files-{}-file".format(qd_file_index)] = f
+                qd_file_index += 1
             file_index += 1
 
     # Convert dict to QueryDict (to be equivalent to request.FILES).
