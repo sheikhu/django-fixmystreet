@@ -8,9 +8,6 @@
 var REPORT_SEC_CAT_ID = "{{report.secondary_category.id}}";
 var REPORT_GRAVITY = "{{report.gravity}}";
 var REPORT_PROBABILITY = "{{report.probability}}";
-var DEPARTEMENT_ID = "department_{{department.id}}";
-var ENTITY_ID = "entity_{{entity.id}}";
-var INSTITUTION_ID = "entity_{{institution.id}}";
 
 /********************************** URLS *****************************/
 
@@ -56,7 +53,7 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
                                     {% ifequal report.responsible_department.id department.id %}
                                         class="active"
                                     {% else %}
-                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, DEPARTEMENT_ID)"
+                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, 'department_{{department.id}}')"
                                     {% endifequal %}
                                     tabindex="-1"
                                     >
@@ -75,7 +72,7 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
                                     {% ifequal report.responsible_entity.id entity.id %}
                                         class="active"
                                     {% else %}
-                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, ENTITY_ID)"
+                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, 'entity_{{entity.id}}')"
                                     {% endifequal %}
                                     tabindex="-1"
                                 >
@@ -94,7 +91,7 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
                                     {% ifequal report.responsible_entity.id entity.id %}
                                         class="active"
                                     {% else %}
-                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, INSTITUTION_ID)"
+                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, 'entity_{{institution.id}}')"
                                     {% endifequal %}
                                     tabindex="-1"
                                 >
