@@ -1,7 +1,4 @@
-
-
 (function() {
-
     var file_types = {
         image: ["image/png","image/jpeg"],
         pdf: ["application/pdf"],
@@ -19,7 +16,6 @@
     //this is a counter of total files added, including those that were removed. this counter is necessary to properly name elements when adding a new file.
     // Otherwise there were conflicts in names when adding, then removing, then adding files again.
     var total_file_count = 0;
-
 
 
     $(function() {
@@ -95,6 +91,7 @@
                 file_size_total -= file.size;
 
                 file_count--;
+                total_file_count--;
                 $("#id_files-TOTAL_FORMS").val(file_count);
             });
 
@@ -159,13 +156,6 @@
     /************************************************************************************/
     /* Add the submitted file to the view and save it in the session and on the server. */
     /************************************************************************************/
-    function imageRemoved() {
-
-    }
-
-    /************************************************************************************/
-    /* Add the submitted file to the view and save it in the session and on the server. */
-    /************************************************************************************/
     function AddFileToView(elem, file){
         //Determine the type of the submited file
         var type = (file && file.type) || null;
@@ -201,4 +191,45 @@
             img.attr("src", thumbnails);
         }
     }
-})();
+
+    // Override validateForm from common.js
+    var oldValidateForm = validateForm;
+
+    validateForm = function(form) {
+        var isValid = false;
+        var $this = $(this);
+
+        // Validation of comment and photo
+        var hasComment, hasPhoto = false;
+        if ($('#id_comment-text').val()) {
+            hasComment = true;
+        }
+        if (total_file_count) {
+            hasPhoto = true;
+        }
+
+        if (hasComment || hasPhoto) {
+            isValid = true;
+        }
+
+        $this.find('[data-one-click]').prop('disabled', isValid && $('#coordonnees').is(':visible'));
+
+        var commentArea = $('#id_comment-text');
+        var fileUploadBtn = $('#file-form-btn-add-container > label.input-file-button');
+
+        if (!isValid) {
+            fileUploadBtn.addClass('invalid');
+            commentArea.addClass('invalid');
+        } else {
+            fileUploadBtn.removeClass('invalid');
+            commentArea.removeClass('invalid');
+        }
+
+        isValid = oldValidateForm(form) && isValid;
+
+        return isValid;
+
+    }
+})(validateForm);
+
+
