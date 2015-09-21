@@ -43,7 +43,7 @@ dev_require = [
 
     # Jenkins
     'django-jenkins==0.17.0',
-    'coverage',
+    'coverage==3.7.1',
     'flake8',
     'zest.releaser==3.50',
 ]
