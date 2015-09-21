@@ -587,6 +587,8 @@ L.FixMyStreet.Map = L.Map.extend({
       this.fitToMarkers(this._searchLayer);
     }
 
+    this.setCssSize('large');
+
     options = $.extend(true, {
       position: this.options.controlsPosition.panels,
     }, options);
@@ -875,6 +877,7 @@ L.FixMyStreet.Map = L.Map.extend({
 
   _locateOnMapButton_onClick: function (evt) {  // locateOnMapButton.click
     this.addIncident({type: 'new'});
+    this.setCssSize('large');
   },
 
   _streetViewButton_onClick: function (evt, latlng) {  // streetViewButton.click

@@ -88,7 +88,6 @@ fms.AddressSearchView = Backbone.View.extend({
     },
     processSearchResults: function (response) {
         if (response.status == 'success' && response.result.length > 0) {
-            fms.map.setCssSize('large');
             fms.map.removeSearchResults();
             fms.map.removeNewIncident();
 
