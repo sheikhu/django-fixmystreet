@@ -309,7 +309,6 @@ class ReportFileForm(forms.ModelForm):
 
 
 class ReportCommentForm(forms.ModelForm):
-    required_css_class = 'required'
 
     class Meta:
         model = ReportComment

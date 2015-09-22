@@ -274,7 +274,7 @@ a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
 	color:#2c3e50;
 	font-size:13pt;
 	line-height: 15px;
-	margin-left: 15px; 
+	margin-left: 15px;
 	text-transform: uppercase;
 }
 
@@ -314,7 +314,7 @@ a.lang.seleted:hover, a.lang.seleted:active, a.lang.seleted:focus{
 	border: 1px solid #3498DB;
 	background: #3498DB;
 	text-decoration: none;
-	
+
 }
 footer{
 	font-size: 12px;
@@ -342,8 +342,8 @@ HOME
 	height: 280px;
 	z-index: 10;
 	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
-	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 }
 #map.pro{
 	position: relative;
@@ -377,8 +377,8 @@ HOME
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-webkit-box-shadow: -0px 5px 20px rgba(0,0,0, 0.2);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);	
-	box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);	
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);
 
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -452,8 +452,8 @@ HOME
 	padding-bottom:20px;
 	height:105%;
 	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
-	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 }
 
 form#report-form{
@@ -542,8 +542,8 @@ form#report-form div ul li label {
 	min-height: 355px;
 	height:105%;
 	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
-	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 }
 
 #faq h3, #faq_pages h3
@@ -591,8 +591,8 @@ form#report-form div ul li label {
 
 	max-height: 940px;
 	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
-	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 }
 
 .modal-text  {
@@ -1048,8 +1048,8 @@ form#report-form div ul li label {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-webkit-box-shadow: -0px 5px 20px rgba(0,0,0, 0.2);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);	
-	box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);	
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);
 
 }
 .lead-container form{
@@ -1200,7 +1200,7 @@ form#report-form div ul li label {
 	.instructions ol .stepOne.off{
 		background: url('../images/stepOne_off.png');
 		background-position: top left;
-		background-repeat: no-repeat;	
+		background-repeat: no-repeat;
 		color: #BCD4F1;
 		font-size:16px;
 
@@ -1208,7 +1208,7 @@ form#report-form div ul li label {
 	.instructions ol .stepTwo.on{
 		background: url('../images/stepTwo_on.png');
 		background-position: top left;
-		background-repeat: no-repeat;	
+		background-repeat: no-repeat;
 		color: #FFF;
 		font-size:16px;
 
@@ -1216,7 +1216,7 @@ form#report-form div ul li label {
 	.instructions ol .stepTwo.off{
 		background: url('../images/stepTwo_off.png');
 		background-position: top left;
-		background-repeat: no-repeat;	
+		background-repeat: no-repeat;
 		color: #BCD4F1;
 		font-size:16px;
 
@@ -1224,7 +1224,7 @@ form#report-form div ul li label {
 	.instructions ol .stepThree.on{
 		background: url('../images/stepThree_on.png');
 		background-position: top left;
-		background-repeat: no-repeat;	
+		background-repeat: no-repeat;
 		color: #FFF;
 		font-size:16px;
 
@@ -1232,7 +1232,7 @@ form#report-form div ul li label {
 	.instructions ol .stepThree.off{
 		background: url('../images/stepThree_off.png');
 		background-position: top left;
-		background-repeat: no-repeat;	
+		background-repeat: no-repeat;
 		color: #BCD4F1;
 		font-size:16px;
 
@@ -1453,7 +1453,7 @@ color:#495E77;
 .nav-tabs1{
 	margin-bottom:0;
 	border-bottom:0;
-	margin-left: -30px;	
+	margin-left: -30px;
 }
 .nav-tabs1>li>a{
 	border-bottom:0;
@@ -1771,11 +1771,11 @@ ul#column-visibility.dropdown-menu {
 	background-color:#EAEBFF;
 	color:white;
 	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 }
 
-#report-form label[for=id_type_0], 
+#report-form label[for=id_type_0],
 #report-form label[for=id_type_1],
 #report-form label[for=id_type_2],
 #report-form label[for=id_type_3],
@@ -1842,7 +1842,7 @@ SHOW REPORT
 	margin-top: 0;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
-	border-radius: 4px;	
+	border-radius: 4px;
 
 }
 .btn-group-vertical > .btn-group{
@@ -2018,12 +2018,12 @@ SHOW REPORT
 
 
 .incidentDetailsStatus {
-	line-height: 10px; 
+	line-height: 10px;
 	margin-top: 10px;
 }
 
 .ticket_infos {
-	line-height: 10px; 
+	line-height: 10px;
 	margin-top: 10px;
 }
 
@@ -2327,8 +2327,8 @@ padding: 0 15px 15px 15px;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-webkit-box-shadow: -0px 5px 20px rgba(0,0,0, 0.2);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);	
-	box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);	
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.2);
 
 }
 .lead-container .ticket_desc br{
@@ -2374,8 +2374,8 @@ Timeline
 	border:1px solid #3498db;
 	min-height: 45px;
 	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
-	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);	
-	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);			
+	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
+	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 }
 .timeline{
 	margin-top: 50px;
@@ -2600,7 +2600,7 @@ NEW REPORT
 	font-family: 'Dosis',sans-serif;
 	margin: 0px 1em;
 	float:right;
-	margin-right:30px;    
+	margin-right:30px;
 }
 #citycode-text{
 	color: rgb(219, 219, 219);
@@ -2614,7 +2614,7 @@ NEW REPORT
 
 }
 .addressMarker {
-	float:right; 
+	float:right;
 	background: url('../images/location13.png') no-repeat;
 	background-position: right;
 }
@@ -2686,7 +2686,7 @@ label strong{
 	background: #ffdb00;
 	font-family: 'Dosis', sans-serif;
 	font-size: 18px;
-	color:#2c3e50;	
+	color:#2c3e50;
 	border-radius: 4px;
 	padding-top:10px;
 	padding-bottom:10px;
@@ -2709,7 +2709,7 @@ label strong{
 	background: #cbcccd;
 	font-family: 'Dosis', sans-serif;
 	font-size: 18px;
-	color:white;	
+	color:white;
 	border-radius: 4px;
 	padding-top:10px;
 	padding-bottom:10px;
@@ -2758,6 +2758,9 @@ input.invalid, select.invalid, textarea.invalid {
 input[type=checkbox].invalid, input[type=radio].invalid{
 	outline: 2px solid #FF0000;
 }
+label.invalid {
+	border: 2px solid #FF0000 !important;
+}
 
 .control-label{
 	font-size: 13pt;
@@ -2774,8 +2777,8 @@ input[type=checkbox].invalid, input[type=radio].invalid{
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	-webkit-box-shadow: 0px 20px 80px rgba(0,0,0, 0.1);
-	-moz-box-shadow: 0px 20px 80px rgba(0,0,0, 0.1);	
-	box-shadow: 0px 20px 80px rgba(0,0,0, 0.1);	
+	-moz-box-shadow: 0px 20px 80px rgba(0,0,0, 0.1);
+	box-shadow: 0px 20px 80px rgba(0,0,0, 0.1);
 	background:#ecf0f1;
 	border:1px solid #3498db;
 }
@@ -3445,7 +3448,7 @@ margin: auto;
 #containerHomeText {
 	float:left;
 	padding-left:15px;
-	width:345px; 
+	width:345px;
 	font-family: 'Dosis', sans-serif;
 }
 
@@ -3478,7 +3481,7 @@ p.switch_verify.btn-group   {
 }
 
 #containerHomePhotoIncident  {
-	float:right; 
+	float:right;
 	padding-right:15px;
 
 }
@@ -3512,7 +3515,7 @@ p.switch_verify.btn-group   {
 	vertical-align: middle;
 	margin-left: 10px;
 	position: relative;
-	margin-top: 10px;	
+	margin-top: 10px;
 
 
 }
@@ -3583,7 +3586,7 @@ p.switch_verify.btn-group   {
 
 
 #navigationReports {
-	float:left; 
+	float:left;
 	width:48%;
 	margin:0px;
 	margin-left:15px;
@@ -3604,7 +3607,7 @@ p.switch_verify.btn-group   {
 
 	#navigationReports 	{
 		width: 100%;
-	}	
+	}
 
 
 
@@ -3625,7 +3628,7 @@ form {
 	font-family: 'Dosis', sans-serif;
 	font-size:12px;
 	line-height:10pt;
-	text-align:justify; 
+	text-align:justify;
 	padding-right:240px;
 }
 
@@ -3663,7 +3666,7 @@ form {
 	background: #2980b9;
 	font-family: 'Dosis', sans-serif;
 	font-size: 18px;
-	color:white;	
+	color:white;
 	border-radius: 4px;
 	padding-top:15px;
 	padding-bottom:5px;

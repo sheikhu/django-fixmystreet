@@ -57,7 +57,7 @@
     </div>
 
     {% if map  %}
-    <div id="map" class="fmsmap-size-medium"></div>
+        <div id="map" class="fmsmap-size-{% if mapSize %}{{ mapSize }}{% else %}medium{% endif %}"></div>
     {% endif %}
 
     {% if BACKOFFICE %}
