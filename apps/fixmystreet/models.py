@@ -2490,3 +2490,27 @@ class Page(models.Model):
         translate = ('content', 'title', 'slug')
 
 # pre_save.connect(autoslug_transmeta('title', 'slug'), weak=False, sender=Page)
+
+
+class FAQPage(models.Model):
+    __metaclass__ = TransMeta
+
+    title = models.TextField(verbose_name="Title")
+    slug = models.CharField(max_length=100, verbose_name="Slug")
+    content = RichTextField(verbose_name="Content")
+    visible = models.BooleanField(default=False)
+    ranking = models.PositiveIntegerField(blank=True)
+
+    def get_next_ranking(self):
+        faq_pages = FAQPage.objects.exclude(pk=self.id).order_by("-ranking")
+        if faq_pages and faq_pages[0].ranking >= 0:
+            return faq_pages[0].ranking + 10
+        return 0
+
+    class Meta:
+        translate = ('content', 'title', 'slug')
+
+    def save(self, *args, **kwargs):
+        if self.ranking is None:
+            self.ranking = self.get_next_ranking()
+        super(FAQPage, self).save(*args, **kwargs)

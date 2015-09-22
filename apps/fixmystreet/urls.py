@@ -6,6 +6,7 @@ urlpatterns = patterns(
     'apps.fixmystreet.views.main',
     url(_(r'^$'), 'home', name='home'),
     url(_(r'^about/$'), 'page', name='about'),
+    url(_(r'^faq-pro/$'), 'faq_pro', name='faq_pro'),
     url(_(r'^faq/$'), 'page', name='faq'),
     url(_(r'^help/$'), 'page', name='help'),
     url(_(r'^terms-of-use/$'), 'page', name='terms_of_use'),

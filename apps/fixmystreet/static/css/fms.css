@@ -516,7 +516,21 @@ form#report-form div ul li label {
 	float:right;
 }
 
-#faq{
+#faq_pages_anchors{
+    margin-bottom: 50px;
+}
+
+#faq_pages {
+	width:96%;
+}
+
+#faq_pages h2 {
+	color: #3498db;;
+	margin-bottom:25px;
+	margin-top:15px;
+}
+
+#faq, #faq_pages{
 	background:#ecf0f1;
 	border: 1px solid #3498db;
 	-webkit-border-radius: 4px;
@@ -524,7 +538,6 @@ form#report-form div ul li label {
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 	padding:20px 18px;
-	padding-bottom:20px;
 	display:inline-block;
 	min-height: 355px;
 	height:105%;
@@ -533,7 +546,7 @@ form#report-form div ul li label {
 	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);		
 }
 
-#faq h3
+#faq h3, #faq_pages h3
 {
 	font-size:18pt;
 	color: #3498db;
@@ -544,7 +557,7 @@ form#report-form div ul li label {
 	margin-top:15px;
 }
 
-#faq p
+#faq p, #faq_pages p
 {
 	font-size:12pt;
 	padding-left:45px;

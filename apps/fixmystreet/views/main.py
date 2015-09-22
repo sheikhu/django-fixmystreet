@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.translation import get_language, activate
 
-from apps.fixmystreet.models import ZipCode, Report, Page
+from apps.fixmystreet.models import ZipCode, Report, Page, FAQPage
 from apps.fixmystreet.stats import ReportCountQuery
 
 
@@ -55,6 +55,13 @@ def page(request):
         raise Http404()
     return render_to_response("page.html", {
         "page": p
+    }, context_instance=RequestContext(request))
+
+
+def faq_pro(request):
+    faq_pages = FAQPage.objects.filter(visible=True).order_by("ranking")
+    return render_to_response("faq_pro.html", {
+        "faq_pages": faq_pages
     }, context_instance=RequestContext(request))
 
 

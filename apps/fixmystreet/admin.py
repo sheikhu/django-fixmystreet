@@ -6,7 +6,7 @@ from simple_history.admin import SimpleHistoryAdmin
 
 from .models import (
     ReportCategory, Report, FMSUser, ReportMainCategoryClass,
-    ReportAttachment, Page, OrganisationEntity, ReportNotification, ReportEventLog,
+    ReportAttachment, Page, FAQPage, OrganisationEntity, ReportNotification, ReportEventLog,
     UserOrganisationMembership
 )
 from .utils import export_as_csv_action
@@ -223,3 +223,10 @@ class PageAdmin(SimpleHistoryAdmin):
     list_display = ('title', 'content')
 
 admin.site.register(Page, PageAdmin)
+
+
+class FAQPageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title_fr', 'title_nl', 'visible', 'ranking')
+    ordering = ('ranking', )
+
+admin.site.register(FAQPage, FAQPageAdmin)
