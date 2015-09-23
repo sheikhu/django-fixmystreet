@@ -146,13 +146,29 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
             "id": self.report.id,
             "created_at": self.report.created,
             "modified_at": self.report.modified,
-            "category": self.report.display_category(),
-            "pdf_url": self.report.get_pdf_url_pro_with_auth_token(),
+            "category": {
+                "fr": self.report.display_category("fr"),
+                "nl": self.report.display_category("nl"),
+            },
+            "pdf_url": {
+                "fr": self.report.get_pdf_url_pro_with_auth_token("fr"),
+                "nl": self.report.get_pdf_url_pro_with_auth_token("nl")
+            },
             "address": {
-                "street": self.report.address,
+                "street": {
+                    "fr": self.report.address_fr,
+                    "nl": self.report.address_nl,
+                },
                 "number": self.report.address_number,
                 "postal_code": self.report.postalcode,
-                "municipality": self.report.get_address_commune_name(),
+                "municipality": {
+                    "fr": self.report.get_address_commune_name("fr"),
+                    "nl": self.report.get_address_commune_name("nl")
+                },
+            },
+            "point": {
+                "x": self.report.point.x,
+                "y": self.report.point.y,
             },
             "creator": {
                 "type": "pro" if self.report.is_pro() else "citizen",
