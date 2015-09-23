@@ -2494,7 +2494,6 @@ class FAQPage(models.Model):
     __metaclass__ = TransMeta
 
     title = models.TextField(verbose_name="Title")
-    slug = models.CharField(max_length=100, verbose_name="Slug")
     content = RichTextField(verbose_name="Content")
     visible = models.BooleanField(default=False)
     ranking = models.PositiveIntegerField(blank=True)
@@ -2506,7 +2505,7 @@ class FAQPage(models.Model):
         return 0
 
     class Meta:
-        translate = ('content', 'title', 'slug')
+        translate = ('content', 'title')
 
     def save(self, *args, **kwargs):
         if self.ranking is None:
