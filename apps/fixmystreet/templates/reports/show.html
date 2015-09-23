@@ -14,7 +14,6 @@
 {{ block.super }}
 
 <script src="{% static 'js/jquery.exif.js' %}"></script>
-<script src="{% static 'js/attachmentForms.js' %}"></script>
 <script>
     var REPORT_JSON = {{ report.marker_detail_short|dict_to_json|safe }};
 </script>
@@ -115,12 +114,12 @@
 
                             {% endif %}
 
-                        
+
                         <!--/div-->
 
                             </div>
 
-                         
+
                         </div>
 
 
@@ -217,7 +216,7 @@
                     </div>
                     <div class="modal-text">
                         <h3>{% trans "You think this incident is close. Indicate it!" %}</h3>
-                    </div>    
+                    </div>
                 </div>
             </div>
             <div class="modal-body">
@@ -237,14 +236,14 @@
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    
+
                     <div>
                       <div class="modal-icon">
                         <img src="{% static 'images/good2.png' %}"/>
                       </div>
                       <div class="modal-text">
                         <h3>{% trans "Subscription:" %}</h3>
-                       </div>    
+                       </div>
                     </div>
 
 
@@ -280,9 +279,9 @@
                 <img src="{% static 'images/history.png' %}"/>
             </div>
             <div class="modal-text">
-                <h3> {% trans 'History' %}</h3> 
+                <h3> {% trans 'History' %}</h3>
                 {% trans 'incident '%} {{report.get_ticket_number}}
-            </div>    
+            </div>
         </div>
             </div>
     <div class="modal-body">
