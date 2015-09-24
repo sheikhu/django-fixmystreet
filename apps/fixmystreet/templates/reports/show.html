@@ -36,23 +36,20 @@
                         <div class="span3">
                             <div class="ticket_infos">
 
-                                {% if report.is_created %}
-                                    <span class="ticket_number red_border">
-                                        <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
-                                    </span>
-                                {% elif report.is_in_progress %}
-                                    <span class="ticket_number orange_border">
-                                        <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
-                                    </span>
-                                {% elif report.is_refused %}
-                                    <span class="ticket_number gray_border">
-                                        <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
-                                    </span>
-                                {% else %}
-                                    <span class="ticket_number green_border">
-                                        <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
-                                    </span>
-                                {% endif %}
+                                <span class="ticket_number
+                                    {% if report.is_created %}
+                                        red_border
+                                    {% elif report.is_in_progress %}
+                                        orange_border
+
+                                    {% elif report.is_refused %}
+                                        gray_border
+                                    {% else %}
+                                        green_border
+                                    {% endif %}"
+
+                                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                </span>
 
 
                                 <br />
