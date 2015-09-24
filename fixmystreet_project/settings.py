@@ -85,11 +85,11 @@ USE_I18N = True
 
 LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'fr')
 
-gettext = lambda s: s
+from django.utils.translation import ugettext_lazy as _
+
 LANGUAGES = (
-    # ('en', gettext('English')),
-    ('fr', gettext('French')),
-    ('nl', gettext('Dutch')),
+    ('fr', _('French')),
+    ('nl', _('Dutch')),
 )
 
 
@@ -129,6 +129,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     'apps.backoffice.middleware.LoginRequiredMiddleware',
     'apps.backoffice.middleware.LoadUserMiddleware',
     'apps.fixmystreet.utils.CurrentUserMiddleware',
