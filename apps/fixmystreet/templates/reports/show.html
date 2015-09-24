@@ -90,28 +90,6 @@
                                 <li class='datePlanned_on'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a></li>
                             {% endif %}
 
-                            {% if BACKOFFICE %}
-                                <li>
-                                {% if report.get_priority == 0 %}
-                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/prior_off.png' %}" class="priorityLevel" /></a>
-                                {% elif report.get_priority <= 2 %}
-                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a low priority" %}'><img src="{% static 'images/prior_on_1.png' %}" class="priorityLevel" /></a>
-                                {% elif report.get_priority <= 8 %}
-                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a medium priority" %}'><img src="{% static 'images/prior_on_2.png' %}" class="priorityLevel" /></a>
-                                {% else %}
-                                    <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has a serious priority" %}'><img src="{% static 'images/prior_on_3.png' %}" class="priorityLevel" /></a>
-                                {% endif %}
-                                </li>
-                                {% if report.is_solved %}
-                                    <li class="isSolved"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled as solved" %}'><img src="{% static 'images/is_resolved_on.png' %}" /></a></li>
-                                {% endif %}
-                                {% if report.third_party_responsibility %}
-                                     <li class="third_party_resp"><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "A third party is responsible" %}'>tiers</a></li>
-                                {% endif %}
-
-                            {% endif %}
-
-
                         <!--/div-->
 
                             </div>
