@@ -9,7 +9,7 @@ from datetime import timedelta
 from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
-from django.utils.translation import activate, deactivate, ugettext, string_concat, get_language
+from django.utils.translation import activate, deactivate, ugettext, string_concat
 from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
@@ -771,14 +771,14 @@ class Report(UserTrackedModel):
     def __unicode__(self):
         return self.display_category()
 
-    def get_address_commune_name(self, lang=get_language()):
+    def get_address_commune_name(self, lang=None):
         activate(lang)
         address_commune_name = self.territorial_entity().name
         deactivate()
 
         return address_commune_name
 
-    def display_category(self, lang=get_language()):
+    def display_category(self, lang=None):
         activate(lang)
         category = "%s / %s : %s" % (self.category.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name)
         deactivate()
@@ -821,7 +821,7 @@ class Report(UserTrackedModel):
     def get_pdf_url_pro(self):
         return reverse('report_pdf_pro', args=[self.id])
 
-    def get_pdf_url_pro_with_auth_token(self, lang=get_language()):
+    def get_pdf_url_pro_with_auth_token(self, lang=None):
         activate(lang)
 
         site = Site.objects.get_current()
