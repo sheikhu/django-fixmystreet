@@ -19,7 +19,6 @@ else:
 # Manage settings according to environment
 if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
     DEBUG          = True
-    TEMPLATE_DEBUG = True
 
     # Disable mail in non-production environment
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -94,22 +93,40 @@ LANGUAGES = (
 )
 
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.i18n',
-    'django.contrib.auth.context_processors.auth',
-    "django.contrib.messages.context_processors.messages",
-    'apps.fixmystreet.context_processor.domain',
-    'apps.fixmystreet.context_processor.environment',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+        ],
+        'OPTIONS': {
+            'debug' : DEBUG,
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'apps.fixmystreet.context_processor.domain',
+                'apps.fixmystreet.context_processor.environment',
+            ],
+            'loaders' : [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+                'django.template.loaders.eggs.Loader'
+            ]
+        },
+    },
+]
 
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'apps.backoffice.middleware.LoginRequiredMiddleware',
@@ -146,13 +163,6 @@ INSTALLED_APPS = (
     'apps.api',
     'apps.webhooks',
     'mobileserverstatus',
-)
-
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    'django.template.loaders.eggs.Loader'
 )
 
 
