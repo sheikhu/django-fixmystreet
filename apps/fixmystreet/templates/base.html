@@ -113,20 +113,21 @@
 
                     {% get_available_languages as LANGUAGES %}
                     {% for l in LANGUAGES %}
-                    {% get_language_info for l.0 as lang %}
-                    <a class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
-                    href="{% url 'update_current_language' %}?from={{ request.get_full_path|urlencode }}&language={{ lang.code }}"
-                    title="{{ lang.name_local }}">{{ lang.code }}</a>
+                        {% get_language_info for l.0 as lang %}
+                        <a  class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
+                            href="{% url 'update_current_language' %}?from={{ request.get_full_path|urlencode }}&language={{ lang.code }}"
+                            title="{{ lang.name_local }}">{{ lang.code }}</a>
                     {% endfor %}
 
                 </section>
                 {% endblock %}
 
                 {% if not BACKOFFICE %}
-                <a class="brand" href="{% url 'home' %}">
-                    {% else %}
+                    <a class="brand" href="{% url 'home' %}">
+                {% else %}
                     <a class="brand" href="{% url 'home_pro' %}">
-                        {% endif %}
+                {% endif %}
+
                         <img id="banner" src="{% static 'images/'|add:LANGUAGE_CODE|add:'/logo_fixmystreet.png' %}" alt="{% trans 'Fix My Street' %}" class="banner">
 
                         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
