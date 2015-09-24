@@ -87,7 +87,3 @@ def update_current_language(request):
         fms_user.save()
 
     return HttpResponseRedirect("{0}?{1}".format(reverse(resolve_match.url_name, args=args, kwargs=kwargs), params))
-#u'/nl/pro/report/verify?x=151930.34510683542&y=166832.57901434973'
-
-#u'/fr/pro/rapport/verification?x=151953.0338021693&y=166821.27587279677'
-#u'/fr/pro/rapport/nouveau?x=151930.34510683542&y=166832.57901434973'
