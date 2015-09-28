@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-19 16:41+0200\n"
+"POT-Creation-Date: 2015-09-28 14:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: fixmystreet/static/js/attachmentForms.js:119
+#: fixmystreet/static/js/attachmentForms.js:122
 msgid "Filesize must be greater than 0"
 msgstr ""
 
@@ -155,11 +155,11 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: fixmystreet/static/js/leaflet/leaflet-fms.js:714
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:716
 msgid "Incident filter"
 msgstr ""
 
-#: fixmystreet/static/js/leaflet/leaflet-fms.js:1938
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:1941
 msgid "Brussels"
 msgstr ""
 
@@ -171,14 +171,8 @@ msgstr ""
 msgid "Please contact the municipality"
 msgstr ""
 
-#: fixmystreet/static/js/new_report.js:164
-#: fixmystreet/static/js/new_report.js:237
+#: fixmystreet/static/js/new_report.js:44
 msgid "Unable to locate this address"
-msgstr ""
-
-#: fixmystreet/static/js/new_report.js:235
-#: fixmystreet/static/js/templates/reports/pro_show.js:130
-msgid "Error"
 msgstr ""
 
 #: fixmystreet/static/js/report_refused.js:18
@@ -220,12 +214,12 @@ msgstr ""
 msgid "Unexpected error"
 msgstr ""
 
-#: fixmystreet/static/js/search-address-view.js:141
+#: fixmystreet/static/js/search-address-view.js:140
 #: fixmystreet/static/js/search.js:59
 msgid "This street is not listed in this municipality."
 msgstr ""
 
-#: fixmystreet/static/js/search-address-view.js:144
+#: fixmystreet/static/js/search-address-view.js:143
 #: fixmystreet/static/js/search.js:61
 msgid "This street exists in several municipalities, please be more specific."
 msgstr ""
@@ -242,6 +236,10 @@ msgstr ""
 msgid ""
 "This is the initial text that needs to be defined. It's a suggestion for the "
 "gestionnaire. He can be edited as needed."
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro_show.js:130
+msgid "Error"
 msgstr ""
 
 #: fixmystreet/static/lib/jquery/jquery-ui.min.js:10

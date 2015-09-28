@@ -384,13 +384,46 @@
                     <li><label><input type="checkbox" checked /> {% trans "Pending" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "ThirdPartyResponsibility" %}</label></li>
                 </ul>
+
                 <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
+
                 {% if request.fmsuser.manager %}
-                <button class="refresh-table btn" data-selection="responsible">{% trans "My incidents" %}</button>
+                    <button
+                        class="refresh-table btn myTooltip"
+                        data-selection="responsible"
+                        data-placement="bottom"
+                        data-toggle='tooltip'
+                        data-original-title='{% trans "My incidents tooltip" %}'>
+                            {% trans "My incidents" %}
+                    </button>
                 {% endif %}
-                <button class="refresh-table btn" data-selection="subscribed">{% trans "My subscriptions" %}</button>
-                <button class="refresh-table btn" data-selection="creator">{% trans "My created" %}</button>
-                <button class="refresh-table btn" data-selection="all">{% trans "All incidents" %}</button>
+
+                <button
+                    class="refresh-table btn myTooltip"
+                    data-selection="subscribed"
+                    data-placement="bottom"
+                    data-toggle='tooltip'
+                    data-original-title='{% trans "My subscriptions tooltip" %}'>
+                        {% trans "My subscriptions" %}
+                </button>
+
+                <button
+                    class="refresh-table btn myTooltip"
+                    data-selection="creator"
+                    data-placement="bottom"
+                    data-toggle='tooltip'
+                    data-original-title='{% trans "My created tooltip" %}'>
+                        {% trans "My created" %}
+                </button>
+
+                <button
+                    class="refresh-table btn myTooltip"
+                    data-selection="all"
+                    data-placement="bottom"
+                    data-toggle='tooltip'
+                    data-original-title='{% trans "All incidents tooltip" %}'>
+                        {% trans "All incidents" %}
+                </button>
             </div>
             <div id="table-container"></div>
         </div>
