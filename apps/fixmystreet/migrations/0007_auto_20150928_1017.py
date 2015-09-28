@@ -47,5 +47,5 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(migrate_osiris_entity),
-        migrations.RunPython(migrate_reports),
+        #~ migrations.RunPython(migrate_reports),
     ]
