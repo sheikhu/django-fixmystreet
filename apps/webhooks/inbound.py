@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
 from apps.fixmystreet.models import FMSUser, Report, ReportAttachment, ReportComment, ReportEventLog
-from apps.fixmystreet.utils import check_responsible_permission, check_contractor_permission
+from apps.fixmystreet.utils import check_responsible_permission, check_contractor_permission, set_current_user
 
 
 class NotLinkedWithThirdPartyError(Exception): pass
@@ -92,6 +92,8 @@ class AbstractBaseInWebhook(object):
         self._meta = meta
         self._data = data
         self._user = user
+        if user and user.fmsuser:
+            set_current_user(user.fmsuser)
 
     def run(self):
         raise NotImplementedError()
