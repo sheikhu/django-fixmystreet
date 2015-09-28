@@ -3,12 +3,17 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 
+from django.conf import settings
+
 from apps.fixmystreet.models import OrganisationEntity as OrganisationEntityModel
 from apps.fixmystreet.models import Report
 
 
 
 def migrate_osiris_entity(apps, schema_editor):
+    if settings.ENVIRONMENT == "jenkins":
+        return
+
     OrganisationEntity = apps.get_model("fixmystreet", "OrganisationEntity")
     ReportCategory     = apps.get_model("fixmystreet", "ReportCategory")
 
@@ -25,6 +30,9 @@ def migrate_osiris_entity(apps, schema_editor):
 
 
 def migrate_reports(apps, schema_editor):
+    if settings.ENVIRONMENT == "jenkins":
+        return
+
     osiris = OrganisationEntityModel.objects.get(name_fr__iexact="osiris")
     osiris_group = osiris.associates.all()[0]
 
