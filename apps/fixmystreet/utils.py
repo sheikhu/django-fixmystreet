@@ -511,6 +511,25 @@ def responsible_permission(func):
 
     return wrapper
 
+
+def responsible_permission_for_merge(func):
+
+    def wrapper(request, report_id):
+        from .models import Report
+
+        report = get_object_or_404(Report, id=report_id)
+        if not check_responsible_permission(request.user, report):
+            raise PermissionDenied
+
+        #same check on the second report we want to merge with.
+        report_2 = get_object_or_404(Report, id=request.POST["mergeId"])
+        if report_2 is None or not check_responsible_permission(request.user, report_2):
+            raise PermissionDenied
+
+        return func(request, report_id)
+
+    return wrapper
+
 from django.core.mail import EmailMultiAlternatives
 def send_digest(user, activity, activities_list, date_digest):
     # Render digest mail

@@ -175,7 +175,7 @@
                                         {% if report.thumbnail_pro %}
                                             <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
                                         {% else %}
-                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />
+                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
                                         {% endif %}
                                     </div>
                                     <!-- Comments -->
@@ -191,12 +191,24 @@
 
                                     </div> 
                                     <div clas="span2">
-                                                                        <!-- Button "it's the same" -->
-                                    <a href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
-                                        class="btn_same_incident report" style="margin-right:10px; margin-top:px;">{% trans "Merge" %}</a>
+                                        {% if report.can_merge %}
+                                            <!-- Button "it's the same" -->
+                                            <a href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
+                                               class="btn_same_incident report" style="margin-right:10px; margin-top:px;">{% trans "Merge" %}</a>
+                                        {% else %}
+                                             <a class="btn_same_incident report no_merge" style="margin-right:10px; margin-top:px;">{% trans "Merge" %}</a>
+                                        {% endif %}
                                     </div>
                                     <!-- Deprecated ? -->
                                     {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+                                </div>
+                                <div class="row">
+                                    <div class="span12">
+                                        <div class="alert alert-warning" role="alert">
+                                          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true" ></span>
+                                            Test
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

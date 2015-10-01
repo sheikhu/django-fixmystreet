@@ -12,7 +12,7 @@ from django.utils.translation import get_language
 from apps.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 from apps.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser, \
     ReportAttachment
-from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
+from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file, check_responsible_permission
 from apps.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportReopenReasonForm, ReportMainCategoryClass
 from apps.backoffice.forms import PriorityForm, TransferForm
 
@@ -299,6 +299,9 @@ def merge(request, slug, report_id):
             reports_nearby = []
     else:
         reports_nearby = Report.objects.all().rank(report)
+
+    for report_nearby in reports_nearby:
+        report_nearby.can_merge = check_responsible_permission(request.fmsuser, report_nearby)
 
     return render_to_response("pro/reports/merge.html", {
         "fms_user": request.fmsuser,
