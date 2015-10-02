@@ -12,7 +12,7 @@ from django.utils.translation import get_language
 from apps.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 from apps.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser, \
     ReportAttachment
-from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file, check_responsible_permission
+from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file, check_responsible_permission, responsible_permission
 from apps.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportReopenReasonForm, ReportMainCategoryClass
 from apps.backoffice.forms import PriorityForm, TransferForm
 
@@ -288,26 +288,30 @@ def document(request, slug, report_id):
 
 
 def merge(request, slug, report_id):
-    report = get_object_or_404(Report, id=report_id)
-    ticketNumber = request.GET.get('ticketNumber', '')
 
-    if ticketNumber:
-        try:
-            reports_nearby = Report.objects.with_distance(report.point).filter(id=ticketNumber).visible().related_fields().exclude(id=report.id).rank(report, ignore_distance=True)
-        except ValueError:
-            # Due to invalid ticketNumber value (for example a string)
-            reports_nearby = []
-    else:
-        reports_nearby = Report.objects.all().rank(report)
+    @responsible_permission
+    def merge_proxy(request, report_id):
+        report = get_object_or_404(Report, id=report_id)
+        ticketNumber = request.GET.get('ticketNumber', '')
 
-    for report_nearby in reports_nearby:
-        report_nearby.can_merge = check_responsible_permission(request.fmsuser, report_nearby)
+        if ticketNumber:
+            try:
+                reports_nearby = Report.objects.with_distance(report.point).filter(id=ticketNumber).visible().related_fields().exclude(id=report.id).rank(report, ignore_distance=True)
+            except ValueError:
+                # Due to invalid ticketNumber value (for example a string)
+                reports_nearby = []
+        else:
+            reports_nearby = Report.objects.all().rank(report)
 
-    return render_to_response("pro/reports/merge.html", {
-        "fms_user": request.fmsuser,
-        "report": report,
-        "reports_nearby": reports_nearby
-    }, context_instance=RequestContext(request))
+        for report_nearby in reports_nearby:
+            report_nearby.can_merge = check_responsible_permission(request.fmsuser, report_nearby)
+
+        return render_to_response("pro/reports/merge.html", {
+            "fms_user": request.fmsuser,
+            "report": report,
+            "reports_nearby": reports_nearby
+        }, context_instance=RequestContext(request))
+    return merge_proxy(request, report_id)
 
 def reopen_request(request, slug, report_id):
     try:

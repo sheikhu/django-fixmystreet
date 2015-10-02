@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-28 14:53+0200\n"
+"POT-Creation-Date: 2015-10-02 12:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -244,6 +244,18 @@ msgstr ""
 
 #: fixmystreet/static/lib/jquery/jquery-ui.min.js:10
 msgid "'"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:14
+msgid "<iframe frameborder='0' width='0' height='0'/>"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
+msgid "<script>"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
+msgid "<div>"
 msgstr ""
 
 #: fixmystreet/static/tests/leaflet/test.template.js:15

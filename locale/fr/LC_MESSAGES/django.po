@@ -15,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-28 14:53+0200\n"
-"PO-Revision-Date: 2015-09-28 12:53+0000\n"
-"Last-Translator: afuca <afuca@cirb.brussels>\n"
+"POT-Creation-Date: 2015-10-02 12:24+0200\n"
+"PO-Revision-Date: 2015-10-02 10:24+0000\n"
+"Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -350,7 +350,7 @@ msgstr "Configuration des catégories des gestionnaires"
 
 #: backoffice/templates/pro/manager_category_configuration.html:50
 #: backoffice/templates/pro/reports/_actions.html:396
-#: backoffice/templates/pro/reports/merge.html:212
+#: backoffice/templates/pro/reports/merge.html:227
 #: fixmystreet/templates/reports/_documentreport.html:49
 #: fixmystreet/templates/reports/_documentreport.html:72
 msgid "Cancel"
@@ -434,8 +434,9 @@ msgid "The report is too old and cannot be planned"
 msgstr "Cet incident est trop vieux et ne peut plus être planifié"
 
 #: backoffice/templates/pro/reports/_actions.html:183
-#: backoffice/templates/pro/reports/merge.html:196
-#: backoffice/templates/pro/reports/merge.html:272
+#: backoffice/templates/pro/reports/merge.html:198
+#: backoffice/templates/pro/reports/merge.html:200
+#: backoffice/templates/pro/reports/merge.html:287
 msgid "Merge"
 msgstr "Fusionner..."
 
@@ -622,12 +623,12 @@ msgstr "Ne concerne pas Sibelga Eclairage Public"
 msgid "Reports reported in the same area"
 msgstr "Incidents signalés dans la même région"
 
-#: backoffice/templates/pro/reports/merge.html:52
+#: backoffice/templates/pro/reports/merge.html:53
 msgid "Report to merge"
 msgstr "Rapport à fusionner"
 
-#: backoffice/templates/pro/reports/merge.html:54
-#: backoffice/templates/pro/reports/merge.html:153
+#: backoffice/templates/pro/reports/merge.html:55
+#: backoffice/templates/pro/reports/merge.html:154
 #: backoffice/templates/pro/reports/show.html:49
 #: backoffice/templates/pro/reports/show.html:53
 #: backoffice/templates/pro/reports/show.html:57
@@ -645,85 +646,91 @@ msgstr "Rapport à fusionner"
 msgid "Incident n°"
 msgstr "Incident N° "
 
-#: backoffice/templates/pro/reports/merge.html:85
-#: backoffice/templates/pro/reports/merge.html:199
+#: backoffice/templates/pro/reports/merge.html:86
+#: backoffice/templates/pro/reports/merge.html:204
 #: fixmystreet/templates/reports/_navigation.html:59
 #: fixmystreet/templates/reports/_selection.html:28
 #: fixmystreet/templates/reports/verify.html:152
 msgid "fixed"
 msgstr "résolus"
 
-#: backoffice/templates/pro/reports/merge.html:98
+#: backoffice/templates/pro/reports/merge.html:99
 #: fixmystreet/templates/reports/verify.html:41
 msgid "we have"
 msgstr "Nous avons déjà"
 
-#: backoffice/templates/pro/reports/merge.html:98
+#: backoffice/templates/pro/reports/merge.html:99
 #: fixmystreet/templates/reports/verify.html:41
 msgid "incident sector"
 msgstr "incident(s) signalé(s) dans le même secteur"
 
-#: backoffice/templates/pro/reports/merge.html:104
+#: backoffice/templates/pro/reports/merge.html:105
 #: fixmystreet/templates/_page_header.html:51
 #: fixmystreet/templates/_page_maptable.html:47
 #: fixmystreet/templates/home.html:36
 msgid "Ticket number..."
 msgstr "N° de l'incident..."
 
-#: backoffice/templates/pro/reports/merge.html:110
+#: backoffice/templates/pro/reports/merge.html:111
 msgid "Clear search"
 msgstr "Effacer la recherche"
 
-#: backoffice/templates/pro/reports/merge.html:117
+#: backoffice/templates/pro/reports/merge.html:118
 #: fixmystreet/templates/reports/verify.html:48
 msgid "List"
 msgstr "Liste"
 
-#: backoffice/templates/pro/reports/merge.html:118
+#: backoffice/templates/pro/reports/merge.html:119
 #: backoffice/templates/pro/reports/table.html:326
 #: fixmystreet/templates/reports/verify.html:49
 msgid "Map"
 msgstr "Carte"
 
-#: backoffice/templates/pro/reports/merge.html:135
+#: backoffice/templates/pro/reports/merge.html:136
 msgid "Previous page"
 msgstr "Page précédente"
 
-#: backoffice/templates/pro/reports/merge.html:136
+#: backoffice/templates/pro/reports/merge.html:137
 msgid "Next page"
 msgstr "Page suivante"
 
-#: backoffice/templates/pro/reports/merge.html:140
+#: backoffice/templates/pro/reports/merge.html:141
 msgid "No report"
 msgstr "Pas d’incident"
 
-#: backoffice/templates/pro/reports/merge.html:151
+#: backoffice/templates/pro/reports/merge.html:152
 #: fixmystreet/templates/reports/verify.html:70
 msgctxt "distance"
 msgid "to"
 msgstr "à"
 
-#: backoffice/templates/pro/reports/merge.html:227
+#: backoffice/templates/pro/reports/merge.html:211
+msgid ""
+"Vous ne pouvez pas fusionner l'incident courant avec cet incident car vous "
+"n'en êtes pas responsable."
+msgstr "U beschikt niet over de mogelijkheid om dit incident te fusioneren, daar dit incident niet onder uw verantwoordelijkheid valt."
+
+#: backoffice/templates/pro/reports/merge.html:242
 msgid "Are you sure you want to merge these incidents?"
 msgstr "Voulez-vous fusionner ces incidents ?"
 
-#: backoffice/templates/pro/reports/merge.html:243
+#: backoffice/templates/pro/reports/merge.html:258
 msgid "Will be merged with the report"
 msgstr "Va être fusionné avec l'incident"
 
-#: backoffice/templates/pro/reports/merge.html:258
+#: backoffice/templates/pro/reports/merge.html:273
 msgid "The result of the merge will be visible to"
 msgstr "Le résultat de la fusion sera visible pour"
 
-#: backoffice/templates/pro/reports/merge.html:262
+#: backoffice/templates/pro/reports/merge.html:277
 msgid "private"
 msgstr "Pros"
 
-#: backoffice/templates/pro/reports/merge.html:264
+#: backoffice/templates/pro/reports/merge.html:279
 msgid "public"
 msgstr "Tous"
 
-#: backoffice/templates/pro/reports/merge.html:271
+#: backoffice/templates/pro/reports/merge.html:286
 msgid "No"
 msgstr "Non"
 
@@ -1550,7 +1557,7 @@ msgstr "Une erreur s'est produite en ouvrant le fichier <strong>%s</strong>"
 msgid "Newly created report successfull"
 msgstr "Merci ! Votre incident a bien été envoyé au service concerné.\nUn mail contenant les informations du rapport vous a été envoyé"
 
-#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:342
+#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:349
 #: fixmystreet/views/reports/main.py:220 fixmystreet/views/reports/main.py:277
 msgid "No incident found with this ticket number"
 msgstr "Aucun rapport pour ce numéro de ticket"
@@ -2759,7 +2766,7 @@ msgstr "validé sur Fix My Street"
 msgid "notify-reopen-request"
 msgstr "demande de réouverture"
 
-#: fixmystreet/utils.py:537
+#: fixmystreet/utils.py:556
 msgid "Digest of the day on Fix My Street"
 msgstr "Résumé journalier de Fix My Street"
 
