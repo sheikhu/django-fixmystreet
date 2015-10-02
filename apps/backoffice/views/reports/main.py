@@ -313,6 +313,7 @@ def merge(request, slug, report_id):
         }, context_instance=RequestContext(request))
     return merge_proxy(request, report_id)
 
+
 def reopen_request(request, slug, report_id):
     try:
         report = get_object_or_404(Report, id=report_id)
