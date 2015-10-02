@@ -1715,11 +1715,21 @@ h2.verify_title{
 	background:#3498db url('../images/btn_same_incident.png') 10px 50% no-repeat;
 	text-decoration:none;
 	color:#FFF;
+    margin-right:10px;
 }
 
 .no_merge{
-	background:#E0E0E0 url('../images/btn_same_incident.png') 10px 50% no-repeat !important;
+	background:#E0E0E0 url('../images/btn_same_incident_no_merge.png') 10px 50% no-repeat !important;
 	color: #797979 !important;
+}
+
+.alert-no-merge{
+    margin: 5px auto;
+    width: 98%;
+}
+
+.marginTop3px {
+    margin-top:3px;
 }
 
 .btn_continue{
