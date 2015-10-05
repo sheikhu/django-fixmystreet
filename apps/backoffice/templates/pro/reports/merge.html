@@ -11,6 +11,7 @@
 
 {% block script %}
     {{ block.super }}
+    <link href="{% static 'lib/glyphicons-extended/css/glyphicons-extended.css' %}" rel="stylesheet" type="text/css">
     <script>
 {#        var LOAD_INCIDENT_MODEL_URL = '{% url "get_report_popup_details_pro" %}';#}
         //Init variables used in pro_merge.js
@@ -175,7 +176,7 @@
                                         {% if report.thumbnail_pro %}
                                             <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
                                         {% else %}
-                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />
+                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
                                         {% endif %}
                                     </div>
                                     <!-- Comments -->
@@ -191,13 +192,27 @@
 
                                     </div> 
                                     <div clas="span2">
-                                                                        <!-- Button "it's the same" -->
-                                    <a href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
-                                        class="btn_same_incident report" style="margin-right:10px; margin-top:px;">{% trans "Merge" %}</a>
+                                        {% if report.can_merge %}
+                                            <!-- Button "it's the same" -->
+                                            <a href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
+                                               class="btn_same_incident report">{% trans "Merge" %}</a>
+                                        {% else %}
+                                             <a class="btn_same_incident report no_merge">{% trans "Merge" %}</a>
+                                        {% endif %}
                                     </div>
                                     <!-- Deprecated ? -->
                                     {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
                                 </div>
+                                {% if not report.can_merge %}
+                                    <div class="row-fluid">
+                                        <div class="alert-no-merge" style="">
+                                            <div class="alert alert-warning" role="alert">
+                                                <span class="icon-orange icon-exclamation-sign marginTop3px" aria-hidden="true"></span>
+                                                {% trans "Vous ne pouvez pas fusionner l'incident courant avec cet incident car vous n'en êtes pas responsable." %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

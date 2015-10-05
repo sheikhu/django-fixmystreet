@@ -27,6 +27,7 @@ MENU_DEFS = {
     'groups':                    ['list_groups', 'create_group', 'edit_group'],
     'users_manager_dispatching': ['category_gestionnaire_configuration'],
     'users_change_password':     ['password_change'],
+    'faq_pro':                   ['faq_pro'],
     'about':                     ['about', 'terms_of_use'],
     'faq':                       ['faq'],
     'help':                      ['help'],

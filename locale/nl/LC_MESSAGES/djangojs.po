@@ -10,17 +10,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-29 14:58+0200\n"
-"PO-Revision-Date: 2015-07-29 12:58+0000\n"
+"POT-Creation-Date: 2015-10-02 12:23+0200\n"
+"PO-Revision-Date: 2015-10-02 10:23+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
-"Language-Team: Dutch (http://www.transifex.com/projects/p/django-fixmystreet/language/nl/)\n"
+"Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: fixmystreet/static/js/attachmentForms.js:119
+#: fixmystreet/static/js/attachmentForms.js:122
 msgid "Filesize must be greater than 0"
 msgstr "De grootte van het bestand moet groter dan nul zijn"
 
@@ -158,11 +158,11 @@ msgstr "Afgesloten"
 msgid "Other"
 msgstr "Andere"
 
-#: fixmystreet/static/js/leaflet/leaflet-fms.js:714
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:716
 msgid "Incident filter"
 msgstr "Filteren"
 
-#: fixmystreet/static/js/leaflet/leaflet-fms.js:1938
+#: fixmystreet/static/js/leaflet/leaflet-fms.js:1941
 msgid "Brussels"
 msgstr "Brussel"
 
@@ -174,14 +174,9 @@ msgstr "Gemeente die niet deelneemt aan Fix My Street."
 msgid "Please contact the municipality"
 msgstr "Neem a.u.b. contact op met de gemeente"
 
-#: fixmystreet/static/js/new_report.js:164
-#: fixmystreet/static/js/new_report.js:237
+#: fixmystreet/static/js/new_report.js:44
 msgid "Unable to locate this address"
 msgstr "Onmogelijk om het adres te localiseren"
-
-#: fixmystreet/static/js/new_report.js:235
-msgid "Error"
-msgstr "Fout"
 
 #: fixmystreet/static/js/report_refused.js:18
 msgid ""
@@ -222,12 +217,12 @@ msgstr "Niet voor Sibelga openbare verlichting"
 msgid "Unexpected error"
 msgstr "Onverwachte fout"
 
-#: fixmystreet/static/js/search-address-view.js:141
+#: fixmystreet/static/js/search-address-view.js:140
 #: fixmystreet/static/js/search.js:59
 msgid "This street is not listed in this municipality."
 msgstr "Deze straat maakt geen deel uit van deze gemeente"
 
-#: fixmystreet/static/js/search-address-view.js:144
+#: fixmystreet/static/js/search-address-view.js:143
 #: fixmystreet/static/js/search.js:61
 msgid "This street exists in several municipalities, please be more specific."
 msgstr "Deze straat komt voor in meerdere gemeenten, specificeer a.u.b."
@@ -246,8 +241,24 @@ msgid ""
 " gestionnaire. He can be edited as needed."
 msgstr ""
 
+#: fixmystreet/static/js/templates/reports/pro_show.js:130
+msgid "Error"
+msgstr "Fout"
+
 #: fixmystreet/static/lib/jquery/jquery-ui.min.js:10
 msgid "'"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:14
+msgid "<iframe frameborder='0' width='0' height='0'/>"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
+msgid "<script>"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
+msgid "<div>"
 msgstr ""
 
 #: fixmystreet/static/tests/leaflet/test.template.js:15

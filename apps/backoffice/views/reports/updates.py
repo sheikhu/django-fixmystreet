@@ -10,7 +10,7 @@ from django.http import Http404
 
 from apps.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
 from apps.fixmystreet.forms import ReportCommentForm
-from apps.fixmystreet.utils import responsible_permission
+from apps.fixmystreet.utils import responsible_permission, responsible_permission_for_merge
 
 from apps.backoffice.forms import TransferForm
 
@@ -316,7 +316,7 @@ def deleteAttachment(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
-@responsible_permission
+@responsible_permission_for_merge
 def do_merge(request, report_id):
     #Get the reports that need to be merged
     report = get_object_or_404(Report, id=report_id)

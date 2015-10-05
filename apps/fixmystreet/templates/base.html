@@ -95,6 +95,11 @@
                                 </a>
                             </li>
                             {% endif %}
+                            <li>
+                                 <a class="{% is_active_menu 'faq_pro' %}"     href="{% url 'faq_pro' %}">
+                                    {% trans "FAQ Pro" %}
+                                </a>
+                            </li>
 
                             <li>
                                 <a class="{% is_active_menu 'users_change_password' %}"     href="{% url 'password_change' %}">
