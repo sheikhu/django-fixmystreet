@@ -1002,35 +1002,6 @@ class Report(UserTrackedModel):
             subscription.notify_creation = False  # don't send notification for subscription
             self.subscriptions.add(subscription)
 
-    # def trigger_reopen_request(self, user=None, reopen_reason=None):
-    #
-    #     # Send notifications to group or members according to group configuration
-    #     mail_config = report.responsible_department.get_mail_config()
-    #
-    #     if not mail_config.digest_other:
-    #         recipients = mail_config.get_manager_recipients()
-    #
-    #         for email in recipients:
-    #             ReportNotification(
-    #                 content_template='notify-reopen-request',
-    #                 recipient_mail=self.responsible_department.email,
-    #                 related=self,
-    #             ).save(updater=user, reopen_reason=reopen_reason)
-    #
-    #     ReportNotification(
-    #         content_template='acknowledge-reopen-request',
-    #         recipient_mail=user.email,
-    #         related=self,
-    #     ).save(updater=user, reopen_reason=reopen_reason)
-    #
-    #     ReportEventLog(
-    #         report=self,
-    #         event_type=ReportEventLog.REOPEN_REQUEST,
-    #         user=user,
-    #     ).save()
-    #
-    #     self.save()  # set updated date and modified_by
-
     def to_full_JSON(self):
         """
         Method used to display the whole object content as JSON structure for website
@@ -1984,8 +1955,8 @@ class ReportSecondaryCategoryClass(UserTrackedModel):
         return json.dumps(list_of_elements_as_json)
 
     class Meta:
-        verbose_name = "category group"
-        verbose_name_plural = "category groups"
+        verbose_name = "secondary category group"
+        verbose_name_plural = "secondary category groups"
         translate = ('name', 'slug')
 
 pre_save.connect(autoslug_transmeta('name', 'slug'), weak=False, sender=ReportSecondaryCategoryClass)
