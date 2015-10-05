@@ -5,7 +5,7 @@ from django.contrib.auth.models import User, Group
 from simple_history.admin import SimpleHistoryAdmin
 
 from .models import (
-    ReportCategory, Report, FMSUser, ReportMainCategoryClass,
+    ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass,
     ReportAttachment, Page, FAQPage, OrganisationEntity, ReportNotification, ReportEventLog,
     UserOrganisationMembership
 )
@@ -205,11 +205,18 @@ class ReportNotificationAdmin(admin.ModelAdmin):
 admin.site.register(ReportNotification, ReportNotificationAdmin)
 
 
-class ReportCategoryClassAdmin(admin.ModelAdmin):
+class ReportSecondaryCategoryClassAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
 
-admin.site.register(ReportMainCategoryClass, ReportCategoryClassAdmin)
+admin.site.register(ReportSecondaryCategoryClass, ReportSecondaryCategoryClassAdmin)
+
+
+class ReportMainCategoryClassAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+admin.site.register(ReportMainCategoryClass, ReportMainCategoryClassAdmin)
 
 
 class ReportCategoryAdmin(admin.ModelAdmin):
