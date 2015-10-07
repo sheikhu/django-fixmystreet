@@ -7,6 +7,7 @@ import django.contrib.gis.db.models.fields
 import django_extensions.db.fields
 import django.db.models.deletion
 import ckeditor.fields
+from stdimage import StdImageField
 import apps.fixmystreet.utils
 import django.utils.timezone
 from django.conf import settings
@@ -471,7 +472,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('reportattachment_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='fixmystreet.ReportAttachment')),
                 ('file', models.FileField(upload_to=apps.fixmystreet.models.move_to, blank=True)),
-                ('image', apps.fixmystreet.utils.FixStdImageField(upload_to=apps.fixmystreet.models.move_to, blank=True)),
+                ('image', StdImageField(upload_to=apps.fixmystreet.models.move_to, blank=True)),
                 ('file_type', models.IntegerField(choices=[(1, b'pdf'), (2, b'word'), (3, b'excel'), (4, b'image')])),
                 ('title', models.TextField(max_length=250, null=True, blank=True)),
                 ('file_creation_date', models.DateTimeField(null=True)),

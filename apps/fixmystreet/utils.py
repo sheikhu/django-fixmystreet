@@ -23,7 +23,6 @@ from django.contrib.gis.geos import fromstr
 from django.http import Http404
 
 import transmeta
-from stdimage import StdImageField
 
 import logging
 logger = logging.getLogger(__name__)
@@ -62,38 +61,6 @@ def get_exifs(img):
         decoded = TAGS.get(tag, tag)
         ret[decoded] = value
     return ret
-
-
-class FixStdImageField(StdImageField):
-    def fix_exif_data(self, instance=None, **kwargs):
-        img_file = getattr(instance, self.name)
-        if img_file:
-            path = img_file.path
-            #print 'path:',path
-            from PIL import Image, ImageOps
-            img = Image.open(path)
-
-            exifs = get_exifs(img)
-            if('Orientation' in exifs):
-                orientation = exifs['Orientation']
-
-                if(orientation == 3 or orientation == 4):
-                    img = img.rotate(180)
-                elif(orientation == 5 or orientation == 6):
-                    img = img.rotate(-90)
-                elif(orientation == 7 or orientation == 8):
-                    img = img.rotate(90)
-
-                if(orientation == 2 or orientation == 4 or orientation == 5 or orientation == 7):
-                    img = ImageOps.mirror(img)
-
-                img.save(path)
-
-    def contribute_to_class(self, cls, name):
-        """Call methods for generating all operations on specified signals"""
-        # if not issubclass(cls, )
-        post_save.connect(self.fix_exif_data, sender=cls)
-        super(FixStdImageField, self).contribute_to_class(cls, name)
 
 
 def render_to_pdf(*args, **kwargs):
