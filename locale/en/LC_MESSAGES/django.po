@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-02 12:24+0200\n"
+"POT-Creation-Date: 2015-10-07 10:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,7 +117,7 @@ msgid "In progress and assigned"
 msgstr ""
 
 #: backoffice/forms.py:249 backoffice/templates/pro/home.html:67
-#: fixmystreet/models.py:2282
+#: fixmystreet/models.py:2253
 msgid "Closed"
 msgstr ""
 
@@ -214,8 +214,8 @@ msgstr ""
 #: backoffice/templates/pro/auth/groups_list.html:31
 #: backoffice/templates/pro/auth/users_list.html:26
 #: backoffice/templates/pro/auth/users_list.html:32 fixmystreet/forms.py:249
-#: fixmystreet/models.py:264 fixmystreet/models.py:1934
-#: fixmystreet/models.py:1968 fixmystreet/models.py:2001
+#: fixmystreet/models.py:264 fixmystreet/models.py:1905
+#: fixmystreet/models.py:1939 fixmystreet/models.py:1972
 #: fixmystreet/templates/reports/_documentreport.html:94
 #: fixmystreet/templates/reports/reopen.html:144
 msgid "Name"
@@ -507,17 +507,17 @@ msgid "Close"
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:258
-#: fixmystreet/templates/reports/show.html:182
+#: fixmystreet/templates/reports/show.html:177
 msgid "Please enter more information about marking the report as done"
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:263
-#: fixmystreet/templates/reports/show.html:193
+#: fixmystreet/templates/reports/show.html:188
 msgid "You think this incident is close. Indicate it!"
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:266
-#: fixmystreet/templates/reports/show.html:198
+#: fixmystreet/templates/reports/show.html:193
 msgid ""
 "Indicate that the incident is fixed. By pressing this button a mail will be "
 "send to the responsible manager."
@@ -525,7 +525,7 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:268
 #: backoffice/templates/pro/reports/_actions.html:397
-#: fixmystreet/templates/reports/show.html:200
+#: fixmystreet/templates/reports/show.html:195
 msgid "Confirm"
 msgstr ""
 
@@ -859,31 +859,31 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:205 fixmystreet/models.py:2299
+#: backoffice/templates/pro/reports/show.html:205 fixmystreet/models.py:2270
 msgid "Reopen"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:214 fixmystreet/models.py:2300
+#: backoffice/templates/pro/reports/show.html:214 fixmystreet/models.py:2271
 #: fixmystreet/templates/reports/reopen.html:6
 #: fixmystreet/templates/reports/reopen.html:39
 msgid "Reopen request"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:220
-#: fixmystreet/templates/reports/show.html:147
+#: fixmystreet/templates/reports/show.html:142
 msgid "Report as solved"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:231
-#: fixmystreet/templates/reports/show.html:156
-#: fixmystreet/templates/reports/show.html:236
+#: fixmystreet/templates/reports/show.html:151
+#: fixmystreet/templates/reports/show.html:231
 msgid "Subscribe"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:236
 #: backoffice/templates/pro/reports/show.html:302
 #: backoffice/templates/pro/reports/show.html:311
-#: fixmystreet/templates/reports/show.html:162
+#: fixmystreet/templates/reports/show.html:157
 msgid "Download a pdf report of this incident"
 msgstr ""
 
@@ -892,7 +892,7 @@ msgid "Download PDF"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:240
-#: fixmystreet/templates/reports/show.html:167
+#: fixmystreet/templates/reports/show.html:162
 msgid "View historic"
 msgstr ""
 
@@ -901,7 +901,7 @@ msgid "potential duplicates"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:279
-#: fixmystreet/templates/reports/show.html:220
+#: fixmystreet/templates/reports/show.html:215
 msgid "Subscription:"
 msgstr ""
 
@@ -919,7 +919,7 @@ msgid "Subscription and report follow-up"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:307
-#: fixmystreet/templates/reports/show.html:163
+#: fixmystreet/templates/reports/show.html:158
 msgid "Download"
 msgstr ""
 
@@ -968,23 +968,23 @@ msgstr ""
 #: backoffice/templates/pro/reports/show.html:395
 #: fixmystreet/templates/admin/fixmystreet/fmsuser/change_form.html:7
 #: fixmystreet/templates/reports/pdf.html:267
-#: fixmystreet/templates/reports/show.html:257
+#: fixmystreet/templates/reports/show.html:252
 msgid "History"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:395
-#: fixmystreet/templates/reports/show.html:258
+#: fixmystreet/templates/reports/show.html:253
 msgid "incident "
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:401
-#: fixmystreet/templates/base.html:217
-#: fixmystreet/templates/reports/show.html:266
+#: fixmystreet/templates/base.html:222
+#: fixmystreet/templates/reports/show.html:261
 msgid "OK"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:409
-#: fixmystreet/templates/reports/show.html:279
+#: fixmystreet/templates/reports/show.html:274
 msgid "Add"
 msgstr ""
 
@@ -1550,7 +1550,7 @@ msgstr ""
 msgid "Newly created report successfull"
 msgstr ""
 
-#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:349
+#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:350
 #: fixmystreet/views/reports/main.py:220 fixmystreet/views/reports/main.py:277
 msgid "No incident found with this ticket number"
 msgstr ""
@@ -1710,7 +1710,7 @@ msgstr ""
 msgid "Association"
 msgstr ""
 
-#: fixmystreet/models.py:101 fixmystreet/models.py:2115
+#: fixmystreet/models.py:101 fixmystreet/models.py:2086
 msgid "Other"
 msgstr ""
 
@@ -1738,8 +1738,8 @@ msgstr ""
 msgid "Neighbour house"
 msgstr ""
 
-#: fixmystreet/models.py:265 fixmystreet/models.py:1935
-#: fixmystreet/models.py:1969 fixmystreet/models.py:2002
+#: fixmystreet/models.py:265 fixmystreet/models.py:1906
+#: fixmystreet/models.py:1940 fixmystreet/models.py:1973
 msgid "Slug"
 msgstr ""
 
@@ -1752,12 +1752,12 @@ msgid "Notify members"
 msgstr ""
 
 #: fixmystreet/models.py:626 fixmystreet/models.py:627
-#: fixmystreet/models.py:899 fixmystreet/models.py:2294
+#: fixmystreet/models.py:899 fixmystreet/models.py:2265
 msgid "Created"
 msgstr ""
 
 #: fixmystreet/models.py:628 fixmystreet/models.py:901
-#: fixmystreet/models.py:2281
+#: fixmystreet/models.py:2252
 msgid "Refused"
 msgstr ""
 
@@ -1846,50 +1846,50 @@ msgstr ""
 msgid "Temporary"
 msgstr ""
 
-#: fixmystreet/models.py:1663
+#: fixmystreet/models.py:1634
 #: fixmystreet/templates/reports/_visibility_control.html:5
 #: fixmystreet/templates/reports/_visibility_control.html:24
 msgid "Public"
 msgstr ""
 
-#: fixmystreet/models.py:1664
+#: fixmystreet/models.py:1635
 #: fixmystreet/templates/reports/_visibility_control.html:10
 #: fixmystreet/templates/reports/_visibility_control.html:32
 msgid "Private"
 msgstr ""
 
-#: fixmystreet/models.py:1665
+#: fixmystreet/models.py:1636
 #: fixmystreet/templates/reports/_visibility_control.html:15
 #: fixmystreet/templates/reports/_visibility_control.html:40
 msgid "Confidential"
 msgstr ""
 
-#: fixmystreet/models.py:1669
+#: fixmystreet/models.py:1640
 msgid "Documentation"
 msgstr ""
 
-#: fixmystreet/models.py:1670
+#: fixmystreet/models.py:1641
 msgid "Closing message"
 msgstr ""
 
-#: fixmystreet/models.py:1671
+#: fixmystreet/models.py:1642
 msgid "Refusing message"
 msgstr ""
 
-#: fixmystreet/models.py:1672
+#: fixmystreet/models.py:1643
 msgid "Mark as done message"
 msgstr ""
 
-#: fixmystreet/models.py:1673
+#: fixmystreet/models.py:1644
 msgid "Reopen request message"
 msgstr ""
 
-#: fixmystreet/models.py:1704 fixmystreet/models.py:1717
+#: fixmystreet/models.py:1675 fixmystreet/models.py:1688
 msgid "ANONYMOUS"
 msgstr ""
 
-#: fixmystreet/models.py:1711 fixmystreet/models.py:2242
-#: fixmystreet/models.py:2361
+#: fixmystreet/models.py:1682 fixmystreet/models.py:2213
+#: fixmystreet/models.py:2332
 #: fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:131
 #: fixmystreet/tests/test_history.py:848 fixmystreet/tests/test_history.py:852
@@ -1898,168 +1898,168 @@ msgstr ""
 msgid "a citizen"
 msgstr ""
 
-#: fixmystreet/models.py:2004 fixmystreet/models.py:2005
+#: fixmystreet/models.py:1975 fixmystreet/models.py:1976
 msgid "Category group"
 msgstr ""
 
-#: fixmystreet/models.py:2102
+#: fixmystreet/models.py:2073
 msgid "Label"
 msgstr ""
 
-#: fixmystreet/models.py:2113
+#: fixmystreet/models.py:2084
 msgid "Not repaired"
 msgstr ""
 
-#: fixmystreet/models.py:2114
+#: fixmystreet/models.py:2085
 msgid "Badly repaired"
 msgstr ""
 
-#: fixmystreet/models.py:2283
+#: fixmystreet/models.py:2254
 msgid "Marked as Done"
 msgstr ""
 
-#: fixmystreet/models.py:2284
+#: fixmystreet/models.py:2255
 msgid "Manager assigned"
 msgstr ""
 
-#: fixmystreet/models.py:2286
+#: fixmystreet/models.py:2257
 msgid "Valid"
 msgstr ""
 
-#: fixmystreet/models.py:2287
+#: fixmystreet/models.py:2258
 msgid "Organisation assigned"
 msgstr ""
 
-#: fixmystreet/models.py:2289
+#: fixmystreet/models.py:2260
 msgid "Contractor assigned"
 msgstr ""
 
-#: fixmystreet/models.py:2290
+#: fixmystreet/models.py:2261
 msgid "Contractor changed"
 msgstr ""
 
-#: fixmystreet/models.py:2291
+#: fixmystreet/models.py:2262
 msgid "Applicant assigned"
 msgstr ""
 
-#: fixmystreet/models.py:2292
+#: fixmystreet/models.py:2263
 msgid "Applicant changed"
 msgstr ""
 
-#: fixmystreet/models.py:2295
+#: fixmystreet/models.py:2266
 msgid "Updated"
 msgstr ""
 
-#: fixmystreet/models.py:2296
+#: fixmystreet/models.py:2267
 msgid "Update published"
 msgstr ""
 
-#: fixmystreet/models.py:2297
+#: fixmystreet/models.py:2268
 msgid "Planned"
 msgstr ""
 
-#: fixmystreet/models.py:2298
+#: fixmystreet/models.py:2269
 msgid "Merged"
 msgstr ""
 
-#: fixmystreet/models.py:2301
+#: fixmystreet/models.py:2272
 msgid "Became private"
 msgstr ""
 
-#: fixmystreet/models.py:2302
+#: fixmystreet/models.py:2273
 msgid "Became public"
 msgstr ""
 
-#: fixmystreet/models.py:2305
+#: fixmystreet/models.py:2276
 #, python-brace-format
 msgid "Report refused by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2306
+#: fixmystreet/models.py:2277
 #, python-brace-format
 msgid "Report closed by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2307
+#: fixmystreet/models.py:2278
 msgid "Report pointed as solved"
 msgstr ""
 
-#: fixmystreet/models.py:2308
+#: fixmystreet/models.py:2279
 #, python-brace-format
 msgid "Report as been assigned to {related_new}"
 msgstr ""
 
-#: fixmystreet/models.py:2310
+#: fixmystreet/models.py:2281
 #, python-brace-format
 msgid "Report has been approved by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2311
+#: fixmystreet/models.py:2282
 #, python-brace-format
 msgid "{related_new} is responsible for the report"
 msgstr ""
 
-#: fixmystreet/models.py:2313
+#: fixmystreet/models.py:2284
 #, python-brace-format
 msgid "Applicant {related_new} is assigned to the report"
 msgstr ""
 
-#: fixmystreet/models.py:2314
+#: fixmystreet/models.py:2285
 #, python-brace-format
 msgid "Applicant changed from {related_old} to {related_new}"
 msgstr ""
 
-#: fixmystreet/models.py:2315
+#: fixmystreet/models.py:2286
 #, python-brace-format
 msgid "Contractor {related_new} is assigned to the report"
 msgstr ""
 
-#: fixmystreet/models.py:2316
+#: fixmystreet/models.py:2287
 #, python-brace-format
 msgid "Contractor changed from {related_old} to {related_new}"
 msgstr ""
 
-#: fixmystreet/models.py:2318
+#: fixmystreet/models.py:2289
 #, python-brace-format
 msgid "Report created by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2319
+#: fixmystreet/models.py:2290
 #, python-brace-format
 msgid "Report updated by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2320
+#: fixmystreet/models.py:2291
 #, python-brace-format
 msgid "Informations published by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2321
+#: fixmystreet/models.py:2292
 #, python-brace-format
 msgid "Report planned to {date_planned}"
 msgstr ""
 
-#: fixmystreet/models.py:2322
+#: fixmystreet/models.py:2293
 #, python-brace-format
 msgid "Report merged with report #{merged_with_id}"
 msgstr ""
 
-#: fixmystreet/models.py:2323
+#: fixmystreet/models.py:2294
 #, python-brace-format
 msgid "Report reopen by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2324
+#: fixmystreet/models.py:2295
 #, python-brace-format
 msgid "Request to reopen report made by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2325
+#: fixmystreet/models.py:2296
 #, python-brace-format
 msgid "Report became private by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:2326
+#: fixmystreet/models.py:2297
 #, python-brace-format
 msgid "Report became public by {user}"
 msgstr ""
@@ -2283,40 +2283,44 @@ msgstr ""
 msgid "Managers dispatching"
 msgstr ""
 
-#: fixmystreet/templates/base.html:101
+#: fixmystreet/templates/base.html:100
+msgid "FAQ Pro"
+msgstr ""
+
+#: fixmystreet/templates/base.html:106
 msgid "Change your password"
 msgstr ""
 
-#: fixmystreet/templates/base.html:107
+#: fixmystreet/templates/base.html:112
 msgid "Log out"
 msgstr ""
 
-#: fixmystreet/templates/base.html:131
+#: fixmystreet/templates/base.html:136
 msgid "Fix My Street"
 msgstr ""
 
-#: fixmystreet/templates/base.html:144 fixmystreet/templates/base.html:159
+#: fixmystreet/templates/base.html:149 fixmystreet/templates/base.html:164
 msgid "Submit a Report"
 msgstr ""
 
-#: fixmystreet/templates/base.html:147 fixmystreet/templates/base.html:162
+#: fixmystreet/templates/base.html:152 fixmystreet/templates/base.html:167
 #: fixmystreet/templates/reports/reports_map.html:6
 msgid "View Reports"
 msgstr ""
 
-#: fixmystreet/templates/base.html:188
+#: fixmystreet/templates/base.html:193
 msgid "Confirmation"
 msgstr ""
 
-#: fixmystreet/templates/base.html:208
+#: fixmystreet/templates/base.html:213
 msgid "I want to create a new report"
 msgstr ""
 
-#: fixmystreet/templates/base.html:238
+#: fixmystreet/templates/base.html:243
 msgid "Terms of Use"
 msgstr ""
 
-#: fixmystreet/templates/base.html:239
+#: fixmystreet/templates/base.html:244
 msgid "A propos de Fix My Street"
 msgstr ""
 
@@ -2630,7 +2634,7 @@ msgid ""
 "traiter. "
 msgstr ""
 
-#: fixmystreet/templates/reports/show.html:229
+#: fixmystreet/templates/reports/show.html:224
 #, python-format
 msgid ""
 "\n"
@@ -2639,7 +2643,7 @@ msgid ""
 "                    "
 msgstr ""
 
-#: fixmystreet/templates/reports/show.html:235
+#: fixmystreet/templates/reports/show.html:230
 msgid "Your email"
 msgstr ""
 
