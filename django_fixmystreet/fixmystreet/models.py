@@ -778,6 +778,8 @@ class Report(UserTrackedModel):
 
     def get_address_commune_name(self, lang=None):
         current_lang = get_language()
+        if not lang:
+            lang = current_lang
 
         activate(lang)
         address_commune_name = self.territorial_entity().name
@@ -787,6 +789,8 @@ class Report(UserTrackedModel):
 
     def display_category(self, lang=None):
         current_lang = get_language()
+        if not lang:
+            lang = current_lang
 
         activate(lang)
         category = "%s / %s : %s" % (self.category.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name)
@@ -832,6 +836,9 @@ class Report(UserTrackedModel):
 
     def get_pdf_url_pro_with_auth_token(self, lang=None):
         current_lang = get_language()
+        if not lang:
+            lang = current_lang
+
         activate(lang)
 
         site = Site.objects.get_current()
