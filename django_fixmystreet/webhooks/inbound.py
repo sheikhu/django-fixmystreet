@@ -93,7 +93,7 @@ class AbstractBaseInWebhook(object):
         self._data = data
         self._user = user
         if user and user.fmsuser:
-+            set_current_user(user.fmsuser)
+            set_current_user(user.fmsuser)
 
     def run(self):
         raise NotImplementedError()
