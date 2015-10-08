@@ -12,6 +12,7 @@ from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext, string_concat
 from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+from django.utils.translation import activate, deactivate, get_language
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 
@@ -775,11 +776,23 @@ class Report(UserTrackedModel):
     def __unicode__(self):
         return self.display_category()
 
-    def get_address_commune_name(self):
-        return self.territorial_entity().name
+    def get_address_commune_name(self, lang=None):
+        current_lang = get_language()
 
-    def display_category(self):
-        return self.category.name + " / " + self.secondary_category.secondary_category_class.name + " : " + self.secondary_category.name
+        activate(lang)
+        address_commune_name = self.territorial_entity().name
+        activate(current_lang)
+
+        return address_commune_name
+
+    def display_category(self, lang=None):
+        current_lang = get_language()
+
+        activate(lang)
+        category = "%s / %s : %s" % (self.category.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name)
+        activate(current_lang)
+
+        return category
 
     def display_address(self):
         return "%s, %s (%s %s)" % (self.address, self.address_number, self.postalcode, self.get_address_commune_name())
@@ -817,12 +830,19 @@ class Report(UserTrackedModel):
     def get_pdf_url_pro(self):
         return reverse('report_pdf_pro', args=[self.id])
 
-    def get_pdf_url_pro_with_auth_token(self):
+    def get_pdf_url_pro_with_auth_token(self, lang=None):
+        current_lang = get_language()
+        activate(lang)
+
         site = Site.objects.get_current()
         base_url = "http://{}".format(site.domain.rstrip("/"))
         url = reverse("report_pdf_pro_token", args=[self.id]).lstrip("/")
         querystring = urlencode({"auth": self.get_pdf_pro_auth_token()})
-        return "{}/{}?{}".format(base_url, url, querystring)
+        url_pro_auth_token = "{}/{}?{}".format(base_url, url, querystring)
+
+        activate(current_lang)
+
+        return url_pro_auth_token
 
     def get_pdf_pro_auth_token(self):
         key = settings.PDF_PRO_TOKEN_KEY
