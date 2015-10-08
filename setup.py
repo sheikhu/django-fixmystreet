@@ -46,7 +46,7 @@ dev_require = [
     # 'django-pdb'
     # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
     'django-jenkins==0.15.0',
-    'coverage',
+    'coverage==3.7.1',
     'flake8',
 
     # this following package depend on system requirements,
