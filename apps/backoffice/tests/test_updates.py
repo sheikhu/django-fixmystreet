@@ -278,25 +278,25 @@ class UpdatesTest(FMSTestCase):
         #Test switch to public and back
         self.client.login(username='manager@a.com', password='test')
         self.client.get(
-            reverse("report_change_switch_privacy", args=[self.report.id]),
-            {"privacy": "true"})
+            reverse("report_change_switch_visibility", args=[self.report.id]),
+            {"visibility": "true"})
         self.assertTrue(Report.objects.get(id=self.report.id).private)
         self.client.get(
-            reverse("report_change_switch_privacy", args=[self.report.id]),
-            {"privacy": "false"})
+            reverse("report_change_switch_visibility", args=[self.report.id]),
+            {"visibility": "false"})
         self.assertFalse(self.report.private)
 
         #Test constraint: cannot turn report public if category is private
 
         #Turn report private
-        self.client.get(reverse("report_change_switch_privacy", args=[self.report.id])+"?privacy=true")
+        self.client.get(reverse("report_change_switch_visibility", args=[self.report.id])+"?visibility=true")
 
         #Change category to private one
         report = Report.objects.get(id=self.report.id)
         report.secondary_category = ReportCategory.objects.get(id=4)
         report.save()
         #Try to set report to public
-        self.client.get(reverse("report_change_switch_privacy", args=[self.report.id])+"?privacy=false")
+        self.client.get(reverse("report_change_switch_visibility", args=[self.report.id])+"?visibility=false")
         #Report not set to public because private category
         self.assertTrue(Report.objects.get(id=self.report.id).private)
 

@@ -556,7 +556,7 @@ Changelog of django-fixmystreet
 1.0.15 (2013-05-16)
 -------------------
 
-- show report privacy.
+- show report visibility.
 
 - display contact info of report contractor.
 
@@ -664,7 +664,7 @@ Changelog of django-fixmystreet
 - History cofusing label fixed
   "Incident marqué comme cloturé" => "Incident signalé comme résolu"
 
-- Show privacy label on attachment when privacy not editable
+- Show visibility label on attachment when visibility not editable
 
 
 0.3.0 (2013-02-28)

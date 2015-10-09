@@ -135,7 +135,7 @@
 
 
                             <!--/div-->
-                            <span class="visilibility"><br/>{% trans 'Visibility' %} : {{ report.private|yesno:_("pro,public") }}<br/><br/></span>
+                            <span class="reportVisibility"><br/>{% trans 'Visibility' %} : {{ report.private|yesno:_("pro,public") }}<br/><br/></span>
                         </div>
                     </div>
                     <div class="span6" id="postedbytitle">
@@ -345,7 +345,7 @@
                                 <span id="mail-pdf-citizen-status"></span>
                             </div>
 
-                            <input type="hidden" name="privacy" value="public"/>
+                            <input type="hidden" name="visibility" value="public"/>
                             <label for="pdf-email-citizen">{% trans 'enter mail address' %}</label>
                             <textarea id="pdf-email-citizen" name="to" class="input-block-level" placeholder="{% trans 'Type one or more email addresses, separated by a comma (,).' %}"></textarea>
 {#                            <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>#}
@@ -373,7 +373,7 @@
                                 <span id="mail-pdf-pro-status"></span>
                             </div>
 
-                            <input type="hidden" name="privacy" value="private"/>
+                            <input type="hidden" name="visibility" value="private"/>
                             <label for="pdf-email">{% trans 'enter mail address' %}</label>
                             <textarea id="pdf-email" name="to" class="input-block-level" placeholder="{% trans 'Type one or more email addresses, separated by a comma (,).' %}"></textarea>
 {#                            <span class="help-block">{% trans 'Type one or more email addresses, separated by a comma (,).' %}</span>#}
@@ -395,7 +395,7 @@
         <h2>{% trans 'History' %} {% trans 'incident '%} {{report.get_ticket_number}}</h2>
     </div>
     <div class="modal-body">
-        {% include "reports/_activity_list.html" with  privacy='private' %}
+        {% include "reports/_activity_list.html" with  visibility='private' %}
     </div>
     <div class="modal-footer">
         <input type="button" class="btn"  value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
@@ -420,7 +420,7 @@
     <ul id="report_updates" class="timeline">
         {% for attachment in report.active_attachments_pro %}
         {% if not attachment.is_confidential or fms_user.can_see_confidential %}
-        {% include "reports/_attachment.html" with attachment=attachment privacy='private' editable=attachment_edit report_is_created=report.is_created pdf_style=False %}
+        {% include "reports/_attachment.html" with attachment=attachment visibility='private' editable=attachment_edit report_is_created=report.is_created pdf_style=False %}
         {% endif %}
         {% endfor %}
     </ul>

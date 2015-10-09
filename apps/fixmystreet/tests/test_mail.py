@@ -190,13 +190,13 @@ class MailTest(FMSTestCase):
 
         self.sample_post_mail_pdf_pro = {
             'comments': 'test comment',
-            'privacy': 'private',
+            'visibility': 'private',
             'to': 'test@test.com,filip@test.com;test@filip.com'
         }
 
         self.sample_post_mail_pdf_citzen = {
             'comments': 'test comment',
-            'privacy': 'public',
+            'visibility': 'public',
             'to': 'test@test.com,filip@test.com;test@filip.com'
         }
 
@@ -628,7 +628,7 @@ class MailTest(FMSTestCase):
         self.assertEquals(len(mail.outbox), 1)
         self.assertTrue(self.manager2.email in mail.outbox[0].to)
 
-    def test_make_report_switch_privacy(self):
+    def test_make_report_switch_visibility(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
 
         # Assure that report is public
@@ -645,7 +645,7 @@ class MailTest(FMSTestCase):
         mail.outbox = []
 
         # 1/ Now make the report private
-        response = self.client.get(reverse('report_change_switch_privacy', args=[report.id]) + '?privacy=true', follow=True)
+        response = self.client.get(reverse('report_change_switch_visibility', args=[report.id]) + '?visibility=true', follow=True)
 
         report = Report.objects.get(id=report.id)
         self.assertTrue(report.private)
@@ -657,7 +657,7 @@ class MailTest(FMSTestCase):
         mail.outbox = []
 
         # 2/ Now make the report public
-        response = self.client.get(reverse('report_change_switch_privacy', args=[report.id]) + '?privacy=false', follow=True)
+        response = self.client.get(reverse('report_change_switch_visibility', args=[report.id]) + '?visibility=false', follow=True)
 
         report = Report.objects.get(id=report.id)
         self.assertFalse(report.private)

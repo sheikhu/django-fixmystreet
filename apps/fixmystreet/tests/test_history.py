@@ -233,9 +233,9 @@ class HistoryTest(FMSTestCase):
         activities = report.activities.all()
         self.assertEquals(activities.all().count(), 1)
 
-        url = reverse('report_change_switch_privacy', args=[report_id])
+        url = reverse('report_change_switch_visibility', args=[report_id])
         response = self.client.get(url, {
-            'privacy': 'false'
+            'visibility': 'false'
         }, follow=True)
         self.assertEqual(response.status_code, 200)
         report = response.context['report']

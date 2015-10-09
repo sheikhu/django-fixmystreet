@@ -155,11 +155,11 @@ def notpending(request, report_id):
         return HttpResponseRedirect(report.get_absolute_url())
 
 @responsible_permission
-def switchPrivacy(request, report_id):
+def switchVisibility(request, report_id):
     report = get_object_or_404(Report, id=report_id)
-    privacy = request.REQUEST.get("privacy")
+    visibility = request.REQUEST.get("visibility")
 
-    if privacy == 'true':
+    if visibility == 'true':
         # Is private
         report.private = True
     else:
@@ -275,7 +275,7 @@ def publish(request, report_id):
 @responsible_permission
 def validateAll(request, report_id):
     '''Set all annexes to public'''
-    switchPrivacy(request, report_id)
+    switchVisibility(request, report_id)
 
     report = get_object_or_404(Report, id=report_id)
 

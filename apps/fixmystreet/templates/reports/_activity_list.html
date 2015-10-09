@@ -1,6 +1,6 @@
 <table class="historyTable">
     {% for activity in activity_list %}
-        {% if privacy == 'private' and activity.is_pro_visible %}
+        {% if visibility == 'private' and activity.is_pro_visible %}
             <tr>
                 <td colspan="2">
                     <strong><span class="historyTitle">{{ activity.event_at|date:"d/m/Y" }} : [{{ activity.organisation.name }}] </span></strong><br/>
@@ -10,7 +10,7 @@
                 </td>
             </tr>
         {% else %}
-            {% if privacy == 'public' and activity.is_public_visible %}
+            {% if visibility == 'public' and activity.is_public_visible %}
                 <tr>
                     <td colspan="2">
                     <strong><span class="historyTitle">{{ activity.event_at|date:"d/m/Y" }} : [{{ activity.organisation.name }}] </span></strong><br/>

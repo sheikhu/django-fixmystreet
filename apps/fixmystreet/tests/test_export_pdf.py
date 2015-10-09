@@ -82,7 +82,7 @@ class ExportPDFTest(FMSTestCase):
 
         self.assertEqual(len(response.context['comments']), 1)
         self.assertEqual(response.context['comments'][0].text, 'test comment 2')
-        self.assertEqual(response.context['privacy'], 'public')
+        self.assertEqual(response.context['visibility'], 'public')
 
     def test_attachment_private(self):
         self.assertTrue(self.client.login(username=self.manager_bxl.email, password='test'))
@@ -95,7 +95,7 @@ class ExportPDFTest(FMSTestCase):
         self.assertEqual(len(response.context['comments']), 2)
         self.assertEqual(response.context['comments'][0].text, 'test comment 1')
         self.assertEqual(response.context['comments'][1].text, 'test comment 2')
-        self.assertEqual(response.context['privacy'], 'private')
+        self.assertEqual(response.context['visibility'], 'private')
 
     def test_show_attachment(self):
         response = self.client.get(reverse('report_show', kwargs={'report_id': self.report.id, 'slug': ''}), follow=True)

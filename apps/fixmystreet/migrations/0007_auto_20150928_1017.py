@@ -17,17 +17,19 @@ def migrate_osiris_entity(apps, schema_editor):
     OrganisationEntity = apps.get_model("fixmystreet", "OrganisationEntity")
     ReportCategory     = apps.get_model("fixmystreet", "ReportCategory")
 
-    # Change type of osiris
-    osiris = OrganisationEntity.objects.get(name_fr__iexact="osiris")
-    osiris.type = OrganisationEntityModel.REGION
-    osiris.save()
+    try:
+        # Change type of osiris
+        osiris = OrganisationEntity.objects.get(name_fr__iexact="osiris")
+        osiris.type = OrganisationEntityModel.REGION
+        osiris.save()
 
-    # Fix dispatching of osiris group
-    osiris_group = osiris.associates.all()[0]
+        # Fix dispatching of osiris group
+        osiris_group = osiris.associates.all()[0]
 
-    for category in ReportCategory.objects.all():
-        osiris_group.dispatch_categories.add(category)
-
+        for category in ReportCategory.objects.all():
+            osiris_group.dispatch_categories.add(category)
+    except:
+        pass
 
 def migrate_reports(apps, schema_editor):
     if settings.ENVIRONMENT == "jenkins":

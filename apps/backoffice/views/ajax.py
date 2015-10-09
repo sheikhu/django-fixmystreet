@@ -125,8 +125,8 @@ def send_pdf(request, report_id):
     if len(valid_recipients) == 0:
         return JsonHttpResponse(to_return)
 
-    # Only set privacy as private if user is auth and privacy POST param is private
-    if request.fmsuser.is_pro() and "private" == request.POST.get('privacy'):
+    # Only set visibility as private if user is auth and visibility POST param is private
+    if request.fmsuser.is_pro() and "private" == request.POST.get('visibility'):
         pro_version = True
     else:
         pro_version = False
@@ -138,7 +138,7 @@ def send_pdf(request, report_id):
         'files': report.files() if pro_version else report.active_files(),
         'comments': report.comments() if pro_version else report.active_comments(),
         'activity_list': report.activities.all(),
-        'privacy': 'private' if pro_version else 'public',
+        'visibility': 'private' if pro_version else 'public',
         'BACKOFFICE': pro_version,
         'base_url': getattr(settings, 'RENDER_PDF_BASE_URL', None),
     }, context_instance=RequestContext(request))

@@ -115,7 +115,7 @@
         <div class="adress">
             <p>{{report.address}}, {{report.address_number}} <br />
                 {{report.postalcode}} {{report.get_address_commune_name}}</p>
-            {% if privacy == 'private' and report.false_address %}
+            {% if visibility == 'private' and report.false_address %}
                 <p>{{ report.false_address }}</p>
             {% endif %}
         </div>
@@ -250,11 +250,11 @@
     <div class="comments">
         <h2>{% trans 'Comments and pictures' %}</h2>
         {% for attachment in comments %}
-            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=False %}
+            {% include "reports/_attachment.html" with attachment=attachment visibility=visibility editable=False %}
         {% endfor %}
 
         {% for attachment in files %}
-            {% include "reports/_attachment.html" with attachment=attachment privacy=privacy editable=False pdf_style=True %}
+            {% include "reports/_attachment.html" with attachment=attachment visibility=visibility editable=False pdf_style=True %}
         {% endfor %}
     </div>
 
@@ -265,7 +265,7 @@
     -->
         <div class="history">
             <h2>{% trans 'History' %}</h2>
-            {% include "reports/_activity_list.html" with privacy=privacy %}
+            {% include "reports/_activity_list.html" with visibility=visibility %}
         </div>
 
     {% block footer %}{% endblock %}

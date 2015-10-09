@@ -15,12 +15,12 @@ function setThirdPartyResponsibility(boolVal) {
 function setPrivate() {
     var r2=confirm(TRAD_SET_PRIVATE);
     if (r2==true){
-        window.location = SWITCH_PRIVACY_URL + '?privacy=true';
+        window.location = SWITCH_VISIBILITY_URL + '?visibility=true';
     }
 }
 
 function setPublic() {
-    window.location = SWITCH_PRIVACY_URL + '?privacy=false';
+    window.location = SWITCH_VISIBILITY_URL + '?visibility=false';
 }
 
 function confirmTransfer(url, manId) {
