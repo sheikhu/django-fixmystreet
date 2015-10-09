@@ -73,7 +73,7 @@
             {type: "text"},   // addr
             {type: "select"}, // postal code
 
-            {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)
+{#            {type: "image", "bSortable": false},   // thumbnail (image type is considered as text)#}
             {sType: "date-euro", oSort:"date-eu"}, // date last update
             {type: "select", values: [ // quality
                 {% for s in 'FMSUser'|model_field_choices:'quality' %}
@@ -120,7 +120,7 @@
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // slug
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.x
             {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // point.y
-            {type: "null", bSearchable: false, bSortable: false, bVisible: false}, // status
+            {type: "null", bSearchable: false, bSortable: false, bVisible: false} // status
         ];
 
         var previousTableSelection;
@@ -147,7 +147,6 @@
                     //Retrieve the last used preferences
                     var sortPreferences = fms_store.getTablePreferedSortedColumn();
                     var sortPreferenceUnselectedColumns = fms_store.getTableInvisibleColumns();
-
                     document.getElementById('table-container').innerHTML = data;
                     // Init table
                     //Method table.oApi._fnColumnIndexToVisible could be useful to match the datacolumn to visible one about indexes
@@ -194,11 +193,11 @@
                                 var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 1)
                                 $('td:eq('+imageIndex +')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
                             }
-                            //Status icon
-                            if (this.fnSettings().aoColumns[6].bVisible === true && this.fnSettings().aoColumns[6].type === 'image' && aData[6]) {
-                                var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 6)
-                                $('td:eq('+imageIndex +')', nRow).html( '<a><img src="/static/' + aData[6] + '" /></a>' );
-                            }
+{#                            //Status icon#}
+{#                            if (this.fnSettings().aoColumns[6].bVisible === true && this.fnSettings().aoColumns[6].type === 'image' && aData[6]) {#}
+{#                                var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 6)#}
+{#                                $('td:eq('+imageIndex +')', nRow).html( '<a><img src="/static/' + aData[6] + '" /></a>' );#}
+{#                            }#}
                             return nRow;
                          }
                     });
@@ -366,7 +365,7 @@
                     {#<li><label class="column"><input type="checkbox" checked /> {% trans "Sub category" %}</label></li>#}
                     <li><label><input type="checkbox" checked /> {% trans "Address" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Postal code" %}</label></li>
-                    <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>
+{#                    <li><label><input type="checkbox" checked /> {% trans "Status" %}</label></li>#}
                     <li><label><input type="checkbox" checked /> {% trans "Last modified" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Quality" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>

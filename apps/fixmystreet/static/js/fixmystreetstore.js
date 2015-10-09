@@ -4,7 +4,7 @@
 if (!('fms_store' in window)) {
     window.fms_store = {};
     window.fms_store.KEY_PREFERRED_DATA_TABLE_COLUMN_SORT = "fms-table-column-sort";
-    window.fms_store.KEY_DATA_TABLE_INACTIVE_COLUMN = "fms-table-column-inactive";
+    window.fms_store.KEY_DATA_TABLE_INACTIVE_COLUMN = "fms-table-column-inactive-v2"; //v2 was added to change they key after a column was removed. It caused a problem showing invisible columns at the end of the table
     window.fms_store.KEY_DATA_TABLE_MAX_ROWS = "fms-table-max-rows";
 }
 
