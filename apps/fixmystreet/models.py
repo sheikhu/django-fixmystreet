@@ -728,6 +728,9 @@ class Report(UserTrackedModel):
     #indicates whether the responsibility of the incident should be associated to a third party or not.
     third_party_responsibility = models.BooleanField(default=False)
 
+    #indicate whether the source of the incident is located on a private property or not
+    private_property = models.BooleanField(default=False)
+
     def get_category_path(self):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
 

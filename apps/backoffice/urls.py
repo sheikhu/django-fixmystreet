@@ -50,6 +50,7 @@ urlpatterns += patterns(
     url(_(r'^report/(\d+)/change-contractor/'), 'changeContractor', name='report_change_contractor_pro'),
     url(_(r'^report/(\d+)/switch-visibility/'), 'switchVisibility', name='report_change_switch_visibility'),
     url(_(r'^report/(\d+)/switch-third-party-responsibility/'), 'switchThirdPartyResponsibility', name='report_change_switch_third_party_responsibility'),
+    url(_(r'^report/(\d+)/switch-private-property/'), 'switchPrivateProperty', name='report_change_switch_private_property'),
     url(_(r'^report/(\d+)/update-priority/'), 'updatePriority', name="report_update_priority"),
     url(_(r'^report/(\d+)/false-address/'), 'report_false_address', name="report_false_address"),
 )

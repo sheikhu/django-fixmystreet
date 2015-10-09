@@ -35,6 +35,7 @@ def accept(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
+
 @responsible_permission
 def refuse(request, report_id):
     report       = get_object_or_404(Report, id=report_id)
@@ -64,6 +65,7 @@ def refuse(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
+
 # Every one should be capable to mark as done
 # @responsible_permission
 def fixed(request, report_id):
@@ -87,6 +89,7 @@ def fixed(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
+
 @responsible_permission
 def close(request, report_id):
     report = get_object_or_404(Report, id=report_id)
@@ -97,6 +100,7 @@ def close(request, report_id):
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
+
 
 @responsible_permission
 def reopen(request, report_id):
@@ -117,6 +121,7 @@ def reopen(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
+
 @responsible_permission
 def planned(request, report_id):
     report = get_object_or_404(Report, id=report_id)
@@ -130,6 +135,7 @@ def planned(request, report_id):
     # Redirect to the report show page
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
+
 @responsible_permission
 def pending(request, report_id):
     report = get_object_or_404(Report, id=report_id)
@@ -142,6 +148,7 @@ def pending(request, report_id):
     else:
         return HttpResponseRedirect(report.get_absolute_url())
 
+
 @responsible_permission
 def notpending(request, report_id):
     report = get_object_or_404(Report, id=report_id)
@@ -153,6 +160,7 @@ def notpending(request, report_id):
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         return HttpResponseRedirect(report.get_absolute_url())
+
 
 @responsible_permission
 def switchVisibility(request, report_id):
@@ -170,8 +178,8 @@ def switchVisibility(request, report_id):
             messages.add_message(request, messages.ERROR, _("Cannot turn incident public. The category of this incident may not be shown to the citizens."))
 
     report.save()
-
     return HttpResponseRedirect(report.get_absolute_url_pro())
+
 
 @responsible_permission
 def switchThirdPartyResponsibility(request, report_id):
@@ -186,11 +194,24 @@ def switchThirdPartyResponsibility(request, report_id):
         report.third_party_responsibility = False
 
     report.save()
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
+
+@responsible_permission
+def switchPrivateProperty(request, report_id):
+    report = get_object_or_404(Report, id=report_id)
+    private = request.REQUEST.get("privateProperty")
+
+    if private == 'true':
+        #the source of the incident is not on a private property
+        report.private_property = True
     else:
-            return HttpResponseRedirect(report.get_absolute_url())
+        #the source of the incident is on a private property
+        report.private_property = False
+
+    report.save()
+    return HttpResponseRedirect(report.get_absolute_url_pro())
+
 
 @responsible_permission
 def changeManager(request, report_id):

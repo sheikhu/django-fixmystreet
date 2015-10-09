@@ -12,6 +12,18 @@ function setThirdPartyResponsibility(boolVal) {
     }
 }
 
+function setPrivateProperty(boolVal) {
+    if(boolVal){ //asking to switch the incident cause to a third party
+        var r2=confirm(gettext(TRAD_PRIVATE_PROPERTY_TRUE));
+    }
+    else{ //source of incident is not a third party
+        var r2=confirm(gettext(TRAD_PRIVATE_PROPERTY_FALSE));
+    }
+    if (r2==true){
+        window.location = PRIVATE_PROPERTY_URL + '?privateProperty=' + boolVal;
+    }
+}
+
 function setPrivate() {
     var r2=confirm(TRAD_SET_PRIVATE);
     if (r2==true){

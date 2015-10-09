@@ -12,6 +12,7 @@ var REPORT_PROBABILITY = "{{report.probability}}";
 /********************************** URLS *****************************/
 
 var THIRD_PARTY_RESPONSIBILITY_URL = "{% url 'report_change_switch_third_party_responsibility' report.id %}";
+var PRIVATE_PROPERTY_URL = "{% url 'report_change_switch_private_property' report.id %}";
 var SWITCH_VISIBILITY_URL = "{% url 'report_change_switch_visibility' report.id %}";
 var CLOSE_REPORT_URL = "{% url 'report_close_pro' report.id %}";
 var UPDATE_PRIORITY_URL = "{% url 'report_update_priority' report.id %}";
@@ -23,6 +24,8 @@ var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
 
 var TRAD_THIRD_PARTY_TRUE = "{% trans 'Are you sure you want to declare that the source of this incident is a third party' %}";
 var TRAD_THIRD_PARTY_FALSE = "{% trans 'Are you sure you want to declare that the source of this incident is not a third party' %}";
+var TRAD_PRIVATE_PROPERTY_TRUE = "{% trans 'Are you sure you want to flag the this incident as a private property' %}";
+var TRAD_PRIVATE_PROPERTY_FALSE = "{% trans 'Are you sure you want to remove the flag of private property of this incident' %}";
 var TRAD_SET_PRIVATE = "{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}";
 var TRAD_SELECT_CATEGORY = "{% trans 'Select a Category' %}";
 var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' %}";
@@ -233,6 +236,18 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
                 </li>
                 <li {% ifequal report.third_party_responsibility False %}class="active"{% endifequal %}>
                     <a tabindex="-1" href="javascript:setThirdPartyResponsibility(false)">{% trans 'Non' %}</a>
+                </li>
+            </ul>
+        </li>
+        <!-- incident is on private property-->
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{% trans "Private property" context "action_menu" %}</a>
+            <ul class="dropdown-menu">
+                <li {% ifequal report.private_property True %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="javascript:setPrivateProperty(true)">{% trans 'Oui' %}</a>
+                </li>
+                <li {% ifequal report.private_property False %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="javascript:setPrivateProperty(false)">{% trans 'Non' %}</a>
                 </li>
             </ul>
         </li>
