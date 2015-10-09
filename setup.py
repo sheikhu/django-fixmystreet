@@ -18,7 +18,7 @@ install_requires = [
     'django-extensions==1.5.5',
     'djangorestframework==3.1.3',
     'django-simple-history==1.6.2',
-    'django-stdimage==0.2.2',
+    'django-stdimage==2.0.6',
     'django-transmeta==0.7.3',
 
     'python-dateutil==2.4.2',

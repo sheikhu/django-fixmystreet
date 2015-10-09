@@ -22,12 +22,13 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.utils.http import urlencode
 
+from stdimage import StdImageField
 from transmeta import TransMeta
 from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
 from ckeditor.fields import RichTextField
 
-from .utils import FixStdImageField, get_current_user, autoslug_transmeta, transform_notification_template, sign_message
+from .utils import get_current_user, autoslug_transmeta, transform_notification_template, sign_message
 
 
 logger = logging.getLogger(__name__)
@@ -1716,14 +1717,14 @@ def init_report_overview(sender, instance, **kwargs):
     # Thumbnail for citizen
     images_public = instance.report.active_files().filter(file_type=ReportFile.IMAGE)
     if images_public.exists():
-        instance.report.thumbnail = images_public[0].image.thumbnail.url()
+        instance.report.thumbnail = images_public[0].image.thumbnail.url
     else:
         instance.report.thumbnail = None
 
     # Thumbnail for pro
     images_pro = instance.report.files().filter(logical_deleted=False, file_type=ReportFile.IMAGE)
     if images_pro.exists():
-        instance.report.thumbnail_pro = images_pro[0].image.thumbnail.url()
+        instance.report.thumbnail_pro = images_pro[0].image.thumbnail.url
     else:
         instance.report.thumbnail_pro = None
 
@@ -1825,7 +1826,7 @@ class ReportFile(ReportAttachment):
     )
 
     file = models.FileField(upload_to=move_to, blank=True)
-    image = FixStdImageField(upload_to=move_to, blank=True, size=(1200, 800), thumbnail_size=(80, 120))
+    image = StdImageField(upload_to=move_to, blank=True, variations={'thumbnail': {'with': 80, 'height': 120}})
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date = models.DateTimeField(blank=False, null=True)

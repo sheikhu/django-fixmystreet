@@ -318,74 +318,36 @@ def deleteAttachment(request, report_id):
 
 @responsible_permission_for_merge
 def do_merge(request, report_id):
-    #Get the reports that need to be merged
+    # Get the reports that need to be merged
     report = get_object_or_404(Report, id=report_id)
     report_2 = get_object_or_404(Report, id=request.POST["mergeId"])
 
-    # Constraints for categories match and visibility match when merging
-    # #Check that category + subcategory of two reports are equal:
-    # if report.category != report_2.category or report.secondary_category != report_2.secondary_category:
-    #     messages.add_message(request, messages.ERROR, _("Cannot merge reports that have different categories."))
-    #     return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
-
-    # #Check that visibility of two reports are equal:
-    # if report.private != report_2.private:
-    #     messages.add_message(request, messages.ERROR, _("Cannot merge reports that have different visibility."))
-    #     return HttpResponseRedirect(report.get_absolute_url_pro()+"?page=1")
-
-    #Determine which report needs to be kept [TO BE REVIEWED SPRINT 2]
-    #NEW ALGO: 2014/01/12
+    # Determine which report needs to be kept
     if report.created < report_2.created:
         final_report = report
-        report_to_delete = report_2
+        report_to_disable = report_2
     else:
         final_report = report_2
-        report_to_delete = report
-    #Now the oldest report must remain
-    #if report.accepted_at:
-    #    if report_2.accepted_at:
-    #        if report.accepted_at < report_2.accepted_at:
-    #            final_report = report
-    #            report_to_delete = report_2
-    #        else:
-    #            final_report = report_2
-    #            report_to_delete = report
-    #    else:
-    #        final_report = report
-    #        report_to_delete = report_2
-    #else:
-    #    if report_2.accepted_at:
-    #        final_report = report_2
-    #        report_to_delete = report
-    #    else:
-    #        if report.created < report_2.created:
-    #            final_report = report
-    #            report_to_delete = report_2
-    #        else:
-    #            final_report = report_2
-    #            report_to_delete = report
+        report_to_disable = report
 
-    #Move attachments to new report
-    for attachment in report_to_delete.attachments.all():
+    # Move attachments to new report
+    for attachment in report_to_disable.attachments.all():
         attachment.report_id = final_report.id
         attachment.save()
 
-    #If one of the reports is public, the new report should be public
-    if not report_to_delete.private:
+    # If one of the reports is public, the new report should be public
+    if not report_to_disable.private:
         final_report.private = False
         final_report.save()
-    #Send mail to report_to_delete subscribers, resp man and creator if
-    #Delete the 2nd report
-    report_to_delete.merged_with = final_report
-    report_to_delete.save()
-    # report_to_delete.delete();
 
-    #Send message of confirmation
+    # Send mail to report_to_disable subscribers, resp man and creator if
+    # Delete the 2nd report
+    report_to_disable.merged_with = final_report
+    report_to_disable.save()
+
+    # Send message of confirmation
     # messages.add_message(request, messages.SUCCESS, _("Your report has been merged."))
-    if "pro" in request.path:
-            return HttpResponseRedirect(final_report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(final_report.get_absolute_url())
+    return HttpResponseRedirect(final_report.get_absolute_url_pro())
 
 
 def report_false_address(request, report_id):

@@ -72,26 +72,15 @@
                                         <div id="containerIconCircle" style="margin-left:15px;">
                                             <div id="iconCircle" class="icon2-list_created"></div>
                                         </div>
-                                              
 
-                                     <!-- Button "it's the same" 
-                                                        
-                                                                            -->                    
-                
+
+                                     <!-- Button "it's the same"
+
+                                                                            -->
+
                                      </div>
                                     <div class="span3 picture marginleft15" style="float:left;">
                                         <div style="margin-left:10px;">
-{# uncomment this when it shows the map in miniature                               #}
-                                            <!-- Map wrapper -->
-{#                                            <div class="homeWrappingPicture1" align="right">#}
-{#                                                {% if BACKOFFICE and report.thumbnail_pro %}#}
-{#                                                    <img class="defectPic" src="{{ report.thumbnail_pro }}"/>#}
-{#                                                {% elif report.thumbnail %}#}
-{#                                                    <img class="defectPic" src="{{ report.thumbnail }}"/>#}
-{#                                                {% else %}#}
-{#                                                    <img src="http://upload.wikimedia.org/wikipedia/commons/1/1e/Wolfgang-amadeus-mozart_1.jpg" class="defectPic" />#}
-{#                                                {% endif %}#}
-{#                                            </div>#}
 
                                             <!-- Picture Wrapper -->
                                             <div class="homeWrappingPicture1" align="right">
@@ -114,7 +103,7 @@
 
                                             -->
 
-                                            <!-- Photo - Only show 1-->                    
+                                            <!-- Photo - Only show 1-->
 
                                             <!--
                                               {% if BACKOFFICE and report.thumbnail_pro %}
@@ -126,9 +115,9 @@
                                             {% endif %}
 
                                             -->
-                                    
-                                    </div>    
-                                    </div>   
+
+                                    </div>
+                                    </div>
                                     <!-- Some incident's decription -->
                                     <div class="span5 marginleft10top20">
                                         <span class="ticket_number">N° {{ report.get_ticket_number }}</span><br />
@@ -154,27 +143,27 @@
 
 
 
-                                    <!-- Comments 
-                                    
+                                    <!-- Comments
+
                                         {% if BACKOFFICE %}
                                               {% url "report_new_pro" as report_url %}
                                              {% else %}
                                                  {% url "report_new" as report_url %}
-                                            {% endif %}  
+                                            {% endif %}
 
 
                                     -->
-                                    
-                                    
+
+
                                 </div>
                             </div>
                             {% endfor %}
-                            
+
                             {% if BACKOFFICE %}
                                 {% url "report_new_pro" as report_url %}
                             {% else %}
                                 {% url "report_new" as report_url %}
-                            {% endif %} 
+                            {% endif %}
                         <div style="margin-right:20px; margin-top:-15px;">
                             <a class="btn_continue pull-right" href='{{ report_url }}?x={{ request.GET.x }}&y={{ request.GET.y }}'>{% trans "Continuez à encoder" %}</a>
                             <span class="txt_continue pull-right">{% trans 'Aucun de ces incidents ne correspond à votre incident ?' %}</span>
