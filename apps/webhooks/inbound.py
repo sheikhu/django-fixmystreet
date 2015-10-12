@@ -147,6 +147,12 @@ class AbstractReportAssignmentInWebhook(AbstractReportInWebhook):
         return check_contractor_permission(self._user, self._report)
 
 
+class ReportAssignmentRegisterInWebhook(ReportAcceptInWebhookMixin, AbstractReportAssignmentInWebhook):
+    """Inbound webhook handler for ``report.assignment.register``."""
+
+    ACTION_MESSAGE = _(u"Report assignment was registered by {third_party}.")
+
+
 class ReportAssignmentAcceptInWebhook(ReportAcceptInWebhookMixin, AbstractReportAssignmentInWebhook):
     """Inbound webhook handler for ``report.assignment.accept``."""
 
