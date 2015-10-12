@@ -169,6 +169,7 @@ class ReportAssignmentRejectInWebhook(ReportRejectInWebhookMixin, AbstractReport
 
         # Unassign the contractor
         self._report.contractor = None
+        self._report.status = Report.MANAGER_ASSIGNED
         self._report.save()
 
 
