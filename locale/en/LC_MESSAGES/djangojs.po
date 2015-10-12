@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-07 14:03+0200\n"
+"POT-Creation-Date: 2015-10-09 16:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,7 +228,7 @@ msgstr ""
 msgid "Move the cursor"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:33
+#: fixmystreet/static/js/templates/reports/pro__actions.js:45
 msgid "Are you sure you want to change the contractor/applicant?"
 msgstr ""
 
@@ -244,6 +244,18 @@ msgstr ""
 
 #: fixmystreet/static/lib/jquery/jquery-ui.min.js:10
 msgid "'"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:14
+msgid "<iframe frameborder='0' width='0' height='0'/>"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
+msgid "<script>"
+msgstr ""
+
+#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
+msgid "<div>"
 msgstr ""
 
 #: fixmystreet/static/tests/leaflet/test.template.js:15

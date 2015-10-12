@@ -29,6 +29,7 @@
             <th>{% trans "All" context "Subscribed" %}</th>
             <th>{% trans "All" context "Pending" %}</th>
             <th>{% trans "All" context "ThirdPartyResponsibility" %}</th>
+            <th>{% trans "All" context "PrivateProperty" %}</th>
             <th></th>
             <th></th>
             <th></th>
@@ -62,6 +63,7 @@
             <th>{% trans "Subscribed" %}</th>
             <th>{% trans "Pending" %}</th>
             <th>{% trans "ThirdPartyResponsibility" %}</th>
+            <th>{% trans "PrivateProperty" %}</th>
             <th>{# get_icons_for_js_map() #}</th>
             <th>{# get_slug() #}</th>
             <th>{# point.x #}</th>
@@ -100,6 +102,7 @@
                 <td class="s{{report.status}}">{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
                 <td class="s{{report.status}}">{{ report.pending|yesno:_("yes,no") }}</td>
                 <td class="s{{report.status}}">{{ report.third_party_responsibility|yesno:_("yes,no") }}</td>
+                <td class="s{{report.status}}">{{ report.private_property|yesno:_("yes,no") }}</td>
                 <td>{{ report.get_icons_for_js_map|dict_to_json }}</td>
                 <td>{{ report.get_slug }}</td>
                 <td>{{ report.point.x }}</td>

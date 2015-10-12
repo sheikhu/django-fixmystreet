@@ -241,7 +241,7 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
         </li>
         <!-- incident is on private property-->
         <li class="dropdown-submenu">
-            <a tabindex="-1" href="#">{% trans "Private property" context "action_menu" %}</a>
+            <a tabindex="-1" href="#">{% trans "PrivateProperty" %}</a>
             <ul class="dropdown-menu">
                 <li {% ifequal report.private_property True %}class="active"{% endifequal %}>
                     <a tabindex="-1" href="javascript:setPrivateProperty(true)">{% trans 'Oui' %}</a>
