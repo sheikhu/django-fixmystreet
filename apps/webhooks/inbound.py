@@ -106,20 +106,15 @@ class AbstractReportInWebhook(AbstractBaseInWebhook):
         super(AbstractReportInWebhook, self).__init__(meta, data, user=user)
         self._report = Report.objects.get(pk=meta["id"])
         self._third_party = None
+        self._comment_type = ReportAttachment.DOCUMENTATION
 
     def _add_comment(self, context):
-        # Define the type of the comment
-        if context["action_msg"] == ReportAssignmentCloseInWebhook.ACTION_MESSAGE:
-            comment_type = ReportAttachment.MARK_AS_DONE
-        else:
-            comment_type = ReportAttachment.DOCUMENTATION
-
         context["action_msg"] = context["action_msg"].format(third_party=self._third_party.name)
         formatted_comment = render_to_string("webhooks/report_comment.txt", context)
         fms_user = FMSUser.objects.get(pk=self._user.id)
 
         comment = ReportComment(
-            report=self._report, text=formatted_comment, type=comment_type, created_by=fms_user
+            report=self._report, text=formatted_comment, type=self._comment_type, created_by=fms_user
         )
         comment.save()
 
@@ -177,6 +172,8 @@ class ReportAssignmentCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportAs
     ACTION_MESSAGE = _(u"Report assignment was closed by {third_party}.")
 
     def run(self):
+        self._comment_type = ReportAttachment.MARK_AS_DONE
+
         super(ReportAssignmentCloseInWebhook, self).run()
 
         # Mark as done
