@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-09 15:50+0200\n"
-"PO-Revision-Date: 2015-10-09 13:50+0000\n"
-"Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2015-10-12 11:56+0200\n"
+"PO-Revision-Date: 2015-10-12 09:56+0000\n"
+"Last-Translator: afuca <afuca@cirb.brussels>\n"
 "Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -247,18 +247,6 @@ msgstr "Fout"
 
 #: fixmystreet/static/lib/jquery/jquery-ui.min.js:10
 msgid "'"
-msgstr ""
-
-#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:14
-msgid "<iframe frameborder='0' width='0' height='0'/>"
-msgstr ""
-
-#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
-msgid "<script>"
-msgstr ""
-
-#: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
-msgid "<div>"
 msgstr ""
 
 #: fixmystreet/static/tests/leaflet/test.template.js:15
