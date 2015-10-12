@@ -106,13 +106,15 @@ class AbstractReportInWebhook(AbstractBaseInWebhook):
         super(AbstractReportInWebhook, self).__init__(meta, data, user=user)
         self._report = Report.objects.get(pk=meta["id"])
         self._third_party = None
+        self._comment_type = ReportAttachment.DOCUMENTATION
 
     def _add_comment(self, context):
         context["action_msg"] = context["action_msg"].format(third_party=self._third_party.name)
         formatted_comment = render_to_string("webhooks/report_comment.txt", context)
         fms_user = FMSUser.objects.get(pk=self._user.id)
+
         comment = ReportComment(
-            report=self._report, text=formatted_comment, type=ReportAttachment.DOCUMENTATION, created_by=fms_user
+            report=self._report, text=formatted_comment, type=self._comment_type, created_by=fms_user
         )
         comment.save()
 
@@ -156,11 +158,27 @@ class ReportAssignmentRejectInWebhook(ReportRejectInWebhookMixin, AbstractReport
 
     ACTION_MESSAGE = _(u"Report assignment was rejected by {third_party}.")
 
+    def run(self):
+        super(ReportAssignmentRejectInWebhook, self).run()
+
+        # Unassign the contractor
+        self._report.contractor = None
+        self._report.save()
+
 
 class ReportAssignmentCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportAssignmentInWebhook):
     """Inbound webhook handler for ``report.assignment.close``."""
 
     ACTION_MESSAGE = _(u"Report assignment was closed by {third_party}.")
+
+    def run(self):
+        self._comment_type = ReportAttachment.MARK_AS_DONE
+
+        super(ReportAssignmentCloseInWebhook, self).run()
+
+        # Mark as done
+        self._report.status = Report.SOLVED
+        self._report.save()
 
 
 class AbstractReportTransferInWebhook(AbstractReportInWebhook):
@@ -188,6 +206,7 @@ class ReportTransferRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportTr
     def run(self):
         super(ReportTransferRejectInWebhook, self).run()
 
+        # Transfer to the previous group of managers
         self._report.responsible_department = ReportEventLog.objects.filter(
             report=self._report,
             organisation=self._report.responsible_entity,
