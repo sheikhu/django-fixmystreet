@@ -1,3 +1,5 @@
+{% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
+
 {% load i18n %}
 {% load static from staticfiles %}
 {% load tags %}
@@ -37,7 +39,6 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
 
 <!-- Actions -->
 {% if report.is_in_progress %}
-{% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
 <div class="btn-group incidentActions">
     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
         <i class="icon-incident-actions"></i>
@@ -264,7 +265,6 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
     </ul>
 </div>
 {% endif %}
-{% endif %}
 
 <!-- Modal -->
 {% if report.is_in_progress %}
@@ -413,3 +413,4 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
         </form>
     </div>
 </div>
+{% endif %}

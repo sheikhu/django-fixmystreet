@@ -12,7 +12,6 @@
             <th>{% trans "All" context "Address" %}</th>
             <th>{% trans "All" context "Municipality" %}</th>
 
-{#            <th class="no-filter">{% trans "All" context "Status" %}</th>#}
             <th class="filter-date">{% trans "All" context "Last modified" %}</th>
             <th>{% trans "All" context "Signaled by" %}</th>
             <th>{% trans "All" context "Quality" %}</th>
@@ -47,7 +46,6 @@
             <th>{% trans "Address" %}</th>
             <th>{% trans "Postal code" %}</th>
 
-{#            <th>{% trans "Status" %}</th>#}
             <th>{% trans "Last modified" %}</th>
             <th>{% trans "Quality" %}</th>
             <th>{% trans "Signaled by" %}</th>
@@ -80,11 +78,8 @@
 
                 <!--td class="s{{report.status}}">{{ report.address_regional|yesno:_("regional,communal") }}</td-->
                 <td class="s{{report.status}}">{{ report.get_category_path }}</td>
-                {#<td class="s{{report.status}}">{{ report.secondary_category.name }}</td>#}
                 <td class="s{{report.status}}">{{ report.address }}, {{report.address_number}}</td>
                 <td class="s{{report.status}}">{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
-{#                <td class="s{{report.status}}">{{ report.get_marker }}</td>#}
-
 
                 <td class="s{{report.status}}">{{ report.modified|date:"d/m/Y" }}</td>
                 <td class="s{{report.status}}">{{ report.citizen.get_quality_display }}</td>

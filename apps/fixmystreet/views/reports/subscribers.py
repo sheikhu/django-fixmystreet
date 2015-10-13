@@ -5,11 +5,12 @@ from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.db import IntegrityError
 
-from apps.fixmystreet.models import FMSUser
+from apps.fixmystreet.models import FMSUser, Report, ReportSubscription
 
-from apps.fixmystreet.models import Report, ReportSubscription
+from apps.fixmystreet.utils import not_merged
 
 
+@not_merged
 def create(request, report_id):
     report = get_object_or_404(Report, id=report_id)
     #CREATE USER CITIZEN IF NECESSARY
@@ -29,6 +30,7 @@ def create(request, report_id):
     return HttpResponseRedirect(report.get_absolute_url())
 
 
+@not_merged
 def remove(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 

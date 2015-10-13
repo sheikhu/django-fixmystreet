@@ -95,9 +95,7 @@
                 '{{ False|yesno:_("planned,not planned") }}'
             ]}, // planned
             {type: "select", values: [ // status
-                {% for s in 'Report'|model_field_choices:'status' %}
-                    "{{ s }}"{% if not forloop.last %},{% endif %}
-                {% endfor %}
+                "customStatusFilter"
             ]},
             {type: "select", values: [//private
                 '{{ True|yesno:_("private,public") }}',
@@ -197,17 +195,31 @@
                                 var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 1)
                                 $('td:eq('+imageIndex +')', nRow).html( '<a><img src="' + aData[1] + '" /></a>' );
                             }
-{#                            //Status icon#}
-{#                            if (this.fnSettings().aoColumns[6].bVisible === true && this.fnSettings().aoColumns[6].type === 'image' && aData[6]) {#}
-{#                                var imageIndex = this.fnSettings().oApi._fnColumnIndexToVisible(this.fnSettings(), 6)#}
-{#                                $('td:eq('+imageIndex +')', nRow).html( '<a><img src="/static/' + aData[6] + '" /></a>' );#}
-{#                            }#}
                             return nRow;
                          }
                     });
 
                     //Generate filters FIRST
                     table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
+
+                    // Custom filter for hierarchy status
+                    var select = '<option value="" %}">{% trans "All" %}</option>';
+
+                    select += '<option value="{% trans "Created" %}">{% trans "Created" %}</option>';
+
+                    select += '<optgroup label="{% trans "In progress" %}">';
+                    select += '<option value="{% trans "Manager is assigned" %}">{% trans "Manager is assigned" %}</option>';
+                    select += '<option value="{% trans "Applicant is responsible" %}">{% trans "Applicant is responsible" %}</option>';
+                    select += '<option value="{% trans "Contractor is assigned" %}">{% trans "Contractor is assigned" %}</option>';
+                    select += '<option value="{% trans "Solved" %}">{% trans "Solved" %}</option>';
+                    select += '</optgroup>';
+
+                    select += '<option value="{% trans "Processed" %}">{% trans "Processed" %}</option>';
+
+                    // Tricky stuff to fetch the status select element
+                    var selector = "select option[value=customStatusFilter]";
+                    document.querySelector(selector).parentNode.innerHTML = select;
+
 
                     //And THEN show/hide columns
                     var checkboxes = $('#column-visibility :checkbox');

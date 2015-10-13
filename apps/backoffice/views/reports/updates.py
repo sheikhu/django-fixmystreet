@@ -67,7 +67,6 @@ def refuse(request, report_id):
 
 
 # Every one should be capable to mark as done
-# @responsible_permission
 def fixed(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
@@ -252,11 +251,7 @@ def changeContractor(request, report_id):
         messages.add_message(request, messages.ERROR, _("organisation entity ASSIGN : Generic error"))
         logger.exception(e)
 
-
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 @responsible_permission
 def updatePriority(request, report_id):
@@ -265,10 +260,7 @@ def updatePriority(request, report_id):
     report.probability = int(request.GET["probability"])
     report.save()
 
-    if "pro" in request.path:
-            return HttpResponseRedirect(report.get_absolute_url_pro())
-    else:
-            return HttpResponseRedirect(report.get_absolute_url())
+    return HttpResponseRedirect(report.get_absolute_url_pro())
 
 @responsible_permission
 def publish(request, report_id):
@@ -370,7 +362,7 @@ def do_merge(request, report_id):
     # messages.add_message(request, messages.SUCCESS, _("Your report has been merged."))
     return HttpResponseRedirect(final_report.get_absolute_url_pro())
 
-
+@responsible_permission
 def report_false_address(request, report_id):
     if request.method == "POST":
         report = get_object_or_404(Report, id=report_id)

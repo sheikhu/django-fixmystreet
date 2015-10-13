@@ -5,6 +5,10 @@ from django.shortcuts import get_object_or_404
 
 from apps.fixmystreet.models import Report, ReportSubscription
 
+from apps.fixmystreet.utils import not_merged
+
+
+@not_merged
 def create(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
@@ -14,6 +18,7 @@ def create(request, report_id):
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
+@not_merged
 def unsubscribe(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 

@@ -175,18 +175,6 @@
                             {% if report.responsible_department.phone %}
                             ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
                             {% endif %}
-
-                            <!-- ROW PRO 5 -->
-                            {% if report.merged_with %}
-                            <strong>
-                                {% trans "Merged on" %}
-                            </strong>
-                            {{report.last_history_event.event_at|date:"d/m/Y"}}
-                            {% trans "with incident" %}
-                            <a href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
-                                {{report.merged_with.id}}
-                            </a>
-                            {% endif %}
                         </span>
 
                     </div>
@@ -215,13 +203,13 @@
                     </a>
                     {% endif %}
                     {% if report.is_in_progress %}
-                    {% if report.status != report.SOLVED %}
+                    {% if report.status != report.SOLVED and not report.merged_with %}
                     <a href="#divMarkAsDone" role="button" class="btn lk-isresolved" data-toggle="modal">
                         <i class="icon-isresolved"> </i>{% trans "Report as solved" %}
                     </a>
                     {% endif %}
 
-                    {% if not report.is_closed %}
+                    {% if not report.is_closed and not report.merged_with %}
                     <a href="#modalSubscription" role="button" class="btn lk-subscribe" data-toggle="modal">
                         {% if report.subscriptions.all.count %}
                         <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
@@ -404,7 +392,7 @@
 
 <!-- DISPLAY FILES AND COMMENTS SECTION -->
 <div class="timeline-container">
-    {% if report.is_in_progress or report.is_created %}
+    {% if not report.is_merged and report.is_in_progress or report.is_created %}
     <span class="add_info">
         <a href="{% url 'report_document_pro' report_id=report.id slug=report.get_slug %}"><img src="{% static 'images/add-img.png' %}" />{% trans 'Add' %}<img src="{% static 'images/add-comment.png' %}"></a>
     </span>
@@ -424,6 +412,17 @@
         {% endif %}
         {% endfor %}
     </ul>
+    {% endif %}
+
+    {% if report.merged_with %}
+        <p align="center">
+            <a class="btn" href="{% url 'report_show' report.get_slug report.merged_with.id %}">
+            {% trans "Merged on" %}
+            {{report.last_history_event.event_at|date:"d/m/Y"}}
+            {% trans "with incident" %}
+                {{report.merged_with.get_ticket_number}}
+            </a>
+        </p>
     {% endif %}
 
 </div>

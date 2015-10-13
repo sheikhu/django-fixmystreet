@@ -490,6 +490,7 @@ L.FixMyStreet.Map = L.Map.extend({
     if (isNew) {
       this.newIncidentMarker = marker;
       this.setView(marker.getLatLng(), this.options.newIncidentZoom, {animate: true});
+      this.setCssSize('large');
     } else {
       this.incidents[model.type].push(marker);
     }
@@ -877,7 +878,6 @@ L.FixMyStreet.Map = L.Map.extend({
 
   _locateOnMapButton_onClick: function (evt) {  // locateOnMapButton.click
     this.addIncident({type: 'new'});
-    this.setCssSize('large');
   },
 
   _streetViewButton_onClick: function (evt, latlng) {  // streetViewButton.click
