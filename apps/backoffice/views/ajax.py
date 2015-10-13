@@ -13,9 +13,7 @@ from django.core.validators import validate_email
 from django.conf import settings
 from django.template import RequestContext
 
-from apps.fixmystreet.models import (
-    OrganisationEntity, ReportCategory,
-    Report, ReportMainCategoryClass)
+from apps.fixmystreet.models import OrganisationEntity, ReportCategory, Report, ReportMainCategoryClass, ReportEventLog
 from apps.fixmystreet.utils import get_current_user, transform_notification_template
 from apps.fixmystreet.utils import generate_pdf, JsonHttpResponse
 
@@ -163,4 +161,13 @@ def send_pdf(request, report_id):
         to_return["message"] = _("PDF sent by email.")
     else:
         to_return["message"] = _("There were errors.")
+
+    event = ReportEventLog(
+                report=report,
+                event_type=ReportEventLog.PDF_HISTORY,
+                user=user,
+                text=", ".join(valid_recipients),
+            )
+    event.save()
+
     return JsonHttpResponse(to_return)

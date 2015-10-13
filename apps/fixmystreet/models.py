@@ -2251,6 +2251,7 @@ class ReportEventLog(models.Model):
     REOPEN_REQUEST = 20
     BECAME_PRIVATE = 21
     BECAME_PUBLIC = 22
+    PDF_HISTORY = 23
 
     EVENT_TYPE_CHOICES = (
         (REFUSE, _("Refused")),
@@ -2275,6 +2276,7 @@ class ReportEventLog(models.Model):
         (REOPEN_REQUEST, _("Reopen request")),
         (BECAME_PRIVATE, _("Became private")),
         (BECAME_PUBLIC, _("Became public")),
+        (PDF_HISTORY, _("PDF was sent by email")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -2299,11 +2301,12 @@ class ReportEventLog(models.Model):
         REOPEN_REQUEST: _("Request to reopen report made by {user}"),
         BECAME_PRIVATE: _("Report became private by {user}"),
         BECAME_PUBLIC: _("Report became public by {user}"),
+        PDF_HISTORY: _("The PDF was sent to {text}"),
     }
     STATUS_EVENTS = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
     PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, MERGED, UPDATE_PUBLISHED, REOPEN, REOPEN_REQUEST, BECAME_PRIVATE, BECAME_PUBLIC]
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED]
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED, PDF_HISTORY]
 
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
 
@@ -2329,6 +2332,8 @@ class ReportEventLog(models.Model):
 
     merged_with_id = models.PositiveIntegerField(null=True)
 
+    text = models.TextField(null=True, blank=True)
+
     class Meta:
         ordering = ['event_at', ]
 
@@ -2349,6 +2354,7 @@ class ReportEventLog(models.Model):
             related_old=self.related_old,
             date_planned=self.value_old,
             merged_with_id=self.merged_with_id,
+            text=self.text,
         )
 
     def get_public_activity_text(self):
@@ -2360,6 +2366,7 @@ class ReportEventLog(models.Model):
             related_old=user_to_display_public(self.related_old),
             date_planned=self.value_old,
             merged_with_id=self.merged_with_id,
+            text=self.text,
         )
 
     def get_status(self):
