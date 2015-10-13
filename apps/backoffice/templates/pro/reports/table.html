@@ -211,13 +211,10 @@
                     select += '<option value="{% trans "Manager is assigned" %}">{% trans "Manager is assigned" %}</option>';
                     select += '<option value="{% trans "Applicant is responsible" %}">{% trans "Applicant is responsible" %}</option>';
                     select += '<option value="{% trans "Contractor is assigned" %}">{% trans "Contractor is assigned" %}</option>';
-                    select += '<option value="{% trans "Marked as Done" %}">{% trans "Marked as Done" %}</option>';
+                    select += '<option value="{% trans "Solved" %}">{% trans "Solved" %}</option>';
                     select += '</optgroup>';
 
-                    select += '<optgroup label="{% trans "Processed" %}">';
-                    select += '<option value="{% trans "Refused" %}">{% trans "Refused" %}</option>';
                     select += '<option value="{% trans "Processed" %}">{% trans "Processed" %}</option>';
-                    select += '</optgroup>';
 
                     // Tricky stuff to fetch the status select element
                     var selector = "select option[value=customStatusFilter]";
