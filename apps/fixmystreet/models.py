@@ -1755,6 +1755,12 @@ def report_attachment_created(sender, instance, **kwargs):
             user=user,
         ).save()
 
+        recipients = []
+
+        # Send notifications to contractor
+        if report.contractor:
+            recipients += [report.contractor.email]
+
         # Send notifications to group or members according to group configuration
         mail_config = report.responsible_department.get_mail_config()
 
@@ -1770,14 +1776,14 @@ def report_attachment_created(sender, instance, **kwargs):
                 instance_comment = instance
 
             # Send notifications to correct recipients
-            recipients = mail_config.get_manager_recipients(user)
+            recipients += mail_config.get_manager_recipients(user)
 
-            for email in recipients:
-                ReportNotification(
-                    content_template='notify-updates',
-                    recipient_mail=email,
-                    related=report,
-                ).save(updater=user, comment=instance_comment, files=instance_files)
+        for email in recipients:
+            ReportNotification(
+                content_template='notify-updates',
+                recipient_mail=email,
+                related=report,
+            ).save(updater=user, comment=instance_comment, files=instance_files)
 
 @receiver(post_save, sender=ReportAttachment)
 def report_attachment_published(sender, instance, **kwargs):
