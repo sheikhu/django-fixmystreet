@@ -634,7 +634,7 @@ class Report(UserTrackedModel):
             (MANAGER_ASSIGNED, _("Manager is assigned")),
             (APPLICANT_RESPONSIBLE, _("Applicant is responsible")),
             (CONTRACTOR_ASSIGNED, _("Contractor is assigned")),
-            (SOLVED, _("Solved"))
+            (SOLVED, _("Marked as Done"))
         )),
         (_("Processed"), (
             (PROCESSED, _("Processed")),
