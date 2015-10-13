@@ -1758,7 +1758,7 @@ def report_attachment_created(sender, instance, **kwargs):
         recipients = []
 
         # Send notifications to contractor
-        if report.contractor:
+        if report.contractor and report.contractor.email:
             recipients += [report.contractor.email]
 
         # Send notifications to group or members according to group configuration
