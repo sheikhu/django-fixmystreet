@@ -470,8 +470,10 @@ def responsible_permission(func):
 
         report = get_object_or_404(Report, id=report_id)
 
+        if report.merged_with:
+            raise PermissionDenied
+
         if not check_responsible_permission(request.user, report):
-                # or (report.contractor is not None and report.contractor.fmsproxy is not None):
             raise PermissionDenied
 
         return func(request, report_id)
@@ -496,6 +498,28 @@ def responsible_permission_for_merge(func):
         return func(request, report_id)
 
     return wrapper
+
+
+def not_merged(func):
+
+    def wrapper(request, *args, **kwargs):
+        from .models import Report
+
+        # Fetch report_id
+        if args:
+            report_id = args[0]
+        else:
+            report_id = kwargs['report_id']
+
+        report = get_object_or_404(Report, id=report_id)
+
+        if report.merged_with:
+            raise PermissionDenied
+
+        return func(request, *args, **kwargs)
+
+    return wrapper
+
 
 from django.core.mail import EmailMultiAlternatives
 def send_digest(user, activity, activities_list, date_digest):

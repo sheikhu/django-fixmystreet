@@ -12,7 +12,7 @@ from django.utils.translation import get_language
 from apps.fixmystreet.stats import ReportCountStatsPro, ReportCountQuery
 from apps.fixmystreet.models import ZipCode, Report, ReportSubscription, ReportFile, OrganisationEntity, FMSUser, \
     ReportAttachment
-from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file, check_responsible_permission, responsible_permission
+from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file, check_responsible_permission, responsible_permission, not_merged
 from apps.fixmystreet.forms import ProReportForm, ReportFileForm, ReportCommentForm, ReportReopenReasonForm, ReportMainCategoryClass
 from apps.backoffice.forms import PriorityForm, TransferForm
 
@@ -241,6 +241,7 @@ def verify(request):
     return new(request)
 
 
+@not_merged
 def document(request, slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     report = get_object_or_404(Report, id=report_id)

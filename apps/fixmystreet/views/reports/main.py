@@ -17,7 +17,7 @@ from apps.fixmystreet.models import (
 from apps.fixmystreet.forms import (
     CitizenReportForm, CitizenForm,
     ReportCommentForm, ReportFileForm, ReportReopenReasonForm)
-from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file
+from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi_file, not_merged
 
 import logging
 
@@ -136,6 +136,7 @@ def show(request, slug, report_id):
     }, context_instance=RequestContext(request))
 
 
+@not_merged
 def document(request, slug, report_id):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     report = get_object_or_404(Report, id=report_id)
@@ -190,7 +191,7 @@ def document(request, slug, report_id):
         "citizen_form": citizen_form,
     }, context_instance=RequestContext(request))
 
-
+@not_merged
 def update(request, report_id):
     report = get_object_or_404(Report, id=report_id)
 
