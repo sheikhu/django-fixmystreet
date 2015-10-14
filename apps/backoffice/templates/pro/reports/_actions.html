@@ -1,5 +1,3 @@
-{% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
-
 {% load i18n %}
 {% load static from staticfiles %}
 {% load tags %}
@@ -37,6 +35,7 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
 
 <script src ="{% static 'js/templates/reports/pro__actions.js' %}"></script>
 
+{% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
 <!-- Actions -->
 {% if report.is_in_progress %}
 <div class="btn-group incidentActions">
@@ -268,24 +267,6 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
 
 <!-- Modal -->
 {% if report.is_in_progress %}
-    {% if report.status != report.SOLVED %}
-        <div id="divMarkAsDone" class="modal hide fade">
-            <form id="dialogMarkAsDone" title="{% trans "Please enter more information about marking the report as done" %}" action="{% url 'report_fix_pro' report.id %}" method="post" >
-                {% csrf_token %}
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3>{% trans "You think this incident is close. Indicate it!" %}</h3>
-                </div>
-                <div class="modal-body">
-                    <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
-                    {{ mark_as_done_form.as_p }}
-                    <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
-                </div>
-            </form>
-        </div>
-    {% endif %}
-
     <!-- SECTION ABOUT PRIORITY -->
     <div id="modalPriority" class="modal hide fade">
         <div class="modal-header">
@@ -413,4 +394,22 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
         </form>
     </div>
 </div>
+{% endif %}
+
+{% if report.is_in_progress and report.status != report.SOLVED %}
+    <div id="divMarkAsDone" class="modal hide fade">
+        <form id="dialogMarkAsDone" title="{% trans "Please enter more information about marking the report as done" %}" action="{% url 'report_fix_pro' report.id %}" method="post" >
+            {% csrf_token %}
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>{% trans "You think this incident is close. Indicate it!" %}</h3>
+            </div>
+            <div class="modal-body">
+                <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
+                {{ mark_as_done_form.as_p }}
+                <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
+            </div>
+        </form>
+    </div>
 {% endif %}
