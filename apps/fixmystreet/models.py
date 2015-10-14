@@ -2258,6 +2258,8 @@ class ReportEventLog(models.Model):
     BECAME_PRIVATE = 21
     BECAME_PUBLIC = 22
     PDF_HISTORY = 23
+    REPORT_COMMENT_DELETED = 24
+    REPORT_FILE_DELETED = 25
 
     EVENT_TYPE_CHOICES = (
         (REFUSE, _("Refused")),
@@ -2283,6 +2285,8 @@ class ReportEventLog(models.Model):
         (BECAME_PRIVATE, _("Became private")),
         (BECAME_PUBLIC, _("Became public")),
         (PDF_HISTORY, _("PDF was sent by email")),
+        (REPORT_COMMENT_DELETED, _("A comment was deleted ")),
+        (REPORT_FILE_DELETED, _("A picture or document was deleted")),
     )
     EVENT_TYPE_TEXT = {
         REFUSE: _("Report refused by {user}"),
@@ -2308,11 +2312,13 @@ class ReportEventLog(models.Model):
         BECAME_PRIVATE: _("Report became private by {user}"),
         BECAME_PUBLIC: _("Report became public by {user}"),
         PDF_HISTORY: _("The PDF was sent to {text}"),
+        REPORT_COMMENT_DELETED: _("A comment was deleted by {user}"),
+        REPORT_FILE_DELETED: _("A picture or document was deleted by {user}"),
     }
     STATUS_EVENTS = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
 
     PUBLIC_VISIBLE_TYPES = [REFUSE, CLOSE, VALID, APPLICANT_ASSIGNED, APPLICANT_CHANGED, ENTITY_ASSIGNED, CREATED, MERGED, UPDATE_PUBLISHED, REOPEN, REOPEN_REQUEST, BECAME_PRIVATE, BECAME_PUBLIC]
-    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED, PDF_HISTORY]
+    PRO_VISIBLE_TYPES = PUBLIC_VISIBLE_TYPES + [MANAGER_ASSIGNED, CONTRACTOR_ASSIGNED, CONTRACTOR_CHANGED, SOLVE_REQUEST, UPDATED, PLANNED, PDF_HISTORY, REPORT_COMMENT_DELETED, REPORT_FILE_DELETED]
 
     PRO_VISIBLE_TYPES.remove(ENTITY_ASSIGNED)
 

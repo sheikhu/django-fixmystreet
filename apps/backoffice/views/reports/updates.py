@@ -8,9 +8,9 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import Http404
 
-from apps.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment
+from apps.fixmystreet.models import Report, OrganisationEntity, ReportComment, ReportFile, ReportAttachment, ReportEventLog
 from apps.fixmystreet.forms import ReportCommentForm
-from apps.fixmystreet.utils import responsible_permission, responsible_permission_for_merge
+from apps.fixmystreet.utils import responsible_permission, responsible_permission_for_merge, get_current_user
 
 from apps.backoffice.forms import TransferForm
 
@@ -323,9 +323,22 @@ def updateAttachment(request, report_id):
 def deleteAttachment(request, report_id):
     """delete a attachment (pro only)"""
     report = get_object_or_404(Report, id=report_id)
-    a = ReportAttachment.objects.get(pk=request.REQUEST.get('attachmentId'))
+    attachmentId = request.REQUEST.get('attachmentId')
+    a = ReportAttachment.objects.get(pk=attachmentId)
     a.logical_deleted = True
     a.save()
+    user = get_current_user()
+    event_type = ReportEventLog.REPORT_COMMENT_DELETED
+    if hasattr(a, "reportfile"):
+        event_type = ReportEventLog.REPORT_FILE_DELETED
+
+    event = ReportEventLog(
+                report=report,
+                event_type=event_type,
+                user=user,
+                text=attachmentId,
+            )
+    event.save()
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
 
