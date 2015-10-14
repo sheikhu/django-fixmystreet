@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-14 15:20+0200\n"
-"PO-Revision-Date: 2015-10-14 13:21+0000\n"
-"Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
+"POT-Creation-Date: 2015-10-14 15:49+0200\n"
+"PO-Revision-Date: 2015-10-14 13:50+0000\n"
+"Last-Translator: afuca <afuca@cirb.brussels>\n"
 "Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2016,7 +2016,7 @@ msgid "PDF was sent by email"
 msgstr ""
 
 #: fixmystreet/models.py:2288
-msgid "A comment was deleted "
+msgid "A comment was deleted"
 msgstr ""
 
 #: fixmystreet/models.py:2289
@@ -2039,8 +2039,8 @@ msgstr "Probleem gemeld als opgelost door {user}"
 
 #: fixmystreet/models.py:2295
 #, python-brace-format
-msgid "Report as been assigned to {related_new}"
-msgstr "Probleem toegewezen aan {related_new}"
+msgid "Report transferred to {related_new}"
+msgstr ""
 
 #: fixmystreet/models.py:2297
 #, python-brace-format

@@ -2285,7 +2285,7 @@ class ReportEventLog(models.Model):
         (BECAME_PRIVATE, _("Became private")),
         (BECAME_PUBLIC, _("Became public")),
         (PDF_HISTORY, _("PDF was sent by email")),
-        (REPORT_COMMENT_DELETED, _("A comment was deleted ")),
+        (REPORT_COMMENT_DELETED, _("A comment was deleted")),
         (REPORT_FILE_DELETED, _("A picture or document was deleted")),
     )
     EVENT_TYPE_TEXT = {

@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-14 15:46+0200\n"
-"PO-Revision-Date: 2015-10-14 13:46+0000\n"
+"POT-Creation-Date: 2015-10-14 15:52+0200\n"
+"PO-Revision-Date: 2015-10-14 13:51+0000\n"
 "Last-Translator: afuca <afuca@cirb.brussels>\n"
 "Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -2019,12 +2019,12 @@ msgid "PDF was sent by email"
 msgstr ""
 
 #: fixmystreet/models.py:2288
-msgid "A comment was deleted "
-msgstr ""
+msgid "A comment was deleted"
+msgstr "Un commentaire a été effacé"
 
 #: fixmystreet/models.py:2289
 msgid "A picture or document was deleted"
-msgstr ""
+msgstr "Une photo ou un document a été effacé"
 
 #: fixmystreet/models.py:2292
 #, python-brace-format
@@ -2128,12 +2128,12 @@ msgstr "Le PDF à été envoyé à {text}."
 #: fixmystreet/models.py:2315
 #, python-brace-format
 msgid "A comment was deleted by {user}"
-msgstr ""
+msgstr "Un commentaire a été effacé par {user}"
 
 #: fixmystreet/models.py:2316
 #, python-brace-format
 msgid "A picture or document was deleted by {user}"
-msgstr ""
+msgstr "Une photo ou un document a été effacé par {user}"
 
 #: fixmystreet/stats.py:250
 msgid "seven_days"
