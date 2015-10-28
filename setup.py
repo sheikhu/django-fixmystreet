@@ -47,7 +47,7 @@ dev_require = [
     # 'git+https://github.com/kmmbvnr/django-jenkins.git#egg=django-jenkins-1.5.0',
     'django-jenkins==0.15.0',
     'coverage==3.7.1',
-    'flake8',
+    'flake8==2.4.1',
 
     # this following package depend on system requirements,
     # must be installed on system for prod
