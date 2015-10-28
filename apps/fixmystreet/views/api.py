@@ -253,6 +253,7 @@ def create_citizen(request):
         comment = comment_form.save(commit=False)
         comment.created_by = citizen
         comment.report = report
+        comment.is_new_report = True
         comment.save()
 
     return report
@@ -282,6 +283,7 @@ def create_pro(request):
     if ((request.POST["comment-text"] or comment_form.is_valid()) and request.POST["comment-text"] != ''):
         comment = comment_form.save(commit=False)
         comment.report = report
+        comment.is_new_report = True
         comment.save()
 
     return report
@@ -320,6 +322,7 @@ def create_report_photo(request):
         report_file.created_by = reference_report.citizen or reference_report.created_by
 
         #Save given data
+        report_file.is_new_report = True
         report_file.save()
     except Exception:
         return HttpResponseBadRequest(json.dumps({"error_key": "ERROR_REPORT_FILE_PROBLEM_DATA", "request":request.POST}),content_type='application/json')
