@@ -208,6 +208,7 @@ def create_report_photo(request):
         report_file.created_by = reference_report.citizen or reference_report.created_by
 
         #Save given data
+        report_file.is_new_report = True
         report_file.save()
     except Exception:
         return HttpResponseBadRequest(simplejson.dumps({"error_key": "ERROR_REPORT_FILE_PROBLEM_DATA", "request":request.POST}),mimetype='application/json')

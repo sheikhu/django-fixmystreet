@@ -208,6 +208,7 @@ class ReportHandler(BaseHandler):
         if ((request.data["comment-text"] or comment_form.is_valid()) and request.data["comment-text"] != ''):
             comment = comment_form.save(commit=False)
             comment.report = report
+            comment.is_new_report = True
             comment.save()
 
         return report
@@ -243,6 +244,7 @@ class ReportHandler(BaseHandler):
             comment = comment_form.save(commit=False)
             comment.created_by = citizen
             comment.report = report
+            comment.is_new_report = True
             comment.save()
 
         return report
