@@ -56,6 +56,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(migrate_osiris_entity),
+        # Migrations irrelevant. We keep assignment and OSIRIS as "impétrant".
+
+        #~ migrations.RunPython(migrate_osiris_entity),
         #~ migrations.RunPython(migrate_reports),
     ]
