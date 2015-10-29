@@ -32,9 +32,6 @@ clean:
 collectstatic:
 	$(BIN_PATH)/manage.py collectstatic --noinput
 
-createdb:
-	createdb $(DBNAME) -U $(DBUSER) -T template_postgis
-
 develop: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop -Z
 	$(BIN_PATH)/pip install -e .[dev]
