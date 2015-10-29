@@ -5,10 +5,7 @@ DATABASES = {
         'USER': '###',
         'PASSWORD': '###',
         'HOST': 'localhost',
-        'PORT': 5432,
-        'OPTIONS': {
-            'autocommit': True
-        }
+        'PORT': 5432
    }
 }
 
