@@ -109,6 +109,20 @@ To add some data to the fresh new database, proceed as follows:
 * From the project root folder, enter the virtual environment using ```source env/bin/activate```.
 * Add the fixture data using: ```manage.py loaddata apps/fixmystreet/fixtures/*.json```.
 
+Sample of data injected:
+
+```
+Organisation entity:    Anderlecht
+Users/Password:         leader@anderlecht.be/leader
+                        manager@anderlecht.be/manager
+Groups:                 groupe
+
+Organisation entity:    Bruxelles-Ville
+Users/Password:         leader@bxl.be/leader
+                        manager@bxl.be/manager
+Groups:                 groupe
+```
+
 Additional notes from the previous installation instructions
 ------------------------------------------------------------
 
