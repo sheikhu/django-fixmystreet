@@ -64,7 +64,7 @@ Create a *fixmystreet* role:
 * create a *fixmystreet* role **with a password** on PostgreSQL. The role should be a *superuser*.
 * create a *fixmystreet* database for the *fixmystreet* user, owned by *fixmystreet*
 * Add *postgis* and *postgis_topology* as an extension to that database
-* edit the file *pg_hba.conf* to ensure that *fixmystreet* can access the database without requiring a Linux user: ```sudo leafpad /etc/postgresql/9.3/main/pg_hba.conf ```, and in there add the following line ```local all fixmystreet md5``` in the section "*Database administrative login by Unix domain socket*".
+* edit the file *pg_hba.conf* to ensure that *fixmystreet* can access the database without requiring a Linux user: ```/etc/postgresql/9.3/main/pg_hba.conf ```, and in there add the following line ```local all fixmystreet md5``` in the section "*Database administrative login by Unix domain socket*".
 * restart the PostgreSQL server: ```sudo /etc/init.d/postgresql restart```
 
 Useful resources:
