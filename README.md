@@ -25,11 +25,11 @@ Preparation
 
 Start by ensuring that Python "2.7.x" is installed.
 
-If *easy_install* is not installed yet, install it as follows: ```bash sudo apt-get install python-setuptools```
+If *easy_install* is not installed yet, install it as follows: ```sudo apt-get install python-setuptools```
 
-Use *easy_install* to install *pip*: ```bash sudo easy_install pip ```
+Use *easy_install* to install *pip*: ```sudo easy_install pip ```
 
-Install the following packages:
+Install the following packages (ubuntu named):
 
 * python-dev
 * python-virtualenv
@@ -48,7 +48,7 @@ Install the following packages:
 * postgresql-9.3-postgis-2.1
 * spatialite-bin
 
-```bash
+```
 sudo apt-get install python-dev python-virtualenv postgresql-server-dev-9.3 libgeos-3.4.2 libgdal1h nodejs npm libjpeg-dev libxml2-dev python-psycopg2 binutils libproj-dev gdal-bin postgis postgresql-9.3-postgis-2.1 spatialite-bin
 ```
 
@@ -57,15 +57,15 @@ Normally *git*, *make* and *gcc* should be already installed. If not, make sure 
 PostgreSQL
 ----------
 
-Install PostgreSQL using ```bash sudo apt-get install postgresql```
+Install PostgreSQL using ```sudo apt-get install postgresql```
 
 Create a *fixmystreet* role:
 
 * create a *fixmystreet* role **with a password** on PostgreSQL. The role should be a *superuser*.
 * create a *fixmystreet* database for the *fixmystreet* user, owned by *fixmystreet*
 * Add *postgis* and *postgis_topology* as an extension to that database
-* edit the file *pg_hba.conf* to ensure that *fixmystreet* can access the database without requiring a Linux user: ```bash sudo leafpad /etc/postgresql/9.3/main/pg_hba.conf ```, and in there add the following line ```bash local all fixmystreet md5``` in the section "*Database administrative login by Unix domain socket*".
-* restart the PostgreSQL server: ```bash sudo /etc/init.d/postgresql restart```
+* edit the file *pg_hba.conf* to ensure that *fixmystreet* can access the database without requiring a Linux user: ```sudo leafpad /etc/postgresql/9.3/main/pg_hba.conf ```, and in there add the following line ```local all fixmystreet md5``` in the section "*Database administrative login by Unix domain socket*".
+* restart the PostgreSQL server: ```sudo /etc/init.d/postgresql restart```
 
 Useful resources:
 
@@ -77,7 +77,7 @@ Project setup
 
 Clone the project:
 
-```bash
+```
 $ git clone git@github.com:CIRB/django-fixmystreet.git
 $ make develop
 $ make run
@@ -97,17 +97,17 @@ Edit it to specify the database credentials:
        }
     }
 
-From the project root folder run ```bash make develop ``` to retrieve the dependencies and build the project.
+From the project root folder run ```make develop ``` to retrieve the dependencies and build the project.
 
-You can now ```bash make run``` to start *FixMyStreet*!
+You can now ```make run``` to start *FixMyStreet*!
 
 Add data fixtures
 -----------------
 
 To add some data to the fresh new database, proceed as follows:
 
-* From the project root folder, enter the virtual environment using ```bash source env/bin/activate```.
-* Add the fixture data using: ```bash manage.py loaddata apps/fixmystreet/fixtures/*.json```.
+* From the project root folder, enter the virtual environment using ```source env/bin/activate```.
+* Add the fixture data using: ```manage.py loaddata apps/fixmystreet/fixtures/*.json```.
 
 Additional notes from the previous installation instructions
 ------------------------------------------------------------
