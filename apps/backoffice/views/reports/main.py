@@ -220,7 +220,7 @@ def show(request, slug, report_id):
         "transfer_form": TransferForm(),
         "mark_as_done_form": ReportCommentForm(),
         "priority_form": PriorityForm(instance=report),
-        'activity_list': report.activities.all(),
+        'activity_list': report.activities.all().order_by('-event_at'),
         'attachment_edit': can_edit_attachment,
         "category_list": ReportMainCategoryClass.objects.all().order_by('name_' + get_language()),
     }, context_instance=RequestContext(request))
