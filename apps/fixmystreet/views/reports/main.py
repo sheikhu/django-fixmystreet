@@ -132,7 +132,7 @@ def show(request, slug, report_id):
         "subscribed": request.user.is_authenticated() and ReportSubscription.objects.filter(report=report,
                                                                                             subscriber=request.user).exists(),
         "author": user_to_show,
-        'activity_list': report.activities.all().order_by('-event_at'),
+        'activity_list': report.activities.all(),
     }, context_instance=RequestContext(request))
 
 
