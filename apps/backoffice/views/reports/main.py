@@ -201,10 +201,8 @@ def show(request, slug, report_id):
 
     applicants = OrganisationEntity.objects.filter(type=OrganisationEntity.APPLICANT).order_by('name_' + get_language())
 
-    can_edit_attachment = (
-        report.is_in_progress and
-        request.fmsuser.memberships.filter(organisation=report.responsible_department).exists() and
-        (report.is_created() or report.is_in_progress()))
+    can_edit_attachment = request.fmsuser.memberships.filter(organisation=report.responsible_department).exists() \
+                          and not report.is_merged()
 
     return render_to_response("pro/reports/show.html", {
         "fms_user": request.fmsuser,

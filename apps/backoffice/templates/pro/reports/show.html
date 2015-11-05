@@ -182,7 +182,7 @@
                     {# ONLY THE MANAGER CAN USE BUTTONS #}
                     {% if report.responsible_department in request.fmsuser.organisations_list %}
                     {# DISPLAY WHEN REPORT STATUS IS CREATED #}
-                    {% if report.is_created %}
+                    {% if report.is_created and not report.is_merged %}
                     <a href="{% url 'report_accept_pro' report.id %}" class="btn accepted" >{% trans 'Accept' %}</a>
                     <a class="btn reject" onclick="refuse();">{% trans 'Reject' %}</a>
                     {% endif %}
@@ -392,7 +392,7 @@
 
 <!-- DISPLAY FILES AND COMMENTS SECTION -->
 <div class="timeline-container">
-    {% if not report.is_merged and report.is_in_progress or report.is_created %}
+    {% if not report.is_merged %}
     <span class="add_info">
         <a href="{% url 'report_document_pro' report_id=report.id slug=report.get_slug %}"><img src="{% static 'images/add-img.png' %}" />{% trans 'Add' %}<img src="{% static 'images/add-comment.png' %}"></a>
     </span>
