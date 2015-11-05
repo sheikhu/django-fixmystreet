@@ -416,7 +416,7 @@
 
     {% if report.merged_with %}
         <p align="center">
-            <a class="btn" href="{% url 'report_show' report.get_slug report.merged_with.id %}">
+            <a class="btn" href="{% url 'report_show_pro' report.get_slug report.merged_with.id %}">
             {% trans "Merged on" %}
             {{report.last_history_event.event_at|date:"d/m/Y"}}
             {% trans "with incident" %}
