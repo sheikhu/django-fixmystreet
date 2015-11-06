@@ -20,10 +20,10 @@
     <div id="faq_pages_content">
         {% for page in faq_pages %}
             <div id="faq_page_{{ page.id }}">
-                <div id="faq_page_title_{{ page.id }}">
+                <div id="faq_page_title_{{ page.id }}" class="faq_page_title">
                     <h3>{{ page.title|safe }}</h3>
                 </div>
-                <div id="faq_page_content_{{ page.id }}">
+                <div id="faq_page_content_{{ page.id }}" class="faq_page_sub_content">
                     <p>{{ page.content|safe }}</p>
                 </div>
             </div>
