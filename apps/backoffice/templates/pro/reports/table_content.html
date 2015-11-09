@@ -94,7 +94,7 @@
                 <td class="s{{report.status}}">{{ report.is_planned|yesno:_("planned,not planned") }}</td>
                 <td class="s{{report.status}}">
                     {% if report.is_in_progress %}
-                        <span class="hide">{{ report.get_public_status_display }} :</span>
+                        <span class="hide">{{ report.get_public_status_display }}</span>
                     {% endif %}
 
                     {{ report.get_status_display }}
