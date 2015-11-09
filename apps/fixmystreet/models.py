@@ -24,7 +24,6 @@ from django.utils.http import urlencode
 
 from stdimage import StdImageField
 from transmeta import TransMeta
-from django_extensions.db.models import TimeStampedModel
 from simple_history.models import HistoricalRecords
 from ckeditor.fields import RichTextField
 
@@ -34,7 +33,10 @@ from .utils import get_current_user, autoslug_transmeta, transform_notification_
 logger = logging.getLogger(__name__)
 
 
-class UserTrackedModel(TimeStampedModel):
+class UserTrackedModel(models.Model):
+    created = models.DateTimeField(null=True, blank=True, auto_now_add=True, verbose_name=_('created'))
+    modified = models.DateTimeField(null=True, blank=True, auto_now=True, verbose_name=_('modified'))
+
     created_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_created')
     modified_by = models.ForeignKey('FMSUser', null=True, editable=False, related_name='%(class)s_modified')
 
