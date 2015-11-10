@@ -92,13 +92,10 @@
                 <td class="s{{report.status}}">{{ report.date_planned|date:"d/m/Y" }}</td>
                 <td class="s{{report.status}}">{{ report.get_priority }}</td>
                 <td class="s{{report.status}}">{{ report.is_planned|yesno:_("planned,not planned") }}</td>
-                <td class="s{{report.status}}">
-                    {% if report.is_in_progress %}
-                        <span class="hide">{{ report.get_public_status_display }}</span>
-                    {% endif %}
 
-                    {{ report.get_status_display }}
-                </td>
+                {# This status row has to be on the same line to avoid spaces when exporting table #}
+                <td class="s{{report.status}}">{% if report.is_in_progress %}<span class="hide">{{ report.get_public_status_display }} : </span>{% endif %}{{ report.get_status_display }}</td>
+
                 <td class="s{{report.status}}">{{ report.private|yesno:_("private,public") }}</td>
                 <td class="s{{report.status}}">{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
                 <td class="s{{report.status}}">{{ report.pending|yesno:_("yes,no") }}</td>

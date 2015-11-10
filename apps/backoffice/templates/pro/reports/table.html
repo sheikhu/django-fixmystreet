@@ -20,6 +20,7 @@
     <script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>
     <script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
     <script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
+    <script src="{% static 'js/table_csv.js' %}"></script>
 
     {% block script-search %}
       <script type="text/javascript">
@@ -441,12 +442,17 @@
                     data-original-title="{% trans "All incidents tooltip" %}">
                         {% trans "All incidents" %}
                 </button>
+
             </div>
             <div id="table-container"></div>
         </div>
 
         <div class="modal-footer">
+                <button class="btn pull-left" id="export-csv">
+                        {% trans "Export" %}
+                </button>
             <input type="button" class="btn"  value="{% trans 'Close' context 'button' %}" data-dismiss="modal" aria-hidden="true"/>
         </div>
     </div>
+
 {% endblock %}
