@@ -53,6 +53,7 @@ urlpatterns += patterns(
     url(_(r'^report/(\d+)/switch-private-property/'), 'switchPrivateProperty', name='report_change_switch_private_property'),
     url(_(r'^report/(\d+)/update-priority/'), 'updatePriority', name="report_update_priority"),
     url(_(r'^report/(\d+)/false-address/'), 'report_false_address', name="report_false_address"),
+    url(_(r'^report/(\d+)/change-flag-and-add-comment/'), 'change_flag_and_add_comment', name="report_change_flag_and_add_comment"),
 )
 
 urlpatterns += patterns(

@@ -1,27 +1,23 @@
 
 
 function setThirdPartyResponsibility(boolVal) {
-    if(boolVal){ //asking to switch the incident cause to a third party
-        var r2=confirm(gettext(TRAD_THIRD_PARTY_TRUE));
-    }
-    else{ //source of incident is not a third party
-        var r2=confirm(gettext(TRAD_THIRD_PARTY_FALSE));
-    }
-    if (r2==true){
-        window.location = THIRD_PARTY_RESPONSIBILITY_URL + '?thirdPartyResponsibility=' + boolVal;
-    }
+    //hiddenThirdPartyResponsibility is used in updates.py : change_flag_and_add_comment
+    showAddCommentDialog("hiddenThirdPartyResponsibility", boolVal, TRAD_SWITCH_THIRD_PARTY_RESPONSIBILITY_PLACEHOLDER);
 }
 
 function setPrivateProperty(boolVal) {
-    if(boolVal){ //asking to switch the incident cause to a third party
-        var r2=confirm(gettext(TRAD_PRIVATE_PROPERTY_TRUE));
+    //hiddenPrivateProperty is used in updates.py : change_flag_and_add_comment
+    showAddCommentDialog("hiddenPrivateProperty", boolVal, TRAD_SWITCH_PRIVATE_PROPERTY_PLACEHOLDER);
+}
+
+function showAddCommentDialog(name, boolVal, placeholder){
+    $("#dialogAddComment>div.required").removeClass("required");
+    $("#hiddenAddComment").attr("name", name );
+    $("#hiddenAddComment").attr("value", boolVal);
+    if(placeholder != undefined){
+        $("#dialogAddComment").find("#id_text").attr("placeholder", placeholder);
     }
-    else{ //source of incident is not a third party
-        var r2=confirm(gettext(TRAD_PRIVATE_PROPERTY_FALSE));
-    }
-    if (r2==true){
-        window.location = PRIVATE_PROPERTY_URL + '?privateProperty=' + boolVal;
-    }
+    $("#divAddComment").modal();
 }
 
 function setPrivate() {

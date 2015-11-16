@@ -39,19 +39,19 @@ function refuse(){
     $('#more_information_text').val(gettext("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed."))
 }
 
-/***************************************************************************/
-/* refuseConfirmButton method is called when the user confirms his refusal */
-/***************************************************************************/
-function refuseConfirmButton(){
-    window.location = URL_REPORT_REFUSE + '?more_info_text='+$('#more_information_text').val();
-}
-
-/*************************************************************************/
-/* refuseCancelButton method is called when the user cancels his refusal */
-/*************************************************************************/
-function refuseCancelButton() {
-    $("#dialog").dialog('close');
-}
+///***************************************************************************/
+///* refuseConfirmButton method is called when the user confirms his refusal */
+///***************************************************************************/
+//function refuseConfirmButton(){
+//    window.location = URL_REPORT_REFUSE + '?more_info_text='+$('#more_information_text').val();
+//}
+//
+///*************************************************************************/
+///* refuseCancelButton method is called when the user cancels his refusal */
+///*************************************************************************/
+//function refuseCancelButton() {
+//    $("#dialog").dialog('close');
+//}
 
 
 window.onload = function() {

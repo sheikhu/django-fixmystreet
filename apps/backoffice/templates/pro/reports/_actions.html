@@ -11,8 +11,6 @@ var REPORT_PROBABILITY = "{{report.probability}}";
 
 /********************************** URLS *****************************/
 
-var THIRD_PARTY_RESPONSIBILITY_URL = "{% url 'report_change_switch_third_party_responsibility' report.id %}";
-var PRIVATE_PROPERTY_URL = "{% url 'report_change_switch_private_property' report.id %}";
 var SWITCH_VISIBILITY_URL = "{% url 'report_change_switch_visibility' report.id %}";
 var CLOSE_REPORT_URL = "{% url 'report_close_pro' report.id %}";
 var UPDATE_PRIORITY_URL = "{% url 'report_update_priority' report.id %}";
@@ -21,11 +19,8 @@ var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
 
 
 /******************TRANS TO BE MOVED IN JS TRANSIFEX ****************/
-
-var TRAD_THIRD_PARTY_TRUE = "{% trans 'Are you sure you want to declare that the source of this incident is a third party' %}";
-var TRAD_THIRD_PARTY_FALSE = "{% trans 'Are you sure you want to declare that the source of this incident is not a third party' %}";
-var TRAD_PRIVATE_PROPERTY_TRUE = "{% trans 'Are you sure you want to flag the this incident as a private property' %}";
-var TRAD_PRIVATE_PROPERTY_FALSE = "{% trans 'Are you sure you want to remove the flag of private property of this incident' %}";
+var TRAD_SWITCH_THIRD_PARTY_RESPONSIBILITY_PLACEHOLDER = "{% trans "Please enter more information to describe why you changed the value of 'third party responsibility'" %}";
+var TRAD_SWITCH_PRIVATE_PROPERTY_PLACEHOLDER = "{% trans "Please enter more information to describe why you changed the value of 'private property'" %}";
 var TRAD_SET_PRIVATE = "{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}";
 var TRAD_SELECT_CATEGORY = "{% trans 'Select a Category' %}";
 var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' %}";
@@ -349,7 +344,7 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
         </div>
     </div>
 
-    <!-- SECTION ABOUT CATEGORY -->
+    <!-- SECTION ABOUT ADDRESS -->
     <div id="modalAddress" class="modal hide fade">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -394,6 +389,18 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
         </form>
     </div>
 </div>
+<div id="divAddComment" class="modal hide fade" role="dialog">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <form id="dialogAddComment" title="{% trans "Please enter more information to describe your action" %}" action="{% url 'report_change_flag_and_add_comment' report.id %}" method="post">
+            {% include "_form_horizontal.html" with form=add_comment_form %}
+            <input type="hidden" id="hiddenAddComment" name="" value=""> {# name & value are set in the javascript function that wants to add a comment. ex: thirdPartyResponsibility and setPrivateProperty #}
+            <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
+            <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
+        </form>
+    </div>
+</div>
+
 {% endif %}
 
 {% if report.is_in_progress and report.status != report.SOLVED %}

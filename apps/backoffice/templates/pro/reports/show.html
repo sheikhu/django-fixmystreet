@@ -18,7 +18,7 @@
         var REPORT_CAT_ID = "{{report.category.id}}";
         var SUBSCRIBED = "{{ subscribed }}";
 
-        var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}";
+{#        var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}"; // seems unused #}
         var URL_REPORT_UPDATE_ATTACHMENT = "{% url 'report_update_attachment' report.id %}";
         var URL_SEND_PDF = "{% url 'send_pdf' report.id %}";
         var URL_SEC_CAT_FOR_MAIN_CAT = "{% url 'secondary_category_for_main_category' %}";
@@ -74,11 +74,7 @@
                                 {% endif %}
                             </span>
 
-
-
                             <br />
-
-
 
                             <br />
                             <ul class='iconsPopup' >
@@ -108,8 +104,6 @@
                                 <li class='datePlanned_on'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a></li>
                                 {% endif %}
 
-
-
                                 {% if BACKOFFICE %}
                                 <li>
                                     {% if report.get_priority == 0 %}
@@ -130,9 +124,7 @@
                             </ul>
                             <span class="ticket_desc">
                                 {{report.display_category}}
-
                             </span>
-
 
                             <!--/div-->
                             <span class="reportVisibility"><br/>{% trans 'Visibility' %} : {{ report.private|yesno:_("pro,public") }}<br/><br/></span>

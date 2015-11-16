@@ -217,6 +217,7 @@ def show(request, slug, report_id):
         "applicants": applicants,
         "entities": entities,
         "refuse_form": ReportCommentForm(),
+        "add_comment_form": ReportCommentForm(),
         "transfer_form": TransferForm(),
         "mark_as_done_form": ReportCommentForm(),
         "priority_form": PriorityForm(instance=report),

@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.db import transaction
@@ -393,3 +395,41 @@ def report_false_address(request, report_id):
         return HttpResponseRedirect(report.get_absolute_url_pro())
     else:
         raise Http404
+
+
+# @responsible_permission #you need permission as this is used when specific actions are taken (such as switching respon
+def change_flag_and_add_comment(request, report_id):
+    if request.fmsuser.is_pro():
+        report = get_object_or_404(Report, id=report_id)
+        comment_form = ReportCommentForm(request.POST)
+        hidden = None
+
+        #if you add a new flag using divAddComment in _actions.html, don't forget to retrieve the correct name
+        # of the hidden field here.
+        if request.POST.get("hiddenThirdPartyResponsibility"):
+            hidden = request.POST.get("hiddenThirdPartyResponsibility")
+            if hidden == 'true':
+                #source of incident is due to a third party
+                report.third_party_responsibility = True
+            else:
+                #source of incident is not a third party
+                report.third_party_responsibility = False
+            report.save()
+
+        elif request.POST.get("hiddenPrivateProperty"):
+            hidden = request.POST.get("hiddenPrivateProperty")
+            if hidden == 'true':
+                #the source of the incident is not on a private property
+                report.private_property = True
+            else:
+                #the source of the incident is on a private property
+                report.private_property = False
+            report.save()
+
+        # TOFIX: Validate form
+        if comment_form.is_valid() and request.POST.get('text') and hidden is not None:
+            comment = comment_form.save(commit=False)
+            comment.report = report
+            comment.save()
+        return HttpResponseRedirect(report.get_absolute_url_pro())
+    raise PermissionDenied()
