@@ -194,7 +194,7 @@ class CitizenForm(forms.Form):
 
     last_name = forms.CharField(max_length="30", label=_('Identity'), required=False)
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
-    email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={'type': 'email', 'class': 'validate-email'}))
+    email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={'class': 'validate-email'}))
     quality = forms.ChoiceField(label=_('Quality'), widget=forms.Select, choices=qualities)
 
     def clean(self):
