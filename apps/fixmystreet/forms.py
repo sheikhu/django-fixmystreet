@@ -240,30 +240,6 @@ class CitizenForm(forms.Form):
         return instance
 
 
-class ContactForm(forms.Form):
-    required_css_class = 'required'
-
-    name = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(attrs={'class': 'required'}),
-        label=_('Name'))
-    email = forms.EmailField(
-        widget=forms.TextInput(attrs=dict({'class': 'required'}, maxlength=200)),
-        label=_('Email'))
-    body = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'required'}),
-        label=_('Message'))
-
-    def save(self, fail_silently=False):
-        message = render_to_string("emails/contact/message.txt", self.cleaned_data)
-        send_mail(
-            'FixMyStreet User Message from %s' % self.cleaned_data['email'],
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.ADMIN_EMAIL],
-            fail_silently=False)
-
-
 class ReportFileForm(forms.ModelForm):
     required_css_class = 'required'
 
