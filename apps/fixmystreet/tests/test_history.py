@@ -738,7 +738,8 @@ class HistoryTest(FMSTestCase):
         url = '%s?report_id=%s' % (reverse('search_ticket_pro'), report_id)
         response = self.client.get(url, follow=True)
         self.assertEquals(response.status_code, 200)
-        self.assertContains(response, self.calculatePrintPro(activities[2]))
+        self.calculatePrintPro(activities[2])
+        self.assertContains(response, self.calculatePrintPro(activities[2]).replace("'", '&#39;'))
         #Now see if the information for the citizen is ok
         self.client.logout()
         url = '%s?report_id=%s' % (reverse('search_ticket'), report_id)
@@ -747,7 +748,7 @@ class HistoryTest(FMSTestCase):
         report = Report.objects.get(id=report_id)
         activities = report.activities.all()
         self.assertEqual(activities.all().count(), 3)
-        self.assertContains(response, self.calculatePrint(activities[2]))
+        self.assertContains(response, self.calculatePrint(activities[2]).replace("'", '&#39;'))
 
     def test_make_comment_public(self):
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post_citizen, follow=True)
@@ -877,7 +878,3 @@ class HistoryTest(FMSTestCase):
             related_new=activity.related_new,
             related_old=activity.related_old
         )
-
-        #Mail to creator and manager must be sent
-        #self.assertTrue(self.citizen.email in mail.outbox[0].to or self.citizen.email in mail.outbox[1].to)
-        #self.assertTrue(self.manager.email in mail.outbox[0].to or self.manager.email in mail.outbox[1].to)
