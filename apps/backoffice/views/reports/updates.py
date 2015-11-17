@@ -403,7 +403,7 @@ def change_flag_and_add_comment(request, report_id):
         report = get_object_or_404(Report, id=report_id)
         comment_form = ReportCommentForm(request.POST)
         hidden = None
-
+        event_type = None
         #if you add a new flag using divAddComment in _actions.html, don't forget to retrieve the correct name
         # of the hidden field here.
         if request.POST.get("hiddenThirdPartyResponsibility"):
@@ -415,6 +415,7 @@ def change_flag_and_add_comment(request, report_id):
                 #source of incident is not a third party
                 report.third_party_responsibility = False
             report.save()
+            event_type = ReportEventLog.THIRD_PARTY_RESPONSIBILITY
 
         elif request.POST.get("hiddenPrivateProperty"):
             hidden = request.POST.get("hiddenPrivateProperty")
@@ -425,6 +426,16 @@ def change_flag_and_add_comment(request, report_id):
                 #the source of the incident is on a private property
                 report.private_property = False
             report.save()
+            event_type = ReportEventLog.PRIVATE_PROPERTY
+
+        if event_type is not None:
+            event = ReportEventLog(
+                        report=report,
+                        event_type=event_type,
+                        user=get_current_user(),
+                        text=hidden, #saving the new value of the flag in case we ever need it.
+                    )
+            event.save()
 
         # TOFIX: Validate form
         if comment_form.is_valid() and request.POST.get('text') and hidden is not None:
