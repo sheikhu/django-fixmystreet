@@ -31,7 +31,7 @@ class ReportAcceptInWebhookMixin(object):
         self._add_comment(context)
 
         # Set reference_id to the report
-        self._report.contactor_id = self._data["reference_id"]
+        self._report.contractor_reference_id = self._data["reference_id"]
         self._report.save()
 
     def _validate(self):

@@ -86,7 +86,7 @@
                 '{{ False|yesno:_("a pro,a citizen") }}'
             ]}, // Signaled by
             {type: "select"}, // contractor
-            {type: "text"}, // contractor id
+            {type: "text"}, // contractor reference id
             {type: "select"}, // resp manager
             {type: "select"}, // resp entity
             {sType: "date-euro", oSort:"date-eu"}, // date accepted/created
@@ -390,7 +390,7 @@
                     <li><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>
 
                     <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
-                    <li><label><input type="checkbox" checked /> {% trans "Contactor ID" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Contactor reference ID" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>

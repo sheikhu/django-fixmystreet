@@ -13,12 +13,12 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='historicalreport',
-            name='contactor_id',
+            name='contractor_reference_id',
             field=models.CharField(max_length=20, null=True, blank=True),
         ),
         migrations.AddField(
             model_name='report',
-            name='contactor_id',
+            name='contractor_reference_id',
             field=models.CharField(max_length=20, null=True, blank=True),
         ),
     ]
