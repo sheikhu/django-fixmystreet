@@ -733,6 +733,9 @@ class Report(UserTrackedModel):
     #indicate whether the source of the incident is located on a private property or not
     private_property = models.BooleanField(default=False)
 
+    # Reference to a ticket ID from contractor IT system
+    contactor_id = models.CharField(max_length=20, null=True, blank=True)
+
     def get_category_path(self):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
 

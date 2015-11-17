@@ -86,6 +86,7 @@
                 '{{ False|yesno:_("a pro,a citizen") }}'
             ]}, // Signaled by
             {type: "select"}, // contractor
+            {type: "text"}, // contractor id
             {type: "select"}, // resp manager
             {type: "select"}, // resp entity
             {sType: "date-euro", oSort:"date-eu"}, // date accepted/created
@@ -204,7 +205,7 @@
                     table.columnFilter({ sPlaceHolder: "head:after", aoColumns: columns});
 
                     // Custom filter for hierarchy status
-                    var select = '<option value="" %}">{% trans "All" %}</option>';
+                    var select = '<option value="" %}">{% trans "All" context "Masculine plural" %}</option>';
 
                     select += '<option value="{% trans "Created" %}">{% trans "Created" %}</option>';
 
@@ -389,6 +390,7 @@
                     <li><label><input type="checkbox" checked /> {% trans "Signaled by" %}</label></li>
 
                     <li><label><input type="checkbox" checked /> {% trans "Assigned contractor" %}</label></li>
+                    <li><label><input type="checkbox" checked /> {% trans "Contactor ID" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Responsible department" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Responsible" %}</label></li>
                     <li><label><input type="checkbox" checked /> {% trans "Created at" %}</label></li>
