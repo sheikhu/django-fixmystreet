@@ -49,6 +49,7 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     category.secondary_category_class_id,
     r.secondary_category_id,
     r.private_property,
+    r.contractor_reference_id,
     zipcode.commune_id as territorial_entity,
     (
         SELECT count(att_com.id) FROM fixmystreet_reportattachment att_com
