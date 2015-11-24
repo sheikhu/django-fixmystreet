@@ -17,6 +17,7 @@ else:
 
 
 # Manage settings according to environment
+DEBUG = False
 if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
     DEBUG          = True
 
