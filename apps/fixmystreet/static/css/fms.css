@@ -1791,6 +1791,16 @@ ul#column-visibility.dropdown-menu {
 	box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 }
 
+ul#column-visibility.dropdown-menu {
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+
+    -moz-column-gap: 20px;
+    -webkit-column-gap: 20px;
+    column-gap: 20px;
+}
+
 #report-form label[for=id_type_0],
 #report-form label[for=id_type_1],
 #report-form label[for=id_type_2],
