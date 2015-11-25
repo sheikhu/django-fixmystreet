@@ -121,7 +121,7 @@ class FMSUser(User):
 
     organisation = models.ForeignKey(
         'OrganisationEntity',
-        related_name='team',
+        related_name='users',
         null=True,
         blank=True,
         verbose_name=_("Entity"),
@@ -163,6 +163,21 @@ class FMSUser(User):
             return unicode(_(u'A citizen'))
         else:
             return self.get_full_name()
+
+    def get_full_name_with_last_name_first(self):
+        if not self.first_name and not self.last_name:
+            return unicode(_(u'A citizen'))
+        else:
+            full_name = ""
+            if self.last_name:
+                full_name += self.last_name.upper()
+            if self.last_name and self.first_name:
+                full_name += ", "
+            if self.first_name:
+                full_name += self.first_name
+            return full_name
+
+
 
     def get_organisation(self):
         '''Return the user organisation and its dependency in case of contractor'''

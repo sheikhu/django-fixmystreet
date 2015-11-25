@@ -191,11 +191,13 @@ def show(request, slug, report_id):
     entities = OrganisationEntity.objects.filter(type=OrganisationEntity.COMMUNE).filter(active=True).order_by('name_' + get_language())
     departments = []
     contractors = []
+    contact_list = []
 
     if organisation:
         entities.exclude(pk=organisation.id)
         departments = organisation.associates.all().filter(type=OrganisationEntity.DEPARTMENT).order_by('name_' + get_language())
         contractors = organisation.associates.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_' + get_language())
+        contact_list = organisation.users.filter(is_active=True)
     else:
         contractors = OrganisationEntity.objects.filter(type=OrganisationEntity.SUBCONTRACTOR).order_by('name_' + get_language())
 
@@ -221,9 +223,11 @@ def show(request, slug, report_id):
         "transfer_form": TransferForm(),
         "mark_as_done_form": ReportCommentForm(),
         "priority_form": PriorityForm(instance=report),
-        'activity_list': report.activities.all().order_by('-event_at'),
-        'attachment_edit': can_edit_attachment,
+        "activity_list": report.activities.all().order_by('-event_at'),
+        "attachment_edit": can_edit_attachment,
         "category_list": ReportMainCategoryClass.objects.all().order_by('name_' + get_language()),
+        "contact_list": contact_list,
+
     }, context_instance=RequestContext(request))
 
 

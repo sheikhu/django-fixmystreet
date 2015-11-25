@@ -3763,3 +3763,82 @@ form {
 #div-send-mail-pdf input[type=submit]{
     margin-bottom:10px;
 }
+
+#modalDownloadPDF {
+	width: 750px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
+    margin-left:-375px;
+}
+
+#divDownloadPDFMain{
+    float:left;
+    width:100%;
+}
+
+#divDownloadPDFContactList{
+    display:none;
+    float:right;
+    width:24%;
+    padding-left: 5px;
+}
+
+#ulDownloadPDF{
+    list-style: none;
+    overflow-y: auto;
+    height:385px;
+    margin-left:0;
+}
+
+#ulDownloadPDF li{
+    cursor: pointer;
+	width:auto;
+}
+
+#ulDownloadPDF li a{
+    text-transform: none;
+    white-space: normal;
+	word-wrap: break-word;
+}
+
+#divAddCommentMessage{
+    margin-top:10px;
+    margin-bottom:20px;
+}
+
+.pAddCommentYes{
+	color:green;
+}
+
+.pAddCommentNo{
+	color:red;
+}
+
+/***** overwritting cooldfieldset css ****/
+ #fieldsetAddComment{
+	border:0;
+}
+
+#fieldsetAddComment legend{
+	border:0;
+    color:#2c3e50;
+    padding-left:0px;
+    font-size: 16px;
+    margin-bottom: 0px;
+
+}
+
+/*** removing background to use glyphicon icons instead of custom images of coolfieldset ***/
+#fieldsetAddComment legend, #fieldsetAddComment.expanded legend{
+	background: none;
+}
+
+#fieldsetAddComment.collapsed legend{
+	background: none;
+}
+
+#iconAddComment{
+    margin-right:5px;
+    margin-left:0px;
+    margin-top: 2px;
+    width:14px;
+}

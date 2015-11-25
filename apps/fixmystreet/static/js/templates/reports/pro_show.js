@@ -166,7 +166,55 @@ $(document).ready(function() {
         });
     });
 
+    //Animation to show the contact list when sending a PDF
+    $("#div-send-mail-pdf").on("shown", function(){
+        //if --> make sure you only the animation once (don't do it again it already opened, it's ugly).
+        if($("#divDownloadPDFContactList").css("display") == "none"){
+            $("#divDownloadPDFMain").animate({width:"75%"}, 100);
+            $("#divDownloadPDFContactList").show();
+        }
+    });
+
+    //Animation to hide the contact list when sending a PDF (all accordion submenu are closed)
+    $("#div-send-mail-pdf").on("hidden", function(){
+        var allAccordionAreClosed = $("#div-send-mail-pdf .accordion-body.in").length == 0;
+        if(allAccordionAreClosed){
+            $("#divDownloadPDFMain").animate({width:"100%"}, 100);
+            $("#divDownloadPDFContactList").hide();
+        }
+    });
+
+    $("#ulDownloadPDF li").on("click", function(){
+        var clickedEmail = $(this).find(".contact_email").text();
+        //email is the first textarea in the open accordion section (there is only 1 section open at any one time).
+        var emailsToSend = $($("#div-send-mail-pdf .accordion-body.in form textarea").get(0)).val() || "";
+        var array = emailsToSend.split(/,|;/);
+        var emailInArray = false;
+        for(var index in array){
+            if(array[index].trim() == clickedEmail){
+                emailInArray = true;
+                break;
+            }
+        }
+        if(!emailInArray) {
+            if (emailsToSend.trim() != "" && !endsWith(emailsToSend.trim(), ',') && !endsWith(emailsToSend.trim(), ';')){
+                emailsToSend += ",";
+            }
+            if (emailsToSend.trim().length > 0){
+                emailsToSend += " ";
+            }
+            emailsToSend += clickedEmail;
+            $($("#div-send-mail-pdf .accordion-body.in form textarea").get(0)).val(emailsToSend);
+        }
+    });
+
 });
+
+
+
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
 
 $(function() {
     $(".changeStatus").delegate("input[type=radio]", "click", function () {

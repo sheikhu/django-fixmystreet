@@ -2,22 +2,50 @@
 
 function setThirdPartyResponsibility(boolVal) {
     //hiddenThirdPartyResponsibility is used in updates.py : change_flag_and_add_comment
-    showAddCommentDialog("hiddenThirdPartyResponsibility", boolVal, TRAD_SWITCH_THIRD_PARTY_RESPONSIBILITY_PLACEHOLDER);
+    showAddCommentDialog("hiddenThirdPartyResponsibility", boolVal, TRAD_SWITCH_THIRD_PARTY_RESPONSIBILITY_PLACEHOLDER, TRAD_THIRD_PARTY_RESPONSIBILITY_MESSAGE);
 }
 
 function setPrivateProperty(boolVal) {
     //hiddenPrivateProperty is used in updates.py : change_flag_and_add_comment
-    showAddCommentDialog("hiddenPrivateProperty", boolVal, TRAD_SWITCH_PRIVATE_PROPERTY_PLACEHOLDER);
+    showAddCommentDialog("hiddenPrivateProperty", boolVal, TRAD_SWITCH_PRIVATE_PROPERTY_PLACEHOLDER, TRAD_PRIVATE_PROPERTY_MESSAGE);
 }
 
-function showAddCommentDialog(name, boolVal, placeholder){
-    $("#dialogAddComment>div.required").removeClass("required");
+function showAddCommentDialog(name, boolVal, placeholder, message){
+    $("#dialogAddComment").find(".control-group").removeClass("required");
     $("#hiddenAddComment").attr("name", name );
     $("#hiddenAddComment").attr("value", boolVal);
     if(placeholder != undefined){
         $("#dialogAddComment").find("#id_text").attr("placeholder", placeholder);
     }
+    if(boolVal){
+        message=message.replace('{0}', ('<span class="pAddCommentYes">' + gettext('yes') + '</span>'));
+    }
+    else{
+        message=message.replace('{0}', ('<span class="pAddCommentNo">' + gettext('no') + '</span>'));
+    }
+    $("#divAddCommentMessage p").html(message);
+    $("#fieldsetAddComment").coolfieldset({collapsed:true, speed:"fast"});
+
+    //set proper icon (up or down)
+    checkIconAddComment();
+    $("#fieldsetAddComment legend").on("click", function(){
+        checkIconAddComment();
+    });
+
+    //show modal
     $("#divAddComment").modal();
+}
+
+function checkIconAddComment(){
+    console.log("test");
+    if($("#iconAddComment").attr("class") && $("#iconAddComment").attr("class").indexOf("icon-chevron-down") > -1){
+        $("#iconAddComment").removeClass("icon-chevron-down");
+        $("#iconAddComment").addClass("icon-chevron-up");
+    }
+    else{
+        $("#iconAddComment").removeClass("icon-chevron-up");
+        $("#iconAddComment").addClass("icon-chevron-down");
+    }
 }
 
 function setPrivate() {

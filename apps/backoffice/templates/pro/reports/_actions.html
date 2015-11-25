@@ -21,6 +21,8 @@ var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
 /******************TRANS TO BE MOVED IN JS TRANSIFEX ****************/
 var TRAD_SWITCH_THIRD_PARTY_RESPONSIBILITY_PLACEHOLDER = "{% trans "Please enter more information to describe why you changed the value of 'third party responsibility'" %}";
 var TRAD_SWITCH_PRIVATE_PROPERTY_PLACEHOLDER = "{% trans "Please enter more information to describe why you changed the value of 'private property'" %}";
+var TRAD_THIRD_PARTY_RESPONSIBILITY_MESSAGE = "{% trans "You are about to set the value of third party responsibility to : {0}." %}";
+var TRAD_PRIVATE_PROPERTY_MESSAGE = "{% trans "You are about to set the value of private property to : {0}." %}";
 var TRAD_SET_PRIVATE = "{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}";
 var TRAD_SELECT_CATEGORY = "{% trans 'Select a Category' %}";
 var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' %}";
@@ -390,15 +392,26 @@ var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' 
     </div>
 </div>
 <div id="divAddComment" class="modal hide fade" role="dialog">
-    <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <form id="dialogAddComment" title="{% trans "Please enter more information to describe your action" %}" action="{% url 'report_change_flag_and_add_comment' report.id %}" method="post">
-            {% include "_form_horizontal.html" with form=add_comment_form %}
+    <form id="dialogAddComment" action="{% url 'report_change_flag_and_add_comment' report.id %}" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Confirm the change" %}</h3>
+        </div>
+        <div class="modal-body">
             <input type="hidden" id="hiddenAddComment" name="" value=""> {# name & value are set in the javascript function that wants to add a comment. ex: thirdPartyResponsibility and setPrivateProperty #}
+            <div id="divAddCommentMessage"><p></p></div>
+            <fieldset id="fieldsetAddComment" class="coolfieldset">
+                <legend><i id="iconAddComment"></i>{% trans "Add a comment" %}</legend>
+                <div>
+                    {% include "_form_horizontal.html" with form=add_comment_form %}
+                </div>
+            </fieldset>
+        </div>
+        <div class="modal-footer">
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
             <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
 {% endif %}
