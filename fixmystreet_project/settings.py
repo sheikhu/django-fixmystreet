@@ -273,7 +273,7 @@ except ImportError:
 # DATABASES
 POSTGIS_TEMPLATE = 'template_postgis'
 
-if not 'DATABASES' in locals():
+if not 'DATABASES' in locals() and 'DATABASE_NAME' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': os.environ['DATABASE_ENGINE'],
