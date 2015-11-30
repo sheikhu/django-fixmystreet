@@ -288,7 +288,7 @@ elif ENVIRONMENT == "rpm":
     DATABASES = {
         'default': {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(LOCAL_DB_ROOT, "fmsproxy.sqlite3"),
+            "NAME": "fixmystreet.sqlite3",
         }
     }
 
