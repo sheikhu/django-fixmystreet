@@ -1,6 +1,9 @@
+apps
+django_fixmystreet.egg-info
 env
-fixmystreet
-fixmystreet.egg-info
-manage.py
-static
+fixmystreet_project
+locale
 Makefile
+manage.py
+middleware
+static
