@@ -1,5 +1,9 @@
-bin/django
-bin/django-debug
-bin/django-deploy
-libs/eggs
-src
+apps
+django_fixmystreet.egg-info
+env
+fixmystreet_project
+locale
+Makefile
+manage.py
+middleware
+static

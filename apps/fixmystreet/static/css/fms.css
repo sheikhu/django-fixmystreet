@@ -3110,8 +3110,9 @@ clear:both;
 	right: 0;
 }
 
-.dataTables_info {
-	color:rgba(0,0,0,0.5);
+#groups-table_wrapper .dataTables_info, #groups-table_wrapper .paginate_disabled_previous, #groups-table_wrapper .paginate_enabled_previous, #groups-table_wrapper .paginate_disabled_next, #groups-table_wrapper .paginate_enabled_next, #users-table_wrapper .dataTables_info, #users-table_wrapper .paginate_disabled_previous, #users-table_wrapper .paginate_enabled_previous, #users-table_wrapper .paginate_disabled_next, #users-table_wrapper .paginate_enabled_next {
+/*	color:rgba(0,0,0,0.5);*/
+  color: #FFF !important;
 }
 .dataTables_length {
 	clear: left;

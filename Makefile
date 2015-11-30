@@ -10,7 +10,7 @@ SOURCE_URL    = https://github.com/CIRB/django-fixmystreet
 
 RPM_VERSION   = test
 RPM_NAME      = fixmystreet
-RPM_PREFIX    = /home/fixmystreet/django-fixmystreet
+RPM_PREFIX    = /home/fixmystreet/fixmystreet
 RPM_INPUTS_FILE = rpm-include-files
 
 DBNAME        = fixmystreet
@@ -49,7 +49,7 @@ initcache:
 
 install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop -Z
-	$(MAKE) migrate collectstatic
+	$(MAKE) collectstatic
 
 jenkins: develop
 	rm -rf reports
@@ -72,6 +72,16 @@ migrate:
 
 migrations:
 	$(BIN_PATH)/manage.py makemigrations
+
+rpm: clean install
+	find . -type f -name "*.pyc" -delete
+
+	python replacer.py `pwd` $(RPM_PREFIX) $(BIN_PATH)
+	python replacer.py `pwd` $(RPM_PREFIX) $(INSTALL_PATH)/lib/python2.7/site-packages
+
+	/usr/sbin/prelink --undo $(INSTALL_PATH)/bin/python2.7
+
+	fpm -s dir -t rpm -n "$(RPM_NAME)" -v $(RPM_VERSION) --rpm-user $(RPM_USER) --rpm-group $(RPM_GROUP) --prefix $(RPM_PREFIX) --after-install rpm-migrate.sh `cat $(RPM_INPUTS_FILE)`
 
 run: $(BIN_PATH)
 	$(BIN_PATH)/manage.py runserver

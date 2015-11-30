@@ -18,7 +18,7 @@ else:
 
 # Manage settings according to environment
 DEBUG = False
-if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins":
+if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins" or ENVIRONMENT == "rpm":
     DEBUG          = True
 
     # Disable mail in non-production environment
@@ -273,7 +273,7 @@ except ImportError:
 # DATABASES
 POSTGIS_TEMPLATE = 'template_postgis'
 
-if not 'DATABASES' in locals():
+if not 'DATABASES' in locals() and 'DATABASE_NAME' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': os.environ['DATABASE_ENGINE'],
@@ -282,6 +282,13 @@ if not 'DATABASES' in locals():
             'PASSWORD': os.environ['DATABASE_PASSWORD'],
             'HOST': os.environ['DATABASE_HOST'],
             'PORT': os.environ['DATABASE_PORT'],
+        }
+    }
+elif ENVIRONMENT == "rpm":
+    DATABASES = {
+        'default': {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": "fixmystreet.sqlite3",
         }
     }
 
