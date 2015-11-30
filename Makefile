@@ -49,7 +49,7 @@ initcache:
 
 install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop -Z
-	$(MAKE) migrate collectstatic
+	$(MAKE) collectstatic
 
 jenkins: develop
 	rm -rf reports
