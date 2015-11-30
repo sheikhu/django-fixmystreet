@@ -78,13 +78,13 @@ FROM fixmystreet_historicalreport r
 -- WHERE previous_row.id IS NULL OR r.status != previous_row.status OR r.responsible_manager_id != previous_row.responsible_manager_id;
 
 
-CREATE OR REPLACE VIEW ods_dim_status AS SELECT
-    code::int,
-    label_fr,
-    label_nl
-FROM fixmystreet_listitem
-    WHERE model_class='fixmystreet.report'
-    AND model_field='status';
+-- CREATE OR REPLACE VIEW ods_dim_status AS SELECT
+--     code::int,
+--     label_fr,
+--     label_nl
+-- FROM fixmystreet_listitem
+--     WHERE model_class='fixmystreet.report'
+--     AND model_field='status';
 
 
 CREATE OR REPLACE VIEW ods_dim_user AS SELECT
@@ -110,13 +110,13 @@ FROM fixmystreet_organisationentity manager
     WHERE type='D';
 
 
-CREATE OR REPLACE VIEW ods_dim_quality AS SELECT
-    code::int,
-    label_fr,
-    label_nl
-FROM fixmystreet_listitem
-    WHERE model_class='fixmystreet.report'
-    AND model_field='quality';
+-- CREATE OR REPLACE VIEW ods_dim_quality AS SELECT
+--     code::int,
+--     label_fr,
+--     label_nl
+-- FROM fixmystreet_listitem
+--     WHERE model_class='fixmystreet.report'
+--     AND model_field='quality';
 
 
 CREATE OR REPLACE VIEW ods_dim_entity_responsible AS SELECT
