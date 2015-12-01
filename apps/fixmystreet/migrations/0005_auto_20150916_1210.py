@@ -14,9 +14,6 @@ class Migration(migrations.Migration):
         migrations.DeleteModel(
             name='FaqEntry',
         ),
-        migrations.DeleteModel(
-            name='ListItem',
-        ),
         migrations.RemoveField(
             model_name='historicalorganisationentity',
             name='fmsproxy',
