@@ -2464,6 +2464,19 @@ class ZipCode(models.Model):
     class Meta:
         translate = ('name', )
 
+class ListItem(models.Model):
+    """
+    Only for sql selection purpose. Used by SQL views trough FME for BI/BO
+    """
+    __metaclass__ = TransMeta
+    label = models.CharField(verbose_name=_('Label'), max_length=100, null=False)
+    model_class = models.CharField(verbose_name=_('Related model class name'), max_length=100, null=False)
+    model_field = models.CharField(verbose_name=_('Related model field'), max_length=100, null=False)
+    code = models.CharField(max_length=50, null=False)
+
+    class Meta:
+        translate = ('label', )
+
 
 # to import fresh datas:
 #
