@@ -49,6 +49,7 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     category.secondary_category_class_id,
     r.secondary_category_id,
     r.private_property,
+    r.third_party_responsibility,
     r.contractor_reference_id,
     zipcode.commune_id as territorial_entity,
     (
@@ -78,13 +79,13 @@ FROM fixmystreet_historicalreport r
 -- WHERE previous_row.id IS NULL OR r.status != previous_row.status OR r.responsible_manager_id != previous_row.responsible_manager_id;
 
 
--- CREATE OR REPLACE VIEW ods_dim_status AS SELECT
---     code::int,
---     label_fr,
---     label_nl
--- FROM fixmystreet_listitem
---     WHERE model_class='fixmystreet.report'
---     AND model_field='status';
+CREATE OR REPLACE VIEW ods_dim_status AS SELECT
+    code::int,
+    label_fr,
+    label_nl
+FROM fixmystreet_listitem
+    WHERE model_class='fixmystreet.report'
+    AND model_field='status';
 
 
 CREATE OR REPLACE VIEW ods_dim_user AS SELECT
@@ -110,13 +111,13 @@ FROM fixmystreet_organisationentity manager
     WHERE type='D';
 
 
--- CREATE OR REPLACE VIEW ods_dim_quality AS SELECT
---     code::int,
---     label_fr,
---     label_nl
--- FROM fixmystreet_listitem
---     WHERE model_class='fixmystreet.report'
---     AND model_field='quality';
+CREATE OR REPLACE VIEW ods_dim_quality AS SELECT
+    code::int,
+    label_fr,
+    label_nl
+FROM fixmystreet_listitem
+    WHERE model_class='fixmystreet.report'
+    AND model_field='quality';
 
 
 CREATE OR REPLACE VIEW ods_dim_entity_responsible AS SELECT
@@ -124,9 +125,7 @@ CREATE OR REPLACE VIEW ods_dim_entity_responsible AS SELECT
     name_fr,
     name_nl,
     type='C' as commune,
-    type='R' as region,
-    slug_fr,
-    slug_nl
+    type='R' as region
 FROM fixmystreet_organisationentity
 WHERE type='C' OR type='R';
 
@@ -135,9 +134,7 @@ CREATE OR REPLACE VIEW ods_dim_entity_contractor AS SELECT
     name_fr,
     name_nl,
     type='S' as subcontractor,
-    type='A' as applicant,
-    slug_fr,
-    slug_nl
+    type='A' as applicant
 FROM fixmystreet_organisationentity
     WHERE type='S' OR type='A';
 
