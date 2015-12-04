@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-25 11:32+0100\n"
+"POT-Creation-Date: 2015-12-04 15:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1883,7 +1883,7 @@ msgstr ""
 msgid "Category group"
 msgstr ""
 
-#: fixmystreet/models.py:2103
+#: fixmystreet/models.py:2103 fixmystreet/models.py:2472
 msgid "Label"
 msgstr ""
 
@@ -2090,6 +2090,14 @@ msgstr ""
 #: fixmystreet/models.py:2342
 #, python-brace-format
 msgid "The value of the 'private property flag' was changed by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:2473
+msgid "Related model class name"
+msgstr ""
+
+#: fixmystreet/models.py:2474
+msgid "Related model field"
 msgstr ""
 
 #: fixmystreet/stats.py:250

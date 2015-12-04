@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-25 11:32+0100\n"
+"POT-Creation-Date: 2015-12-04 15:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -240,13 +240,7 @@ msgstr ""
 msgid "Are you sure you want to change the contractor/applicant?"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro_show.js:39
-msgid ""
-"This is the initial text that needs to be defined. It's a suggestion for the "
-"gestionnaire. He can be edited as needed."
-msgstr ""
-
-#: fixmystreet/static/js/templates/reports/pro_show.js:130
+#: fixmystreet/static/js/templates/reports/pro_show.js:131
 msgid "Error"
 msgstr ""
 

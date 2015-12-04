@@ -4,15 +4,15 @@
 # 
 # Translators:
 # afuca <afuca@cirb.brussels>, 2015
-# dfranklin <DFranklin@cirb.irisnet.be>, 2014
+# dfranklin <DFranklin@cirb.irisnet.be>, 2014-2015
 # lafif <lafif@cirb.irisnet.be>, 2014
 # tdesany2 <transifex@desany.eu>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-25 11:32+0100\n"
-"PO-Revision-Date: 2015-11-25 10:33+0000\n"
+"POT-Creation-Date: 2015-12-04 15:02+0100\n"
+"PO-Revision-Date: 2015-12-04 14:02+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -104,7 +104,7 @@ msgstr "Choix {{ data.number }}"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:311
 msgid "Go"
-msgstr ""
+msgstr "Go"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:313
 msgid "New incident"
@@ -234,41 +234,35 @@ msgstr "Positionnez-moi à l'endroit exact de l'incident"
 
 #: fixmystreet/static/js/templates/reports/pro__actions.js:21
 msgid "yes"
-msgstr ""
+msgstr "oui"
 
 #: fixmystreet/static/js/templates/reports/pro__actions.js:24
 msgid "no"
-msgstr ""
+msgstr "non"
 
 #: fixmystreet/static/js/templates/reports/pro__actions.js:69
 msgid "Are you sure you want to change the contractor/applicant?"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro_show.js:39
-msgid ""
-"This is the initial text that needs to be defined. It's a suggestion for the"
-" gestionnaire. He can be edited as needed."
-msgstr ""
-
-#: fixmystreet/static/js/templates/reports/pro_show.js:130
+#: fixmystreet/static/js/templates/reports/pro_show.js:131
 msgid "Error"
 msgstr "Erreur"
 
 #: fixmystreet/static/lib/jquery/jquery-ui.min.js:10
 msgid "'"
-msgstr ""
+msgstr "'"
 
 #: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:14
 msgid "<iframe frameborder='0' width='0' height='0'/>"
-msgstr ""
+msgstr "<iframe frameborder='0' width='0' height='0'/>"
 
 #: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
 msgid "<script>"
-msgstr ""
+msgstr "<script>"
 
 #: fixmystreet/static/lib/lightbox/js/lightbox-plus-jquery.min.js:26
 msgid "<div>"
-msgstr ""
+msgstr "<div>"
 
 #: fixmystreet/static/tests/leaflet/test.template.js:15
 msgid "Test #<% this.number %>"

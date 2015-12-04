@@ -30,14 +30,15 @@ function showMap() {
     $("#map-bxl").toggle();
 }
 
+//Following functions all seems deprecated. TODO : Remove in next version if no problem
 
 /****************************************************************************/
 /* Refuse method is called when the gestionnaire decides to refuse a report */
 /****************************************************************************/
-function refuse(){
-    $("#divRefuse").modal();
-    $('#more_information_text').val(gettext("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed."))
-}
+//function refuse(){
+//    $("#divRefuse").modal();
+//    $('#more_information_text').val(gettext("This is the initial text that needs to be defined. It's a suggestion for the gestionnaire. He can be edited as needed."))
+//}
 
 ///***************************************************************************/
 ///* refuseConfirmButton method is called when the user confirms his refusal */
