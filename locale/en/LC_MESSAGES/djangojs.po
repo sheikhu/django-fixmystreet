@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-04 15:27+0100\n"
+"POT-Creation-Date: 2015-12-04 16:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,15 +228,55 @@ msgstr ""
 msgid "Move the cursor"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:21
+#: fixmystreet/static/js/templates/reports/pro__actions.js:3
+#: fixmystreet/static/js/templates/reports/pro__actions.js:13
+msgid ""
+"Please enter more information to describe why you changed the value of "
+"'third party responsibility'"
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:4
+#: fixmystreet/static/js/templates/reports/pro__actions.js:18
+msgid ""
+"Please enter more information to describe why you changed the value of "
+"'private property'"
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:5
+#: fixmystreet/static/js/templates/reports/pro__actions.js:13
+msgid "You are about to set the value of third party responsibility to : {0}."
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:6
+#: fixmystreet/static/js/templates/reports/pro__actions.js:18
+msgid "You are about to set the value of private property to : {0}."
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:7
+msgid ""
+"Are you sure you want to make the incident private? This will notify all "
+"public subscribers."
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:8
+#: fixmystreet/static/js/templates/reports/pro__actions.js:120
+msgid "Select a Category"
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:9
+#: fixmystreet/static/js/templates/reports/pro__actions.js:148
+msgid "Are you sure you want to close this report?"
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:29
 msgid "yes"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:24
+#: fixmystreet/static/js/templates/reports/pro__actions.js:32
 msgid "no"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:69
+#: fixmystreet/static/js/templates/reports/pro__actions.js:77
 msgid "Are you sure you want to change the contractor/applicant?"
 msgstr ""
 
