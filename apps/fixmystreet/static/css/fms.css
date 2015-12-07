@@ -2215,7 +2215,8 @@ padding: 0 15px 15px 15px;
 
 }
 
-#newertoMergeNumber, #newertoMergeCategory, #newertoMergeAddress {
+.one_incident #newertoMergeNumberLabel, .one_incident #newertoMergeNumber, .one_incident #newertoMergeCategory, .one_incident #newertoMergeAddress,
+.one_incident #oldertoMergeNumberLabel, .one_incident #oldertoMergeNumber, .one_incident #oldertoMergeCategory, .one_incident #oldertoMergeAddress{
 
 	color:white;
 }
