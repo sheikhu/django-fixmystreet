@@ -44,8 +44,9 @@ window.onload = function() {
             csv += line + rowDelim;
         }
 
-        // Encode data
-        csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+        // Encode data : '%EF%BB%BF' is the BOM necessary for the file to be opened correctly in Excel. Otherwise
+        // special characters are display incorrectly.
+        csvData = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv);
 
         // Download
         var virtualLink = document.createElement("a");
