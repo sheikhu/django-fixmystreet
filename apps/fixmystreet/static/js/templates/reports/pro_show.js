@@ -166,6 +166,10 @@ $(document).ready(function() {
             jQuery(this).removeClass('open');
         });
     });
+  
+    $('#div-send-mail-pdf .collapse')
+      .on('show', function () { $(this).parent().find('.accordion-heading a').addClass('open'); })
+      .on('hide', function () { $(this).parent().find('.accordion-heading a').removeClass('open');         });
 
     //Animation to show the contact list when sending a PDF
     $("#div-send-mail-pdf").on("shown", function(){

@@ -3760,7 +3760,7 @@ form {
 	background: #ffdb00;
     text-decoration: none;
 }
-
+#div-send-mail-pdf .accordion-heading a.open,
 #div-send-mail-pdf .accordion-heading a:hover{
 	color: white;
 	background: #3498db;
