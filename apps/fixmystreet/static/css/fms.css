@@ -3789,7 +3789,7 @@ form {
 #divDownloadPDFContactList{
     display:none;
     float:right;
-    width:24%;
+    width:220px;
     padding-left: 5px;
 }
 
@@ -3803,6 +3803,8 @@ form {
 #ulDownloadPDF li{
     cursor: pointer;
 	width:auto;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 #ulDownloadPDF li a{
@@ -3810,7 +3812,33 @@ form {
     white-space: normal;
 	word-wrap: break-word;
 }
-
+#ulDownloadPDF li a .contact_name{
+    margin-bottom: 0;
+}
+#ulDownloadPDF li a .contact_email{
+    font-size: 14px;
+    margin-bottom: 0;
+    margin-left: 21px;
+}
+#ulDownloadPDF.nav-tabs>li>a {
+    padding: 5px 0 5px 5px;
+}
+.nav-tabs.nav-stacked>li>a:hover, .nav-tabs.nav-stacked>li>a:focus {
+    border: 1px solid #ddd;
+    background: #EEE;
+}
+.nav-tabs.nav-stacked>li>a i, .nav-tabs.nav-stacked>li>a i {
+    float: left;
+    margin-right: 6px;
+    margin-top: 3px;
+}
+.nav-tabs.nav-stacked>li>a:hover i, .nav-tabs.nav-stacked>li>a:focus i{
+    visibility: visible;
+}
+.nav-tabs > li {
+    margin-left: 0;
+    margin-right: 0;
+}
 #divAddCommentMessage{
     margin-top:10px;
     margin-bottom:20px;

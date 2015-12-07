@@ -175,7 +175,7 @@ $(document).ready(function() {
     $("#div-send-mail-pdf").on("shown", function(){
         //if --> make sure you only the animation once (don't do it again it already opened, it's ugly).
         if($("#divDownloadPDFContactList").css("display") == "none"){
-            $("#divDownloadPDFMain").animate({width:"75%"}, 100);
+            $("#divDownloadPDFMain").animate({width:"475px"}, 100);
             $("#divDownloadPDFContactList").show();
         }
     });
