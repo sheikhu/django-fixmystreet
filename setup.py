@@ -38,7 +38,7 @@ dev_require = [
 
     # These following packages depend on system requirements,
     # must be installed on system for prod
-    'pillow==2.9.0',
+    'pillow==3.0.0',
     'psycopg2==2.6.1',
 
     # Jenkins
