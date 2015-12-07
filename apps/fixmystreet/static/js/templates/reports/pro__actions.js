@@ -1,5 +1,13 @@
 
 
+var TRAD_SWITCH_THIRD_PARTY_RESPONSIBILITY_PLACEHOLDER = gettext("Please enter more information to describe why you changed the value of 'third party responsibility'");
+var TRAD_SWITCH_PRIVATE_PROPERTY_PLACEHOLDER = gettext("Please enter more information to describe why you changed the value of 'private property'");
+var TRAD_THIRD_PARTY_RESPONSIBILITY_MESSAGE = gettext("You are about to set the value of third party responsibility to : {0}.");
+var TRAD_PRIVATE_PROPERTY_MESSAGE = gettext("You are about to set the value of private property to : {0}.");
+var TRAD_SET_PRIVATE = gettext('Are you sure you want to make the incident private? This will notify all public subscribers.');
+var TRAD_SELECT_CATEGORY = gettext('Select a Category');
+var TRAD_CLOSE_REPORT = gettext('Are you sure you want to close this report?');
+
 function setThirdPartyResponsibility(boolVal) {
     //hiddenThirdPartyResponsibility is used in updates.py : change_flag_and_add_comment
     showAddCommentDialog("hiddenThirdPartyResponsibility", boolVal, TRAD_SWITCH_THIRD_PARTY_RESPONSIBILITY_PLACEHOLDER, TRAD_THIRD_PARTY_RESPONSIBILITY_MESSAGE);

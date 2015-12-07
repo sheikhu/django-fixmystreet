@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-04 15:27+0100\n"
-"PO-Revision-Date: 2015-12-04 14:18+0000\n"
+"POT-Creation-Date: 2015-12-04 16:34+0100\n"
+"PO-Revision-Date: 2015-12-04 15:30+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -231,15 +231,55 @@ msgstr "Deze straat komt voor in meerdere gemeenten, specificeer a.u.b."
 msgid "Move the cursor"
 msgstr "Ga naar de exacte plaats van het incident"
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:21
+#: fixmystreet/static/js/templates/reports/pro__actions.js:3
+#: fixmystreet/static/js/templates/reports/pro__actions.js:13
+msgid ""
+"Please enter more information to describe why you changed the value of "
+"'third party responsibility'"
+msgstr "Gelieve de reden te vermelden waarom u de waarde 'verantwoordelijkheid derde' gewijzigd heeft. "
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:4
+#: fixmystreet/static/js/templates/reports/pro__actions.js:18
+msgid ""
+"Please enter more information to describe why you changed the value of "
+"'private property'"
+msgstr "Gelieve de reden te vermelden waarom u de waarde 'private eigendom'. "
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:5
+#: fixmystreet/static/js/templates/reports/pro__actions.js:13
+msgid "You are about to set the value of third party responsibility to : {0}."
+msgstr "U wijzigt de waarde 'verantwoordlijkheid derde' naar: {0}"
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:6
+#: fixmystreet/static/js/templates/reports/pro__actions.js:18
+msgid "You are about to set the value of private property to : {0}."
+msgstr "U wijzigt de waarde 'private eigendom' naar: {0}"
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:7
+msgid ""
+"Are you sure you want to make the incident private? This will notify all "
+"public subscribers."
+msgstr "Wenst U dit incident als privé in te voeren?"
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:8
+#: fixmystreet/static/js/templates/reports/pro__actions.js:120
+msgid "Select a Category"
+msgstr "Plaats van het incident"
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:9
+#: fixmystreet/static/js/templates/reports/pro__actions.js:148
+msgid "Are you sure you want to close this report?"
+msgstr "Bent u zeker dat u het incident wilt afsluiten?"
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:29
 msgid "yes"
 msgstr "ja"
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:24
+#: fixmystreet/static/js/templates/reports/pro__actions.js:32
 msgid "no"
 msgstr "nee"
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:69
+#: fixmystreet/static/js/templates/reports/pro__actions.js:77
 msgid "Are you sure you want to change the contractor/applicant?"
 msgstr "Bent u zeker dat u de aannemer/impetrant wilt wijzigen? "
 
