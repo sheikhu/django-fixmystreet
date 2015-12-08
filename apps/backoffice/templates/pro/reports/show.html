@@ -4,37 +4,35 @@
     {% load static from staticfiles %}
 
     {% block css %}
-    {{ block.super }}
+        {{ block.super }}
 
-        <link rel="stylesheet" type="text/css" href="{% static 'lib/coolfieldset/css/jquery.coolfieldset.css' %}" />
     {% endblock %}
     {% block script %}
-    {{ block.super }}
+        {{ block.super }}
 
-    {% block specific_scripts %}
-    <script src="{% static 'js/jquery.exif.js' %}"></script>
-    <script src="{% static 'js/report_refused.js' %}"></script>
-    <script type="text/javascript" src="{% static 'lib/coolfieldset/js/jquery.coolfieldset.min.js' %}"></script>
-    <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
+        {% block specific_scripts %}
+            <script src="{% static 'js/jquery.exif.js' %}"></script>
+            <script src="{% static 'js/report_refused.js' %}"></script>
+            <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
 
-    <script type="text/javascript">
+            <script type="text/javascript">
 
-        var ERROR_MSG = "{% trans 'Unable to send your request.' %}";
-        var REPORT_CAT_ID = "{{report.category.id}}";
-        var SUBSCRIBED = "{{ subscribed }}";
+                var ERROR_MSG = "{% trans 'Unable to send your request.' %}";
+                var REPORT_CAT_ID = "{{report.category.id}}";
+                var SUBSCRIBED = "{{ subscribed }}";
 
-{#        var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}"; // seems unused #}
-        var URL_REPORT_UPDATE_ATTACHMENT = "{% url 'report_update_attachment' report.id %}";
-        var URL_SEND_PDF = "{% url 'send_pdf' report.id %}";
-        var URL_SEC_CAT_FOR_MAIN_CAT = "{% url 'secondary_category_for_main_category' %}";
-        var URL_UNSUBSCRIBE_PRO = "{% url 'unsubscribe_pro' report.id %}";
-        var URL_SUBSCRIBE_PRO = "{% url 'subscribe_pro' report.id %}";
-    </script>
+        {#        var URL_REPORT_REFUSE = "{% url 'report_refuse_pro' report.id %}"; // seems unused #}
+                var URL_REPORT_UPDATE_ATTACHMENT = "{% url 'report_update_attachment' report.id %}";
+                var URL_SEND_PDF = "{% url 'send_pdf' report.id %}";
+                var URL_SEC_CAT_FOR_MAIN_CAT = "{% url 'secondary_category_for_main_category' %}";
+                var URL_UNSUBSCRIBE_PRO = "{% url 'unsubscribe_pro' report.id %}";
+                var URL_SUBSCRIBE_PRO = "{% url 'subscribe_pro' report.id %}";
+            </script>
 
-    <script src="{% static 'js/templates/reports/pro_show.js' %}"></script>
+            <script src="{% static 'js/templates/reports/pro_show.js' %}"></script>
 
-{% endblock %}
-{% endblock %}
+        {% endblock %}
+    {% endblock %}
 
 
 {% block map %}

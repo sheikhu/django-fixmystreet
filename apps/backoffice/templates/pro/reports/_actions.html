@@ -400,12 +400,20 @@ var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
         <div class="modal-body">
             <input type="hidden" id="hiddenAddComment" name="" value=""> {# name & value are set in the javascript function that wants to add a comment. ex: thirdPartyResponsibility and setPrivateProperty #}
             <div id="divAddCommentMessage"><p></p></div>
-            <fieldset id="fieldsetAddComment" class="coolfieldset">
-                <legend><i id="iconAddComment"></i>{% trans "Add a comment" %}</legend>
-                <div>
-                    {% include "_form_horizontal.html" with form=add_comment_form %}
+            <div class="accordion" id="accordionAddComment">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a id="accordionAddCommentHeading" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionAddComment" href="#divAddCommentCollapse">
+                           {% trans "Add a comment" %}
+                        </a>
+                        </div>
+                        <div id="divAddCommentCollapse" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                               {% include "_form_horizontal.html" with form=add_comment_form %}
+                        </div>
+                    </div>
                 </div>
-            </fieldset>
+            </div>
         </div>
         <div class="modal-footer">
             <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>

@@ -32,29 +32,30 @@ function showAddCommentDialog(name, boolVal, placeholder, message){
         message=message.replace('{0}', ('<span class="pAddCommentNo">' + gettext('no') + '</span>'));
     }
     $("#divAddCommentMessage p").html(message);
-    $("#fieldsetAddComment").coolfieldset({collapsed:true, speed:"fast"});
 
-    //set proper icon (up or down)
-    checkIconAddComment();
-    $("#fieldsetAddComment legend").on("click", function(){
-        checkIconAddComment();
-    });
+    //following "if" necessary because  $("#divAddCommentCollapse").collapse("hide"); doesn't work for some voodoo reason.
+    //so the "if" here does the same.
+    if ($("#divAddCommentCollapse").hasClass('in')) {
+        $("#divAddCommentCollapse").removeClass('in');
+        $("#accordionAddCommentHeading").addClass('collapsed');
+        $("#divAddCommentCollapse").css("height", "0px");
+    }
 
     //show modal
     $("#divAddComment").modal();
 }
 
-function checkIconAddComment(){
-    console.log("test");
-    if($("#iconAddComment").attr("class") && $("#iconAddComment").attr("class").indexOf("icon-chevron-down") > -1){
-        $("#iconAddComment").removeClass("icon-chevron-down");
-        $("#iconAddComment").addClass("icon-chevron-up");
-    }
-    else{
-        $("#iconAddComment").removeClass("icon-chevron-up");
-        $("#iconAddComment").addClass("icon-chevron-down");
-    }
-}
+//function checkIconAddComment(){
+//    console.log("test");
+//    if($("#iconAddComment").attr("class") && $("#iconAddComment").attr("class").indexOf("icon-chevron-down") > -1){
+//        $("#iconAddComment").removeClass("icon-chevron-down");
+//        $("#iconAddComment").addClass("icon-chevron-up");
+//    }
+//    else{
+//        $("#iconAddComment").removeClass("icon-chevron-up");
+//        $("#iconAddComment").addClass("icon-chevron-down");
+//    }
+//}
 
 function setPrivate() {
     var r2=confirm(TRAD_SET_PRIVATE);
