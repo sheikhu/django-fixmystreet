@@ -31,7 +31,7 @@ elif ENVIRONMENT == "staging":
     EMAIL_BACKEND = 'middleware.smtpforward.EmailBackend'
     TO_LIST       = 'django.dev@cirb.irisnet.be'
     SITE_ID       = 2
-    ALLOWED_HOSTS = ("fixmystreet.irisnetlab.be", )
+    ALLOWED_HOSTS = ("*", )
 
 else:
     DEBUG         = False
@@ -54,9 +54,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL  = '/static/'
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
-if not DEBUG:
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 
 # SOME DJANGO VAR
