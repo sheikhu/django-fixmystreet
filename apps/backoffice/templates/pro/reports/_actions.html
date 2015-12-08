@@ -30,8 +30,6 @@ var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
 /********************************************************************/
 </script>
 
-<script src ="{% static 'js/templates/reports/pro__actions.js' %}"></script>
-
 {% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
 <!-- Actions -->
 {% if report.is_in_progress %}
@@ -404,7 +402,7 @@ var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a id="accordionAddCommentHeading" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionAddComment" href="#divAddCommentCollapse">
-                           {% trans "Add a comment" %}
+                           <i id="iconAddComment" class="icon-chevron-down"></i>{% trans "Add a comment" %}
                         </a>
                         </div>
                         <div id="divAddCommentCollapse" class="accordion-body collapse">

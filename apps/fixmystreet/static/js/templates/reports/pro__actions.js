@@ -45,6 +45,19 @@ function showAddCommentDialog(name, boolVal, placeholder, message){
     $("#divAddComment").modal();
 }
 
+
+    $('#divAddCommentCollapse').on('hide', function () {
+        console.log("hide");
+        $("#iconAddComment").removeClass("icon-chevron-up");
+        $("#iconAddComment").addClass("icon-chevron-down");
+    });
+    $('#divAddCommentCollapse').on('show', function () {
+        console.log("show");
+        $("#iconAddComment").removeClass("icon-chevron-down");
+        $("#iconAddComment").addClass("icon-chevron-up");
+    });
+
+
 //function checkIconAddComment(){
 //    console.log("test");
 //    if($("#iconAddComment").attr("class") && $("#iconAddComment").attr("class").indexOf("icon-chevron-down") > -1){
