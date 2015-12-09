@@ -81,7 +81,7 @@ rpm: clean install
 
 	/usr/sbin/prelink --undo $(INSTALL_PATH)/bin/python2.7
 
-	fpm -s dir -t rpm -n "$(RPM_NAME)" -v $(RPM_VERSION) --rpm-user $(RPM_USER) --rpm-group $(RPM_GROUP) --prefix $(RPM_PREFIX) --after-install rpm-migrate.sh `cat $(RPM_INPUTS_FILE)`
+	fpm -s dir -t rpm -n "$(RPM_NAME)" -v $(RPM_VERSION) --rpm-user $(RPM_NAME) --rpm-group $(RPM_NAME) --prefix $(RPM_PREFIX) --after-install rpm-migrate.sh `cat $(RPM_INPUTS_FILE)`
 
 run: $(BIN_PATH)
 	$(BIN_PATH)/manage.py runserver
