@@ -175,7 +175,7 @@ def document(request, slug, report_id):
                 # if request.POST.get("citizen_subscription", False):
                 # ReportSubscription(report=report, subscriber=report.created_by).save()
 
-                messages.add_message(request, messages.SUCCESS, _("You attachments has been sent"))
+                messages.add_message(request, messages.SUCCESS, _("Modification(s) registered"))
                 return HttpResponseRedirect(report.get_absolute_url())
     else:
         file_formset = ReportFileFormSet(prefix='files', queryset=ReportFile.objects.none())
