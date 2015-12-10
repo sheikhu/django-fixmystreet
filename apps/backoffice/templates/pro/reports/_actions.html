@@ -1,0 +1,441 @@
+{% load i18n %}
+{% load static from staticfiles %}
+{% load tags %}
+
+<script type="text/javascript" src="{% url 'jsi18n' %}"></script>
+<script type="text/javascript">
+
+var REPORT_SEC_CAT_ID = "{{report.secondary_category.id}}";
+var REPORT_GRAVITY = "{{report.gravity}}";
+var REPORT_PROBABILITY = "{{report.probability}}";
+
+/********************************** URLS *****************************/
+
+var SWITCH_VISIBILITY_URL = "{% url 'report_change_switch_visibility' report.id %}";
+var CLOSE_REPORT_URL = "{% url 'report_close_pro' report.id %}";
+var UPDATE_PRIORITY_URL = "{% url 'report_update_priority' report.id %}";
+var PLANNED_URL = "{% url 'report_planned_pro' report.id %}";
+var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
+
+
+/******************TRANS TO BE MOVED IN JS TRANSIFEX ****************/
+{#var TRAD_SWITCH_THIRD_PARTY_RESPONSIBILITY_PLACEHOLDER = "{% trans "Please enter more information to describe why you changed the value of 'third party responsibility'" %}";#}
+{#var TRAD_SWITCH_PRIVATE_PROPERTY_PLACEHOLDER = "{% trans "Please enter more information to describe why you changed the value of 'private property'" %}";#}
+{#var TRAD_THIRD_PARTY_RESPONSIBILITY_MESSAGE = "{% trans "You are about to set the value of third party responsibility to : {0}." %}";#}
+{#var TRAD_PRIVATE_PROPERTY_MESSAGE = "{% trans "You are about to set the value of private property to : {0}." %}";#}
+{#var TRAD_SET_PRIVATE = "{% trans 'Are you sure you want to make the incident private? This will notify all public subscribers.' %}";#}
+{#var TRAD_SELECT_CATEGORY = "{% trans 'Select a Category' %}";#}
+{#var TRAD_CLOSE_REPORT = "{% trans 'Are you sure you want to close this report?' %}";#}
+
+/********************************************************************/
+</script>
+
+{% if report.responsible_department in request.fmsuser.organisations_list and not report.is_merged %}
+<!-- Actions -->
+{% if report.is_in_progress %}
+<div class="btn-group incidentActions">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="icon-incident-actions"></i>
+        {% trans 'Other actions' %}
+    </a>
+     <ul class="dropdown-menu">
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{% trans 'Transfer to' %}</a>
+            <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="#">{% trans 'Managers' %}</a>
+                    <ul class="dropdown-menu">
+                        {% for department in departments %}
+                            <li>
+                                <a
+                                    {% ifequal report.responsible_department.id department.id %}
+                                        class="active"
+                                    {% else %}
+                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, 'department_{{department.id}}')"
+                                    {% endifequal %}
+                                    tabindex="-1"
+                                    >
+                                        {{department.name}} ({{ department.dependency.name}})
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="#">{% trans 'Entities' %}</a>
+                    <ul class="dropdown-menu">
+                        {% for entity in entities %}
+                            <li>
+                                <a
+                                    {% ifequal report.responsible_entity.id entity.id %}
+                                        class="active"
+                                    {% else %}
+                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, 'entity_{{entity.id}}')"
+                                    {% endifequal %}
+                                    tabindex="-1"
+                                >
+                                    {{entity.name}}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="#">{% trans 'Organisms' %}</a>
+                    <ul class="dropdown-menu">
+                        {% for institution in region_institution %}
+                            <li>
+                                <a
+                                    {% ifequal report.responsible_entity.id entity.id %}
+                                        class="active"
+                                    {% else %}
+                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, 'entity_{{institution.id}}')"
+                                    {% endifequal %}
+                                    tabindex="-1"
+                                >
+                                    {{institution.name}}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{% trans 'Assign to' %}</a>
+            <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="#">{% trans 'Contractors' %}</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1"
+                                href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId=None')">
+                                {% trans 'None' %}
+                            </a>
+                        </li>
+                        {% for organisation in contractors %}
+                            <li>
+                                <a {% ifequal report.contractor.id organisation.id %}class="active"{% endifequal %} tabindex="-1" href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId={{organisation.id}}')">
+                                    {{ organisation.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="#">{% trans 'Applicants' %}</a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a  {% ifequal report.contractor.id None %}class="active"{% endifequal %} tabindex="-1"
+                                href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId=None')">
+                                {% trans 'None' %}
+                            </a>
+                        </li>
+                        {% for applicant in applicants %}
+                            <li>
+                                <a {% ifequal report.contractor.id applicant.id %}class="active"{% endifequal %} tabindex="-1" href="javascript:confirmAssign('{% url 'report_change_contractor_pro' report.id %}?contractorId={{applicant.id}}')">
+                                    {{ applicant.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+    <!--  Planification -->
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{% trans 'Plan' %}</a>
+
+        <!-- Dates possible de planification -->
+            <ul class="dropdown-menu">
+
+                {% if report.get_date_planned_available %}
+                    {% if not report.is_planned %}
+                        <li class="active">
+                            <a tabindex="-1" href="#">{% trans "Not planned" %}</a>
+                        </li>
+                    {% endif %}
+                    {% for date in report.get_date_planned_available %}
+                        <li {% ifequal date|date:"m/Y" report.date_planned|date:"m/Y" %}class="active"{% endifequal %}>
+                            <a tabindex="-1" href="{% url 'report_planned_pro' report.id %}?date_planned={{ date|date:"m/Y" }}">
+                                {{ date|date:"m/Y" }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>
+                        <a tabindex="-1">{% trans 'The report is too old and cannot be planned' %}</a>
+                    </li>
+                {% endif %}
+
+
+            </ul>
+        </li>
+
+        {% if report.responsible_department in request.fmsuser.organisations_list %}
+        <li>
+            <a tabindex="-1" href="{% url 'report_merge_pro' report.get_slug report.id %}">
+                {% trans 'Merge' %}
+
+                {# Potential duplicates count #}
+                {% if report.is_in_progress and report.get_nearby_reports_count %}
+                    ({{ report.get_nearby_reports_count }})
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+
+        <li>
+            <a tabindex="-1" href="#modalPriority" data-toggle="modal">{% trans "Priorité" %}...</a>
+        </li>
+
+        <li>
+            <a tabindex="-1" href="#modalCategory" data-toggle="modal">{% trans "Category" %}...</a>
+        </li>
+
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{% trans "Visibility" %}</a>
+            <ul class="dropdown-menu">
+                <li {% ifequal report.private False %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="javascript:setPublic()">{% trans 'AllPersons' %}</a>
+                </li>
+                <li {% ifequal report.private True %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="javascript:setPrivate()">{% trans 'Pro' %}</a>
+                </li>
+                <li>
+                    <a tabindex="-1" href="{% url 'report_validate_all_pro' report.id %}">{% trans 'Publish All' %}</a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{% trans "Pending" %}</a>
+            <ul class="dropdown-menu">
+                <li {% ifequal report.pending True %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="{% url 'report_pending_pro' report.id %}">{% trans 'Oui' %}</a>
+                </li>
+                <li {% ifequal report.pending False %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="{% url 'report_notpending_pro' report.id %}">{% trans 'Non' %}</a>
+                </li>
+            </ul>
+        </li>
+        <!-- Responsibility belongs to third party-->
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{% trans "ThirdPartyResponsibility" %}</a>
+            <ul class="dropdown-menu">
+                <li {% ifequal report.third_party_responsibility True %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="javascript:setThirdPartyResponsibility(true)">{% trans 'Oui' %}</a>
+                </li>
+                <li {% ifequal report.third_party_responsibility False %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="javascript:setThirdPartyResponsibility(false)">{% trans 'Non' %}</a>
+                </li>
+            </ul>
+        </li>
+        <!-- incident is on private property-->
+        <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">{% trans "PrivateProperty" %}</a>
+            <ul class="dropdown-menu">
+                <li {% ifequal report.private_property True %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="javascript:setPrivateProperty(true)">{% trans 'Oui' %}</a>
+                </li>
+                <li {% ifequal report.private_property False %}class="active"{% endifequal %}>
+                    <a tabindex="-1" href="javascript:setPrivateProperty(false)">{% trans 'Non' %}</a>
+                </li>
+            </ul>
+        </li>
+        <!--  Wrong address -->
+        <li>
+            <a tabindex="-1" href="#modalAddress" data-toggle="modal">{% trans 'Address' %}...</a>
+        </li>
+        <li>
+            <a href="javascript:refuse();">{% trans 'Reject' %}</a>
+        </li>
+        <li>
+            <a href="javascript:close();">{% trans 'Close' %}</a>
+        </li>
+    </ul>
+</div>
+{% endif %}
+
+<!-- Modal -->
+{% if report.is_in_progress %}
+    <!-- SECTION ABOUT PRIORITY -->
+    <div id="modalPriority" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Priority:" %}</h3>
+        </div>
+        <div class="modal-body priority">
+            <div class="clearfix">
+                <div class="col col1">
+                    <div class="control-group">
+                        <label for="id_probability">{% trans "Probability:" %}</label>
+                        {{ priority_form.probability }}
+                    </div>
+                    <div class="control-group">
+                        <label for="id_probability">{% trans "Gravity:" %}</label>
+                        {{ priority_form.gravity }}
+                    </div>
+                </div>
+                <div class="col col2">
+                    <p>{% trans "Total priority:" %}</p>
+                    <p class="huge"><span id="prio_result">{{report.get_priority}}</span></p>
+                </div>
+            </div>
+            <br/><br/>
+            <p>
+                <input class="btn btn-primary pull-left" type="button" name="submit" value="{% trans 'Accepter' %}" onclick="persistPriorityUpdate()">
+                <input class="btn pull-right" type="button" name="submit" value="{% trans 'Annuler' %}" onclick="cancelPriorityUpdate()">
+            </p>
+        </div>
+    </div>
+
+    <!-- SECTION ABOUT TRANSFER -->
+    <div id="modalTransfer" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Transfer" %}</h3>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="">
+                <div class="clearfix">
+                    {{ transfer_form.as_p }}
+                </div>
+
+                <p>
+                    <input class="btn btn-primary pull-left" type="submit" name="submit" value="{% trans 'Transfer' %}">
+                    <button class="btn pull-right" data-dismiss="modal">{% trans 'Annuler' %}</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECTION ABOUT CATEGORY -->
+    <div id="modalCategory" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Category" %}</h3>
+        </div>
+
+        <div class="modal-body">
+            <form id="update_cat_form" method="POST" action="{% url 'update_category_for_report' report.id %}">
+                <tr>
+                    <td colspan="5">
+                        <select id="main_cat_select" name="main_category">
+                            <option value="0">{% trans "Select a Category" %}</option>
+                            {% for cat in category_list%}
+                                <option value="{{cat.id}}">{{cat.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <select id="sec_cat_select" name="secondary_category">
+                        </select>
+                    </td>
+                </tr>
+                <br/><br/>
+                <tr>
+                <div style="width:100%; margin-top:50px;" align="right">
+                        <input class="btn" type="button" name="submit" value="{% trans 'Annuler' %}" onclick="cancelCategoryUpdate()">
+                        <input class="btn" type="submit" name="submit" value="{% trans 'Accepter' %}">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECTION ABOUT ADDRESS -->
+    <div id="modalAddress" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Address" %}</h3>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'report_false_address' report.id %}" method="POST">
+                <p>
+                    <label for="false_address">{% trans "Corrected adress:" %}</label>
+                    <textarea id="false_address" name="false_address" class="input-block-level">{% if report.false_address %}{{ report.false_address }}{% endif %}</textarea>
+                </p>
+                <p>
+                    {% if report.false_address %}
+                    <input class="btn" type="submit" name="cancel" value="{% trans 'Cancel correction' %}" onclick="$('#false_address').val('');">
+                    {% endif %}
+
+                    <input class="btn btn-primary pull-right" type="submit" name="submit" value="{% trans 'Confirm correction' %}">
+                </p>
+            </form>
+        </div>
+    </div>
+
+{% endif %}
+
+<div id="divRefuse" class="modal hide fade" role="dialog">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <form id="dialog" title="{% trans "Please enter more information about rejecting the report" %}" action="{% url 'report_refuse_pro' report.id %}" method="post">
+            <!-- sel_refuse is managed in report_refused.js. Currently commented. Waiting for real data (see issue FMS-275)-->
+            <select name="sel_refuse" id="sel_refuse" class="span12">
+                <option value="opt_refuse_0" selected="selected">{% trans "Select a pre-formatted reason" %}</option>
+                <option value="opt_refuse_1">{% trans "Description unclear" context "report_refuse" %}</option>
+                <option value="opt_refuse_2">{% trans "Not for Fix My Street" context "report_refuse" %}</option>
+                <option value="opt_refuse_3">{% trans "Part of a project, work, reorganization" context "report_refuse" %}</option>
+                <option value="opt_refuse_4">{% trans "Private domain" context "report_refuse" %}</option>
+                <option value="opt_refuse_5">{% trans "Already in progress" context "report_refuse" %}</option>
+                <option value="opt_refuse_6">{% trans "Not for Sibelga eclairage" context "report_refuse" %}</option>
+            </select>
+            {% include "_form_horizontal.html" with form=refuse_form %}
+            <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
+            <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
+        </form>
+    </div>
+</div>
+<div id="divAddComment" class="modal hide fade" role="dialog">
+    <form id="dialogAddComment" action="{% url 'report_change_flag_and_add_comment' report.id %}" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans "Confirm the change" %}</h3>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="hiddenAddComment" name="" value=""> {# name & value are set in the javascript function that wants to add a comment. ex: thirdPartyResponsibility and setPrivateProperty #}
+            <div id="divAddCommentMessage"><p></p></div>
+            <div class="accordion" id="accordionAddComment">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a id="accordionAddCommentHeading" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionAddComment" href="#divAddCommentCollapse">
+                           <i id="iconAddComment" class="icon-chevron-down"></i>{% trans "Add a comment" %}
+                        </a>
+                        </div>
+                        <div id="divAddCommentCollapse" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                               {% include "_form_horizontal.html" with form=add_comment_form %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="button" class="btn"  value="{% trans 'Cancel'%}" data-dismiss="modal" aria-hidden="true"/>
+            <input type="submit" class="btn"  value="{% trans 'Confirm'%}"/>
+        </div>
+    </form>
+</div>
+
+{% endif %}
+
+{% if report.is_in_progress and report.status != report.SOLVED %}
+    <div id="divMarkAsDone" class="modal hide fade">
+        <form id="dialogMarkAsDone" title="{% trans "Please enter more information about marking the report as done" %}" action="{% url 'report_fix_pro' report.id %}" method="post" >
+            {% csrf_token %}
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>{% trans "You think this incident is close. Indicate it!" %}</h3>
+            </div>
+            <div class="modal-body">
+                <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
+                {{ mark_as_done_form.as_p }}
+                <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
+            </div>
+        </form>
+    </div>
+{% endif %}

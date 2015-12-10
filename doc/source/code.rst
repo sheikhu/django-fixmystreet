@@ -1,2 +1,0 @@
-.. include:: gen/index.rst
-

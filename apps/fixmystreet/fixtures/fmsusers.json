@@ -1,0 +1,180 @@
+[
+{
+  "fields": {
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "is_active": true,
+    "is_superuser": true,
+    "is_staff": true,
+    "last_login": "2015-07-20T10:27:32.323",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$20000$ZJZ32P94oUYd$PTdajbKF4G42HEc6Oi8mFDgf0YqHF1hfVB/mp6BkmUU=",
+    "email": "afuca@cirb.brussels",
+    "date_joined": "2015-07-20T10:23:28.431"
+  },
+  "model": "auth.user",
+  "pk": 2
+},
+{
+  "fields": {
+    "username": "leader@bxl.be",
+    "first_name": "leader",
+    "last_name": "bxl",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2015-07-20T10:43:43.809",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$20000$ZqB2EvzM3WQN$82hp9Ngw7vvP5JmNl/BbxbgtLExc7d7XpasSI00KZFc=",
+    "email": "leader@bxl.be",
+    "date_joined": "2015-07-20T10:26:50.380"
+  },
+  "model": "auth.user",
+  "pk": 4
+},
+{
+  "fields": {
+    "username": "manager@bxl.be",
+    "first_name": "manager",
+    "last_name": "bxl",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2015-07-20T10:44:15.150",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$20000$zotkZteIUuvN$fxbCn9nl+eAQ4FVbYGGAxs3oD+ie1o3fHFjzzvxSev0=",
+    "email": "manager@bxl.be",
+    "date_joined": "2015-07-20T10:29:29.604"
+  },
+  "model": "auth.user",
+  "pk": 5
+},
+{
+  "fields": {
+    "username": "leader@anderlecht.be",
+    "first_name": "leader",
+    "last_name": "anderlecht",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": "2015-07-20T10:42:49.393",
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$20000$NJNPDM6xNGrX$YR63uKaHp+OCSVIJCitMNOfg2JjWSTH0ofBCaNzK4CM=",
+    "email": "leader@anderlecht.be",
+    "date_joined": "2015-07-20T10:40:04.071"
+  },
+  "model": "auth.user",
+  "pk": 8
+},
+{
+  "fields": {
+    "username": "manager@anderlecht.be",
+    "first_name": "manager",
+    "last_name": "anderlecht",
+    "is_active": true,
+    "is_superuser": false,
+    "is_staff": false,
+    "last_login": null,
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$20000$mOpv404j5u0o$dqNGQTyYeLSbLcd8XCbBvGHKADX3/Tp3f3UjB/xXoHs=",
+    "email": "manager@anderlecht.be",
+    "date_joined": "2015-07-20T10:41:53.548"
+  },
+  "model": "auth.user",
+  "pk": 9
+},
+{
+  "fields": {
+    "applicant": false,
+    "modified_by": null,
+    "created": "2015-07-20T10:26:50.397",
+    "logical_deleted": false,
+    "organisation": 4,
+    "last_used_language": "FR",
+    "telephone": "0123456789",
+    "agent": false,
+    "contractor": false,
+    "manager": true,
+    "created_by": null,
+    "groups": [],
+    "modified": "2015-07-20T10:35:05.405",
+    "user_permissions": [],
+    "quality": null,
+    "leader": true
+  },
+  "model": "fixmystreet.fmsuser",
+  "pk": 4
+},
+{
+  "fields": {
+    "applicant": false,
+    "modified_by": 4,
+    "created": "2015-07-20T10:29:29.720",
+    "logical_deleted": false,
+    "organisation": 4,
+    "last_used_language": "FR",
+    "telephone": "0123456789",
+    "agent": false,
+    "contractor": false,
+    "manager": true,
+    "created_by": 4,
+    "groups": [],
+    "modified": "2015-07-20T10:43:55.350",
+    "user_permissions": [],
+    "quality": null,
+    "leader": false
+  },
+  "model": "fixmystreet.fmsuser",
+  "pk": 5
+},
+{
+  "fields": {
+    "applicant": false,
+    "modified_by": null,
+    "created": "2015-07-20T10:40:04.089",
+    "logical_deleted": false,
+    "organisation": 1,
+    "last_used_language": "FR",
+    "telephone": "0123456789",
+    "agent": false,
+    "contractor": false,
+    "manager": true,
+    "created_by": null,
+    "groups": [],
+    "modified": "2015-07-20T10:40:04.089",
+    "user_permissions": [],
+    "quality": null,
+    "leader": true
+  },
+  "model": "fixmystreet.fmsuser",
+  "pk": 8
+},
+{
+  "fields": {
+    "applicant": false,
+    "modified_by": 8,
+    "created": "2015-07-20T10:41:53.664",
+    "logical_deleted": false,
+    "organisation": 1,
+    "last_used_language": "FR",
+    "telephone": "0123456789",
+    "agent": false,
+    "contractor": false,
+    "manager": true,
+    "created_by": 8,
+    "groups": [],
+    "modified": "2015-07-20T10:41:53.664",
+    "user_permissions": [],
+    "quality": null,
+    "leader": false
+  },
+  "model": "fixmystreet.fmsuser",
+  "pk": 9
+}
+]

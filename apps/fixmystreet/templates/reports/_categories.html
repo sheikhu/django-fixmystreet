@@ -1,0 +1,15 @@
+<script>
+ var categories = {
+        {% for category_class in category_classes %}
+        "{{ category_class.id }}": {
+            {% for category in category_class.categories.all %}
+                "{{ category.id }}": {
+                    "label": "{{ category.name }}",
+                    "class": "{{ category.secondary_category_class.id }}",
+                    "public": {{ category.public|yesno:"true,false" }}
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    }
+</script>

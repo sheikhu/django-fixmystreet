@@ -1,0 +1,55 @@
+{% extends "pro/auth/base.html" %}
+{% load i18n tags %}
+{% load static from staticfiles %}
+
+{% block title %}{% trans "Groups admin" %}{% endblock %}
+
+{% block css %}
+{{ block.super }}
+
+<link rel="stylesheet" type="text/css" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}">
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
+<script src="{% static 'js/templates/pro_auth_groups_list.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="span12">
+    <table id="groups-table">
+        <thead>
+            <tr>
+                <td style="background-color:#e2e4ff;">{% trans "Name" %}</td>
+                <td style="background-color:#e2e4ff;">{% trans "Email" %}</td>
+                <td style="background-color:#e2e4ff;">{% trans "Type" %}</td>
+            </tr>
+            <tr>
+                <td style="background-color:#e2e4ff;-webkit-border-radius: 5px 0px 0px 0px; -moz-border-radius: 5px 0px 0px 0px; border-radius: 5px 0px 0px 0px; color:#2c3e50; text-align:center; font-size:16px">{% trans "Name" %}</td>
+                <td style="background-color:#e2e4ff;color:#2c3e50; text-align:center; font-size:16px">{% trans "Email" %}</td>
+                <td style="background-color:#e2e4ff;-webkit-border-radius: 0px 5px 0px 0px; -moz-border-radius: 0px 5px 0px 0px; border-radius: 0px 5px 0px 0px; color:#2c3e50; text-align:center; font-size:16px">{% trans "Type" %}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for group in groups %}
+            <tr>
+                <td>
+                    <a href="{% url 'edit_group' group_id=group.id %}">{{ group }}</a>
+                </td>
+                <td>
+                    <a href="mailto:{{ group.email }}">{{ group.email }}</a>
+                </td>
+                <td>
+                    <a>{{ group.get_type_display }}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "pro/auth/base.html" %}
+{% load i18n tags %}
+{% load static from staticfiles %}
+
+{% block title %}{% trans "Users admin" %}{% endblock %}
+
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'lib/dataTables/css/jquery.dataTables.css' %}">
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script src="{% static 'lib/dataTables/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/dataTables-columnFilter/js/jquery.dataTables.columnFilter.js' %}"></script>
+<script src="{% static 'js/templates/pro_auth_users_list.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="span12">
+    <table id="users-table">
+        <thead>
+            <tr>
+                <td style="background-color:#e2e4ff;">{% trans "Name" %}</td>
+                <td style="background-color:#e2e4ff;">{% trans "Phone" %}</td>
+                <td style="background-color:#e2e4ff;">{% trans "Email" %}</td>
+                <td style="background-color:#e2e4ff;">{% trans "Role" %}</td>
+            </tr>
+            <tr>
+                <td style="background-color:#e2e4ff;-webkit-border-radius: 5px 0px 0px 0px; -moz-border-radius: 5px 0px 0px 0px; border-radius: 5px 0px 0px 0px; color:#2c3e50; text-align:center; font-size:16px">{% trans "Name" %}</td>
+                <td style="background-color:#e2e4ff; color:#2c3e50; text-align:center; font-size:16px">{% trans "Phone" %}</td>
+                <td style="background-color:#e2e4ff;color:#2c3e50; text-align:center; font-size:16px">{% trans "Email" %}</td>
+                <td style="background-color:#e2e4ff;-webkit-border-radius: 0px 5px 0px 0px; -moz-border-radius: 0px 5px 0px 0px; border-radius: 0px 5px 0px 0px; color:#2c3e50; text-align:center; font-size:16px">{% trans "Role" %}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    <a href="{% url 'edit_user' user_id=user.id %}">
+                        {{ user.last_name }}, {{ user.first_name }}
+                    </a>
+                </td>
+                <td>
+                    <a href="tel:{{ user.telephone }}">{{ user.telephone }}</a>
+                </td>
+                <td>
+                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                </td>
+                <td>
+                    {% if user.leader %}{% trans 'Entity' %}{% endif %}
+                    {% if user.manager %}{% trans 'Manager' %}{% endif %}
+                    {% if user.agent %}{% trans 'Agent' %}{% endif %}
+                    {% if user.contractor %}{% trans 'Contractor' %}{% endif %}
+                    {% if user.applicant %}{% trans 'Applicant' %}{% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+{% endblock %}
