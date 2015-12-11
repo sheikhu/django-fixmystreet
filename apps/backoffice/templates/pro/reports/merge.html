@@ -38,6 +38,8 @@
         {% endfor %}
     </script>
 
+    <script src="{% static 'lib/lightbox/js/lightbox-2.6.min.js' %}"></script>
+    <link href="{% static 'lib/lightbox/css/lightbox.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block map %}
@@ -66,9 +68,13 @@
                             <!-- Photos -->
                             <div class="span2 picture">
                                 {% if report.thumbnail_pro %}
-                                    <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
+                                  {% if report.active_images_pro %}
+                                    {% for attachment in report.active_images_pro %}
+                                      <a href="{{attachment.image.url}}" data-lightbox="fms_fusion" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>
+                                    {% endfor %}
+                                  {% endif %}
                                 {% else %}
-                                    <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
+                                  <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
                                 {% endif %}
                             </div>
                             <!-- Comments -->
@@ -165,7 +171,11 @@
 {#                                    <!-- Map --> #}
 {#                                    <div class="span1 picture">#}
 {#                                        {% if report.thumbnail_pro %}#}
-{#                                            <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />#}
+{#                                            {% if report.active_images_pro %}#}
+{#                                              {% for attachment in report.active_images_pro %}#}
+{#                                                <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>#}
+{#                                              {% endfor %}#}
+{#                                            {% endif %}#}
 {#                                        {% else %}#}
 {#                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />#}
 {#                                        {% endif %}#}
@@ -174,7 +184,11 @@
 
                                     <div class="span1 picture">
                                         {% if report.thumbnail_pro %}
-                                            <img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />
+                                        {% if report.active_images_pro %}
+                                          {% for attachment in report.active_images_pro %}
+                                            <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>
+                                          {% endfor %}
+                                        {% endif %}
                                         {% else %}
                                             <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
                                         {% endif %}
@@ -190,7 +204,7 @@
                                             {% endif %}
                                         {% endfor %}
 
-                                    </div> 
+                                    </div>
                                     <div clas="span2">
                                         {% if report.can_merge %}
                                             <!-- Button "it's the same" -->

@@ -21,6 +21,8 @@
             REPORT_JSON_LIST.push(reportJSON);
         {% endfor %}
     </script>
+    <script src="{% static 'lib/lightbox/js/lightbox-2.6.min.js' %}"></script>
+    <link href="{% static 'lib/lightbox/css/lightbox.css' %}" rel="stylesheet" />
 
 {% endblock %}
 
@@ -85,9 +87,17 @@
                                             <!-- Picture Wrapper -->
                                             <div class="homeWrappingPicture1" align="right">
                                                 {% if BACKOFFICE and report.thumbnail_pro %}
-                                                    <img class="defectPic" src="{{ report.thumbnail_pro }}"/>
+                                                  {% if report.active_images_pro %}
+                                                    {% for attachment in report.active_images_pro %}
+                                                      <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img class="defectPic" src="{{ report.thumbnail_pro }}"/>{% endif %}</a>
+                                                    {% endfor %}
+                                                  {% endif %}
                                                 {% elif report.thumbnail %}
-                                                    <img class="defectPic" src="{{ report.thumbnail }}"/>
+                                                  {% if report.active_images %}
+                                                    {% for attachment in report.active_images %}
+                                                      <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img class="defectPic" src="{{ report.thumbnail }}"/>{% endif %}</a>
+                                                    {% endfor %}
+                                                  {% endif %}
                                                 {% else %}
                                                     <img src="{% static 'images/no-pix.png' %}"  />
                                                 {% endif %}

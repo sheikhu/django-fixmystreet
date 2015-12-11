@@ -897,6 +897,24 @@ class Report(UserTrackedModel):
     def active_attachments_pro(self):
         return self.attachmentsList().filter(logical_deleted=False).order_by("-created")
 
+    def active_images(self):
+        attachements = self.active_files()
+        images = []
+
+        for attachment in attachements:
+            if not attachment.is_confidential() and attachment.is_image():
+                images.append(attachment)
+        return images
+
+    def active_images_pro(self):
+        attachements = self.files().filter(logical_deleted=False).order_by("created")
+        images = []
+
+        for attachment in attachements:
+            if attachment.is_image():
+                images.append(attachment)
+        return images
+
     def is_created(self):
         return self.status == Report.CREATED
 
