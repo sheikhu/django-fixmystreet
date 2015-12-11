@@ -89,13 +89,13 @@
                                                 {% if BACKOFFICE and report.thumbnail_pro %}
                                                   {% if report.active_images_pro %}
                                                     {% for attachment in report.active_images_pro %}
-                                                      <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img class="defectPic" src="{{ report.thumbnail_pro }}"/>{% endif %}</a>
+                                                      <a href="{{attachment.image.url}}" data-lightbox="fms_{{report.id}}" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img class="defectPic" src="{{ report.thumbnail_pro }}"/>{% endif %}</a>
                                                     {% endfor %}
                                                   {% endif %}
                                                 {% elif report.thumbnail %}
                                                   {% if report.active_images %}
                                                     {% for attachment in report.active_images %}
-                                                      <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img class="defectPic" src="{{ report.thumbnail }}"/>{% endif %}</a>
+                                                      <a href="{{attachment.image.url}}" data-lightbox="fms_{{report.id}}" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img class="defectPic" src="{{ report.thumbnail }}"/>{% endif %}</a>
                                                     {% endfor %}
                                                   {% endif %}
                                                 {% else %}
