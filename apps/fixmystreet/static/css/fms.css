@@ -10,7 +10,9 @@ body{
 	font-family: 'Dosis', sans-serif;
 }
 
-
+.bold{
+	font-weight: bold;
+}
 
 
 .navbar .nav, .navbar .btn-navbar{
