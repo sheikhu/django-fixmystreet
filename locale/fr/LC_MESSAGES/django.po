@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # afuca <afuca@cirb.brussels>, 2015
 # afuca <afuca@cirb.brussels>, 2014-2015
@@ -2406,7 +2406,7 @@ msgid ""
 "<h2>User information:</h2>\n"
 "<p> Username: %(username)s</p>\n"
 "<p> Password: %(password)s</p>\n"
-msgstr "\n<p>Votre compte à FixMyStreet a été créé %(firstname)s %(lastname)s.</p>\n<p>Voici vos codes d’accès :</p>\n<ul>\n<li>URL : http://fixmystreet.irisnet.be</li>\n<li>Login : %(username)s</li>\n<li>Password : %(password)s</li>\n</ul>\n"
+msgstr "\n<p>Votre compte à FixMyStreet a été créé %(firstname)s %(lastname)s.</p>\n<p>Voici vos codes d’accès :</p>\n<ul>\n<li>URL : http://fixmystreet.brussels</li>\n<li>Login : %(username)s</li>\n<li>Password : %(password)s</li>\n</ul>\n"
 
 #: fixmystreet/templates/emails/send_created_to_user/message.txt:4
 #, python-format
@@ -2416,7 +2416,7 @@ msgid ""
 "User information:\n"
 "Username: %(username)s\n"
 "Password: %(password)s\n"
-msgstr "\nVotre compte à FixMyStreet a été créé %(firstname)s %(lastname)s.\n\nVoici vos codes d’accès :\n- URL : http://fixmystreet.irisnet.be\n- Login : %(username)s\n- Password : %(password)s\n"
+msgstr "\nVotre compte à FixMyStreet a été créé %(firstname)s %(lastname)s.\n\nVoici vos codes d’accès :\n- URL : http://fixmystreet.brussels\n- Login : %(username)s\n- Password : %(password)s\n"
 
 #: fixmystreet/templates/emails/send_created_to_user/subject.txt:1
 msgid "Fix My Street: A user has been created for you"

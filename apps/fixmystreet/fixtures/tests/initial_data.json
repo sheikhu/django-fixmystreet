@@ -3,8 +3,8 @@
         "pk": 1,
         "model": "sites.site",
         "fields": {
-            "domain": "fixmystreet.irisnet.be",
-            "name": "fixmystreet.irisnet.be"
+            "domain": "fixmystreet.brussels",
+            "name": "fixmystreet.brussels"
         }
     },
     {
