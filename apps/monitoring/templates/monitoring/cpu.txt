@@ -1,1 +1,0 @@
-{{times|floatformat:3}} iterations per second.

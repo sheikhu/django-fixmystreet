@@ -20,6 +20,7 @@ install_requires = [
     'django-simple-history==1.6.2',
     'django-stdimage==2.0.6',
     'django-transmeta==0.7.3',
+    'django-status-monitoring',
 
     'python-dateutil==2.4.2',
     'python-logstash==0.4.5',
@@ -68,7 +69,8 @@ setup(
     zip_safe=False,
     install_requires=install_requires,
     dependency_links=[
-        'https://github.com/cirb/mobileserverstatus/archive/1.0.2.zip#egg=mobileserverstatus-1.0.2'
+        'https://github.com/cirb/mobileserverstatus/archive/1.0.2.zip#egg=mobileserverstatus-1.0.2',
+        'http://stash.cirb.lan/plugins/servlet/archive/projects/DJANGO/repos/django-status-monitoring?at=refs%2Fheads%2Fmaster#egg=django-status-monitoring'
     ],
     extras_require={
         'dev': dev_require

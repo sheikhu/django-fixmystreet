@@ -152,6 +152,7 @@ INSTALLED_APPS = (
     'simple_history',
     'django_extensions',
     'ckeditor',
+    'monitoring',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -159,7 +160,6 @@ INSTALLED_APPS = (
     'apps.fixmystreet',
     'apps.backoffice',
     'apps.fmsproxy',
-    'apps.monitoring',
     'apps.api',
     'apps.webhooks',
     'mobileserverstatus',

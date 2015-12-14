@@ -1,3 +1,0 @@
-{% for line in status %}{{line|safe}}
-{% endfor %}
-
