@@ -2838,7 +2838,6 @@ label.invalid {
 }
 .foroget-pwd{
 	font-size:12px;
-	padding-top: 15px;
 	color:#2c3e50;
 }
 .login-btns p{
@@ -3272,9 +3271,6 @@ table.dataTable thead th {
 }
 #map.view_incident.show_report.pro{
 	height:200px;
-}
-#map.show_report_map{
-	height:150px;
 }
 /*.crop{
 width: 100px;
