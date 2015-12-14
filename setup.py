@@ -69,7 +69,7 @@ setup(
     zip_safe=False,
     install_requires=install_requires,
     dependency_links=[
-        'https://github.com/cirb/mobileserverstatus/archive/1.0.2.zip#egg=mobileserverstatus-1.0.2',
+        'http://stash.cirb.lan/plugins/servlet/archive/projects/DJANGO/repos/mobileserverstatus#egg=mobileserverstatus-1.0.2',
         'http://stash.cirb.lan/plugins/servlet/archive/projects/DJANGO/repos/django-status-monitoring?at=refs%2Fheads%2Fmaster#egg=django-status-monitoring'
     ],
     extras_require={
