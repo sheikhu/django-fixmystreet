@@ -52,7 +52,7 @@
                          <a class="{% is_active_menu 'faq' %}" href="{% url 'faq' %}">{% trans "FAQ" %}</a>&nbsp;&nbsp;&nbsp;&nbsp;
 
                          {% if not request.user.is_authenticated %}
-                         <a href="{% url 'login' %}">
+                         <a href="{% url 'login' %}" rel="nofollow">
                            {% trans 'Sign in' %}
                        </a>&nbsp;&nbsp;&nbsp;&nbsp;
                        {% else %}
