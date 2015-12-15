@@ -203,7 +203,7 @@
         if ($('#id_comment-text').val()) {
             hasComment = true;
         }
-        if (total_file_count) {
+        if (file_count) {
             hasPhoto = true;
         }
 
