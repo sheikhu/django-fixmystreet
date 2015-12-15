@@ -91,7 +91,6 @@
                 file_size_total -= file.size;
 
                 file_count--;
-                total_file_count--;
                 $("#id_files-TOTAL_FORMS").val(file_count);
             });
 
@@ -231,5 +230,3 @@
 
     }
 })(validateForm);
-
-
