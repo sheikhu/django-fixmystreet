@@ -209,7 +209,7 @@ class CitizenForm(forms.Form):
         email = self.cleaned_data["email"].lower()
 
         try:
-            user = FMSUser.objects.get(email__iexact=email)
+            user = FMSUser.objects.get(email__exact=email)
 
             if user.is_pro():
                 raise ValidationError(_("You cannot use a pro email as citizen"))

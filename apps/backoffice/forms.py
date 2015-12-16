@@ -122,7 +122,7 @@ class FmsUserForm(forms.ModelForm):
         email = self.cleaned_data["email"].lower()
 
         try:
-            user = FMSUser.objects.get(email__iexact=email)
+            user = FMSUser.objects.get(email__exact=email)
 
         except FMSUser.DoesNotExist:
             pass
