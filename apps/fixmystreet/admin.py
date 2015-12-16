@@ -101,6 +101,7 @@ class FMSUserAdmin(SimpleHistoryAdmin):
                 'telephone',
                 'email',
                 'last_used_language',
+                'quality'
             )
         }),
         ('Django', {
