@@ -157,7 +157,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
 
-    'apps.fixmystreet',
+    'apps.fixmystreet.app_config.FixmystreetConfig',
     'apps.backoffice',
     'apps.fmsproxy',
     'apps.api',

@@ -1,4 +1,5 @@
 from django.contrib.sitemaps import Sitemap
+
 from apps.fixmystreet.models import Report
 
 class ReportSitemap(Sitemap):
