@@ -79,7 +79,7 @@ class FMSUserAdmin(SimpleHistoryAdmin):
         # NotificationsInline,
         # UserEventsInline
     )
-    readonly_fields = ("date_joined", "last_login", "created", "created_by", "modified", "modified_by", "password", "username")
+    readonly_fields = ("date_joined", "last_login", "created", "created_by", "modified", "modified_by", "password", "username", "quality")
     search_fields = ("username", "email", "first_name", "last_name")
     list_filter = ("leader", "manager", "agent", "applicant", "contractor")
 
@@ -100,6 +100,7 @@ class FMSUserAdmin(SimpleHistoryAdmin):
                 'last_name',
                 'telephone',
                 'email',
+                'quality',
                 'last_used_language',
             )
         }),
