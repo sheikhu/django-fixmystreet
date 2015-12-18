@@ -647,7 +647,6 @@ class Report(UserTrackedModel):
     }
 
     status = models.IntegerField(choices=REPORT_STATUS_CHOICES, default=CREATED, null=False)
-    quality = models.IntegerField(choices=FMSUser.REPORT_QUALITY_CHOICES, null=True, blank=True)
     point = models.PointField(null=True, srid=31370, blank=True)
     address = models.CharField(max_length=255, verbose_name=_("Location"))
     address_number = models.CharField(max_length=255, verbose_name=_("Address Number"))
@@ -1025,7 +1024,6 @@ class Report(UserTrackedModel):
                 "y": self.point.y,
             },
             "status": self.status,
-            "quality": self.quality,
             "address": self.address,
             "postalcode": self.postalcode,
             "description": self.description,
