@@ -20,6 +20,8 @@ fms.MessageView = Backbone.View.extend({
     }
 });
 
+var URBIS_GETADDRESS_URL = 'service/urbis/Rest/Localize/getaddresses';
+
 fms.AddressSearchView = Backbone.View.extend({
     el: '#search-address-form',
     events: {
@@ -67,7 +69,7 @@ fms.AddressSearchView = Backbone.View.extend({
         this.$searchButton.prop('disabled', true);
 
         $.ajax({
-            url: URBIS_URL + 'service/urbis/Rest/Localize/getaddresses',
+            url: URBIS_URL + URBIS_GETADDRESS_URL,
             dataType:'jsonp',
             data: {
                 language: LANGUAGE_CODE,

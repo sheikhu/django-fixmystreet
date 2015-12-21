@@ -47,11 +47,14 @@ L.CRS.EPSG31370 = new L.Proj.CRS(
 
 // URBIS LAYERS ================================================================
 
+var URBIS_LAYER_URL = 'geoserver/wms';
+var URBIS_LAYER_GWC_URL = 'geoserver/urbis/wms/gwc';
+
 L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-fr': {
     title: gettext('Street'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
+    url: URBIS_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisFR',
       format: 'image/png',
@@ -66,7 +69,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-nl': {
     title: gettext('Street'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
+    url: URBIS_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisNL',
       format: 'image/png',
@@ -81,7 +84,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-ortho': {
     title: gettext('Orthographic'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
+    url: URBIS_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisORTHO',
       format: 'image/png',
@@ -97,7 +100,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
     overlay: true,
     title: gettext('Regional roads'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/wms',
+    url: URBIS_URL + URBIS_LAYER_URL,
     options: {
       layers: 'urbis:URB_A_SS',
       styles: 'URB_A_SS_FIXMYSTREET',
@@ -117,7 +120,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
     overlay: true,
     title: gettext('Municipal boundaries'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/wms',
+    url: URBIS_URL + URBIS_LAYER_URL,
     options: {
       layers: 'urbis:URB_A_MU',
       styles: 'fixmystreet_municipalities',
@@ -131,7 +134,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   //   overlay: true,
   //   title: gettext('Street names'),
   //   type: 'wms',
-  //   url: URBIS_URL + 'geoserver/wms',
+  //   url: URBIS_URL + URBIS_LAYER_URL,
   //   options: {
   //     layers: 'urbis:URB_A_MY_SA',
   //     format: 'image/png',
@@ -144,7 +147,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   //   overlay: true,
   //   title: gettext('Street numbers'),
   //   type: 'wms',
-  //   url: URBIS_URL + 'geoserver/wms',
+  //   url: URBIS_URL + URBIS_LAYER_URL,
   //   options: {
   //     layers: 'urbis:URB_A_ADPT',
   //     format: 'image/png',
