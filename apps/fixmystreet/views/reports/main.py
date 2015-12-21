@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 def new(request):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
+    citizen_error = False
 
     pnt = dict_to_point(request.REQUEST)
     report = None
@@ -84,6 +85,8 @@ def new(request):
             else:
                 report = None
 
+        citizen_error = not citizen_form.is_valid()
+
     else:
         report_form = CitizenReportForm(initial={
             'x': request.REQUEST.get('x'),
@@ -103,7 +106,8 @@ def new(request):
         "file_formset": file_formset,
         "report_form": report_form,
         "citizen_form": citizen_form,
-        "pnt": pnt
+        "pnt": pnt,
+        "citizen_error" : citizen_error
     }, context_instance=RequestContext(request))
 
 
