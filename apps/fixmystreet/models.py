@@ -279,7 +279,6 @@ class OrganisationEntity(UserTrackedModel):
     type = models.CharField(max_length=1, choices=ENTITY_TYPE, default='')
 
     dependency = models.ForeignKey('OrganisationEntity', related_name='associates', null=True, blank=True)
-    feature_id = models.CharField(max_length=25, null=True, blank=True)
 
     dispatch_categories = models.ManyToManyField('ReportCategory', related_name='assigned_to_department', blank=True)
 

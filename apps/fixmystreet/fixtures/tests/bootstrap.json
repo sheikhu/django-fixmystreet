@@ -79,7 +79,6 @@
             "name_fr": "Anderlecht",
             "name_nl": "Anderlecht",
             "phone": "02/558.08.00",
-            "feature_id": "URB_A_MU.7100",
             "type":"C"
         }
     },
@@ -91,7 +90,6 @@
             "name_fr": "Auderghem",
             "name_nl": "Oudergem",
             "phone": "02/676.48.11",
-            "feature_id": "URB_A_MU.7200",
             "type":"C"
         }
     },
@@ -103,7 +101,6 @@
             "name_fr": "Berchem-Sainte-Agathe",
             "name_nl": "Sint-Agatha-Berchem",
             "phone": "02/464.04.11",
-            "feature_id": "URB_A_MU.7300",
             "type":"C"
         }
     },
@@ -115,7 +112,6 @@
             "name_fr": "Bruxelles-Ville",
             "name_nl": "Brussel-Stad",
             "phone": "02/279.22.11",
-            "feature_id": "URB_A_MU.7400",
             "type":"C"
         }
     },
@@ -127,7 +123,6 @@
             "name_fr": "Etterbeek",
             "name_nl": "Etterbeek",
             "phone": "02/627.27.16",
-            "feature_id": "URB_A_MU.7500",
             "type":"C"
         }
     },
@@ -139,7 +134,6 @@
             "name_fr": "Evere",
             "name_nl": "Evere",
             "phone": "02/247.62.62",
-            "feature_id": "URB_A_MU.7600",
             "type":"C"
         }
     },
@@ -151,7 +145,6 @@
             "name_fr": "Forest",
             "name_nl": "Vorst",
             "phone": "02/370.22.11",
-            "feature_id": "URB_A_MU.7700",
             "type":"C"
         }
     },
@@ -163,7 +156,6 @@
             "name_fr": "Ganshoren",
             "name_nl": "Ganshoren",
             "phone": "02/464.05.47",
-            "feature_id": "URB_A_MU.7800",
             "type":"C"
         }
     },
@@ -175,7 +167,6 @@
             "name_fr": "Ixelles",
             "name_nl": "Elsene",
             "phone": "02/515.61.11",
-            "feature_id": "URB_A_MU.7900",
             "type":"C"
         }
     },
@@ -187,7 +178,6 @@
             "name_fr": "Jette",
             "name_nl": "Jette",
             "phone": "02/423.13.88",
-            "feature_id": "URB_A_MU.8000",
             "type":"C"
         }
     },
@@ -199,7 +189,6 @@
             "name_fr": "Koekelberg",
             "name_nl": "Koekelberg",
             "phone": "02/412.14.11",
-            "feature_id": "URB_A_MU.8100",
             "type":"C"
         }
     },
@@ -211,7 +200,6 @@
             "name_fr": "Molenbeek-Saint-Jean",
             "name_nl": "Sint-Jans-Molenbeek",
             "phone": "02/600.49.56",
-            "feature_id": "URB_A_MU.8200",
             "type":"C"
         }
     },
@@ -223,7 +211,6 @@
             "name_fr": "Saint-Gilles",
             "name_nl": "Sint-Gillis",
             "phone": "02/536.02.11",
-            "feature_id": "URB_A_MU.8300",
             "type":"C"
         }
     },
@@ -235,7 +222,6 @@
             "name_fr": "Saint-Josse-ten-Noode",
             "name_nl": "Sint-Joost-ten-Node",
             "phone": "02/220.27.93",
-            "feature_id": "URB_A_MU.8400",
             "type":"C"
         }
     },
@@ -247,7 +233,6 @@
             "name_fr": "Schaerbeek",
             "name_nl": "Schaarbeek",
             "phone": "02/244.75.11",
-            "feature_id": "URB_A_MU.8500",
             "type":"C"
         }
     },
@@ -259,7 +244,6 @@
             "name_fr": "Uccle",
             "name_nl": "Ukkel",
             "phone": "02/348.65.56",
-            "feature_id": "URB_A_MU.8600",
             "type":"C"
         }
     },
@@ -271,7 +255,6 @@
             "name_fr": "Watermael-Boitsfort",
             "name_nl": "Watermaal-Bosvoorde",
             "phone": "02/674.74.36",
-            "feature_id": "URB_A_MU.8700",
             "type":"C"
         }
     },
@@ -283,7 +266,6 @@
             "name_fr": "Woluwe-Saint-Lambert",
             "name_nl": "Sint-Lambrechts-Woluwe",
             "phone": "02/761.27.11",
-            "feature_id": "URB_A_MU.8800",
             "type":"C"
         }
     },
@@ -295,7 +277,6 @@
             "name_fr": "Woluwe-Saint-Pierre",
             "name_nl": "Sint-Pieters-Woluwe",
             "phone": "02/773.06.28",
-            "feature_id": "URB_A_MU.8900",
             "type":"C"
         }
     },
