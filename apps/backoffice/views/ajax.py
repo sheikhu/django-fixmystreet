@@ -92,6 +92,7 @@ def send_pdf(request, report_id):
         "status": "success",
         "message": "",
         "logMessages": [],
+        "validRecipients": []
     }
 
     user = get_current_user()
@@ -156,6 +157,7 @@ def send_pdf(request, report_id):
 
         msg.send()
         to_return["logMessages"].append(_("Successfully sent to '{email}'.").format(email=recipient))
+        to_return["validRecipients"].append(recipient)
 
     if to_return["status"] == "success":
         to_return["message"] = _("PDF sent by email.")

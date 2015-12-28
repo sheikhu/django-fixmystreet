@@ -1446,8 +1446,12 @@ color:#495E77;
 
 .nav-tabs>li{
 	width:241px;
-
 }
+
+#contact_tabs .nav-tabs>li{
+	width:auto;
+}
+
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover,
 .nav-tabs > li > a:hover,
@@ -3793,34 +3797,34 @@ form {
     padding-left: 5px;
 }
 
-#ulDownloadPDF{
+#ulDownloadPDF, #ulDownloadPDFLocal{
     list-style: none;
     overflow-y: auto;
     height:385px;
     margin-left:0;
 }
 
-#ulDownloadPDF li{
+#ulDownloadPDF li, #ulDownloadPDFLocal li{
     cursor: pointer;
 	width:auto;
     margin-left: 0;
     margin-right: 0;
 }
 
-#ulDownloadPDF li a{
+#ulDownloadPDF li a, #ulDownloadPDFLocal li a{
     text-transform: none;
     white-space: normal;
 	word-wrap: break-word;
 }
-#ulDownloadPDF li a .contact_name{
+#ulDownloadPDF li a .contact_name, #ulDownloadPDFLocal li a .contact_name{
     margin-bottom: 0;
 }
-#ulDownloadPDF li a .contact_email{
+#ulDownloadPDF li a .contact_email, #ulDownloadPDFLocal li a .contact_email{
     font-size: 14px;
     margin-bottom: 0;
     margin-left: 21px;
 }
-#ulDownloadPDF.nav-tabs>li>a {
+#ulDownloadPDF.nav-tabs>li>a, #ulDownloadPDFLocal.nav-tabs>li>a {
     padding: 5px 0 5px 5px;
 }
 .nav-tabs.nav-stacked>li>a:hover, .nav-tabs.nav-stacked>li>a:focus {
