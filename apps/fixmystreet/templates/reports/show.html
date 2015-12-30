@@ -143,7 +143,7 @@
                                 {% endif %}
                             {% endif %}
 
-                            <a class="btn" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
+                            <a class="btn"  rel="nofollow" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
                                 {% trans 'Download' %}
                                 <i class="icon-download-pdf"> </i>
                             </a>
