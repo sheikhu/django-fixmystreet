@@ -241,8 +241,9 @@
                     for (var index in sortPreferenceUnselectedColumns) {
                         selected = !sortPreferenceUnselectedColumns[index];
                         checkboxes.eq(index).prop('checked', selected);
-                        table.fnSetColumnVis(index, selected);
+                        table.fnSetColumnVis(index, selected, false);
                     }
+                    table.fnDraw(false);
 
                     // Bind event : refresh markers on map when table sort and filter
                     table.bind('filter', refreshMap);
@@ -297,7 +298,7 @@
                 sortPreferenceUnselectedColumns[index] = !checked;
                 fms_store.setTableVisibleColumns(sortPreferenceUnselectedColumns);
 
-                table.fnSetColumnVis(index, checked);
+                table.fnSetColumnVis(index, checked, false);
             });
             $('#column-visibility input, #column-visibility label').click(function(e) {
                 e.stopPropagation();
