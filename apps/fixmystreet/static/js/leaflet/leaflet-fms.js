@@ -47,11 +47,14 @@ L.CRS.EPSG31370 = new L.Proj.CRS(
 
 // URBIS LAYERS ================================================================
 
+var URBIS_LAYER_URL = 'geoserver/wms';
+var URBIS_LAYER_GWC_URL = 'geoserver/urbis/wms/gwc';
+
 L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-fr': {
     title: gettext('Street'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
+    url: URBIS_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisFR',
       format: 'image/png',
@@ -66,7 +69,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-nl': {
     title: gettext('Street'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
+    url: URBIS_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisNL',
       format: 'image/png',
@@ -81,7 +84,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-ortho': {
     title: gettext('Orthographic'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/urbis/wms/gwc',
+    url: URBIS_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisORTHO',
       format: 'image/png',
@@ -97,7 +100,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
     overlay: true,
     title: gettext('Regional roads'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/wms',
+    url: URBIS_URL + URBIS_LAYER_URL,
     options: {
       layers: 'urbis:URB_A_SS',
       styles: 'URB_A_SS_FIXMYSTREET',
@@ -117,7 +120,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
     overlay: true,
     title: gettext('Municipal boundaries'),
     type: 'wms',
-    url: URBIS_URL + 'geoserver/wms',
+    url: URBIS_URL + URBIS_LAYER_URL,
     options: {
       layers: 'urbis:URB_A_MU',
       styles: 'fixmystreet_municipalities',
@@ -131,7 +134,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   //   overlay: true,
   //   title: gettext('Street names'),
   //   type: 'wms',
-  //   url: URBIS_URL + 'geoserver/wms',
+  //   url: URBIS_URL + URBIS_LAYER_URL,
   //   options: {
   //     layers: 'urbis:URB_A_MY_SA',
   //     format: 'image/png',
@@ -144,7 +147,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   //   overlay: true,
   //   title: gettext('Street numbers'),
   //   type: 'wms',
-  //   url: URBIS_URL + 'geoserver/wms',
+  //   url: URBIS_URL + URBIS_LAYER_URL,
   //   options: {
   //     layers: 'urbis:URB_A_ADPT',
   //     format: 'image/png',
@@ -282,7 +285,7 @@ L.FixMyStreet.TEMPLATES.newIncidentPopup =
     '<div class="fmsmap-popup-body clearfix">' +
       '<p class="address">' + L.FixMyStreet.TEMPLATES.address + '</p>' +
     '</div>' +
-    '<div class="fmsmap-popup-footer clearfix hidden">' +
+    '<div class="fmsmap-popup-footer clearfix hidden" id="popup_btn">' +
       '<div class="pull-left">' +
         '<a href="#" data-bind="street-view" title="' + gettext('Open Street View') + '"><i class="icon-streetview"></i></a>' +
         '<a href="#" data-bind="center-map" title="' + gettext('Center map') + '"><i class="icon-localizeviamap"></i></a>' +
@@ -327,8 +330,8 @@ L.FixMyStreet.TEMPLATES.searchPanel =
   '</div>' +
   '<div class="fmsmap-panel-body clearfix">' +
     '{% if (data.results.length === 0) { %}' +
-      '<p style="margin-top:23px">' + gettext('No corresponding address has been found.') + '</p>' +
-      '<p>' + gettext('Please refine your search criteria.') + '</p>' +
+      '<p style="margin-top:23px" class="alert alert-error bold">' + gettext('No corresponding address has been found.') + '</p>' +
+      '<p class="alert alert-error bold">' + gettext('Please refine your search criteria.') + '</p>' +
     '{% } else { %}' +
       '<ul>' +
         '{% _.each(data.results, function (result, index) { %}' +
@@ -1311,6 +1314,9 @@ L.FixMyStreet.NewIncidentMarker = L.FixMyStreet.Marker.extend({
     L.FixMyStreet.Util.getAddressFromLatLng(this.getLatLng(), function (address) {
       that.model.address = address;
       that.getPopup().updateAddress();
+    },
+    function (response){
+      that.getPopup().errorAddress();
     });
   },
 
@@ -1451,6 +1457,17 @@ L.FixMyStreet.Popup = L.Popup.extend({
     var html = renderTemplate(L.FixMyStreet.TEMPLATES.address, {address: this._marker.model.address});
     var $content = $(this._content);
     $content.find('.address').html(html);
+    $content.find('.address').removeClass('alert alert-error');
+    $content.find('#popup_btn').show();
+    this.setContent($content.html());
+  },
+
+  errorAddress: function () {
+    var html = gettext('unfound address, please retry later');
+    var $content = $(this._content);
+    $content.find('.address').html(html);
+    $content.find('.address').addClass('alert alert-error');
+    $content.find('#popup_btn').hide();
     this.setContent($content.html());
   },
 
@@ -1909,7 +1926,14 @@ L.FixMyStreet.Util = {
       },
 
       success: function (response) {
-        success(that.urbisResultToAddress(response.result));
+        try{
+          success(that.urbisResultToAddress(response.result));
+        }
+        catch (exc) {
+          if (error !== undefined) {
+            error(response);
+          }
+        }
       },
 
       error: function (response) {

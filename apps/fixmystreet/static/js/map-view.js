@@ -39,6 +39,7 @@ fms.ReportMapView = Backbone.View.extend({
     }
 });
 
+var URBIS_GETADDRESSFROMXY_URL = 'service/urbis/Rest/Localize/getaddressfromxy';
 
 fms.NewIncidentMarkerView = Backbone.View.extend({
     el: '#map',
@@ -113,7 +114,7 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
         // this.position = UtilGeolocation.convertCoordinatesToWMS(this.latlng);
 
         $.ajax({
-            url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+            url: URBIS_URL + URBIS_GETADDRESSFROMXY_URL,
             type:'POST',
             dataType:'jsonp',
             data: {

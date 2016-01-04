@@ -112,3 +112,34 @@ class FMSUserTest(FMSTestCase):
         # Form has to be INVALID because the citizen use a pro email
         self.assertFalse(citizen_form.is_valid())
         self.assertTrue(citizen_form.errors)
+
+    def test_citizen_form_update(self):
+        my_user = FMSUser(
+            is_active=True,
+            telephone="0123456789",
+            last_used_language="nl",
+            password='test',
+            first_name="my_user",
+            last_name="my_user",
+            email="my_user@test.be",
+            manager=False
+        )
+        my_user.save()
+
+        #Change values
+        citizen_data = {
+            "email"    : "my_user@test.be",
+            "last_name": "user modified",
+            "telephone": "987654321",
+            "quality"  : 2
+        }
+        citizen_form = CitizenForm(citizen_data)
+        self.assertTrue(citizen_form.is_valid())
+        citizen_form.save()
+
+        my_user = FMSUser.objects.filter(username__iexact=citizen_data['email']).get()
+
+        self.assertEqual(my_user.last_name, citizen_data["last_name"])
+        self.assertEqual(my_user.telephone, citizen_data["telephone"])
+        self.assertEqual(my_user.quality, citizen_data["quality"])
+        self.assertEqual(my_user.last_used_language, "fr")

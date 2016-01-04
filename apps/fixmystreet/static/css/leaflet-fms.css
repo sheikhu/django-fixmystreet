@@ -252,7 +252,7 @@
 .leaflet-container a.leaflet-popup-close-button {
   color: white;
   height: auto;
-  padding: 6px;
+  padding: 10px;
 }
 .leaflet-container a.leaflet-popup-close-button:hover,
 .leaflet-container a.leaflet-popup-close-button:focus {
@@ -281,7 +281,7 @@
 }
 
 .leaflet-popup-content {
-  width: 280px;
+  width: 290px;
 }
 
 
@@ -321,6 +321,9 @@
 .fmsmap-popup-body .address {
   font-weight: bold;
   margin-left:20px;
+}
+.fmsmap-popup-body .address.alert.alert-error{
+  margin-left:0px;
 }
 .fmsmap-popup-body .icons li {
 }
@@ -502,4 +505,3 @@
   color: #3cb64b;
 }
 */
-

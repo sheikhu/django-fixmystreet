@@ -228,7 +228,7 @@
                 </div>
             </div>
         </div>
-        <div id="map" class="show_report_map"></div>
+        <div id="map"></div>
     </article>
 </div>
 </div>
@@ -372,9 +372,12 @@
             {% endif %}
         </div>
         <div id="divDownloadPDFContactList">
-            <h4 style="color:#2c3e50">
-                {% trans 'Contacts' %}
-            </h4>
+            <div id="contact_tabs">
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#entity_contacts" aria-controls="entity_contacts" role="tab" data-toggle="tab">{% trans 'Contacts' %}</a></li>
+                <li role="presentation"><a href="#local_contacts" aria-controls="local_contacts" role="tab" data-toggle="tab">{% trans 'Local contacts' %}</a></li>
+              </ul>
+            </div>
 {#            <div class="btn-group btn-group-vertical">#}
 {#            {% for fmsuser in contact_list %}#}
 {#                <button type="button" class="btn">#}
@@ -383,7 +386,8 @@
 {#                </button>#}
 {#            {% endfor %}#}
 {#            </div>#}
-            <div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="entity_contacts">
                 <ul id="ulDownloadPDF" class="nav nav-tabs nav-stacked">
                     {% for fmsuser in contact_list %}
                     <li>
@@ -396,7 +400,9 @@
                     {% endfor %}
                 </ul>
             </div>
+            <div role="tabpanel" class="tab-pane" id="local_contacts"></div>
         </div>
+      </div>
     </div>
 </div>
 

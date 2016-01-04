@@ -133,12 +133,16 @@ function AddressResult(x, y, address, idx)
     };
 }
 
+
+var URBIS_GETADDRESSFROMXY_URL = 'service/urbis/Rest/Localize/getaddressfromxy';
+var URBIS_GETADDRESSFIELDS_URL = 'service/urbis/Rest/Localize/getaddressesfields';
+
 function getAddressFromPoint(lang, x, y) {
     var self  = this;
     var origX = x;
     var origY = y;
     $.ajax({
-        url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+        url: URBIS_URL + URBIS_GETADDRESSFROMXY_URL,
         type:'POST',
         dataType:'jsonp',
         data: {
@@ -375,7 +379,7 @@ $(function(){
         $searchStreet.addClass('loading');
         $searchButton.prop('disabled',true);
         $.ajax({
-            url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressesfields',
+            url: URBIS_URL + URBIS_GETADDRESSFIELDS_URL,
             dataType:'jsonp',
             data:{
                 json:'{"language": "' + LANGUAGE_CODE + '",' +

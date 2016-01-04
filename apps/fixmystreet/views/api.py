@@ -223,15 +223,13 @@ def create_report(request):
 
 def create_citizen(request):
     # Get user in DB or create it
-    try:
-        citizen = FMSUser.objects.get(email=request.POST.get('citizen-email'))
-    except FMSUser.DoesNotExist:
-        citizen_form = CitizenForm(request.POST, prefix='citizen')
 
-        if not citizen_form.is_valid():
-            return HttpResponse(unicode(citizen_form.errors), status=400)
+    citizen_form = CitizenForm(request.POST, prefix='citizen')
 
-        citizen = citizen_form.save()
+    if not citizen_form.is_valid():
+        return HttpResponse(unicode(citizen_form.errors), status=400)
+
+    citizen = citizen_form.save()
 
     # Create report
     report_form = CitizenReportForm(request.POST, prefix='report')

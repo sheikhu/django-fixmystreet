@@ -4,7 +4,7 @@
 Thanks
 ======
 
-This is the code of http://fixmystreet.irisnet.be project stand at https://github.com/CIRB/django-fixmystreet.
+This is the code of http://fixmystreet.brussels project stand at https://github.com/CIRB/django-fixmystreet.
 
 It is a fork of http://fixmystreet.ca (https://github.com/visiblegovernment/django-fixmystreet), thank you to them for providing this great project !
 

@@ -12,10 +12,12 @@ $(document).ready(function() {
     getAddressFromPoint('nl', x, y);
 });
 
+var URBIS_GETADDRESSFROMXY_URL = 'service/urbis/Rest/Localize/getaddressfromxy';
+
 function getAddressFromPoint(lang, x, y) {
     var self = this;
     $.ajax({
-        url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+        url: URBIS_URL + URBIS_GETADDRESSFROMXY_URL,
         type:'POST',
         dataType:'jsonp',
         data: {

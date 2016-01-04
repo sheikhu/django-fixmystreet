@@ -20,6 +20,8 @@ fms.MessageView = Backbone.View.extend({
     }
 });
 
+var URBIS_GETADDRESS_URL = 'service/urbis/Rest/Localize/getaddresses';
+
 fms.AddressSearchView = Backbone.View.extend({
     el: '#search-address-form',
     events: {
@@ -67,7 +69,7 @@ fms.AddressSearchView = Backbone.View.extend({
         this.$searchButton.prop('disabled', true);
 
         $.ajax({
-            url: URBIS_URL + 'service/urbis/Rest/Localize/getaddresses',
+            url: URBIS_URL + URBIS_GETADDRESS_URL,
             dataType:'jsonp',
             data: {
                 language: LANGUAGE_CODE,
@@ -92,24 +94,41 @@ fms.AddressSearchView = Backbone.View.extend({
             fms.map.removeNewIncident();
 
             if (response.result.length === 1) {
+              try{
                 var model = {
                     type: 'new',
                     latlng: L.FixMyStreet.Util.toLatLng(response.result[0].point),
                     address: L.FixMyStreet.Util.urbisResultToAddress(response.result[0]),
                 };
                 fms.map.addIncident(model);
+              }
+              catch (error) {
+                fms.map.removeSearchResults();
+                fms.map.addSearchResults([]);
+              }
             } else {
                 var models = [];
                 $.each(response.result, function (i, result) {
-                    var model = {
+                    try{
+                      var model = {
                         number: String.fromCharCode(65 + i),
                         latlng: L.FixMyStreet.Util.toLatLng(result.point),
                         address: L.FixMyStreet.Util.urbisResultToAddress(result),
-                    };
-                    models.push(model);
+                      };
+                      models.push(model);
+                    }
+                    catch (error) {
+                      console.log(error.message);
+                    }
                 });
-                fms.map.addSearchResults(models);
-                this.showResultIntegrityMessage(response.result);
+                if(models.length > 0){
+                  fms.map.addSearchResults(models);
+                  this.showResultIntegrityMessage(response.result);
+                }
+                else{
+                  fms.map.removeSearchResults();
+                  fms.map.addSearchResults([]);
+                }
             }
         } else if (response.status == "noresult" || response.status == "success") {
             fms.map.removeSearchResults();

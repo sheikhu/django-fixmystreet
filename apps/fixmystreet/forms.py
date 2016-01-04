@@ -225,9 +225,16 @@ class CitizenForm(forms.Form):
     def save(self):
         try:
             instance = FMSUser.objects.get(email=self.cleaned_data["email"])
-            if not instance.is_pro and instance.last_name.lower() != self.cleaned_data["last_name"].lower() or instance.telephone != self.cleaned_data["telephone"]:
+            if not bool(instance.is_pro()) and (
+                instance.last_name.lower() != self.cleaned_data["last_name"].lower()
+                or instance.telephone != self.cleaned_data["telephone"]
+                or instance.quality != self.cleaned_data["quality"]
+                or instance.last_used_language.upper() != get_language().upper()
+            ):
                 instance.last_name = self.cleaned_data["last_name"]
                 instance.telephone = self.cleaned_data["telephone"]
+                instance.quality = self.cleaned_data["quality"]
+                instance.last_used_language = get_language()
                 instance.clean()
                 instance.save()
         except FMSUser.DoesNotExist:

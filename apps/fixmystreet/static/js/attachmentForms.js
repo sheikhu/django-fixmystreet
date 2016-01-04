@@ -91,7 +91,6 @@
                 file_size_total -= file.size;
 
                 file_count--;
-                total_file_count--;
                 $("#id_files-TOTAL_FORMS").val(file_count);
             });
 
@@ -204,7 +203,7 @@
         if ($('#id_comment-text').val()) {
             hasComment = true;
         }
-        if (total_file_count) {
+        if (file_count) {
             hasPhoto = true;
         }
 
@@ -231,5 +230,3 @@
 
     }
 })(validateForm);
-
-

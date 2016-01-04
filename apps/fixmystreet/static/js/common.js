@@ -85,6 +85,13 @@ $(document).ready(function(){
             coordonnees.find('[data-one-click]').prop('disabled', false);
         });
     }
+
+    if(coordonnees.length && citizen_error){
+      description.hide();
+      coordonnees.show();
+      stepDescription.removeClass("on").addClass("off");
+      stepCoordonnees.removeClass("off").addClass("on");
+    }
 });
 
 
