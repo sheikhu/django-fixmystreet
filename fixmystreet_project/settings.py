@@ -27,7 +27,7 @@ if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins" or
     SITE_ID = 3
     ALLOWED_HOSTS = ("*", )
 
-elif ENVIRONMENT == "staging":
+elif ENVIRONMENT == "staging" or ENVIRONMENT == "testing":
     EMAIL_BACKEND = 'middleware.smtpforward.EmailBackend'
     TO_LIST       = 'django.dev@cirb.irisnet.be'
     SITE_ID       = 2
