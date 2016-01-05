@@ -1,0 +1,61 @@
+{% load i18n %}
+{% load static from staticfiles %}
+
+<a href="{{ url }}" class="{% if active %} active{% endif %}">
+
+    <div id="navigationReports">
+        <div id="containerIconCircle">
+            <div id="iconCircle" class="{{ report.get_marker_flat }}"></div>
+        </div>
+        <div id="lineBorderHome"></div>
+        <div id="containerHomeText">
+            <span class="incidentNumberText">N°{{ report.get_ticket_number }}</span><br/>
+            <div id="adress">
+                <span >{{ report.address }}, {{ report.address_number }} à {{ report.postalcode }} {{ report.territorial_entity.name }}<br/></span>
+            </div>
+            <div id="type">
+               <span>{{ report.display_category }}</span>
+            </div>
+        </div>
+        <div id="containerHomePhotoIncident">
+            <div class="homeWrappingPicture" align="right">
+                {% if BACKOFFICE and report.thumbnail_pro %}
+                    <img class="defectPic" src="{{ report.thumbnail_pro }}"/>
+                {% elif report.thumbnail %}
+                    <img class="defectPic" src="{{ report.thumbnail }}"/>
+                {% else %}
+                    <img src="{% static 'images/no-pix.png' %}" style="" />
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</a>
+
+
+
+<!--
+
+        <div>
+
+    </div>
+    <div class="loc_desc">
+        <img src="{% static report.get_marker %}" class="report-counter"/>
+        <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }}</span><br />
+        <span class="ticket_address">
+            {{ report.address }}, {{ report.address_number }}<br />
+            {{ report.postalcode }} {{ report.territorial_entity.name }}
+        </span><br />
+        <span class="ticket_desc">
+            {{ report.display_category }}
+        </span><br />
+    </div>
+
+    {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+
+    -->

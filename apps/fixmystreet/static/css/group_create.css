@@ -1,0 +1,51 @@
+
+ul.errorlist {
+    border-radius: 1px;
+}
+
+ul.errorlist {
+    margin: 0 0 4px !important;
+    padding: 0 !important;
+    color: #fff;
+    background: #c11;
+}
+
+ul.errorlist li {
+    font-size: 12px !important;
+    display: block;
+    padding: 5px 5px 4px 7px;
+    margin: 3px 0 0 0;
+}
+
+ul.errorlist li:first-child {
+    margin-top: 0;
+}
+
+ul.errorlist li a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+td ul.errorlist {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+td ul.errorlist li {
+    margin: 0 !important;
+}
+
+input[type='checkbox']{
+    float:left;
+    margin-right:10px;
+}
+
+input[type='radio']{
+    margin-top:-2px;
+    margin-right:10px;
+}
+
+label{
+    display:inline;
+    margin-left: 0px !important;
+}

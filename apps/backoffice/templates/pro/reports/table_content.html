@@ -1,0 +1,115 @@
+{% load i18n tags %}
+<table id="result-table" class="dataTable">
+    <thead>
+        <tr>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th class="no-filter">{% trans "All" context "Feminine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+
+            <!--th>{% trans "All" context "Feminine plural" %}</th-->
+            <th>{% trans "All" context "Feminine plural" %}</th>
+            {#<th>{% trans "All" context "Feminine plural" %}</th>#}
+            <th>{% trans "All" context "Feminine plural" %}</th>
+            <th>{% trans "All" context "Feminine plural" %}</th>
+
+            <th class="filter-date">{% trans "All" context "Feminine plural" %}</th>
+            <th>{% trans "All" context "Feminine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th>{% trans "All" context "Feminine plural" %}</th>
+            <th class="filter-date">{% trans "All" context "Masculine plural" %}</th>
+            <th class="filter-date">{% trans "All" context "Feminine plural" %}</th>
+            <th>{% trans "All" context "Feminine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th>{% trans "All" context "Feminine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th>{% trans "All" context "Feminine plural" %}</th>
+            <th>{% trans "All" context "Masculine plural" %}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>{% trans "Ticket" %}</th>
+            <th>{% trans "Thumbnail" %}</th>
+            <th>{% trans "Category" %}</th>
+
+            <!--th>{% trans "Road type" %}</th-->
+            <th>{% trans "Category path" %}</th>
+            {#<th>{% trans "Sub category" %}</th>#}
+            <th>{% trans "Address" %}</th>
+            <th>{% trans "Postal code" %}</th>
+
+            <th>{% trans "Last modified" %}</th>
+            <th>{% trans "Quality" %}</th>
+            <th>{% trans "Signaled by" %}</th>
+            <th>{% trans "Assigned contractor" %}</th>
+            <th>{% trans "Contractor reference ID" %}</th>
+            <th>{% trans "Responsible department" %}</th>
+            <th>{% trans "Responsible entity" %}</th>
+            <th>{% trans "Created at" %}</th>
+            <th>{% trans "Planning date" %}</th>
+            <th>{% trans "Priority" %}</th>
+            <th>{% trans "Planning" %}</th>
+            <th>{% trans "Status" %}</th>
+            <th>{% trans "Visibility" %}</th>
+            <th>{% trans "Subscribed" %}</th>
+            <th>{% trans "Pending" %}</th>
+            <th>{% trans "ThirdPartyResponsibility" %}</th>
+            <th>{% trans "PrivateProperty" %}</th>
+            <th>{# get_icons_for_js_map() #}</th>
+            <th>{# get_slug() #}</th>
+            <th>{# point.x #}</th>
+            <th>{# point.y #}</th>
+            <th>{# get_status_for_js_map() #}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for report in reports %}
+            <tr data-href="{{ report.get_absolute_url_pro }}">
+                <td class="s{{report.status}}">{{ report.id }}</td>
+                <td>{{ report.thumbnail_pro|default_if_none:"" }}</td>
+                <td class="s{{report.status}}">{{ report.category.name }}</td>
+
+                <!--td class="s{{report.status}}">{{ report.address_regional|yesno:_("regional,communal") }}</td-->
+                <td class="s{{report.status}}">{{ report.get_category_path }}</td>
+                <td class="s{{report.status}}">{{ report.address }}, {{report.address_number}}</td>
+                <td class="s{{report.status}}">{{ report.postalcode }} {{ zipcodes|get_element_from_list:report.postalcode }}</td>
+
+                <td class="s{{report.status}}">{{ report.modified|date:"d/m/Y" }}</td>
+                <td class="s{{report.status}}">{{ report.citizen.get_quality_display }}</td>
+                <td class="s{{report.status}}">{{ report.is_pro|yesno:_("a pro,a citizen") }}</td>
+
+                <td class="s{{report.status}}">{{ report.contractor.name }}</td>
+                <td class="s{{report.status}}">{{ report.contractor_reference_id|default_if_none:"" }}</td>
+                <td class="s{{report.status}}">{{ report.responsible_department.name }}</td>
+                <td class="s{{report.status}}">{{ report.responsible_entity.name }}</td>
+                <td class="s{{report.status}}">{{ report.accepted_at|date:"d/m/Y" }}</td>
+                <td class="s{{report.status}}">{{ report.date_planned|date:"d/m/Y" }}</td>
+                <td class="s{{report.status}}">{{ report.get_priority }}</td>
+                <td class="s{{report.status}}">{{ report.is_planned|yesno:_("planned,not planned") }}</td>
+
+                {# This status row has to be on the same line to avoid spaces when exporting table #}
+                <td class="s{{report.status}}">{% if report.is_in_progress %}<span class="hide">{{ report.get_public_status_display }} : </span>{% endif %}{{ report.get_status_display }}</td>
+
+                <td class="s{{report.status}}">{{ report.private|yesno:_("private,public") }}</td>
+                <td class="s{{report.status}}">{{ report.subscribed|yesno:_("subscribed,not subscribed") }}</td>
+                <td class="s{{report.status}}">{{ report.pending|yesno:_("yes,no") }}</td>
+                <td class="s{{report.status}}">{{ report.third_party_responsibility|yesno:_("yes,no") }}</td>
+                <td class="s{{report.status}}">{{ report.private_property|yesno:_("yes,no") }}</td>
+                <td>{{ report.get_icons_for_js_map|dict_to_json }}</td>
+                <td>{{ report.get_slug }}</td>
+                <td>{{ report.point.x }}</td>
+                <td>{{ report.point.y }}</td>
+                <td>{{ report.get_status_for_js_map }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

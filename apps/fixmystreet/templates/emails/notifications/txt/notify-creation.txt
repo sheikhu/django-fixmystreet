@@ -1,0 +1,13 @@
+{% extends 'emails/notifications/base.txt' %}
+
+{% block content_mail_fr %}
+Un nouvel incident vous a été signalé.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
+{% endblock %}
+
+{% block content_mail_nl %}
+Er werd u een nieuw probleem gemeld. 
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+{% endblock %}

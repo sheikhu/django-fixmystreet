@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static from staticfiles %}
+{% load tags %}
+
+{% block title %}{% trans "View Reports" %}{% endblock %}
+
+
+{% block meta %}
+    {{ block.super }}
+    <meta property="og:title" content="{% trans 'Reports for' %} {{entity.name}}" />
+    <meta property="og:description" content="{% trans 'Meta description for list page' %}" />
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/search-address-view.js' %}"></script>
+
+    {% block script_map %}
+        {{ block.super }}
+        {% include "reports/_zipcodes.html" %}
+        <script src="{% static 'js/templates/reports/reports_map.js' %}"></script>
+    {% endblock %}
+{% endblock %}
+
+{% block map %}
+    <div class="row map-big">
+        {% include "_page_header.html" with map=True satus_filter=True search_report=True search_address=True loader=True mapSize="large" %}
+    </div>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

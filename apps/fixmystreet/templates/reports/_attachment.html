@@ -1,0 +1,168 @@
+{% load i18n %}
+{% load static from staticfiles %}
+
+{% if attachment.reportfile %}
+<li class="report_update left">
+{% else %}
+<li class="report_update right">
+{% endif %}
+
+    {% if editable %}
+
+        <a class="pull-right" onclick="return confirm('{% trans 'Please confirm deletion' %}')" href="{% url 'report_delete_attachment' report.id %}?attachmentId={{attachment.id}}">
+            <img src="{% static 'images/delete_documentation.png' %}" width='24px' alt="{% trans 'delete file' %}" title="{% trans 'delete file'%}" style="margin-left:15px; margin-right:5px; margin-top:5px;"/>
+        </a>
+
+        {% if not report_is_created %}
+            <div class="btn-group changeStatus pull-right">
+                {%include 'reports/_visibility_control.html' %}
+            </div>
+        {% endif %}
+
+    {% endif %}
+
+    <div class="update_text">
+    {% if attachment.reportfile %}
+    <div class="picture-container">
+        <div class="picture-head">
+             <span title="{{ attachment.created|date:"d/m/Y H:i:s" }}">{{attachment.created|date:"d/m/Y"}}:</span>
+
+            {% if attachment.created_by.is_citizen %}
+
+                {% if BACKOFFICE %}
+
+                    <a href="mailto:{{attachment.created_by.email}}">
+                        {{attachment.created_by.get_display_name}}
+                    </a> -
+                    {{ attachment.created_by.get_quality }}
+                    ({{attachment.created_by.telephone}})
+
+                {% else %}
+
+                    {% trans 'a citizen' %}
+
+                {% endif %}
+
+            {% else %}
+
+                {% if BACKOFFICE %}
+
+                    <a href="mailto:{{ attachment.created_by.email }}">
+                        {{ attachment.get_display_name }}
+                    </a>
+                    -
+                    {{ attachment.created_by.get_organisation }}
+                    ({% trans 'Phone' context 'telephone abbreviation' %}: {{ attachment.created_by.telephone }})
+
+                {% else %}
+
+                    {{ attachment.get_display_name_as_citizen }}
+
+                {% endif %}
+
+            {% endif %}<br/>
+            <i style="font-size:12px;">
+                             {% if BACKOFFICE %}
+                {% trans 'file creation Date' %}
+
+
+                        {% if attachment.reportfile.file_creation_date != None%}
+                        {{attachment.reportfile.file_creation_date}}
+                        {% else %} - {% endif %}
+            {% endif %}
+
+            </i>
+
+        </div>
+    
+        <div>
+            <div style="{% if not pdf_style %} float:left; width:40%;{% endif %} padding: 10px;">
+{#            <div style="float:left; width:40%; padding: 10px;">#}
+
+                {% if attachment.reportfile.is_image %}
+                    <a href="{{attachment.reportfile.image.url}}" data-lightbox="fms" title="{{attachment.reportfile.title}}"><img id='imgtoshow' src='{{attachment.reportfile.image.url}}' class="view-image"/></a>
+                {% else %}
+                    <a href="{{attachment.reportfile.file.url}}" title="{{attachment.reportfile.title}}"><br/></br/><br/>
+                        {% if attachment.reportfile.is_pdf %}
+                            <img src="{% static 'images/icon-pdf.png' %}" />
+                        {% elif attachment.reportfile.is_word %}
+                            <img src="{% static 'images/icon-word.png' %}" />
+                        {% elif attachment.reportfile.is_excel %}
+                            <img src="{% static 'images/icon-excel.png' %}" />
+                        {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+            <div style="{% if not pdf_style %}float:right; width:51%;{% endif %} padding: 15px; line-height:25px; text-align:justify; white-space:initial;"><img src="{% static 'images/comment-leffe-bg.png' %}" class="comment-deco" />
+                {{attachment.reportfile.title}}
+                <img src="{% static 'images/comment-bg.png' %}" class="comment-deco" style="float:right" />
+            </div>
+
+        </div>
+        <span class="picture-caption">
+            <!--a href="{{ attachment.reportfile.file.url }}"-->
+            
+            <!-- Modal -->
+            <p class="comment-incident">
+                
+            </p>
+           
+        </span>
+    </div>
+    {% else %} {# comment #}
+        {% if attachment.reportcomment.text %}
+        <div class="comment-container" style="line-height:25px;">
+            <!-- ENTETE BLEU -->
+            <div class="comment-head" style="">
+                <span title="{{ attachment.created|date:"d/m/Y H:i:s" }}">{{attachment.created|date:"d/m/Y"}}:</span>
+
+                {% if attachment.created_by.is_citizen %}
+
+                    {% if BACKOFFICE %}
+                        <a href="mailto:{{attachment.created_by.email}}">
+                            {{attachment.created_by.get_display_name}}
+                        </a>
+                        -
+                        {{ attachment.created_by.get_quality }}
+                        ({{attachment.created_by.telephone}})
+
+                    {% else %}
+
+                        {% trans 'a citizen' %}
+
+                    {% endif %}
+
+                {% else %}
+
+                    {% if BACKOFFICE %}
+
+                        <a href="mailto:{{ attachment.created_by.email }}">
+                            {{ attachment.get_display_name }}
+                        </a>
+                        -
+                        {{ attachment.created_by.get_organisation }}
+                        ({% trans 'Phone' context 'telephone abbreviation' %}: {{ attachment.created_by.telephone }})
+
+                    {% else %}
+
+                        {{ attachment.get_display_name_as_citizen }}
+
+                    {% endif %}
+
+                {% endif %}
+            </div>
+            <div style="padding:10px; padding-bottom:30px; line-height:25px; text-align:justify;">
+            <span style="color:#2c3e50; padding-top:15px; font-size:12pt; margin-bottom:15px;">{{ attachment.get_type_message }}</span><br/>
+            <img src="{% static 'images/comment-leffe-bg.png' %}" class="comment-deco" />
+                {{ attachment.reportcomment.text|linebreaksbr }}
+
+                <img src="{% static 'images/comment-bg.png' %}" class="comment-deco" style="float:right" />
+
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+
+    </div> <!-- update_text -->
+</li> <!-- report_update -->

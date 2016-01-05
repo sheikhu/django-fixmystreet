@@ -1,0 +1,80 @@
+{% extends "pro/auth/base.html" %}
+{% load i18n tags %}
+{% load static from staticfiles %}
+
+{% block title %}
+    {% if user_form.instance %}
+        {% blocktrans with user_form.instance.get_full_name as name %}
+            Edit {{ name }}
+        {% endblocktrans %}
+    {% else %}
+        {% trans "Create user" %}
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+{{ block.super }}
+{% if can_edit %}
+<script src="{% static 'js/templates/pro_auth_user_edit.js' %}"></script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<form action="" method="POST" id="report-form" class="form-horizontal">
+    {% if user_form.instance %}
+        <h5>
+        {% blocktrans with user_form.instance.get_full_name as name %}
+            Edit {{ name }}
+        {% endblocktrans %}
+        </h5>
+    {% else %}
+        <h5>{% trans "Create user" %}</h5>
+    {% endif %}
+
+    {% include "_form_horizontal.html" with form=user_form %}
+
+    {% if user_form.instance.leader and request.fmsuser.leader %}
+        <p class="lead controls">{% trans "This user has leader role and can not be edited" %}</p>
+    {% elif not request.fmsuser.leader %}
+        {% if user_form.instance.leader %}
+            <p class="lead controls">{% trans "This user has leader role" %}</p>
+        {% endif %}
+        <p class="lead controls">{% trans "Only leader can edit users" %}</p>
+    {% endif %}
+        <div id="required-note" class="controls lead" style="white-space:nowrap">{% trans "* This fields are required" %}</div>
+
+    <div class="control-group">
+        <div class="controls pull-right">
+           <input type="submit" value="{% trans 'Save' %}" class="btn"/>
+            {% if user_form.instance.id %}
+                <a href="#modalDeleteUser" role="button" class="btn" data-toggle="modal">{% trans 'Delete' %}</a>
+            {% endif %}
+        </div>
+    </div>
+    {% if user_form.instance.memberships.count %}
+        <h2>{% trans "Groups" %}</h2>
+        <ul>
+        {% for membership in user_form.instance.memberships.all %}
+            <li>{{ membership.organisation.name }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</form>
+{% if user_form.instance.id %}
+<div id="modalDeleteUser" class="modal hide in" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="modalDeleteUserLabel">{% trans 'Confirmation' %}</h3>
+  </div>
+  <div class="modal-body">
+    <p>{% trans 'Confirm delete user' %} "{{user_form.first_name.value}} {{user_form.last_name.value}}" ?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Cancel' %}</button>
+    <a href="{% url 'delete_user' user_form.instance.id %}" class="btn">{% trans 'Delete' %}</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

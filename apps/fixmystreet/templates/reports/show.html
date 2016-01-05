@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% load i18n tags %}
+{% load static from staticfiles %}
+
+{% block title %}{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}{% endblock %}
+
+{% block meta %}
+{{ block.super }}
+<meta name="title" property="og:title" content="{{report.secondary_category.name}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}}" />
+<meta name="description" property="og:description" content="{% trans 'Signalez tout type d incident :' %} {{report.secondary_category.name.lower}} {{report.secondary_category.secondary_category_class.name.lower}} {{report.category.name.lower}} {% trans 'in' %} {{report.responsible_entity.name}} {% trans 'sur FixMyStreet qui identifiera alors le service public en charge de le traiter. '%}" />
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+
+<script src="{% static 'js/jquery.exif.js' %}"></script>
+<script>
+    var REPORT_JSON = {{ report.marker_detail_short|dict_to_json|safe }};
+</script>
+
+<script src="{% static 'js/templates/reports/show.js' %}"></script>
+<script src="{% static 'lib/lightbox/js/lightbox-2.6.min.js' %}"></script>
+<link href="{% static 'lib/lightbox/css/lightbox.css' %}" rel="stylesheet" />
+
+{% endblock %}
+{% block css %}
+    {{block.super}}
+{% endblock %}
+
+{% block map %}
+    <div class="row">
+        <div class="span12">
+            <article class="view_incident container">
+                <div class="lead-container">
+                    <div class="row-fluid">
+                        <div class="span3">
+                            <div class="ticket_infos">
+
+                                <span class="ticket_number
+                                    {% if report.is_created %}
+                                        red_border
+                                    {% elif report.is_in_progress %}
+                                        orange_border
+
+                                    {% elif report.is_refused %}
+                                        gray_border
+                                    {% else %}
+                                        green_border
+                                    {% endif %}">
+
+                                    <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                </span>
+
+
+                                <br />
+                              <span class="ticket_address">
+                            {{ report.address }}, {{ report.address_number }}<br />
+                            <span>{{ report.postalcode }} {{ report.get_address_commune_name }}</span>
+                            {% if report.false_address %}
+                                <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{{ report.false_address }}'>
+                                    <img src="{% static 'images/icon-false-address.png' %}" />
+                                </a>
+                                <br />
+                            {% endif %}
+                        </span>
+
+                        <br />
+
+                        <span class="ticket_desc">
+
+                                {{report.display_category}}
+
+                        </span>
+
+                        <br />
+                        <ul class='iconsPopup' >
+                            {% if report.responsible_entity.id == 20 %}
+                                <li class='addressRegional'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is located on a regional zone" %}'><img src="{% static 'images/regional_on.png' %}" /></a></li>
+                            {% endif %}
+
+                            {% if report.is_pro %}
+                                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has been signaled by a pro" %}'><img src="{% static 'images/pro_on.png' %}" /></a></li>
+                            {% endif %}
+
+                            {% if report.contractor != None %}
+                                <li class='contractorAssigned'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident is assigned to" %} {{report.contractor}}'><img src="{% static 'images/contractorAssigned_on.png' %}" /></a></li>
+                            {% endif %}
+
+                            {% if report.date_planned %}
+                                <li class='datePlanned_on'><a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "Date planned : " %}{{report.date_planned|date:"m/Y"}}'>{{report.date_planned|date:"m/Y"}}</a></li>
+                            {% endif %}
+
+                        <!--/div-->
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="span6 incidentDetailsStatus" id="postedbytitle" style="margin-top:7px;">
+                            <!-- ROW CIT 1 -->
+                            <p>
+                                <strong>{% trans "Posted on" %}</strong>:
+                               {{report.created|date:"d/m/Y"}}
+                            </p>
+                            <!-- ROW CIT 2 -->
+                            <p>
+                                <strong>{% trans "Responsible:" %}</strong>
+                                <!-- responsible-name, responsible-group, responsible-entity -->
+                                {{report.responsible_department.name }} -
+                                {{report.responsible_entity.name}}
+                                {% if report.responsible_department.phone %}
+                                    ({% trans 'Phone' context 'telephone abbreviation' %}: {{report.responsible_department.phone }})
+                                {% endif %}
+                            </p>
+                            <!-- ROW CIT 3 -->
+                            <p>
+                                <strong>{% trans "Status:" %}</strong>
+                                {{ report.get_public_status_display }}
+                                {% if report.is_contractor_or_applicant_assigned and report.contractor.type == 'A' %}
+                                    {{report.contractor.name}}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="span3 btn-group-vertical">
+
+                            {% if report.is_in_progress %}
+                                {% if report.status != report.SOLVED and not report.merged_with %}
+                                    <a href="#divMarkAsDone" rel="nofollow" class="btn" data-toggle="modal">
+                                        {% trans "Report as solved" %}
+                                        <i class="icon-isresolved"> </i>
+                                    </a>
+                                {% endif %}
+                                {% if not report.is_closed and not subscribed and not report.merged_with %}
+                                    <a href="#modalSubscription" rel="nofollow" class="btn" data-toggle="modal">
+                                        {% if report.subscriptions.all.count %}
+                                            <span class="badge badge-inverse">{{ report.subscriptions.all.count }}</span>
+                                        {% endif %}
+                                        {% trans "Subscribe" %}
+                                        <i class="icon-subscribe"> </i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+
+                            <a class="btn"  rel="nofollow" href="{% url 'report_pdf' report.id %}" title="{% trans 'Download a pdf report of this incident' %}">
+                                {% trans 'Download' %}
+                                <i class="icon-download-pdf"> </i>
+                            </a>
+                            <a id="show-history" href="#" role="button" class="btn lk-viewHistoric" data-toggle="modal">
+                                <i class="icon-historic"> </i>{% trans "View historic" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div  id="map" class="fmsmap-size-small"></div>
+            </article>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<!-- Modal -->
+{% if report.status != report.SOLVED and report.status != report.CREATED %}
+    <div id="divMarkAsDone" class="modal hide fade">
+        <form id="dialogMarkAsDone" title="{% trans "Please enter more information about marking the report as done" %}" action="{% url 'report_update' report.id %}?is_fixed=True" method="post" >
+            {% csrf_token %}
+
+            <!-- modal resolved -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div>
+                    <div class="modal-icon">
+                        <img src="{% static 'images/good2.png' %}"/>
+                    </div>
+                    <div class="modal-text">
+                        <h3>{% trans "You think this incident is close. Indicate it!" %}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
+                {{ mark_as_done_form.as_p }}
+                <input id="subscribe-incident-show-report" type="submit" class="btn" name="submit" value="{% trans 'Confirm'%}"/>
+            </div>
+        </form>
+    </div>
+{% endif %}
+
+{% if report.is_in_progress %}
+    {% if not report.is_closed and not subscribed %}
+        <div id="modalSubscription" class="modal hide fade">
+            <form id="citizen-subscription-form" action="{% url 'subscribe' report.id %}">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    <div>
+                      <div class="modal-icon">
+                        <img src="{% static 'images/good2.png' %}"/>
+                      </div>
+                      <div class="modal-text">
+                        <h3>{% trans "Subscription:" %}</h3>
+                       </div>
+                    </div>
+
+
+
+                </div>
+                <div class="modal-body">
+                    <p>
+                    {% blocktrans with count=report.subscriptions.count %}
+                        Subscribe to receive notifications ({{ count }} subscribers to this incident)
+                    {% endblocktrans %}
+                    </p>
+
+                    <p class="required">
+                        <input type="email" class="validate-email" value="" placeholder="{% trans 'Your email'%}" name="citizen_email" />
+                        <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary" value="{% trans 'Subscribe' %}" />
+                    </p>
+                </div>
+
+                <!--div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div-->
+            </form>
+        </div>
+    {% endif %}
+{% endif %}
+
+<!-- Modal history -->
+<div id="history_popup" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+         <div>
+            <div class="modal-icon">
+                <img src="{% static 'images/history.png' %}"/>
+            </div>
+            <div class="modal-text">
+                <h3> {% trans 'History' %}</h3>
+                {% trans 'incident '%} {{report.get_ticket_number}}
+            </div>
+        </div>
+            </div>
+    <div class="modal-body">
+        {% include "reports/_activity_list.html" with visibility='public' %}
+    </div>
+    <div class="modal-footer">
+        <input type="button" class="btn"  value="{% trans 'OK'%}" data-dismiss="modal" aria-hidden="true"/>
+    </div>
+</div>
+
+<!-- ######################### -->
+<!-- # MAIN CONTENT DEFINITION -->
+<!-- ######################### -->
+    <div id='report-body'>
+
+        <div class="timeline-container">
+
+            {% if not report.is_merged and report.is_in_progress or report.is_created %}
+                <span class="add_info">
+                    <a href="{% url 'report_document' report_id=report.id slug=report.get_slug %}"><img src="{% static 'images/add-img.png' %}" />{% trans 'Add' %}<img src="{% static 'images/add-comment.png' %}"></a>
+                </span>
+            {% endif %}
+
+            {% if report.active_attachments %}
+                <!-- ################# FILES ############### -->
+                <!-- ################# FILES ############### -->
+                <!-- ################# FILES ############### -->
+                <div class="margin"></div> <!-- Use to separate the timeline in two columns -->
+                <ul id="report_updates" class="timeline">
+                    {% for attachment in report.active_attachments %}
+                        {% if not attachment.is_confidential or fms_user.can_see_confidential %}
+                            {% include "reports/_attachment.html" with attachment=attachment visibility='public' editable=attachment_edit pdf_style=False %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if report.merged_with %}
+                <p align="center">
+                    <a class="btn" href="{% url 'report_show' report.get_slug report.merged_with.id %}">
+                    {% trans "Merged on" %}
+                    {{report.last_history_event.event_at|date:"d/m/Y"}}
+                    {% trans "with incident" %}
+                        {{report.merged_with.get_ticket_number}}
+                    </a>
+                </p>
+            {% endif %}
+        </div> <!-- Bordered-box -->
+
+    </div> <!-- span6 -->
+
+
+
+{% endblock %}

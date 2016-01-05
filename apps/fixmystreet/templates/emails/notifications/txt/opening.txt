@@ -1,0 +1,10 @@
+{% extends 'emails/notifications/base.txt' %}
+
+{% block content_mail_fr %}
+Bonjour,
+
+{% endblock %}
+
+{% block content_mail_nl %}
+Goededag,
+{% endblock %}

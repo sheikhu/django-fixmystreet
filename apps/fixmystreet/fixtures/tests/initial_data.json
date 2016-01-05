@@ -1,0 +1,26 @@
+[
+    {
+        "pk": 1,
+        "model": "sites.site",
+        "fields": {
+            "domain": "fixmystreet.brussels",
+            "name": "fixmystreet.brussels"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "sites.site",
+        "fields": {
+            "domain": "fixmystreet.irisnetlab.be",
+            "name": "fixmystreet.irisnetlab.be"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "sites.site",
+        "fields": {
+            "domain": "localhost:8000",
+            "name": "localhost"
+        }
+    }
+]

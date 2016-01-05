@@ -1,0 +1,29 @@
+{% extends 'emails/notifications/base.txt' %}
+{% load i18n %}
+
+{% block content_mail_fr %}
+{{responsible}} à clôturé l’incident.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
+Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :
+
+- {{reopen_request_url}}
+
+Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :
+
+- {{unsubscribe_url}}
+{% endblock %}
+
+{% block content_mail_nl %}
+{{responsible}} heeft het probleem als opgelost gemeld.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+
+TO translate NL : Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :
+
+- {{reopen_request_url}}
+
+Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:
+
+- {{unsubscribe_url}}
+{% endblock %}

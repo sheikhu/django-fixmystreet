@@ -1,0 +1,29 @@
+{% extends 'emails/notifications/base.txt' %}
+{% load i18n %}
+
+{% block content_mail_fr %}
+Une demande de réouverture d'un incident a été effectuée par {{updater}}.
+
+{% language 'fr' %}
+Raison : {{ reopen_reason }}
+{% endlanguage %}
+
+{{ reopen_comment }}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
+
+{% endblock %}
+
+{% block content_mail_nl %}
+
+Aanvraag tot heropening van de melding gedaan door {{updater}}.
+
+{% language 'nl' %}
+Reden : {{ reopen_reason }}
+{% endlanguage %}
+
+{{ reopen_comment }}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+
+{% endblock %}

@@ -1,0 +1,1825 @@
+[
+    {
+        "pk": 1,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 1,
+            "name_fr": "Anderlecht",
+            "name_nl": "Anderlecht",
+            "hide": false,
+            "code": 1070
+        }
+    },
+    {
+        "pk": 2,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 2,
+            "name_fr": "Auderghem",
+            "name_nl": "Oudergem",
+            "hide": false,
+            "code": 1160
+        }
+    },
+    {
+        "pk": 3,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 3,
+            "name_fr": "Berchem-Sainte-Agathe",
+            "name_nl": "Sint-Agatha-Berchem",
+            "hide": false,
+            "code": 1082
+        }
+    },
+    {
+        "pk": 4,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "Bruxelles-Ville",
+            "name_nl": "Brussel-Stad",
+            "hide": false,
+            "code": 1000
+        }
+    },
+    {
+        "pk": 5,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 5,
+            "name_fr": "Etterbeek",
+            "name_nl": "Etterbeek",
+            "hide": false,
+            "code": 1040
+        }
+    },
+    {
+        "pk": 6,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 6,
+            "name_fr": "Evere",
+            "name_nl": "Evere",
+            "hide": false,
+            "code": 1140
+        }
+    },
+    {
+        "pk": 7,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 7,
+            "name_fr": "Forest",
+            "name_nl": "Vorst",
+            "hide": false,
+            "code": 1190
+        }
+    },
+    {
+        "pk": 8,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 8,
+            "name_fr": "Ganshoren",
+            "name_nl": "Ganshoren",
+            "hide": false,
+            "code": 1083
+        }
+    },
+    {
+        "pk": 9,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 9,
+            "name_fr": "Ixelles",
+            "name_nl": "Elsene",
+            "hide": false,
+            "code": 1050
+        }
+    },
+    {
+        "pk": 10,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 10,
+            "name_fr": "Jette",
+            "name_nl": "Jette",
+            "hide": false,
+            "code": 1090
+        }
+    },
+    {
+        "pk": 11,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 11,
+            "name_fr": "Koekelberg",
+            "name_nl": "Koekelberg",
+            "hide": false,
+            "code": 1081
+        }
+    },
+    {
+        "pk": 12,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 12,
+            "name_fr": "Molenbeek-Saint-Jean",
+            "name_nl": "Sint-Jans-Molenbeek",
+            "hide": false,
+            "code": 1080
+        }
+    },
+    {
+        "pk": 13,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 13,
+            "name_fr": "Saint-Gilles",
+            "name_nl": "Sint-Gillis",
+            "hide": false,
+            "code": 1060
+        }
+    },
+    {
+        "pk": 14,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 14,
+            "name_fr": "Saint-Josse-ten-Noode",
+            "name_nl": "Sint-Joost-ten-Node",
+            "hide": false,
+            "code": 1210
+        }
+    },
+    {
+        "pk": 15,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 15,
+            "name_fr": "Schaerbeek",
+            "name_nl": "Schaarbeek",
+            "hide": false,
+            "code": 1030
+        }
+    },
+    {
+        "pk": 16,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 16,
+            "name_fr": "Uccle",
+            "name_nl": "Ukkel",
+            "hide": false,
+            "code": 1180
+        }
+    },
+    {
+        "pk": 17,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 17,
+            "name_fr": "Watermael-Boitsfort",
+            "name_nl": "Watermaal-Bosvoorde",
+            "hide": false,
+            "code": 1170
+        }
+    },
+    {
+        "pk": 18,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 18,
+            "name_fr": "Woluwe-Saint-Lambert",
+            "name_nl": "Sint-Lambrechts-Woluwe",
+            "hide": false,
+            "code": 1200
+        }
+    },
+    {
+        "pk": 19,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 19,
+            "name_fr": "Woluwe-Saint-Pierre",
+            "name_nl": "Sint-Pieters-Woluwe",
+            "hide": false,
+            "code": 1150
+        }
+    },
+    {
+        "pk": 20,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "Bruxelles (Laeken)",
+            "name_nl": "Brussel (Laken)",
+            "hide": false,
+            "code": 1020
+        }
+    },
+    {
+        "pk": 21,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "Bruxelles (Neder-over-Heembeek)",
+            "name_nl": "Brussel (Neder-over-Heembeek)",
+            "hide": false,
+            "code": 1120
+        }
+    },
+    {
+        "pk": 22,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "Bruxelles (Haren)",
+            "name_nl": "Brussel (Haren)",
+            "hide": false,
+            "code": 1130
+        }
+    },
+    {
+        "pk": 23,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "",
+            "name_nl": "",
+            "hide": true,
+            "code": 1031
+        }
+    },
+    {
+        "pk": 24,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "",
+            "name_nl": "",
+            "hide": true,
+            "code": 1071
+        }
+    },
+    {
+        "pk": 25,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "",
+            "name_nl": "",
+            "hide": true,
+            "code": 1051
+        }
+    },
+    {
+        "pk": 26,
+        "model": "fixmystreet.zipcode",
+        "fields": {
+            "commune": 4,
+            "name_fr": "",
+            "name_nl": "",
+            "hide": true,
+            "code": 1041
+        }
+    },
+    {
+        "pk": 1,
+        "model": "fixmystreet.reportmaincategoryclass",
+        "fields": {
+            "name_nl": "Voetpad",
+            "name_fr": "Trottoir"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "fixmystreet.reportmaincategoryclass",
+        "fields": {
+            "name_nl": "Rijweg",
+            "name_fr": "Chaussée"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "fixmystreet.reportmaincategoryclass",
+        "fields": {
+            "name_nl": "Fietspad",
+            "name_fr": "Piste cyclable"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "fixmystreet.reportmaincategoryclass",
+        "fields": {
+            "name_nl": "Groene zone",
+            "name_fr": "Espace vert"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "fixmystreet.reportmaincategoryclass",
+        "fields": {
+            "name_nl": "Brug of tunnel",
+            "name_fr": "Pont ou tunnel",
+            "hint":1
+        }
+    },
+
+    {
+        "pk": 1,
+        "model": "fixmystreet.reportsecondarycategoryclass",
+        "fields": {
+            "name_nl": "Wegdek",
+            "name_fr": "Revêtement"
+        }
+    },
+
+    {
+        "pk": 2,
+        "model": "fixmystreet.reportsecondarycategoryclass",
+        "fields": {
+            "name_nl": "Puin/Verlaten voorwerpen",
+            "name_fr": "Débris/Objets abandonnés"
+        }
+    },
+
+    {
+        "pk": 3,
+        "model": "fixmystreet.reportsecondarycategoryclass",
+        "fields": {
+            "name_nl": "Rioolput",
+            "name_fr": "Récolte des eaux"
+        }
+    },
+
+    {
+        "pk": 4,
+        "model": "fixmystreet.reportsecondarycategoryclass",
+        "fields": {
+            "name_nl": "Plantengroei",
+            "name_fr": "Plantations"
+        }
+    },
+
+    {
+        "pk": 5,
+        "model": "fixmystreet.reportsecondarycategoryclass",
+        "fields": {
+            "name_nl": "Signalisatie",
+            "name_fr": "Signalisation"
+        }
+    },
+
+    {
+        "pk": 6,
+        "model": "fixmystreet.reportsecondarycategoryclass",
+        "fields": {
+            "name_nl": "Verlichting",
+            "name_fr": "Eclairage"
+        }
+    },
+
+     {
+        "pk": 7,
+        "model": "fixmystreet.reportsecondarycategoryclass",
+        "fields": {
+            "name_nl": "Wegmeubilair/Paaltje",
+            "name_fr": "Mobilier urbain/potelet"
+        }
+    },
+
+    {
+        "pk": 8,
+        "model": "fixmystreet.reportsecondarycategoryclass",
+        "fields": {
+            "name_nl": "Fontijnen",
+            "name_fr": "Fontaines"
+        }
+    },
+
+    {
+        "pk": 1,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Trou",
+            "name_nl": "Put",
+            "category_class": 1,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 2,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Revêtement dégradé",
+            "name_nl": "Beschadigd wegdek",
+            "category_class": 1,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 3,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Affaissement",
+            "name_nl": "Verzakking",
+            "category_class": 1,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 4,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Déchets",
+            "name_nl": "Afval",
+            "category_class": 1,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 5,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Matériaux",
+            "name_nl": "Materiaal",
+            "category_class": 1,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 6,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Signalisation",
+            "name_nl": "Signalisatie",
+            "category_class": 1,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 7,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Objet",
+            "name_nl": "Object",
+            "category_class": 1,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 8,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Bouche",
+            "name_nl": "Verstopt",
+            "category_class": 1,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 9,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 1,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 10,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Branche cassée",
+            "name_nl": "Gebroken tak",
+            "category_class": 1,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 11,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arbre dangereux",
+            "name_nl": "Gevaarlijke boom",
+            "category_class": 1,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 12,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Végétation gênante",
+            "name_nl": "Hinderende plantengroei",
+            "category_class": 1,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 13,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau abimé",
+            "name_nl": "Beschadigd bord",
+            "category_class": 1,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 14,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau illisible",
+            "name_nl": "Onleesbaar bord",
+            "category_class": 1,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 15,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Marquage effacé",
+            "name_nl": "Onduidelijke markering",
+            "category_class": 1,
+            "secondary_category_class": 5,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 16,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Feu défectueux",
+            "name_nl": "Defect verkeerslicht",
+            "category_class": 1,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 17,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Abimé",
+            "name_nl": "Beschadigd",
+            "category_class": 1,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 18,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Hors Service",
+            "name_nl": "Buiten dienst",
+            "category_class": 1,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 19,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Eclairage Diurne",
+            "name_nl": "Verlichting overdag",
+            "category_class": 1,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 20,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 1,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 21,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arraché",
+            "name_nl": "Gebroken",
+            "category_class": 1,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 22,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Disparu",
+            "name_nl": "Verdwenen",
+            "category_class": 1,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 23,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Hors Service",
+            "name_nl": "Buiten dienst",
+            "category_class": 1,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 24,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Débordement",
+            "name_nl": "Overstroming",
+            "category_class": 1,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 25,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Fuite",
+            "name_nl": "Lek",
+            "category_class": 1,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 26,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Trou",
+            "name_nl": "Put",
+            "category_class": 2,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 27,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Revêtement dégradé",
+            "name_nl": "Beschadigd wegdek",
+            "category_class": 2,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 28,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Affaissement",
+            "name_nl": "Verzakking",
+            "category_class": 2,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 116,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Ralentisseur abimé",
+            "name_nl": "Beschadigde verkeersdrempel",
+            "category_class": 2,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 29,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Déchets",
+            "name_nl": "Afval",
+            "category_class": 2,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 30,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Matériaux",
+            "name_nl": "Materiaal",
+            "category_class": 2,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 31,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Signalisation",
+            "name_nl": "Signalisatie",
+            "category_class": 2,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 32,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Objet",
+            "name_nl": "Object",
+            "category_class": 2,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 33,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Bouché",
+            "name_nl": "Verstopt",
+            "category_class": 2,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 34,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 2,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 117,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Bruyante",
+            "name_nl": "Rumoerig",
+            "category_class": 2,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 35,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Branche cassée",
+            "name_nl": "Afgebroken tak",
+            "category_class": 2,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 36,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arbre dangereux",
+            "name_nl": "Gevaarlijke boom",
+            "category_class": 2,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 37,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Végétation gênante",
+            "name_nl": "Hinderende plantengroei",
+            "category_class": 2,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 38,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau abimé",
+            "name_nl": "Beschadigd bord",
+            "category_class": 2,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 39,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau illisible",
+            "name_nl": "Onleesbaar bord",
+            "category_class": 2,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 40,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Marquage effacé",
+            "name_nl": "Onduidelijke markering",
+            "category_class": 2,
+            "secondary_category_class": 5,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 41,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Feu defectueux",
+            "name_nl": "Defct verkeerslicht",
+            "category_class": 2,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 42,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Abimé",
+            "name_nl": "Beschadigd",
+            "category_class": 2,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 43,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Hors Service",
+            "name_nl": "Buiten dienst",
+            "category_class": 2,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 44,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Eclairage Diurne",
+            "name_nl": "Verlichting overdag",
+            "category_class": 2,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 45,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 2,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 46,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arraché",
+            "name_nl": "Gebroken",
+            "category_class": 2,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 47,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Disparu",
+            "name_nl": "Verdwenen",
+            "category_class": 2,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 48,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Hors Service",
+            "name_nl": "Buiten dienst",
+            "category_class": 2,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 49,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Débordement",
+            "name_nl": "Overstroming",
+            "category_class": 2,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 50,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Fuite",
+            "name_nl": "Lek",
+            "category_class": 2,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 51,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Trou",
+            "name_nl": "Put",
+            "category_class": 3,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 52,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Revêtement dégradé",
+            "name_nl": "Beschadigd wegdek",
+            "category_class": 3,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 53,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Affaissement",
+            "name_nl": "Verzakking",
+            "category_class": 3,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 54,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Déchets",
+            "name_nl": "Afval",
+            "category_class": 3,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 55,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Matériaux",
+            "name_nl": "Materiaal",
+            "category_class": 3,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 56,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Signalisation",
+            "name_nl": "Signalisatie",
+            "category_class": 3,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 57,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Objet",
+            "name_nl": "Object",
+            "category_class": 3,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 58,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Bouche",
+            "name_nl": "Verstopt",
+            "category_class": 3,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 59,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 3,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 60,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Branche cassée",
+            "name_nl": "Afgebroken tak",
+            "category_class": 3,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 61,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arbre dangereux",
+            "name_nl": "Gevaarlijke boom",
+            "category_class": 3,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 62,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Végétation gênante",
+            "name_nl": "Hinderende plantengroei",
+            "category_class": 3,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 63,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau abimé",
+            "name_nl": "Beschadigd bord",
+            "category_class": 3,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 64,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau illisible",
+            "name_nl": "Onleesbaar bord",
+            "category_class": 3,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 65,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Marquage effacé",
+            "name_nl": "Onduidelijke markering",
+            "category_class": 3,
+            "secondary_category_class": 5,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 66,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Feu défectueux",
+            "name_nl": "Defect verkeerslicht",
+            "category_class": 3,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 67,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Abimé",
+            "name_nl": "Beschadigd",
+            "category_class": 3,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 68,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Hors Service",
+            "name_nl": "Buiten dienst",
+            "category_class": 3,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 69,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Eclairage Diurne",
+            "name_nl": "Verlichting overdag",
+            "category_class": 3,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 70,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 3,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 71,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arraché",
+            "name_nl": "Gebroken",
+            "category_class": 3,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 72,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Disparu",
+            "name_nl": "Verdwenen",
+            "category_class": 3,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 73,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Trou",
+            "name_nl": "Put",
+            "category_class": 4,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 74,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Revêtement dégradé",
+            "name_nl": "Beschadigd wegdek",
+            "category_class": 4,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 75,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Affaissement",
+            "name_nl": "Verzakking",
+            "category_class": 4,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 76,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Déchets",
+            "name_nl": "Afval",
+            "category_class": 4,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 77,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Matériaux",
+            "name_nl": "Materiaal",
+            "category_class": 4,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 78,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Signalisation",
+            "name_nl": "Signalisatie",
+            "category_class": 4,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 79,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Objet",
+            "name_nl": "Object",
+            "category_class": 4,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 80,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Bouché",
+            "name_nl": "Verstopt",
+            "category_class": 4,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 81,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 4,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 82,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Branche cassée",
+            "name_nl": "Afgebroken tak",
+            "category_class": 4,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 83,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arbre dangereux",
+            "name_nl": "Gevaarlijke boom",
+            "category_class": 4,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 84,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Végétation gênante",
+            "name_nl": "Hinderende plantengroei",
+            "category_class": 4,
+            "secondary_category_class": 4,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 85,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau abimé",
+            "name_nl": "Beschadigd bord",
+            "category_class": 4,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 86,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau illisible",
+            "name_nl": "Onleesbaar bord",
+            "category_class": 4,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 87,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Marquage effacé",
+            "name_nl": "Onduidelijke markering",
+            "category_class": 4,
+            "secondary_category_class": 5,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 88,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Feu défectueux",
+            "name_nl": "Defect verkeerslicht",
+            "category_class": 4,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 89,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Abimé",
+            "name_nl": "Beschadigd",
+            "category_class": 4,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 90,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Hors Service",
+            "name_nl": "Buiten dienst",
+            "category_class": 4,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 91,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Eclairage Diurne",
+            "name_nl": "Verlichting overdag",
+            "category_class": 4,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 92,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 4,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 93,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arraché",
+            "name_nl": "Gebroken",
+            "category_class": 4,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 94,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Disparu",
+            "name_nl": "Verdwenen",
+            "category_class": 4,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 95,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Hors Service",
+            "name_nl": "Buiten dienst",
+            "category_class": 4,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 96,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Débordement",
+            "name_nl": "Overstroming",
+            "category_class": 4,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 97,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Fuite",
+            "name_nl": "Lek",
+            "category_class": 4,
+            "secondary_category_class": 8,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 98,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Trou",
+            "name_nl": "Put",
+            "category_class": 5,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk":99,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Revêtement dégradé",
+            "name_nl": "Beschadigd wegdek",
+            "category_class": 5,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 100,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Affaissement",
+            "name_nl": "Verzakking",
+            "category_class": 5,
+            "secondary_category_class": 1,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 101,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Déchets",
+            "name_nl": "Afval",
+            "category_class": 5,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 102,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Matériaux",
+            "name_nl": "Materiaal",
+            "category_class": 5,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 103,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Signalisation",
+            "name_nl": "Signalisatie",
+            "category_class": 5,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 104,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Objet",
+            "name_nl": "Object",
+            "category_class": 5,
+            "secondary_category_class": 2,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 105,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Bouché",
+            "name_nl": "Verstopt",
+            "category_class": 5,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 106,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 5,
+            "secondary_category_class": 3,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 107,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau abimé",
+            "name_nl": "Beschadigd bord",
+            "category_class": 5,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 108,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Panneau illisible",
+            "name_nl": "Onleesbaar bord",
+            "category_class": 5,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 109,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Marquage effacé",
+            "name_nl": "Onduidelijke markering",
+            "category_class": 5,
+            "secondary_category_class": 5,
+            "public": true
+        }
+    },
+
+    {
+        "pk": 110,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Feu défectueux",
+            "name_nl": "Defect verkeerslicht",
+            "category_class": 5,
+            "secondary_category_class": 5,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 111,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Abimé",
+            "name_nl": "Beschadigd",
+            "category_class": 5,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 112,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Hors Service",
+            "name_nl": "Buiten dienst",
+            "category_class": 5,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 113,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Eclairage Diurne",
+            "name_nl": "Verlichting overdag",
+            "category_class": 5,
+            "secondary_category_class": 6,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 114,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Cassé",
+            "name_nl": "Stuk",
+            "category_class": 5,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 115,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Arraché",
+            "name_nl": "Gebroken",
+            "category_class": 5,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+
+    {
+        "pk": 116,
+        "model": "fixmystreet.reportcategory",
+        "fields": {
+            "name_fr": "Disparu",
+            "name_nl": "Verdwenen",
+            "category_class": 5,
+            "secondary_category_class": 7,
+            "public": false
+        }
+    },
+    {
+        "pk": 1,
+        "model": "fixmystreet.reportcategoryhint",
+        "fields": {
+            "label_fr": "This is a note to help user",
+            "label_nl": "This is a note to help user"
+        }
+    }
+]

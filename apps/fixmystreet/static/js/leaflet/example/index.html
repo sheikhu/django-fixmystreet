@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Example</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="../../../lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../lib/bootstrap/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="../../../css/fms.css" />
+    <link rel="stylesheet" href="../../../lib/jquery/jquery-ui.min.css" />
+    <link rel="stylesheet" href="../../../lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="../../../lib/leaflet.opacitycontrols/control.opacity.css" />
+    <link rel="stylesheet" href="../../../css/leaflet-fms.css" />
+    <link rel="stylesheet" href="example.css" />
+</head>
+<body>
+<div id="map"></div>
+
+<div class="actions cf">
+    <div class="group">
+        <strong>Sizes:</strong>
+        <select id="map-sizes"></select>
+    </div>
+    <div class="group">
+        <strong>Buttons:</strong>
+        <label><input id="button-prepend" type="checkbox" checked /> Prepend</label>
+        <button id="btn-add-button-size">Size</button>
+        <button id="btn-add-button-locateonmap">Locate on Map</button>
+        <button id="btn-add-button-streetview">Street View</button>
+        <button id="btn-add-incident-type">Incident Types</button>
+        Custom:
+        <input id="button-label" value="Google" />
+        <input id="button-url" value="http://google.be/" />
+        <button id="btn-add-button">Add</button>
+    </div>
+</div>
+<div class="actions cf">
+    <div class="group">
+        <strong>Incidents:</strong>
+        <button id="btn-add-real-incident">Add Real</button>
+        <button id="btn-add-random-incidents">Add 10 Random</button>
+        <!-- <button id="btn-add-random-incidents-bulk">Add 10 Random Bulk</button> -->
+        <button id="btn-remove-all-incidents">Remove All</button>
+        <br />
+        GeoJSON:
+        <input id="load-geojson-url" value="http://localhost:8000/fr/ajax/map/filter/" />
+        <button id="btn-load-geojson">Load</button>
+    </div>
+</div>
+<div class="actions cf">
+    <div class="group">
+        <strong>New Incident:</strong>
+        <button id="btn-new-incident">New Incident</button>
+        <button id="btn-remove-new-incident">Remove New Incident</button>
+        <strong>At:</strong>
+        Lat,Lng: <input id="new-incident-latlng" value="50.8461603,4.3691917" />
+        <button id="btn-new-incident-at-latlng">Add</button>
+    </div>
+    <div class="group">
+        <strong>Numbered Marker:</strong>
+        Number: <input id="numbered-marker-number" value="A" style="width:50px" />
+        <button id="btn-add-numbered-marker">Add</button>
+        <button id="btn-remove-numbered-marker">Remove</button>
+    </div>
+</div>
+<div class="actions cf">
+    <div class="group">
+        <strong>Search:</strong>
+        <button id="btn-add-search-result">Add 1 Random</button>
+        <button id="btn-add-search-results-bulk">Add 10 Random Bulk</button>
+        <button id="btn-search-no-results">Show no results</button>
+        <button id="btn-remove-search-results">Remove Results</button>
+    </div>
+</div>
+
+<script src="../../../lib/jquery/jquery-1.8.3.min.js"></script>
+<script src="../../../lib/jquery/jquery-ui.min.js"></script>
+<script src="../../../lib/leaflet/leaflet.js"></script>
+<script src="../../../lib/leaflet.markercluster/leaflet.markercluster.js"></script>
+<script src="../../../lib/leaflet.opacitycontrols/control.opacity.js"></script>
+<script src="../../../lib/proj4leaflet/0.7.0/vendor/proj4-compressed.js"></script>
+<script src="../../../lib/proj4leaflet/0.7.0/proj4leaflet.js"></script>
+<script src="../../../lib/proj4js/engine/proj4js-compressed.js"></script>
+<script src="../../../lib/proj4js/defs/EPSG31370.js"></script>
+<script src="leaflet-dev.js"></script>
+<script src="../leaflet-fms.js"></script>
+<script>
+    var map;
+    var numberedMarker = null;
+    var toto;
+
+    // Initialize an UrbIS map (empty by default, no layers loaded).
+    map = new L.FixMyStreet.Map('map');
+
+    // map.on('resize', function (evt) {
+    //   console.log('Map resized:', evt.newSize, evt.oldSize);
+    // });
+
+
+    $(document).ready(function() {
+        // Initialize available map sizes.
+        var mapSizes = {
+            'large': 'Large',
+            '': 'Default (medium)',
+            'small': 'Small',
+            '500x300': '500x300',
+        };
+        var $selectMapSizes = $('#map-sizes');
+        $.each(mapSizes, function (k, v) {
+            $selectMapSizes.append(
+                    $('<option></option>').attr('value', k).prop('selected', k === '').text(v)
+            );
+        });
+
+        // Get all incident types.
+        var incidentTypes = [];
+        for (var k in map.options.incidentTypes) {
+            incidentTypes.push(k);
+        }
+
+
+        // HELPERS...
+
+        // Add a real incident
+        function addRealIncident() {
+            map.addIncident({
+                id: 15745,
+                type: 'ongoing',
+                latlng: '50.8461603,4.3691917',
+                url: 'http://fixmystreet.brussels/fr/rapport/trou-revetement-chaussee-woluwe-saint-pierre/15745',
+                address: {
+                    street: 'Rue David Van Bever',
+                    number: '1',
+                    postalCode: '1150',
+                    city: 'Woluwe-Saint-Pierre ',
+                },
+                categories: 'Chaussée / Revêtement : Trou',
+                photo: 'http://fixmystreet.brussels/media/files/2014/08/15745/1407926734544_1.jpg',
+                icons: {
+                    regionalRoads: true,
+                    pro: false,
+                    assigned: true,
+                    priority: 2,
+                },
+            });
+        }
+
+        // Add random incidents (one by one using `map.addIncident()`).
+        function addRandomIncidents() {
+            var n, model, options;
+            for (var i = 0; i < 10; i++) {
+                n = Math.floor(Math.random() * 10) % incidentTypes.length;
+                model = {
+                    id: i,
+                    type: incidentTypes[n],
+                    latlng: getRandomLatLng(map),
+                    icons: {
+                        regionalRoads: false,
+                    }
+                }
+                options = {};
+                switch (model.type) {
+                    case 'reported': break;
+                    case 'ongoing':
+                        options.popupOptions = {
+                            className: 'popup-yellow',
+                            closeButton: false,
+                        };
+                        break;
+                    case 'closed':
+                        options.iconOptions = {
+                            className: 'marker-in-black',
+                        };
+                        break;
+                }
+
+                map.addIncident(model, options);
+            }
+        }
+
+        // Add random incidents (bulk using `map.addIncidents()`).
+        // function addRandomIncidentsBulk() {
+        //   var incidents = [];
+        //   var n, model, options;
+        //   for (var i = 0; i < 10; i++) {
+        //     n = Math.floor(Math.random() * 10) % incidentTypes.length;
+        //     model = {
+        //       id: i,
+        //       type: incidentTypes[n],
+        //       latlng: getRandomLatLng(map),
+        //     }
+        //     options = {};
+        //     switch (model.type) {
+        //       case 'reported': break;
+        //       case 'ongoing':
+        //         options.popupOptions = {
+        //           className: 'popup-yellow',
+        //           closeButton: false,
+        //         };
+        //         break;
+        //       case 'closed':
+        //         options.iconOptions = {
+        //           className: 'marker-in-black',
+        //         };
+        //         break;
+        //     }
+        //     incidents.push({model: model, options: options});
+        //   }
+
+        //   map.addIncidents(incidents);
+        // }
+
+        // Add a random search result.
+        function addRandomSearchResult(model) {
+            var options = {};
+            var model = $.extend(true, {
+                number: '?',
+                latlng: getRandomLatLng(map),
+                address: null,
+            }, model);
+            L.FixMyStreet.Util.getAddressFromLatLng(model.latlng, function (address) {
+                model.address = address;
+            });
+            map.initSearchLayer();
+            map.addSearchResult(model, options);
+        }
+
+        // Add random search results.
+        function addRandomSearchResultsBulk() {
+            var options = {};
+            var models = [];
+            var toProcess = 10;
+            for (var i = 0; i < 10; i++) {
+                var model = {
+                    number: String.fromCharCode(65 + i),
+                    latlng: getRandomLatLng(map),
+                    address: null,
+                };
+                models.push(model);
+            }
+            for (i = 0; i < 10; i++) {
+                (function (i) {
+                    L.FixMyStreet.Util.getAddressFromLatLng(models[i].latlng, function (address) {
+                        toProcess--;
+                        models[i].address = address;
+                        if (toProcess <= 0) {
+                            map.addSearchResults(models);
+                        }
+                    });
+                })(i);
+            }
+        }
+
+
+        // CLICK HANDLERS...
+
+        // Change map dimensions.
+        $selectMapSizes.change(function (evt) {
+            evt.preventDefault();
+            map.setCssSize($selectMapSizes.val());
+        });
+
+        // Add map size control.
+        $('#btn-add-button-size').click(function (evt) {
+            evt.preventDefault();
+            var options = {
+                prepend: $('#button-prepend').prop('checked'),
+            };
+            map.addSizeToggle(options);
+        });
+
+        // Add "locate on map" control.
+        $('#btn-add-button-locateonmap').click(function (evt) {
+            evt.preventDefault();
+            var options = {
+                prepend: $('#button-prepend').prop('checked'),
+            };
+            map.addLocateOnMapButton(options);
+        });
+
+        // Add "Street View" control.
+        $('#btn-add-button-streetview').click(function (evt) {
+            evt.preventDefault();
+            var options = {
+                prepend: $('#button-prepend').prop('checked'),
+            };
+            map.addStreetViewButton(options);
+        });
+
+        // Add custom button control.
+        $('#btn-add-button').click(function (evt) {
+            evt.preventDefault();
+            var options = {
+                label: $('#button-label').val(),
+                prepend: $('#button-prepend').prop('checked'),
+                attr: {
+                    href: $('#button-url').val(),
+                    target: '_blank',
+                },
+            };
+            map.addButton(options);
+        });
+
+        // Add "incident type" filter.
+        $('#btn-add-incident-type').click(function (evt) {
+            evt.preventDefault();
+            map.addIncidentTypeControl();
+        });
+
+        // Add random incidents.
+        $('#btn-add-real-incident').click(function (evt) {
+            evt.preventDefault();
+            addRealIncident();
+        });
+        $('#btn-add-random-incidents').click(function (evt) {
+            evt.preventDefault();
+            addRandomIncidents();
+        });
+        // $('#btn-add-random-incidents-bulk').click(function (evt) {
+        //   evt.preventDefault();
+        //   addRandomIncidentsBulk();
+        // });
+
+
+        // Add incidents from GeoJSON.
+        $('#btn-load-geojson').click(function (evt) {
+            evt.preventDefault();
+            var url = $('#load-geojson-url').val();
+            map.addIncidentsFromGeoJson(url);
+        });
+
+        // Remove all incidents.
+        $('#btn-remove-all-incidents').click(function (evt) {
+            evt.preventDefault();
+            map.removeAllIncidents();
+        });
+
+        // Add a new incident when clicking on the map.
+        // map.on('click', function (options) {
+        //   map.addNewincideNtmarker(options.latlng);
+        // });
+
+        // Add a new incident draggable marker.
+        $('#btn-new-incident').click(function (evt) {
+            evt.preventDefault();
+            map.addIncident({type: 'new'});
+        });
+
+        // Add a new incident draggable marker, at a given LatLng.
+        $('#btn-new-incident-at-latlng').click(function (evt) {
+            evt.preventDefault();
+            var latlng = $('#new-incident-latlng').val();
+            map.addIncident({type: 'new', latlng: latlng});
+        });
+
+        // Remove the new incident marker.
+        $('#btn-remove-new-incident').click(function (evt) {
+            evt.preventDefault();
+            map.removeNewIncident();
+        });
+
+        // Add a new numbered marker.
+        $('#btn-add-numbered-marker').click(function (evt) {
+            evt.preventDefault();
+            $('#btn-remove-numbered-marker').click();
+            var options = null;
+            var model = {
+                number: $('#numbered-marker-number').val(),
+            };
+            numberedMarker = new L.FixMyStreet.SearchResultMarker(map.getCenter(), options, model);
+            numberedMarker.addTo(map);
+        });
+
+        // Add a new numbered marker.
+        $('#btn-remove-numbered-marker').click(function (evt) {
+            evt.preventDefault();
+            if (!numberedMarker) { return; }
+            map.removeLayer(numberedMarker);
+            numberedMarker = null;
+        });
+
+        // Add a search result.
+        $('#btn-add-search-result').click(function (evt) {
+            evt.preventDefault();
+            addRandomSearchResult();
+        });
+
+        // Add random search results.
+        $('#btn-add-search-results-bulk').click(function (evt) {
+            evt.preventDefault();
+            addRandomSearchResultsBulk();
+        });
+
+        // Show no results search.
+        $('#btn-search-no-results').click(function (evt) {
+            evt.preventDefault();
+            map.addSearchResults([]);
+        });
+
+        // Remove search results.
+        $('#btn-remove-search-results').click(function (evt) {
+            evt.preventDefault();
+            map.removeSearchResults();
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% ifequal lang "fr" %}
+{% block content_mail_fr %}
+<ul>
+<li><strong>Incident n°</strong> {{report.id}}</li>
+<li><strong>Signalé le</strong> {{created_at}}</li>
+<li><strong>Localisation</strong> {{address}}</li>
+<li><strong>Catégorie</strong> {{category}}</li>
+<li><strong>Status</strong> {{status}}</li>
+<li><strong>Traité par</strong> {{responsible}}</li>
+</ul>
+<p>Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :</p>
+<ul>
+<li><a href="{{display_url}}">{{display_url}}</a></li>
+</ul>
+{% endblock %}
+{% endifequal %}
+{% ifequal lang "nl" %}
+{% block content_mail_nl %}
+<ul>
+<li><strong>Incident n°</strong> {{report.id}}</li>
+<li><strong>Gemeld op</strong> {{created_at}}</li>
+<li><strong>Plaats</strong> {{address}}</li>
+<li><strong>Categorie</strong> {{category}}</li>
+<li><strong>Status</strong> {{status}}</li>
+<li><strong>Beheerder</strong> {{responsible}}</li>
+</ul>
+<p>U kunt het incident raadplegen door op onderstaande link te klikken :</p>
+<ul>
+<li><a href="{{display_url}}">{{display_url}}</a></li>
+</ul>
+{% endblock %}
+{% endifequal %}

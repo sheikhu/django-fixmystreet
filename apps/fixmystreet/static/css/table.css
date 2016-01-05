@@ -1,0 +1,14 @@
+.table-filters {
+    position: absolute;
+    background-color: white;
+    display: block;
+    z-index: 999;
+    padding: 1em;
+    left: -200px;
+
+    transition: all 0.2s;
+}
+
+.table-filters-show {
+    left:0;
+}

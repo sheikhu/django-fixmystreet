@@ -1,0 +1,17 @@
+{% extends 'emails/notifications/base.txt' %}
+
+{% block content_mail_fr %}
+{{responsible}} a invalidé l’incident que vous avez signalé pour le motif  suivant : 
+
+> {{comment}}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
+{% endblock %}
+
+{% block content_mail_nl %}
+{{responsible}} heeft het probleem dat u gemeld heeft niet goedgekeurd omwille van de volgende reden : 
+
+> {{comment}}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'emails/notifications/base.txt' %}
+
+{% block content_mail_fr %}
+{{old_responsible}} vous a assigné un incident pour traitement.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
+
+Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :
+
+- {{unsubscribe_url}}
+{% endblock %}
+
+{% block content_mail_nl %}
+{{old_responsible}} heeft u een probleem toegewezen voor behandeling.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+
+Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven via onderstaande link:
+
+- {{unsubscribe_url}}
+{% endblock %}

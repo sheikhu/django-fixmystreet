@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% load i18n tags %}
+{% load static from staticfiles %}
+
+{% block title %}{% trans 'Reports reported in the same area' %}{% endblock %}
+
+{% block meta %}
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+{% endblock %}
+
+{% block script %}
+    {{ block.super }}
+    <link href="{% static 'lib/glyphicons-extended/css/glyphicons-extended.css' %}" rel="stylesheet" type="text/css">
+    <script>
+{#        var LOAD_INCIDENT_MODEL_URL = '{% url "get_report_popup_details_pro" %}';#}
+        //Init variables used in pro_merge.js
+        var postMethod  = "{% url 'report_do_merge_pro' report.id %}";
+
+        var currentReport = {};
+        currentReport.date     = {{ report.created|date:'YmdHis' }};
+        currentReport.marker   = "{% static report.get_marker %}";
+        currentReport.id       = {{ report.id }};
+        currentReport.category = "{{ report.display_category }}";
+        currentReport.address  = "{{ report.display_address }}";
+
+    </script>
+    <script src="{% static 'js/templates/reports/pro_merge.js' %}"></script>
+    <script src="{% static 'js/verify.js' %}"></script>
+
+    <script>
+        var REPORT_JSON_LIST = [];
+
+        {% for report in reports_nearby %}
+            var reportJSON = {{ report.marker_detail_short|dict_to_json|safe }};
+            REPORT_JSON_LIST.push(reportJSON);
+            console.log(REPORT_JSON_LIST);
+        {% endfor %}
+    </script>
+
+    <script src="{% static 'lib/lightbox/js/lightbox-2.6.min.js' %}"></script>
+    <link href="{% static 'lib/lightbox/css/lightbox.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block map %}
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div id="search-container" class="mergeIncident">
+                    <div class="one_incident master">
+                        <div class="row" style="padding-left:15px; padding-right:15px;">
+                          <!-- Address and categories -->
+                            <div class="span5 loc_desc">
+                                <!-- Distance -->
+                                <p class="distance" style="color:#2c3e50; font-size:14px;">{% trans "Report to merge" %}</p>
+                                <span class="ticket_number orange_border">
+                                  <img src="{% static report.get_marker %}" /> {% trans 'Incident n°' %}<span class="number_only">{{ report.get_ticket_number }}</span>
+                                </span><br/>
+                                <span class="ticket_address">
+                                    {{ report.address }}, {{ report.address_number }}<br />
+                                    <span>{{ report.postalcode }} {{ report.territorial_entity.name }}</span>
+                                </span><br />
+                                <span class="ticket_desc">
+                                    {{ report.display_category }}
+                                </span><br />
+                            </div>
+
+                            <!-- Photos -->
+                            <div class="span2 picture">
+                                {% if report.thumbnail_pro %}
+                                  {% if report.active_images_pro %}
+                                    {% for attachment in report.active_images_pro %}
+                                      <a href="{{attachment.image.url}}" data-lightbox="fms_fusion" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>
+                                    {% endfor %}
+                                  {% endif %}
+                                {% else %}
+                                  <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
+                                {% endif %}
+                            </div>
+                            <!-- Comments -->
+                            <div class="span4">
+                                {% for attachment in report.attachments.all %}
+                                    {% if attachment.reportcomment.text %}
+                                        <p class="incidentDetailsStatus1">
+                                            {{ attachment.get_type_message }}
+                                            {{ attachment.reportcomment.text|truncatechars:200 }}
+                                        </p>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <!-- Deprecated ? -->
+                            {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row switch_map_list">
+        <div class="span6">
+            <h2 class="verify_title">{% trans "we have" %} {{ reports_nearby|length }} {% trans "incident sector" %}</h2>
+            <p class="lead"></p>
+        </div>
+        <div class="span3">
+            <div id="search-form" class="highlighted mergeIncident text-right">
+                <form id="search-ticket-form" class="input-append form-inline">
+                    <input id="input-ticket-search" class="input-medium" type="search" name="ticketNumber" placeholder="{% trans 'Ticket number...' %}" value="{{ request.GET.ticketNumber }}" />
+                    <input id="widget-search-ticket-button" class="btn" type="submit" value="">
+                </form>
+
+                {% if request.GET.ticketNumber %}
+                    <p>
+                        <a href="{% url 'report_merge_pro' report.get_slug report.id %}">{% trans 'Clear search' %}</a>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="span3">
+            <div class="switch_verify btn-group pull-right">
+                <button class="btn active" id="btn-list">{% trans "List" %}</button>
+                <button class="btn" id="btn-map">{% trans "Map" %}</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="span12">
+            <article id="map" class="map-big hide">
+                <div id="map-center-icon" onclick="fms.currentMap.centerOnDraggableMarker()">
+                    <a class="olControlZoomIn olButton"></a>
+                </div>
+                <div id="copyright-urbis">Realized by means of Brussels UrbIS®©</div>
+            </article>
+
+            <div id='list'>
+                <p>
+                    <a href="#" id="previousPage" class="btn hidden">{% trans "Previous page" %}</a>
+                    <a href="#" id="nextPage" class="btn pull-right hidden">{% trans "Next page" %}</a>
+                </p>
+
+                {% if not reports_nearby %}
+                    <p class="text-center">{% trans 'No report' %}</p>
+                {% endif %}
+
+                {% for report in reports_nearby %}
+                    <div class="row reportsMergeable" id="#{{ report.get_ticket_number }}">
+                        <div class="span12">
+                            <div class="one_incident">
+                                <div class="row">
+                                    <!-- Address and categories -->
+                                    <div class="span3 loc_desc" style="margin-left:45px;">
+                                        <!-- Distance -->
+                                        <p class="distance">{% trans "to" context "distance" %} {{ report.distance.m|floatformat:"0" }} m</p>
+                                        <img src="{% static report.get_marker %}" class="report-counter"/>
+                                        <span class="ticket_number">{% trans 'Incident n°' %}{{ report.get_ticket_number }} ({{ report.rank|percentage }})</span><br />
+                                        <span class="ticket_address">
+                                            {{ report.address }}, {{ report.address_number }}<br />
+                                            {{ report.postalcode }} {{ report.territorial_entity.name }}
+                                        </span><br />
+                                        <span class="ticket_desc">
+                                            {{ report.display_category }}
+                                        </span><br />
+
+                                    </div>
+{# uncomment this when it shows the map in miniature                               #}
+{#                                    <!-- Map --> #}
+{#                                    <div class="span1 picture">#}
+{#                                        {% if report.thumbnail_pro %}#}
+{#                                            {% if report.active_images_pro %}#}
+{#                                              {% for attachment in report.active_images_pro %}#}
+{#                                                <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>#}
+{#                                              {% endfor %}#}
+{#                                            {% endif %}#}
+{#                                        {% else %}#}
+{#                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" style="margin-top:45px;" />#}
+{#                                        {% endif %}#}
+{#                                    </div>#}
+                                    <!-- Pictures -->
+
+                                    <div class="span1 picture">
+                                        {% if report.thumbnail_pro %}
+                                        {% if report.active_images_pro %}
+                                          {% for attachment in report.active_images_pro %}
+                                            <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>
+                                          {% endfor %}
+                                        {% endif %}
+                                        {% else %}
+                                            <img src="{% static 'images/no-pix.png' %}" class="report-preview thumbnail" />
+                                        {% endif %}
+                                    </div>
+                                    <!-- Comments -->
+                                    <div class="span4 incidentDetailsStatus2">
+                                      <div id="myCarousel" class="carousel slide" data-interval="">
+                                        <div class="carousel-inner">
+                                        {% for attachment in report.attachments.all %}
+                                            {% if attachment.reportcomment.text %}
+                                                <div class="{% if forloop.counter == 1 %}active {% endif %}item">
+                                                  <p class="comment-incident">
+                                                    {{ attachment.get_type_message }}
+                                                    {{ attachment.reportcomment.text|truncatechars:200|linebreaksbr }}
+                                                  </p>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </div>
+                                        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                                        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                                      </div>
+
+                                    </div>
+                                    <div clas="span2">
+                                        {% if report.can_merge %}
+                                            <!-- Button "it's the same" -->
+                                            <a href='javascript:loadModal({{ report.id }}, {{ report.created|date:"YmdHis" }}, "{{ report.display_category|escape }}", "{{ report.display_address|escape }}", "{{report.get_marker}}");'
+                                               class="btn_same_incident report">{% trans "Merge" %}</a>
+                                        {% else %}
+                                             <a class="btn_same_incident report no_merge">{% trans "Merge" %}</a>
+                                        {% endif %}
+                                    </div>
+                                    <!-- Deprecated ? -->
+                                    {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
+                                </div>
+                                {% if not report.can_merge %}
+                                    <div class="row-fluid">
+                                        <div class="alert-no-merge" style="">
+                                            <div class="alert alert-warning" role="alert">
+                                                <span class="icon-orange icon-exclamation-sign marginTop3px" aria-hidden="true"></span>
+                                                {% trans "Vous ne pouvez pas fusionner l'incident courant avec cet incident car vous n'en êtes pas responsable." %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <p>
+                {% if BACKOFFICE %}
+                    {% url "report_new_pro" as report_url %}
+                {% else %}
+                    {% url "report_new" as report_url %}
+                {% endif %}
+                <a class="btn_continue pull-right" href='{% url "report_show_pro" report.get_slug report.id %}'>{% trans "Cancel" %}</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div id="modalMerge" class="modal hide fade">
+    <form id="formMerge" title="" method="post" >
+        {% csrf_token %}
+
+        <input type="hidden" id="reportToMergeInput" name="mergeId" value="" />
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>{% trans 'Are you sure you want to merge these incidents?' %}</h3>
+        </div>
+        <div id="mergeModalBody" class="modal-body">
+            <div class="text-center well" id="olderToMerge" style="color:white;">
+                <p style="color:#2c3e50;">
+                    <strong>
+                        <img id="oldertoMergeMarker" src="" class="report-counter"/>
+                        <span id="oldertoMergeNumberLabel">N°</span><span id="oldertoMergeNumber"></span>
+                        <br/>
+                        <span id="oldertoMergeCategory"></span>
+                        <br/>
+                        <span id="oldertoMergeAddress"></span>
+                    </strong>
+                </p>
+            </div>
+            <div align="center">
+                   <h3> {% trans "Will be merged with the report" %} :</h3>
+            </div>
+            <div class="text-center well" id="newerToMerge" style="color:white;">
+                <p>
+                    <strong>
+                        <img id="newertoMergeMarker" src="" class="report-counter"/>
+                        <span id="newertoMergeNumberLabel">N°</span><span id="newertoMergeNumber"></span>
+                        <br/>
+                        <span id="newertoMergeCategory"></span>
+                        <br/>
+                        <span id="newertoMergeAddress"></span>
+                    </strong>
+                </p>
+            </div>
+
+            <p align="center">{% trans "The result of the merge will be visible to" %} :
+
+                <strong>
+                    {% if report.private %}
+                        {% trans 'private' %}
+                    {% else %}
+                        {% trans 'public' %}
+                    {% endif %}
+                </strong>
+            </p>
+        </div>
+
+        <div class="modal-footer">
+            <a class="btn" data-dismiss="modal" aria-hidden="true" >{% trans 'No' %}</a>
+            <input type="submit" class="btn  btn-primary"  value="{% trans 'Merge'%}"/>
+        </div>
+    </form>
+</div>
+{% endblock %}

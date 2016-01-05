@@ -1,0 +1,28 @@
+{% ifequal lang "fr" %}
+{% block content_mail_fr %}
+- Incident n° {{report.id}}
+- Signalé le {{created_at}}
+- Localisation {{address}}
+- Catégorie {{category}}
+- Status {{status}}
+- Traité par {{responsible}}
+
+Vous pouvez accéder à cet incident en cliquant sur le lien ci-dessous :
+
+- {{display_url}}
+{% endblock %}
+{% endifequal %}
+{% ifequal lang "nl" %}
+{% block content_mail_nl %}
+- Incident n° {{report.id}}
+- Gemeld op {{created_at}}
+- Plaats {{address}}
+- Categorie {{category}}
+- Status {{status}}
+- Beheerder {{responsible}}
+
+U kunt het incident raadplegen door op onderstaande link te klikken :
+
+- {{display_url}}
+{% endblock %}
+{% endifequal %}

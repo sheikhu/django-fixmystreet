@@ -1,0 +1,18 @@
+{% extends 'emails/notifications/base.html' %}
+{% load i18n %}
+{% block content_mail_fr %}
+<p>Une demande de réouverture d'un incident a été effectuée par {{updater}}.</p>
+<p> Raison : {{ reopen_reason }} </p>
+
+<p>{{ reopen_comment }}</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
+{% endblock %}
+
+{% block content_mail_nl %}
+<p>Aanvraag tot heropening van de melding uitgevoerd door {{updater}}.</p>
+
+<p> Reden : {{ reopen_reason }} </p>
+
+<p>{{ reopen_comment }}</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
+{% endblock %}
