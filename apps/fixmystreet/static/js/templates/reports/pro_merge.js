@@ -103,3 +103,12 @@ function loadModal(reportId, reportDate, reportCategory, reportAddress, marker) 
 
     $('#modalMerge').modal();
 }
+$(document).ready(function() {
+  $('.carousel').each(
+    function(id, obj){
+      if($(this).find('p').length < 2){
+        $(this).find('.carousel-control').remove();
+      }
+    }
+  );
+});
