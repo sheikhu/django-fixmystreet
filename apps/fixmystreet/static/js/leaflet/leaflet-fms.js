@@ -1463,7 +1463,7 @@ L.FixMyStreet.Popup = L.Popup.extend({
   },
 
   errorAddress: function () {
-    var html = gettext('unfound address, please retry later');
+    var html = gettext('technical issue, please retry later');
     var $content = $(this._content);
     $content.find('.address').html(html);
     $content.find('.address').addClass('alert alert-error');
