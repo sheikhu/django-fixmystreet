@@ -323,10 +323,10 @@ def reopen_request(request, slug, report_id):
         report = get_object_or_404(Report, id=report_id)
         limit_date = datetime.datetime.now() - datetime.timedelta(days=90)
         if report.status != Report.PROCESSED:
-            messages.add_message(request, messages.ERROR, _(ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED))
+            messages.add_message(request, messages.ERROR, ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED)
             return HttpResponseRedirect(report.get_absolute_url_pro())
         elif report.close_date < limit_date:
-            messages.add_message(request, messages.ERROR, _(ERROR_MSG_REOPEN_REQUEST_90_DAYS))
+            messages.add_message(request, messages.ERROR, ERROR_MSG_REOPEN_REQUEST_90_DAYS)
             return HttpResponseRedirect(report.get_absolute_url_pro())
         elif request.method == "POST":
             reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
@@ -341,7 +341,7 @@ def reopen_request(request, slug, report_id):
                 reopen_reason.type = ReportAttachment.REOPEN_REQUEST
                 reopen_reason.save()
 
-                messages.add_message(request, messages.SUCCESS, _(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
+                messages.add_message(request, messages.SUCCESS, SUCCESS_MSG_REOPEN_REQUEST_CONFIRM)
                 return HttpResponseRedirect(report.get_absolute_url_pro())
         else:
             reopen_form = ReportReopenReasonForm(prefix='reopen')

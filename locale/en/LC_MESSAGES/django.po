@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-11 12:58+0100\n"
+"POT-Creation-Date: 2016-01-11 15:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,7 +224,7 @@ msgstr ""
 #: backoffice/templates/pro/manager_category_configuration.html:50
 #: backoffice/templates/pro/reports/_actions.html:387
 #: backoffice/templates/pro/reports/_actions.html:417
-#: backoffice/templates/pro/reports/merge.html:249
+#: backoffice/templates/pro/reports/merge.html:247
 #: fixmystreet/templates/reports/_documentreport.html:49
 #: fixmystreet/templates/reports/_documentreport.html:72
 msgid "Cancel"
@@ -419,9 +419,9 @@ msgid "The report is too old and cannot be planned"
 msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:181
+#: backoffice/templates/pro/reports/merge.html:218
 #: backoffice/templates/pro/reports/merge.html:220
-#: backoffice/templates/pro/reports/merge.html:222
-#: backoffice/templates/pro/reports/merge.html:309
+#: backoffice/templates/pro/reports/merge.html:307
 msgid "Merge"
 msgstr ""
 
@@ -654,7 +654,7 @@ msgid "Incident n°"
 msgstr ""
 
 #: backoffice/templates/pro/reports/merge.html:92
-#: backoffice/templates/pro/reports/merge.html:226
+#: backoffice/templates/pro/reports/merge.html:224
 #: fixmystreet/templates/reports/_navigation.html:59
 #: fixmystreet/templates/reports/_selection.html:28
 #: fixmystreet/templates/reports/verify.html:151
@@ -711,33 +711,33 @@ msgctxt "distance"
 msgid "to"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:233
+#: backoffice/templates/pro/reports/merge.html:231
 msgid ""
 "Vous ne pouvez pas fusionner l'incident courant avec cet incident car vous "
 "n'en êtes pas responsable."
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:264
+#: backoffice/templates/pro/reports/merge.html:262
 msgid "Are you sure you want to merge these incidents?"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:280
+#: backoffice/templates/pro/reports/merge.html:278
 msgid "Will be merged with the report"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:295
+#: backoffice/templates/pro/reports/merge.html:293
 msgid "The result of the merge will be visible to"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:299
+#: backoffice/templates/pro/reports/merge.html:297
 msgid "private"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:301
+#: backoffice/templates/pro/reports/merge.html:299
 msgid "public"
 msgstr ""
 
-#: backoffice/templates/pro/reports/merge.html:308
+#: backoffice/templates/pro/reports/merge.html:306
 msgid "No"
 msgstr ""
 
