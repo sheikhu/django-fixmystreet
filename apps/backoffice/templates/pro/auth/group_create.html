@@ -84,7 +84,7 @@
         <h3 id="modalDeleteGroupLabel">{% trans 'Confirmation' %}</h3>
       </div>
       <div class="modal-body">
-        <p>{% trans 'Confirm delete group'%} "{{group_form.name_fr.value}}"?</p>
+        <p>{% blocktrans with group=group_form.name_fr.value %}Confirm delete group "{{group}}"?{% endblocktrans %}</p>
       </div>
       <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Cancel' %}</button>
