@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-08 14:51+0100\n"
+"POT-Creation-Date: 2016-01-11 12:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -215,7 +215,8 @@ msgid "Confirmation"
 msgstr ""
 
 #: backoffice/templates/pro/auth/group_create.html:87
-msgid "Confirm delete group"
+#, python-format
+msgid "Confirm delete group \"%(group)s\"?"
 msgstr ""
 
 #: backoffice/templates/pro/auth/group_create.html:90
@@ -271,7 +272,8 @@ msgid "Only leader can edit users"
 msgstr ""
 
 #: backoffice/templates/pro/auth/user_edit.html:72
-msgid "Confirm delete user"
+#, python-format
+msgid "Confirm delete user \"%(firstname)s %(lastname)s\"?"
 msgstr ""
 
 #: backoffice/templates/pro/auth/users_list.html:5
@@ -973,7 +975,7 @@ msgid "Contacts"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:378
-msgid "Local contacts"
+msgid "Recent"
 msgstr ""
 
 #: backoffice/templates/pro/reports/show.html:412

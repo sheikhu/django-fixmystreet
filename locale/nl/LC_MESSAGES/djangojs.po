@@ -4,14 +4,14 @@
 # 
 # Translators:
 # afuca <afuca@cirb.brussels>, 2015
-# dfranklin <DFranklin@cirb.irisnet.be>, 2014-2015
+# dfranklin <DFranklin@cirb.irisnet.be>, 2014-2016
 # lafif <lafif@cirb.irisnet.be>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-08 11:42+0100\n"
-"PO-Revision-Date: 2016-01-08 10:42+0000\n"
+"POT-Creation-Date: 2016-01-11 12:58+0100\n"
+"PO-Revision-Date: 2016-01-11 11:58+0000\n"
 "Last-Translator: dfranklin <DFranklin@cirb.irisnet.be>\n"
 "Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -164,7 +164,7 @@ msgstr "Filteren"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:1466
 msgid "technical issue, please retry later"
-msgstr ""
+msgstr "Technisch probleem, gelieve het later opnieuw te proberen"
 
 #: fixmystreet/static/js/leaflet/leaflet-fms.js:1965
 msgid "Brussels"
@@ -286,8 +286,8 @@ msgid "Error"
 msgstr "Fout"
 
 #: fixmystreet/static/js/templates/reports/pro_show.js:328
-msgid "No contact found"
-msgstr ""
+msgid "No recent contact found"
+msgstr "Geen recente contacten gevonden."
 
 #: fixmystreet/static/lib/jquery/jquery-ui.min.js:10
 msgid "'"

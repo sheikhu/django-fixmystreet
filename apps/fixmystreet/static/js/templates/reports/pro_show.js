@@ -325,7 +325,7 @@ function show_local_contacts(local_contacts){
   $('#local_contacts').html('');
 
   if(local_contacts.length == 0){
-    $('#local_contacts').append('<p>' + gettext('No contact found') + '</p>');
+    $('#local_contacts').append('<p>' + gettext('No recent contact found') + '</p>');
   }
   else{
     var newul = $('#ulDownloadPDF').clone();

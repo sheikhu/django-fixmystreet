@@ -69,7 +69,7 @@
     <h3 id="modalDeleteUserLabel">{% trans 'Confirmation' %}</h3>
   </div>
   <div class="modal-body">
-    <p>{% trans 'Confirm delete user' %} "{{user_form.first_name.value}} {{user_form.last_name.value}}"?</p>
+    <p>{% blocktrans with firstname=user_form.first_name.value lastname=user_form.last_name.value %}Confirm delete user "{{firstname}} {{ lastname }}"?{% endblocktrans %}</p>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Cancel' %}</button>
