@@ -3885,3 +3885,16 @@ form {
     margin-top: 2px;
     width:14px;
 }
+
+a.carousel-control.mycaroussel{
+	color: #3498db;
+	background: none;
+	border: 0;
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+
+div.carousel-inner{
+	min-height: 100px;
+}
