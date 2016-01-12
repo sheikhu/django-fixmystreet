@@ -195,7 +195,7 @@ class ReopenRequestTest(FMSTestCase):
 
         #test there is a message
         success_msg = str(list(response.context["messages"])[0])
-        self.assertEqual(success_msg, gettext(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
+        self.assertEqual(success_msg, str(gettext(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM)))
 
         # Fetch activities
         activities = report.activities.all()
@@ -222,7 +222,7 @@ class ReopenRequestTest(FMSTestCase):
 
         #test there is a message
         success_msg = str(list(response.context["messages"])[0])
-        self.assertEqual(success_msg, gettext(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM))
+        self.assertEqual(success_msg, str(gettext(SUCCESS_MSG_REOPEN_REQUEST_CONFIRM)))
 
         # Fetch activities
         activities = report.activities.all()
@@ -253,7 +253,7 @@ class ReopenRequestTest(FMSTestCase):
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
         error_msg = str(list(response.context["messages"])[0])
-        self.assertEqual(error_msg, gettext(ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED))
+        self.assertEqual(error_msg, str(gettext(ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED)))
 
         # Fetch activities
         activities = report.activities.all()
@@ -280,7 +280,7 @@ class ReopenRequestTest(FMSTestCase):
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
         error_msg = str(list(response.context["messages"])[0])
-        self.assertEqual(error_msg, gettext(ERROR_MSG_REOPEN_REQUEST_90_DAYS))
+        self.assertEqual(error_msg, str(gettext(ERROR_MSG_REOPEN_REQUEST_90_DAYS)))
 
         # Fetch activities
         activities = report.activities.all()
