@@ -20,7 +20,7 @@ fms.MessageView = Backbone.View.extend({
     }
 });
 
-var URBIS_GETADDRESS_URL = 'service/urbis/Rest/Localize/getaddresses';
+var URBIS_GETADDRESS_URL = 'localization/Rest/Localize/getaddresses';
 
 fms.AddressSearchView = Backbone.View.extend({
     el: '#search-address-form',

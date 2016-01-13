@@ -291,8 +291,8 @@ elif ENVIRONMENT == "rpm":
 
 
 # URBIS
-PROXY_URL = "http://gis.irisnet.be/"
-URBIS_URL = "/urbis/"
+PROXY_URL = "http://geoservices.irisnet.be/"
+URBIS_URL = "/urbis-v2/"
 
 if ENVIRONMENT == "local":
     URBIS_URL = PROXY_URL

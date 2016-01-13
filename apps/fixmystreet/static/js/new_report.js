@@ -12,7 +12,7 @@ $(document).ready(function() {
     getAddressFromPoint('nl', x, y);
 });
 
-var URBIS_GETADDRESSFROMXY_URL = 'service/urbis/Rest/Localize/getaddressfromxy';
+var URBIS_GETADDRESSFROMXY_URL = 'localization/Rest/Localize/getaddressfromxy';
 
 function getAddressFromPoint(lang, x, y) {
     var self = this;
@@ -23,7 +23,8 @@ function getAddressFromPoint(lang, x, y) {
         data: {
             json: ['{',
                 '"language": "' + lang + '",',
-                '"point":{x:' + x + ',y:' + y + '}',
+                '"point":{x:' + x + ',y:' + y + '},',
+                '"SRS_In": 31370',
                 '}'].join('\n')
         },
         success:function(response)

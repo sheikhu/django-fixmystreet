@@ -34,7 +34,8 @@ if (DEBUG === undefined) { var DEBUG = false; }
 L.FixMyStreet = L.FixMyStreet || {};
 if (NEW_INCIDENT_URL === undefined) { var NEW_INCIDENT_URL = ''; }
 if (LOAD_INCIDENT_MODEL_URL === undefined) { var LOAD_INCIDENT_MODEL_URL = ''; }
-if (URBIS_URL === undefined) { var URBIS_URL = 'http://gis.irisnet.be/'; }
+if (URBIS_URL === undefined) { var URBIS_URL = 'http://geoservices.irisnet.be/'; }
+var URBIS_MAP_URL = 'http://gis.irisnet.be/'
 
 L.FixMyStreet.MAX_ZOOM = 21;
 L.CRS.EPSG31370 = new L.Proj.CRS(
@@ -54,7 +55,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-fr': {
     title: gettext('Street'),
     type: 'wms',
-    url: URBIS_URL + URBIS_LAYER_GWC_URL,
+    url: URBIS_MAP_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisFR',
       format: 'image/png',
@@ -69,7 +70,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-nl': {
     title: gettext('Street'),
     type: 'wms',
-    url: URBIS_URL + URBIS_LAYER_GWC_URL,
+    url: URBIS_MAP_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisNL',
       format: 'image/png',
@@ -84,7 +85,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-ortho': {
     title: gettext('Orthographic'),
     type: 'wms',
-    url: URBIS_URL + URBIS_LAYER_GWC_URL,
+    url: URBIS_MAP_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisORTHO',
       format: 'image/png',
@@ -100,7 +101,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
     overlay: true,
     title: gettext('Regional roads'),
     type: 'wms',
-    url: URBIS_URL + URBIS_LAYER_URL,
+    url: URBIS_MAP_URL + URBIS_LAYER_URL,
     options: {
       layers: 'urbis:URB_A_SS',
       styles: 'URB_A_SS_FIXMYSTREET',
@@ -120,7 +121,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
     overlay: true,
     title: gettext('Municipal boundaries'),
     type: 'wms',
-    url: URBIS_URL + URBIS_LAYER_URL,
+    url: URBIS_MAP_URL + URBIS_LAYER_URL,
     options: {
       layers: 'urbis:URB_A_MU',
       styles: 'fixmystreet_municipalities',
@@ -134,7 +135,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   //   overlay: true,
   //   title: gettext('Street names'),
   //   type: 'wms',
-  //   url: URBIS_URL + URBIS_LAYER_URL,
+  //   url: URBIS_MAP_URL + URBIS_LAYER_URL,
   //   options: {
   //     layers: 'urbis:URB_A_MY_SA',
   //     format: 'image/png',
@@ -147,7 +148,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   //   overlay: true,
   //   title: gettext('Street numbers'),
   //   type: 'wms',
-  //   url: URBIS_URL + URBIS_LAYER_URL,
+  //   url: URBIS_MAP_URL + URBIS_LAYER_URL,
   //   options: {
   //     layers: 'urbis:URB_A_ADPT',
   //     format: 'image/png',
@@ -1894,7 +1895,7 @@ L.FixMyStreet.Util = {
    * Retrieves from UrbIS the address of a LatLng in EPSG:4326.
    *
    * @see {@link urbisResultToAddress}
-   * @see {@link http://gis.irisnet.be/urbis/} -- Demos of UrbIS geolocalization services. See section "Get address from x,y coordinates".
+   * @see {@link http://geoservices.irisnet.be/urbis/} -- Demos of UrbIS geolocalization services. See section "Get address from x,y coordinates".
    *
    * @param {(L.LatLng|L.Point|string|object)} coords - The LatLng in EPSG:4326.
    # @param {getAddressSuccessCallback} success - The callback that handles a successful response.
@@ -1914,14 +1915,14 @@ L.FixMyStreet.Util = {
   getAddressFromLatLng: function (coords, success, error) {
     var that = this;
     $.ajax({
-      url: URBIS_URL + 'service/urbis/Rest/Localize/getaddressfromxy',
+      url: URBIS_URL + 'localization/Rest/Localize/getaddressfromxy',
       type: 'POST',
       dataType: 'jsonp',
       data: {
         json: JSON.stringify({
           language: LANGUAGE_CODE,
           point: this.toUrbisCoords(coords),
-          spatialReference: '31370',
+          SRS_In: '31370',
         }),
       },
 

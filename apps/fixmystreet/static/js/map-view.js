@@ -39,7 +39,7 @@ fms.ReportMapView = Backbone.View.extend({
     }
 });
 
-var URBIS_GETADDRESSFROMXY_URL = 'service/urbis/Rest/Localize/getaddressfromxy';
+var URBIS_GETADDRESSFROMXY_URL = 'localization/Rest/Localize/getaddressfromxy';
 
 fms.NewIncidentMarkerView = Backbone.View.extend({
     el: '#map',
@@ -120,7 +120,8 @@ fms.NewIncidentMarkerView = Backbone.View.extend({
             data: {
                 json: JSON.stringify({
                     language: LANGUAGE_CODE,
-                    point: {x: this.position.lat, y: this.position.lng}
+                    point: {x: this.position.lat, y: this.position.lng},
+                    SRS_In: '31370',
                 })
             },
             success:function(response)
