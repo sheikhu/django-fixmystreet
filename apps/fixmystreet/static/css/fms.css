@@ -2248,13 +2248,10 @@ padding: 0 15px 15px 15px;
 
 	font-family:'Dosis', sans-serif;
 	font-size: 13pt;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
 	background-color: rgba(236,240,241,0.7);
-	padding: 20px;
+	padding: 20px 65px;
 	color:#2c3e50;
-	width: 100%;
+	height:90px;
 	margin-top:20px;
 	overflow: overlay; /* les dépassements seront masqués */
 	white-space: normal;
