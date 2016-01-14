@@ -1187,6 +1187,11 @@ class Report(UserTrackedModel):
             return True
         return False
 
+    def solve(self):
+        self.status = Report.SOLVED
+        self.fixed_at = datetime.datetime.now()
+        self.save()
+
     def close(self):
         #Update the status and set the close date
         self.status = Report.PROCESSED
