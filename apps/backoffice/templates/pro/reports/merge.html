@@ -70,7 +70,7 @@
                                 {% if report.thumbnail_pro %}
                                   {% if report.active_images_pro %}
                                     {% for attachment in report.active_images_pro %}
-                                      <a href="{{attachment.image.url}}" data-lightbox="fms_fusion" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>
+                                      <a href="{{attachment.image.url}}" data-lightbox="fms_fusion" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{report.thumbnail_pro}}" class="report-preview thumbnail"  />{% endif %}</a>
                                     {% endfor %}
                                   {% endif %}
                                 {% else %}
@@ -179,7 +179,7 @@
 {#                                        {% if report.thumbnail_pro %}#}
 {#                                            {% if report.active_images_pro %}#}
 {#                                              {% for attachment in report.active_images_pro %}#}
-{#                                                <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>#}
+{#                                                <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{report.thumbnail_pro}}" class="report-preview thumbnail"  />{% endif %}</a>#}
 {#                                              {% endfor %}#}
 {#                                            {% endif %}#}
 {#                                        {% else %}#}
@@ -192,7 +192,7 @@
                                         {% if report.thumbnail_pro %}
                                         {% if report.active_images_pro %}
                                           {% for attachment in report.active_images_pro %}
-                                            <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>
+                                            <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{report.thumbnail_pro}}" class="report-preview thumbnail"  />{% endif %}</a>
                                           {% endfor %}
                                         {% endif %}
                                         {% else %}

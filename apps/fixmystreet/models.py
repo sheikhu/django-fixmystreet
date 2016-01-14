@@ -871,7 +871,7 @@ class Report(UserTrackedModel):
         return images
 
     def active_images_pro(self):
-        attachements = self.files().filter(logical_deleted=False).order_by("created")
+        attachements = self.files().filter(logical_deleted=False).order_by("-modified")
         images = []
 
         for attachment in attachements:
