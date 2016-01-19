@@ -433,7 +433,9 @@ var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
             </div>
             <div class="modal-body">
                 <p>{% trans 'Indicate that the incident is fixed. By pressing this button a mail will be send to the responsible manager.' %}</p>
+                <div class="control-group required">
                 {{ mark_as_done_form.as_p }}
+                </div>
                 <input id="subscribe-incident-show-report" type="submit" class="btn  btn-primary"  value="{% trans 'Confirm'%}"/>
             </div>
         </form>

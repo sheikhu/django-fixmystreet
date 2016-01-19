@@ -871,7 +871,7 @@ class Report(UserTrackedModel):
         return images
 
     def active_images_pro(self):
-        attachements = self.files().filter(logical_deleted=False).order_by("created")
+        attachements = self.files().filter(logical_deleted=False).order_by("-modified")
         images = []
 
         for attachment in attachements:
@@ -1186,6 +1186,11 @@ class Report(UserTrackedModel):
         if self.is_in_progress() and self.get_organisation_entity_with_fms_proxy():
             return True
         return False
+
+    def solve(self):
+        self.status = Report.SOLVED
+        self.fixed_at = datetime.datetime.now()
+        self.save()
 
     def close(self):
         #Update the status and set the close date

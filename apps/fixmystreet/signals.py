@@ -634,7 +634,7 @@ def init_report_overview(sender, instance, **kwargs):
         instance.report.thumbnail = None
 
     # Thumbnail for pro
-    images_pro = instance.report.files().filter(logical_deleted=False, file_type=ReportFile.IMAGE)
+    images_pro = instance.report.files().filter(logical_deleted=False, file_type=ReportFile.IMAGE).order_by('-modified')
     if images_pro.exists():
         instance.report.thumbnail_pro = images_pro[0].image.thumbnail.url
     else:

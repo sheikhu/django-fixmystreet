@@ -70,7 +70,7 @@
                                 {% if report.thumbnail_pro %}
                                   {% if report.active_images_pro %}
                                     {% for attachment in report.active_images_pro %}
-                                      <a href="{{attachment.image.url}}" data-lightbox="fms_fusion" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>
+                                      <a href="{{attachment.image.url}}" data-lightbox="fms_fusion" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{report.thumbnail_pro}}" class="report-preview thumbnail"  />{% endif %}</a>
                                     {% endfor %}
                                   {% endif %}
                                 {% else %}
@@ -79,14 +79,20 @@
                             </div>
                             <!-- Comments -->
                             <div class="span4">
-                                {% for attachment in report.attachments.all %}
-                                    {% if attachment.reportcomment.text %}
-                                        <p class="incidentDetailsStatus1">
-                                            {{ attachment.get_type_message }}
-                                            {{ attachment.reportcomment.text|truncatechars:200 }}
-                                        </p>
-                                    {% endif %}
-                                {% endfor %}
+                              <div id="merging_main_comments" class="carousel slide" data-interval="">
+                                <div class="carousel-inner">
+                                  {% for attachment in report.comments %}
+                                    <div class="{% if forloop.counter == 1 %}active {% endif %}item">
+                                      <p class="incidentDetailsStatus1">
+                                          {{ attachment.get_type_message }}
+                                          {{ attachment.reportcomment.text|truncatechars:200 }}
+                                      </p>
+                                    </div>
+                                  {% endfor %}
+                                </div>
+                                <a class="carousel-control left mycaroussel" href="#merging_main_comments" data-slide="prev">&lsaquo;</a>
+                                <a class="carousel-control right mycaroussel" href="#merging_main_comments" data-slide="next">&rsaquo;</a>
+                              </div>
                             </div>
                             <!-- Deprecated ? -->
                             {% if report.is_fixed %}({% trans "fixed" %}){% endif %}
@@ -173,7 +179,7 @@
 {#                                        {% if report.thumbnail_pro %}#}
 {#                                            {% if report.active_images_pro %}#}
 {#                                              {% for attachment in report.active_images_pro %}#}
-{#                                                <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>#}
+{#                                                <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{report.thumbnail_pro}}" class="report-preview thumbnail"  />{% endif %}</a>#}
 {#                                              {% endfor %}#}
 {#                                            {% endif %}#}
 {#                                        {% else %}#}
@@ -186,7 +192,7 @@
                                         {% if report.thumbnail_pro %}
                                         {% if report.active_images_pro %}
                                           {% for attachment in report.active_images_pro %}
-                                            <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{ report.thumbnail_pro }}" class="report-preview thumbnail"  />{% endif %}</a>
+                                            <a href="{{attachment.image.url}}" data-lightbox="fms" title="{{attachment.title}}">{% if forloop.counter == 1 %}<img src="{{report.thumbnail_pro}}" class="report-preview thumbnail"  />{% endif %}</a>
                                           {% endfor %}
                                         {% endif %}
                                         {% else %}
