@@ -35,7 +35,7 @@ L.FixMyStreet = L.FixMyStreet || {};
 if (NEW_INCIDENT_URL === undefined) { var NEW_INCIDENT_URL = ''; }
 if (LOAD_INCIDENT_MODEL_URL === undefined) { var LOAD_INCIDENT_MODEL_URL = ''; }
 if (URBIS_URL === undefined) { var URBIS_URL = 'http://geoservices.irisnet.be/'; }
-var URBIS_MAP_URL = 'http://gis.irisnet.be/'
+var URBIS_MAP_URL = 'http://geoservices-urbis.irisnet.be/'
 
 L.FixMyStreet.MAX_ZOOM = 21;
 L.CRS.EPSG31370 = new L.Proj.CRS(
@@ -49,12 +49,13 @@ L.CRS.EPSG31370 = new L.Proj.CRS(
 // URBIS LAYERS ================================================================
 
 var URBIS_LAYER_URL = 'geoserver/wms';
-var URBIS_LAYER_GWC_URL = 'geoserver/urbis/wms/gwc';
+var URBIS_LAYER_GWC_URL = 'geoserver/Urbis/wms';
 
 L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-fr': {
     title: gettext('Street'),
     type: 'wms',
+    version: '1.3',
     url: URBIS_MAP_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisFR',
@@ -70,6 +71,7 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-street-nl': {
     title: gettext('Street'),
     type: 'wms',
+    version: '1.3',
     url: URBIS_MAP_URL + URBIS_LAYER_GWC_URL,
     options: {
       layers: 'urbisNL',
@@ -85,9 +87,10 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
   'map-ortho': {
     title: gettext('Orthographic'),
     type: 'wms',
+    version: '1.3',
     url: URBIS_MAP_URL + URBIS_LAYER_GWC_URL,
     options: {
-      layers: 'urbisORTHO',
+      layers: 'Urbis:Ortho2015',
       format: 'image/png',
       transparent: true,
       crs: L.CRS.EPSG31370,
@@ -101,10 +104,11 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
     overlay: true,
     title: gettext('Regional roads'),
     type: 'wms',
-    url: URBIS_MAP_URL + URBIS_LAYER_URL,
+    version: '1.3',
+    url: URBIS_MAP_URL + URBIS_LAYER_GWC_URL,
     options: {
-      layers: 'urbis:URB_A_SS',
-      styles: 'URB_A_SS_FIXMYSTREET',
+      layers: 'Urbis:Ss',
+      styles: 'UrbisSsPolygon',
       format: 'image/png',
       transparent: true,
       opacity: 0.5,
@@ -121,10 +125,11 @@ L.FixMyStreet.URBIS_LAYERS_SETTINGS = {
     overlay: true,
     title: gettext('Municipal boundaries'),
     type: 'wms',
-    url: URBIS_MAP_URL + URBIS_LAYER_URL,
+    version: '1.3',
+    url: URBIS_MAP_URL + URBIS_LAYER_GWC_URL,
     options: {
-      layers: 'urbis:URB_A_MU',
-      styles: 'fixmystreet_municipalities',
+      layers: 'Urbis:Mu',
+      styles: 'UrbisMuPolygonSizedBlack',
       format: 'image/png',
       transparent: true,
     },
