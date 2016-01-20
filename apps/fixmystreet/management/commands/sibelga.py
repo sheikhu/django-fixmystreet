@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
-from apps.fixmystreet.models import Report
+from apps.fixmystreet.models import Report, FMSUser
+import apps.fixmystreet.utils as utils
 
 class Command(BaseCommand):
     help = 'Update sibelga incidents (one time script)'
@@ -15,6 +16,11 @@ class Command(BaseCommand):
         # 32624 => Impetrant sibelga (non cloture)
         # 32626 => Impetrant sibelga (signale solved)
         # incidents = [32618,32619,32620,32621,32623,32624,32626]
+        user = FMSUser.objects.get(id=1558)
+        utils.set_current_user(user)
+
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+
         self.stdout.write('"ID";"STATUS"')
         for i in incidents:
             try:
