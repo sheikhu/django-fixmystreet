@@ -18,6 +18,8 @@ else:
 
 # Manage settings according to environment
 DEBUG = False
+TEMP_DIR = os.environ.get('TEMP_DIR', '/tmp')
+
 if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins" or ENVIRONMENT == "rpm":
     DEBUG          = True
 

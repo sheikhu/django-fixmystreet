@@ -76,7 +76,7 @@ def render_to_pdf(*args, **kwargs):
 
 
 def generate_pdf(*args, **kwargs):
-    tmpfolder = tempfile.mkdtemp()
+    tmpfolder = tempfile.mkdtemp(dir=settings.TEMP_DIR)
     html_tmp_file_path = "%s/export.html" % (tmpfolder)
     html_tmp_file = file(html_tmp_file_path, "w")
     html_tmp_file.write(render_to_string(*args, **kwargs).encode("utf-8"))
