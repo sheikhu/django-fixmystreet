@@ -36,8 +36,6 @@ Install the following packages (ubuntu named):
 * postgresql-server-dev-9.3
 * libgeos-3.4.2
 * libgdal1h
-* nodejs
-* npm
 * libjpeg-dev
 * libxml2-dev
 * python-psycopg2
@@ -46,10 +44,9 @@ Install the following packages (ubuntu named):
 * gdal-bin
 * postgis
 * postgresql-9.3-postgis-2.1
-* spatialite-bin
 
 ```
-sudo apt-get install python-dev python-virtualenv postgresql-server-dev-9.3 libgeos-3.4.2 libgdal1h nodejs npm libjpeg-dev libxml2-dev python-psycopg2 binutils libproj-dev gdal-bin postgis postgresql-9.3-postgis-2.1 spatialite-bin
+sudo apt-get install python-dev python-virtualenv postgresql-server-dev-9.3 libgeos-3.4.2 libgdal1h libjpeg-dev libxml2-dev python-psycopg2 binutils libproj-dev gdal-bin postgis postgresql-9.3-postgis-2.1
 ```
 
 Normally *git*, *make* and *gcc* should be already installed. If not, make sure to install them.
