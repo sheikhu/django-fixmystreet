@@ -4,7 +4,6 @@ import datetime
 import hashlib
 import hmac
 import json
-import os
 import re
 import subprocess
 from threading import local
