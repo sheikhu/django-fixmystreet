@@ -1870,9 +1870,6 @@ SHOW REPORT
 	margin-top:20px;
 }
 
-a.btn:disabled {
-	pointer-events: none;
-}
 .btn-group-vertical > .btn:first-child {
 	margin-top: 0;
 	-webkit-border-radius: 4px;
