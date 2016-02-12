@@ -55,3 +55,30 @@ $(function(event) {
         }
     });
 });
+
+// Idea coming from: http://shahinalborz.se/2010/11/disable-double-click-to-prevent-multiple-execution/
+function preventMultipleClicks(event) {
+  // Enable link if undefined
+  if (typeof(_linkEnabled)=="undefined") {
+    _linkEnabled = true;
+  }
+
+  setTimeout(function() {
+    // Disable link
+    _linkEnabled = false;
+
+    // If multiple clicks, clear the previous setTimeout...
+    // ... to avoid multiple _linkEnabled=true
+    if (typeof(timeoutId)!="undefined") {
+      clearTimeout(timeoutId);
+    }
+
+    // Enable link after some seconds
+    timeoutId = setTimeout(function() {
+      _linkEnabled=true;
+    }, 10000);
+
+  }, 100);
+
+  return _linkEnabled;
+}

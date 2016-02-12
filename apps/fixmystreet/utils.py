@@ -4,8 +4,8 @@ import datetime
 import hashlib
 import hmac
 import json
-import os
 import re
+import subprocess
 from threading import local
 
 from django.core.exceptions import PermissionDenied
@@ -76,14 +76,15 @@ def render_to_pdf(*args, **kwargs):
 
 
 def generate_pdf(*args, **kwargs):
-    tmpfolder = tempfile.mkdtemp()
+    tmpfolder = tempfile.mkdtemp(dir=settings.TEMP_DIR)
     html_tmp_file_path = "%s/export.html" % (tmpfolder)
     html_tmp_file = file(html_tmp_file_path, "w")
     html_tmp_file.write(render_to_string(*args, **kwargs).encode("utf-8"))
     html_tmp_file.close()
 
     pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
-    cmd = """wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10\
+
+    wkhtmltopdf_cmd = """timeout 15s wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10\
     --encoding utf-8 \
     --footer-font-size 8 \
     --footer-left '{0}' \
@@ -95,8 +96,8 @@ def generate_pdf(*args, **kwargs):
         html_tmp_file_path,
         pdf_tmp_file_path
     )
-    logging.info(cmd)
-    os.system(cmd)
+    logging.info(wkhtmltopdf_cmd)
+    subprocess.call(wkhtmltopdf_cmd, shell=True)
 
     pdf_tmp_file = file(pdf_tmp_file_path, "r")
     return pdf_tmp_file

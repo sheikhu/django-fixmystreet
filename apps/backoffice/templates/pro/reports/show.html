@@ -291,13 +291,13 @@
             </h4>
             <div>
                 <div style="width:48%; float:left;">
-                    <a href="{% url 'report_pdf' report.id %}" class="btn input-block-level" title="{% trans 'Download a pdf report of this incident' %}">
+                    <a href="{% url 'report_pdf' report.id %}" onClick="return preventMultipleClicks();"  class="btn input-block-level" title="{% trans 'Download a pdf report of this incident' %}">
                         {% trans 'report pdf' context 'pro' %}
                         <i class="icon-download-pdf"> </i>
                     </a>
                 </div>
                 <div style="width:48%; float:right;">
-                    <a href="{% url 'report_pdf_pro' report.id %}" class="btn input-block-level">
+                    <a href="{% url 'report_pdf_pro' report.id %}" onClick="return preventMultipleClicks();"  class="btn input-block-level">
                         {% trans 'report pdf pro' %}
                         <i class="icon-download-pdf"> </i>
                     </a>

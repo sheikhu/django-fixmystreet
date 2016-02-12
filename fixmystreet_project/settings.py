@@ -7,7 +7,7 @@ PROJECT_PATH   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR       = PROJECT_PATH
 REPORTING_ROOT = os.environ.get('REPORTING_ROOT', os.path.join(BASE_DIR, 'reporting'))
 LOCALE_PATHS   = (os.path.join(PROJECT_PATH, 'locale'),)
-
+TEMP_DIR       = os.environ.get('TEMP_DIR', '/tmp')
 
 # ENVIRONMENT
 if "ENV" in os.environ:
@@ -18,6 +18,7 @@ else:
 
 # Manage settings according to environment
 DEBUG = False
+
 if ENVIRONMENT == "local" or ENVIRONMENT == "dev" or ENVIRONMENT == "jenkins" or ENVIRONMENT == "rpm":
     DEBUG          = True
 
