@@ -163,6 +163,11 @@ class ReportAssignmentAcceptInWebhook(ReportAcceptInWebhookMixin, AbstractReport
     ACTION_MESSAGE = _(u"Report assignment was accepted by {third_party}.")
 
 
+class ReportAssignmentUpdateInWebhook(ReportAcceptInWebhookMixin, AbstractReportAssignmentInWebhook):
+    """Inbound webhook handler for ``report.assignment.update``."""
+
+    ACTION_MESSAGE = _(u"Report assignment was updated by {third_party}.")
+
 class ReportAssignmentRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportAssignmentInWebhook):
     """Inbound webhook handler for ``report.assignment.reject``."""
 
