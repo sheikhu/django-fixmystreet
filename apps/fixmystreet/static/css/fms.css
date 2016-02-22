@@ -597,7 +597,7 @@ form#report-form div ul li label {
 	padding:5px 18px;
 	min-height: 355px;
 	padding-bottom:20px;
-
+	overflow:auto;
 	max-height: 940px;
 	-webkit-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
 	-moz-box-shadow: 0px 5px 20px rgba(0,0,0, 0.3);
