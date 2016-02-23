@@ -18,13 +18,13 @@ window.onload = function() {
         var rows = table[0].rows;
 
         // Each rows = csv line
+        var counter = -1; //this counter is needed because IE sucks and we can't just use idRow to check if current row is the filter row (to skip it).
         for (idRow in rows) {
-
+            counter++;
             // Skip filter row
-            if (idRow == 1){
+            if (counter == 1){
                 continue;
             }
-
             var row = rows[idRow];
             var line = '';
 
