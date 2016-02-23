@@ -1,5 +1,4 @@
 window.onload = function() {
-
     function today() {
         var today = new Date();
         var dd = today.getDate();
@@ -57,7 +56,8 @@ window.onload = function() {
             virtualLink.setAttribute("download", filename);
         }
         else if(navigator.msSaveBlob) { // IE 10+
-            navigator.msSaveBlob(csvData, filename);
+            var blobObject = new Blob(["\ufeff"+csv], {"type":"text/csv;charset=utf-8;"});
+            navigator.msSaveBlob(blobObject, filename);
         }
 
         document.body.appendChild(virtualLink);
