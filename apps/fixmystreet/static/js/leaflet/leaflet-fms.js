@@ -487,7 +487,8 @@ L.FixMyStreet.Map = L.Map.extend({
       throw new TypeError('Invalid incident type (' + model.type + ').');
     }
     if (isNew && this.newIncidentMarker !== null) {
-      throw new Error('New incident marker already present, remove it first.');
+      //throw new Error('New incident marker already present, remove it first.');
+      fms.map.removeNewIncident();
     }
 
     var that = this;
