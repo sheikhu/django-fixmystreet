@@ -23,7 +23,7 @@
 {% block content %}
 {{ block.super }}
 <form action="" method="POST" id="report-form" class="form-horizontal">
-    {% if user_form.instance %}
+    {% if user_form.instance.id %}
         <h5>
         {% blocktrans with user_form.instance.get_full_name as name %}
             Edit {{ name }}
