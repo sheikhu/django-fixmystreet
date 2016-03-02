@@ -104,6 +104,7 @@
 
 
         var fileFailed = false;
+        var validFiles = [];
         for (var i = 0; i < inputFile.files.length; i++) {
             var file = inputFile.files[i];
 
@@ -119,12 +120,13 @@
             }
             if(file.size === 0) {
                 alert(gettext('Filesize must be greater than 0'));
-                continue;
+                fileFailed = true;
+                break;
             }
             if(file.size > file_max_size) {
                 $('#file-too-large-error').modal();
                 fileFailed = true;
-                continue;
+                break;
             }
 
             // Add this file size to the total of current selected files
@@ -134,16 +136,19 @@
                 file_size_total -= file.size;
                 $('#file-total-too-large-error').modal();
                 fileFailed = true;
-                continue;
+                break;
             }
 
-            $.fileExif(file, exifCallback);
+            validFiles.push(file);
+
         }
 
         if (fileFailed) {
             return;
         }
-
+        for (index in validFiles){
+            $.fileExif(validFiles[index], exifCallback);
+        }
         var oldInput = $(inputFile).remove();
         var newInput = oldInput.clone();
         oldInput.attr({id: null, name: 'files-files-'+inputfile_count}).removeClass();
