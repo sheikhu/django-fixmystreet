@@ -5,7 +5,7 @@ from datetime import timedelta
 from exceptions import Exception
 from transmeta import TransMeta
 
-from django.db.models.signals import pre_save, post_save, pre_delete
+from django.db.models.signals import pre_save, post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
@@ -492,6 +492,17 @@ def report_file_notify(sender, instance, **kwargs):
 #pre_delete
 #############################################################
 #post_delete
+@receiver(post_delete, sender=ReportFile)
+def report_file_delete(sender, instance, **kwargs):
+    print 'report_file_delete'
+    # Pass false so FileField doesn't save the model.
+    if instance.file:
+        print 'delete file'
+        instance.file.delete(False)
+
+    if instance.image:
+        print 'delete image'
+        instance.image.delete(False)
 
 
 #############################################################
