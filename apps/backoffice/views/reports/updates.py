@@ -17,7 +17,7 @@ from apps.fixmystreet.utils import responsible_permission, responsible_permissio
 from apps.backoffice.forms import TransferForm
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 @responsible_permission

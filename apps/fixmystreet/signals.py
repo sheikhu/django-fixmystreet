@@ -13,7 +13,7 @@ from apps.fixmystreet.models import *
 from .utils import autoslug_transmeta
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 #############################################################
 #############################################################

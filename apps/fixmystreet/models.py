@@ -28,7 +28,7 @@ from ckeditor.fields import RichTextField
 from .utils import get_current_user, transform_notification_template, sign_message
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 class UserTrackedModel(models.Model):

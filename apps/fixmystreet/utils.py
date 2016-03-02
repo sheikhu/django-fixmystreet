@@ -25,7 +25,7 @@ from django.http import Http404
 import transmeta
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 class JsonHttpResponse(HttpResponse):

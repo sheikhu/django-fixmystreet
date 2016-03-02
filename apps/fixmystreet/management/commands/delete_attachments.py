@@ -6,7 +6,7 @@ from apps.fixmystreet.models import ReportAttachment
 
 import logging, datetime
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 class Command(BaseCommand):
     help = 'Delete all 30 days old attachments flaggued as logical_deleted'

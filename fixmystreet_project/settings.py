@@ -225,23 +225,7 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
-        'apps.fixmystreet': {
-            'handlers': handlers,
-            'level': 'INFO',
-        },
-        'apps.backoffice': {
-            'handlers': handlers,
-            'level': 'INFO',
-        },
-        'apps.api': {
-            'handlers': handlers,
-            'level': 'INFO',
-        },
-        'apps.fmsproxy': {
-            'handlers': handlers,
-            'level': 'INFO',
-        },
-        'apps.webhooks': {
+        'fixmystreet': {
             'handlers': handlers,
             'level': 'INFO',
         }
