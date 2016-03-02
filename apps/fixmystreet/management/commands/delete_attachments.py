@@ -23,7 +23,7 @@ class Command(BaseCommand):
         report_attachments = ReportAttachment.objects.filter(logical_deleted=True, modified__lte=datetime.date.today() - datetime.timedelta(days=30))
 
         for attachment in report_attachments:
-            print attachment.modified, attachment.id, attachment.logical_deleted
+            logger.info("Attachment logical_deleted: %s %s %s" %(attachment.modified, attachment.logical_deleted, attachment.id))
 
             if options['delete']:
                 attachment.delete()

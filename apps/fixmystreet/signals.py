@@ -12,6 +12,8 @@ from django.contrib.auth.models import User
 from apps.fixmystreet.models import *
 from .utils import autoslug_transmeta
 
+import logging
+logger = logging.getLogger(__name__)
 
 #############################################################
 #############################################################
@@ -494,14 +496,13 @@ def report_file_notify(sender, instance, **kwargs):
 #post_delete
 @receiver(post_delete, sender=ReportFile)
 def report_file_delete(sender, instance, **kwargs):
-    print 'report_file_delete'
     # Pass false so FileField doesn't save the model.
     if instance.file:
-        print 'delete file'
+        logger.info('delete file: %s' % instance.file.path)
         instance.file.delete(False)
 
     if instance.image:
-        print 'delete image'
+        logger.info('delete image: %s' % instance.image.path)
         instance.image.delete(False)
 
 
