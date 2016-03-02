@@ -4,6 +4,7 @@ import logging
 import datetime
 
 from datetime import timedelta
+from PIL import Image
 
 from django.core.urlresolvers import reverse
 from django.utils.translation import activate, deactivate, ugettext, string_concat, get_language
@@ -1359,7 +1360,7 @@ class ReportFile(ReportAttachment):
     )
 
     file = models.FileField(upload_to=move_to, blank=True)
-    image = StdImageField(upload_to=move_to, blank=True, variations={'thumbnail': {'with': 80, 'height': 120}})
+    image = StdImageField(upload_to=move_to, blank=True, variations={'thumbnail': {'width': 80, 'height': 120}})
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date = models.DateTimeField(blank=False, null=True)
@@ -1379,6 +1380,24 @@ class ReportFile(ReportAttachment):
     def is_document(self):
         return self.is_pdf() or self.is_word() or self.is_excel()
 
+    def save(self):
+        super(ReportFile, self).save()
+
+        # Resize original image file
+        if not self.image:
+            return
+
+        image = Image.open(self.image)
+        (width, height) = image.size
+
+        "Max width and height 1280"
+        if width <= 1280 and height <= 1280:
+            return
+
+        size = (1280,1024)
+        image.thumbnail(size, Image.ANTIALIAS)
+        image.save(self.image.path)
+        image.save(self.file.path)
 
 class ReportSubscription(models.Model):
     """

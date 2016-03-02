@@ -154,6 +154,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'ckeditor',
     'monitoring',
+    'stdimage',
 
     'rest_framework',
     'rest_framework.authtoken',
