@@ -21,7 +21,7 @@ from apps.fixmystreet.utils import dict_to_point, RequestFingerprint, hack_multi
 
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 def new(request):

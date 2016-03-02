@@ -16,7 +16,7 @@ from apps.backoffice.forms import FmsUserForm, FmsUserCreateForm
 from apps.fixmystreet.forms import LoginForm
 from apps.fixmystreet.models import FMSUser
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 def login_view(request):
@@ -145,4 +145,3 @@ def delete_user(request, user_id, user_type='users'):
         messages.add_message(request, messages.ERROR, _("You can not delete this user"))
 
     return HttpResponseRedirect(reverse('list_users'))
-

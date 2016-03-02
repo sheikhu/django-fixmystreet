@@ -7,7 +7,7 @@ from apps.fixmystreet.utils import send_digest
 import datetime
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 class Command(BaseCommand):
     help = 'Send digest of activities of the previous day to all subscribers'

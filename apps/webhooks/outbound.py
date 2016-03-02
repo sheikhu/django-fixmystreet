@@ -13,7 +13,7 @@ from ..fixmystreet.utils import sign_message
 from .models import WebhookConfig
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 class AbstractBaseOutWebhook(object):

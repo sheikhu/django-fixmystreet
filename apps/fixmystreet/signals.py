@@ -5,13 +5,15 @@ from datetime import timedelta
 from exceptions import Exception
 from transmeta import TransMeta
 
-from django.db.models.signals import pre_save, post_save, pre_delete
+from django.db.models.signals import pre_save, post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
 from apps.fixmystreet.models import *
 from .utils import autoslug_transmeta
 
+import logging
+logger = logging.getLogger("fixmystreet")
 
 #############################################################
 #############################################################
@@ -492,6 +494,16 @@ def report_file_notify(sender, instance, **kwargs):
 #pre_delete
 #############################################################
 #post_delete
+@receiver(post_delete, sender=ReportFile)
+def report_file_delete(sender, instance, **kwargs):
+    # Pass false so FileField doesn't save the model.
+    if instance.file:
+        logger.info('delete file: %s' % instance.file.path)
+        instance.file.delete(False)
+
+    if instance.image:
+        logger.info('delete image: %s' % instance.image.path)
+        instance.image.delete(False)
 
 
 #############################################################

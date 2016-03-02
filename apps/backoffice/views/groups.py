@@ -14,7 +14,7 @@ from django.forms.models import inlineformset_factory
 from apps.backoffice.forms import GroupForm, GroupMailConfigForm
 from apps.fixmystreet.models import OrganisationEntity, UserOrganisationMembership, FMSUser, GroupMailConfig
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 def list_groups(request):

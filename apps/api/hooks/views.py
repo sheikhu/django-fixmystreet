@@ -7,7 +7,7 @@ from ..utils.conversion import to_upper_camel_case
 from ...webhooks import inbound as inbound_webhooks
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 class UnknownWebhookError(LookupError): pass  # pylint: disable=C0321

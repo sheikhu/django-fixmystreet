@@ -16,7 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from apps.fixmystreet.models import Report, ReportFile, ReportCategory, FMSUser, ZipCode
 from apps.fixmystreet.utils import JsonHttpResponse, dict_to_point
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 def load_zipcodes(request):
         '''load_zipcodes is a method used by the mobiles to retrieve all usable zipcodes'''

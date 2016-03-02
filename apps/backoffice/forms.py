@@ -19,7 +19,7 @@ AuthenticationForm.base_fields['username'].max_length = 150
 AuthenticationForm.base_fields['username'].widget.attrs['maxlength'] = 150
 AuthenticationForm.base_fields['username'].validators[0].limit_value = 150
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 
 class ManagersListForm(forms.Form):

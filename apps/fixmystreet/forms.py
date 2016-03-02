@@ -22,7 +22,7 @@ from django.utils.functional import lazy
 from django.utils import six
 mark_safe_lazy = lazy(mark_safe, six.text_type)
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("fixmystreet")
 
 def secondaryCategoryChoices(show_private):
     choices = []
