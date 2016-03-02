@@ -14,7 +14,7 @@
 {{ block.super }}
 {% include "reports/_zipcodes.html" %}
 {% include "reports/_categories.html" %}
-<script type="text/javascript">var citizen_error = {% if citizen_error %}true{% else %}false{% endif %};</script>
+<script type="text/javascript">var citizen_error = {% if citizen_form.errors %}true{% else %}false{% endif %};</script>
 <script src="{% static 'js/attachmentForms.js' %}"></script>
 <script src="{% static 'js/categorySelection.js' %}"></script>
 <script src="{% static 'js/new_report.js' %}"></script>

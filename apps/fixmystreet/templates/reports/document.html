@@ -12,6 +12,7 @@
 
 {% block script %}
 {{ block.super }}
+<script type="text/javascript">var citizen_error = {% if citizen_form.errors %}true{% else %}false{% endif %};</script>
 <script src="{% static 'js/attachmentForms.js' %}"></script>
 <script src="{% static 'js/categorySelection.js' %}"></script>
 <script src="{% static 'js/jquery.exif.js' %}"></script>
