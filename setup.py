@@ -12,7 +12,7 @@ long_description = '\n\n'.join([
 ])
 
 install_requires = [
-    'django==1.8.11',
+    'django==1.8.12',
 
     'django-ckeditor==4.5.0',
     'django-extensions==1.5.9',
