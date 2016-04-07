@@ -77,15 +77,48 @@ fms.AddressSearchView = Backbone.View.extend({
                 spatialReference:"4326"
             }
         }).success(function(response) {
-            self.$searchStreet.removeClass('loading');
-            self.$searchButton.prop('disabled',false);
-
-            self.processSearchResults(response);
+            self.offsetFromHomeToStreet(response);
         }).error(function(xhr,msg,error){
             self.$searchStreet.removeClass('loading');
             self.$searchButton.prop('disabled',false);
 
             fms.message.error(gettext('Unexpected error'));
+        });
+    },
+    // Tricky stuff: contact offset service with adnc
+    offsetFromHomeToStreet: function(response) {
+        for (var idx in response.result) {
+            if (response.result[0].adNc) {
+                this.getOffset(response, idx);
+            }
+        }
+
+        this.$searchStreet.removeClass('loading');
+        this.$searchButton.prop('disabled',false);
+        this.processSearchResults(response);
+    },
+    getOffset: function(response, idx) {
+        var self = this;
+
+        var URBIS_ADNCS_URL = 'http://geoservices-others.irisnet.be/geoserver/Urbis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Urbis:AdptOnSi&CQL_FILTER=%28Urbis:ADNCS%20like%20%27%25;param;%25%27%29&outputFormat=application%2Fjson';
+
+        var url = URBIS_ADNCS_URL.replace('param', response.result[idx].adNc);
+
+        $.ajax({
+            url: url,
+            dataType:'json',
+            async: false
+        }).success(function(adncResponse) {
+            if (adncResponse.features.length) {
+
+                var point = {
+                    x: adncResponse.features[0].geometry.coordinates[0],
+                    y: adncResponse.features[0].geometry.coordinates[1]
+                }
+                response.result[idx].point = L.FixMyStreet.Util.urbisCoordsToLatLng(point)
+
+            }
+        }).error(function(xhr,msg,error){
         });
     },
     processSearchResults: function (response) {
