@@ -98,8 +98,6 @@ fms.AddressSearchView = Backbone.View.extend({
         this.processSearchResults(response);
     },
     getOffset: function(response, idx) {
-        var self = this;
-
         var URBIS_ADNCS_URL = 'http://geoservices-others.irisnet.be/geoserver/Urbis/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Urbis:AdptOnSi&CQL_FILTER=%28Urbis:ADNCS%20like%20%27%25;param;%25%27%29&outputFormat=application%2Fjson';
 
         var url = URBIS_ADNCS_URL.replace('param', response.result[idx].adNc);
