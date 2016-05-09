@@ -26,7 +26,7 @@ def reporting_list(request, message=""):
             xls_file = re.search(r'xlsx$', path)
 
             archive_file_date = None
-            archive_file_date_match = re.match(r"\d+_(\d+)\.\w+", path)
+            archive_file_date_match = re.match(r"\d+_(\d{4})\.\w+", path)
             if archive_file_date_match:
                 archive_file_date = datetime.strptime(archive_file_date_match.group(1), '%y%m')
 
