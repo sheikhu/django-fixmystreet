@@ -396,7 +396,7 @@ L.FixMyStreet.Map = L.Map.extend({
       sizeToggleReduce: gettext('Reduce'),
     },
     overviewZoom: 12,
-    newIncidentZoom: 17,
+    newIncidentZoom: 18,
     newIncidentUrl: NEW_INCIDENT_URL,
 
     myLayers: {  // @TODO: Rename variable.
