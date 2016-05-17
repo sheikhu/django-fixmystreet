@@ -1,7 +1,8 @@
 //remove zoom icons on the map image.
 var mapOptions = {
     zoomControl: false,
-    layersControl: false
+    layersControl: false,
+    zoom:16
 };
 
 //show incident marker on map
