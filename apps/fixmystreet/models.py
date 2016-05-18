@@ -4,7 +4,7 @@ import logging
 import datetime
 
 from datetime import timedelta
-from PIL import Image
+from PIL import Image, ExifTags
 
 from django.core.urlresolvers import reverse
 from django.utils.translation import activate, deactivate, ugettext, string_concat, get_language
@@ -1388,14 +1388,32 @@ class ReportFile(ReportAttachment):
             return
 
         image = Image.open(self.image)
-        (width, height) = image.size
+
+        if hasattr(image, '_getexif'):  # only present in JPEGs
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation]=='Orientation':
+                    break
+            e = image._getexif()       # returns None if no EXIF data
+            if e is not None:
+                exif = dict(e.items())
+                orientation = exif[orientation]
+
+                if orientation == 3:
+                    image = image.transpose(Image.ROTATE_180)
+                elif orientation == 6:
+                    image = image.transpose(Image.ROTATE_270)
+                elif orientation == 8:
+                    image = image.transpose(Image.ROTATE_90)
+
+        size = image.size
 
         "Max width and height 1280"
-        if width <= 1280 and height <= 1280:
-            return
+        # size[0] = width, size[1] = height
+        if size[0] > 1280 and size[1] > 1024:
+            size = (1280, 1024)
 
-        size = (1280,1024)
         image.thumbnail(size, Image.ANTIALIAS)
+
         image.save(self.image.path)
         image.save(self.file.path)
 

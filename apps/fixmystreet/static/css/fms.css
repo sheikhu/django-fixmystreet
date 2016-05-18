@@ -3530,15 +3530,14 @@ p.switch_verify.btn-group   {
 
 .homeWrappingPicture1 {
 	width: 100px;
-	height: 80px;
+	/*height: 80px;*/
 	overflow: hidden;
 	-webkit-border-radius: 5px 5px 5px 5px;
 	border-radius: 5px 5px 5px 5px;
 	display: inline-block;
 	vertical-align: middle;
-	margin-left: 10px;
+	margin: 5px;
 	position: relative;
-	margin-top: 10px;
 
 
 }
@@ -3889,4 +3888,12 @@ a.carousel-control.mycaroussel{
 
 div.carousel-inner{
 	min-height: 100px;
+}
+
+.picture-verify{
+    float: left;
+    display: flex;
+    align-items: center;
+    min-height: 100px;
+    margin-left:10px;
 }
