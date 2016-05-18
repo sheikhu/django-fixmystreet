@@ -25,13 +25,23 @@
         </thead>
 
         <tbody>
-            {% if xls %}
+            {% if xls or pdf_kpi %}
+                {% if xls %}
                 <tr onclick="document.location = '{% url 'reporting_download' xls.path %}';" class="pointer">
                     <td>
                         {% trans 'Télécharger le rapport quotidien du' %}
                         <strong>{{ xls.modified_date|date:"d/m/Y" }}</strong>
                     </td>
                 </tr>
+                {% endif %}
+                {% if pdf_kpi %}
+                     <tr onclick="document.location = '{% url 'reporting_download' pdf_kpi.path %}';" class="pointer">
+                    <td>
+                        {% trans 'Télécharger le rapport KPI quotidien du' %}
+                        <strong>{{ pdf_kpi.modified_date|date:"d/m/Y" }}</strong>
+                    </td>
+                </tr>
+                {% endif %}
             {% else %}
                 <tr class="loading"><td>{% trans 'Aucun rapport disponible' %}</td></tr>
             {% endif %}

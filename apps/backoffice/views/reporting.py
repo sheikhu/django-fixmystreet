@@ -19,6 +19,7 @@ def reporting_list(request, message=""):
 
     pdf = []
     xls = None
+    pdf_kpi = None
     try:
         ls = os.listdir(reporting_root)
 
@@ -30,7 +31,9 @@ def reporting_list(request, message=""):
             if archive_file_date_match:
                 archive_file_date = datetime.strptime(archive_file_date_match.group(1), '%y%m')
 
-            if xls_file or archive_file_date:
+            pdf_kpi_file = re.search(r"\d+_1\.\w+", path)
+
+            if xls_file or archive_file_date or pdf_kpi_file:
                 f = {
                     'path': path,
                     'stat': os.stat(os.path.join(reporting_root, path))
@@ -40,13 +43,16 @@ def reporting_list(request, message=""):
                 # Check if xls or pdf
                 if xls_file:
                     xls = f
-                else:
+                elif archive_file_date_match:
                     pdf.append(f)
+                else:
+                    pdf_kpi = f
     except OSError:
         message = _("Reporting currently unavailable")
 
     return render_to_response('pro/list_reporting.html', {
         'pdf'     : pdf,
+        'pdf_kpi'  : pdf_kpi,
         'xls'     : xls,
         'message' : message
     }, context_instance=RequestContext(request))

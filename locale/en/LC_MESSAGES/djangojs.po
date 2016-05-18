@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-24 10:26+0100\n"
+"POT-Creation-Date: 2016-05-18 15:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: fixmystreet/static/js/attachmentForms.js:121
+#: fixmystreet/static/js/attachmentForms.js:122
 msgid "Filesize must be greater than 0"
 msgstr ""
 
@@ -213,17 +213,17 @@ msgstr ""
 msgid "Not for Sibelga eclairage"
 msgstr ""
 
-#: fixmystreet/static/js/search-address-view.js:88
+#: fixmystreet/static/js/search-address-view.js:85
 #: fixmystreet/static/js/search.js:475
 msgid "Unexpected error"
 msgstr ""
 
-#: fixmystreet/static/js/search-address-view.js:159
+#: fixmystreet/static/js/search-address-view.js:190
 #: fixmystreet/static/js/search.js:59
 msgid "This street is not listed in this municipality."
 msgstr ""
 
-#: fixmystreet/static/js/search-address-view.js:162
+#: fixmystreet/static/js/search-address-view.js:193
 #: fixmystreet/static/js/search.js:61
 msgid "This street exists in several municipalities, please be more specific."
 msgstr ""
