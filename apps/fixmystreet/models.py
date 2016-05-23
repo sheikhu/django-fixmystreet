@@ -1389,10 +1389,10 @@ class ReportFile(ReportAttachment):
 
         image = Image.open(self.image)
 
+        # Change orientation of image if possible and needed.
+        # This happens when people take pictures with their phones sideways.
         if hasattr(image, '_getexif'):  # only present in JPEGs
-            for orientation in ExifTags.TAGS.keys():
-                if ExifTags.TAGS[orientation]=='Orientation':
-                    break
+            orientation = ExifTags.TAGS.keys()[ExifTags.TAGS.values().index("Orientation")]
             e = image._getexif()       # returns None if no EXIF data
             if e is not None:
                 exif = dict(e.items())
