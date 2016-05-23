@@ -3897,3 +3897,8 @@ div.carousel-inner{
     min-height: 100px;
     margin-left:10px;
 }
+
+.table_thumbnail img{
+	max-width:100px;
+	max-height:100px;
+}
