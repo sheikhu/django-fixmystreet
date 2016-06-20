@@ -65,7 +65,7 @@ def get_exifs(img):
 
 def render_to_pdf(*args, **kwargs):
     context_instance = kwargs.get('context_instance', None)
-    if 'request' in context_instance and 'output' in context_instance.get('request').GET:
+    if context_instance.request and context_instance.request.GET and context_instance.request.GET["output"]:
         return render_to_response(*args, **kwargs)
 
     pdf_tmp_file = generate_pdf(*args, **kwargs)

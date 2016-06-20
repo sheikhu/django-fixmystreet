@@ -35,8 +35,9 @@ L.FixMyStreet = L.FixMyStreet || {};
 if (NEW_INCIDENT_URL === undefined) { var NEW_INCIDENT_URL = ''; }
 if (LOAD_INCIDENT_MODEL_URL === undefined) { var LOAD_INCIDENT_MODEL_URL = ''; }
 if (URBIS_URL === undefined) { var URBIS_URL = 'http://geoservices.irisnet.be/'; }
-var URBIS_MAP_URL = 'http://geoservices-urbis.irisnet.be/'
+var URBIS_MAP_URL = 'http://geoservices-urbis.irisnet.be/';
 
+L.FixMyStreet.ZOOM_TO_STREET_NAME_LEVEL = 16;
 L.FixMyStreet.MAX_ZOOM = 21;
 L.CRS.EPSG31370 = new L.Proj.CRS(
   'EPSG:31370',

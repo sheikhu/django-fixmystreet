@@ -2,7 +2,7 @@
 var mapOptions = {
     zoomControl: false,
     layersControl: false,
-    zoom:16
+    zoom: L.FixMyStreet.ZOOM_TO_STREET_NAME_LEVEL
 };
 
 //show incident marker on map
