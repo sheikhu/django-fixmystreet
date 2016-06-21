@@ -3,6 +3,8 @@
 """
 Inbound webhook handlers.
 """
+from datetime import datetime
+
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
@@ -129,8 +131,8 @@ class AbstractReportInWebhook(AbstractBaseInWebhook):
         if self._third_party is None:
             raise NotLinkedWithThirdPartyError(u"Report not linked with a third-party.")
 
-        if not self._report.is_in_progress():
-            raise InvalidReportStatusError(u"Report not in a valid state.")
+        # if not self._report.is_in_progress():
+        #     raise InvalidReportStatusError(u"Report not in a valid state.")
 
         if not self._user_has_permission():
             raise ThirdPartyNotAuthorizedError(u"No authorization for this report.")
@@ -149,6 +151,12 @@ class AbstractReportAssignmentInWebhook(AbstractReportInWebhook):
 
     def _user_has_permission(self):
         return check_contractor_permission(self._user, self._report)
+
+    def _validate(self):
+        super(AbstractReportAssignmentInWebhook, self)._validate()
+
+        if not self._report.is_in_progress():
+            raise InvalidReportStatusError(u"Assignment report (%s) not in a valid state (%s)." % (self._report.id, self._report.status))
 
 
 class ReportAssignmentRegisterInWebhook(ReportAcceptInWebhookMixin, AbstractReportAssignmentInWebhook):
@@ -207,11 +215,26 @@ class AbstractReportTransferInWebhook(AbstractReportInWebhook):
     def _user_has_permission(self):
         return check_responsible_permission(self._user, self._report)
 
+    def _validate(self):
+        super(AbstractReportTransferInWebhook, self)._validate()
+
+        if not self._report.is_created() and not self._report.is_in_progress():
+            raise InvalidReportStatusError(u"Transfer report (%s) not in a valid state (%s)." % (self._report.id, self._report.status))
+
 
 class ReportTransferAcceptInWebhook(ReportAcceptInWebhookMixin, AbstractReportTransferInWebhook):
     """Inbound webhook handler for ``report.transfer.accept``."""
 
     ACTION_MESSAGE = _(u"Report transfer was accepted by {third_party}.")
+
+    def run(self):
+        super(ReportTransferAcceptInWebhook, self).run()
+
+        # Case of auto-dispatching and not manually transferred by a manager.
+        if self._report.is_created():
+            self._report.status = Report.MANAGER_ASSIGNED
+            self._report.accepted_at = datetime.now()
+            self._report.save()
 
 
 class ReportTransferRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportTransferInWebhook):
