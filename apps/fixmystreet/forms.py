@@ -13,7 +13,7 @@ from django.utils.safestring import mark_safe
 
 from apps.fixmystreet.models import (
     ReportMainCategoryClass, Report,
-    ReportFile, ReportComment,
+    ReportFile, ReportComment, ReportSubCategory,
     ReportCategory, ReportSecondaryCategoryClass, FMSUser, ReportReopenReason)
 from apps.fixmystreet.utils import dict_to_point
 
@@ -73,6 +73,8 @@ class ReportForm(forms.ModelForm):
 
     category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_' + get_language()))
     secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.filter(public=True).order_by('name_' + get_language()))
+    sub_category = forms.ModelChoiceField(label=_("subcategory"), queryset=ReportSubCategory.objects.order_by('name_' + get_language()), widget=forms.RadioSelect)
+
     subscription = forms.BooleanField(label=_('Subscription and report follow-up'), initial=True, required=False)
 
     # hidden inputs
@@ -155,7 +157,7 @@ class CitizenReportForm(ReportForm):
         fields = (
             'x', 'y', 'address_nl', 'address_fr',
             'address_number', 'postalcode',
-            'category', 'secondary_category',
+            'category', 'secondary_category', 'sub_category',
             'postalcode',
             'subscription',
             'terms_of_use_validated')

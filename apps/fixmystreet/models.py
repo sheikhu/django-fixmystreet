@@ -656,6 +656,7 @@ class Report(UserTrackedModel):
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey('ReportMainCategoryClass', null=True, verbose_name=_("Category"), blank=True)
     secondary_category = models.ForeignKey('ReportCategory', null=True, verbose_name=_("Category"), blank=True)
+    sub_category = models.ForeignKey('ReportSubCategory', null=True, verbose_name=_("SubCategory"), blank=True)
 
     fixed_at = models.DateTimeField(null=True, blank=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
@@ -772,6 +773,10 @@ class Report(UserTrackedModel):
         current_lang = get_language()
         activate(lang)
         category = "%s / %s : %s" % (self.category.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name)
+
+        if self.sub_category:
+            category += " (%s)" % self.sub_category
+
         activate(current_lang)
 
         return category
@@ -1496,6 +1501,35 @@ class ReportSecondaryCategoryClass(UserTrackedModel):
         translate = ('name', 'slug')
 
 
+# ABP: Specific for Bruxelles proprete
+class ReportSubCategory(UserTrackedModel):
+    __metaclass__ = TransMeta
+    help_text = """
+    Manage the report sub-categories list (see the report form).
+    Used specifically for ABP (Bruxelles proprete)
+    """
+
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), max_length=100)
+
+    def __unicode__(self):
+        return self.name
+
+    @staticmethod
+    def listToJSON(list_of_elements):
+        list_of_elements_as_json = []
+        for current_element in list_of_elements:
+            d = {}
+            d['id'] = getattr(current_element, 'id')
+            d['name_en'] = getattr(current_element, 'name_fr')
+            d['name_fr'] = getattr(current_element, 'name_fr')
+            d['name_nl'] = getattr(current_element, 'name_nl')
+            list_of_elements_as_json.append(d)
+        return json.dumps(list_of_elements_as_json)
+
+    class Meta:
+        translate = ('name', 'slug')
+
 class ReportCategory(UserTrackedModel):
     __metaclass__ = TransMeta
     help_text = """
@@ -1508,6 +1542,8 @@ class ReportCategory(UserTrackedModel):
 
     category_class = models.ForeignKey(ReportMainCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
+    sub_categories = models.ManyToManyField('ReportSubCategory', related_name='subcategories')
+
     public = models.BooleanField(default=True)
 
     organisation_communal = models.ForeignKey(OrganisationEntity, related_name="categories_communal", help_text="Group for auto dispatching", limit_choices_to={"type": OrganisationEntity.REGION}, null=True, blank=True)

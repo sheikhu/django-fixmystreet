@@ -7,7 +7,7 @@ from simple_history.admin import SimpleHistoryAdmin
 from .models import (
     ReportCategory, Report, FMSUser, ReportMainCategoryClass, ReportSecondaryCategoryClass,
     ReportAttachment, Page, FAQPage, OrganisationEntity, ReportNotification, ReportEventLog,
-    UserOrganisationMembership
+    UserOrganisationMembership, ReportSubCategory
 )
 from .utils import export_as_csv_action
 
@@ -225,6 +225,12 @@ class ReportCategoryAdmin(admin.ModelAdmin):
     list_filter  = ('secondary_category_class',)
 
 admin.site.register(ReportCategory, ReportCategoryAdmin)
+
+
+class ReportSubCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+admin.site.register(ReportSubCategory, ReportSubCategoryAdmin)
 
 
 class PageAdmin(SimpleHistoryAdmin):

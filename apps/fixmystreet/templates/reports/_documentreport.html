@@ -29,6 +29,20 @@
                 </div>
             </div>
         </div>
+
+        <div id="report-sub_category" class="control-group required span11" hidden>
+
+            <label class="control-label" for="category_select">
+                <span class="dosisformblue">{% trans 'sub_category' %}</span>
+            </label>
+            <div class="controls container-fluid">
+                <span class="span7">
+                    <ul id="id_report-sub_category" class="inline"></ul>
+                </span>
+            </div>
+        </div>
+
+    </div>
         {% endif %}
 
         {% include "reports/_photo_form.html" %}
