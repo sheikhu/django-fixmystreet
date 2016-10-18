@@ -73,7 +73,7 @@ class ReportForm(forms.ModelForm):
 
     category = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_' + get_language()))
     secondary_category = forms.ModelChoiceField(label=_("Secondary category"), empty_label=_("Select a secondary Category"), queryset=ReportCategory.objects.filter(public=True).order_by('name_' + get_language()))
-    sub_category = forms.ModelChoiceField(label=_("subcategory"), queryset=ReportSubCategory.objects.order_by('name_' + get_language()), widget=forms.RadioSelect)
+    sub_category = forms.ModelChoiceField(label=_("subcategory"), queryset=ReportSubCategory.objects.order_by('name_' + get_language()), widget=forms.RadioSelect, required=False)
 
     subscription = forms.BooleanField(label=_('Subscription and report follow-up'), initial=True, required=False)
 
@@ -90,6 +90,21 @@ class ReportForm(forms.ModelForm):
         #Ensure the good sortering when switching language.
         self.fields['category'].choices = forms.ModelChoiceField(label=_("category"), empty_label=_("Select a Category"), queryset=ReportMainCategoryClass.objects.all().order_by('name_' + get_language())).choices
         self.fields['secondary_category'].choices = secondaryCategoryChoices(False)
+
+    def clean(self):
+        cleaned_data = super(ReportForm, self).clean()
+
+        # In the cas of a secondary_category with sub_categories is selected...
+        if cleaned_data['secondary_category'].sub_categories.exists():
+            # ... check that we receive the value of a sub_category
+            if not cleaned_data['sub_category']:
+                # If not, raise an error
+                raise forms.ValidationError(self.error_messages['sub_category is required'])
+        # If we receive a sub_category value but not corresponding of a secondary_category, raise an error
+        elif cleaned_data['sub_category']:
+            raise forms.ValidationError(self.error_messages['sub_category not expected'])
+
+        return cleaned_data
 
     def save(self, commit=True):
         report = super(ReportForm, self).save(commit=False)

@@ -48,6 +48,10 @@ $(document).ready(function() {
             // Manage sub_categories
             var el_id = $('#id_report-category').val();
 
+            if (!el_id || !el_id_copy) {
+                return;
+            }
+
             var sub_categories = categories[el_id][el_id_copy].sub_categories;
             var sub_categories_html = "";
 
