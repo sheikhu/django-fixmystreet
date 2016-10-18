@@ -63,8 +63,8 @@ lint:
 messages:
 	cd $(SRC_ROOT); $(BIN_PATH)/manage.py makemessages -l en
 	cd $(SRC_ROOT); $(BIN_PATH)/manage.py makemessages -l en -d djangojs
-	$(BIN_PATH)/tx push -s
-	$(BIN_PATH)/tx pull -a
+	# $(BIN_PATH)/tx push -s
+	# $(BIN_PATH)/tx pull -a
 	cd $(SRC_ROOT); $(BIN_PATH)/manage.py compilemessages
 
 migrate:
