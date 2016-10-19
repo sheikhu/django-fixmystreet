@@ -1580,6 +1580,7 @@ class ReportCategory(UserTrackedModel):
             's_c_n_en': None,
             's_c_n_fr': None,
             's_c_n_nl': None,
+            'sub_c': [],
             'p': None
         }
 
@@ -1626,6 +1627,17 @@ class ReportCategory(UserTrackedModel):
             s_c_n_nl_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_nl')
             if is_it_public or not prev_d['s_c_n_nl'] == s_c_n_nl_value:
                 d['s_c_n_nl'] = s_c_n_nl_value
+
+            # Load sub_categories
+            for sub_category in current_element.sub_categories.all():
+                sub_c = {}
+                sub_c['sub_c_id'] = sub_category.id
+                sub_c['sub_c_n_en'] = ""
+                sub_c['sub_c_n_fr'] = sub_category.name_fr
+                sub_c['sub_c_n_nl'] = sub_category.name_nl
+
+                prev_d['sub_c'].append(sub_c)
+                d['sub_c'] = prev_d['sub_c']
 
             list_of_elements_as_json.append(d)
         return json.dumps(list_of_elements_as_json)
