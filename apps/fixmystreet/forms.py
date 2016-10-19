@@ -144,7 +144,7 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address_nl', 'address_fr', 'address_number', 'postalcode', 'category', 'secondary_category', 'postalcode', 'private', 'subscription')
+        fields = ('x', 'y', 'address_nl', 'address_fr', 'address_number', 'postalcode', 'category', 'secondary_category', 'sub_category', 'postalcode', 'private', 'subscription')
 
     def save(self, commit=True):
         report = super(ProReportForm, self).save(commit=False)
