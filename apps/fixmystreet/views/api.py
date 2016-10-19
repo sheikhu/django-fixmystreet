@@ -209,6 +209,7 @@ def create_report(request):
             'contractor': report.contractor,
             'category': report.category.name,
             'secondary_category': report.secondary_category.name,
+            'sub_category': report.sub_category.name if report.sub_category else "",
             'address': report.display_address(),
             'address_number': report.address_number,
             'address_regional': report.is_regional(),
