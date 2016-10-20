@@ -245,15 +245,19 @@ class ReportTransferRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportTr
     def run(self):
         super(ReportTransferRejectInWebhook, self).run()
 
-        # Transfer to the previous group of managers
-        self._report.responsible_department = ReportEventLog.objects.filter(
-            report=self._report,
-            organisation=self._report.responsible_entity,
-            event_type=ReportEventLog.MANAGER_ASSIGNED
-        ).latest("event_at").related_old
-        self._report.responsible_entity = self._report.responsible_department.dependency
-        self._report.status = Report.MANAGER_ASSIGNED
-        self._report.save()
+        # Transfer to the previous group of managers if exist
+        try:
+            self._report.responsible_department = ReportEventLog.objects.filter(
+                report=self._report,
+                organisation=self._report.responsible_entity,
+                event_type=ReportEventLog.MANAGER_ASSIGNED
+            ).latest("event_at").related_old
+            self._report.responsible_entity = self._report.responsible_department.dependency
+            self._report.status = Report.MANAGER_ASSIGNED
+            self._report.save()
+        except ReportEventLog.DoesNotExist:
+            # If no previous group of manager, do nothing.
+            pass
 
 
 class ReportTransferCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportTransferInWebhook):
