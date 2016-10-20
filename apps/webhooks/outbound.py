@@ -149,6 +149,12 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
             "category": {
                 "fr": self.report.display_category("fr"),
                 "nl": self.report.display_category("nl"),
+                "ids" : [
+                    self.report.category.id,
+                    self.report.secondary_category.secondary_category_class.id,
+                    self.report.secondary_category.id,
+                    self.report.sub_category.id if self.report.sub_category.id else ""
+                ]
             },
             "pdf_url": {
                 "fr": self.report.get_pdf_url_pro_with_auth_token("fr"),
