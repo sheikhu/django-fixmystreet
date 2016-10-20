@@ -167,22 +167,25 @@ def webhook_assignment(sender, instance, **kwargs):
     webhook = outbound.ReportAssignmentRequestOutWebhook(instance, third_party=instance.contractor)
     webhook.fire()
 
-@receiver(pre_save, sender=Report)
+#############################################################
+#post_save
+@receiver(post_save, sender=Report)
 def webhook_transfer(sender, instance, **kwargs):
     """
     Checks whether the report is being transferred to someone else.
 
     This fires/delegates to the hook. The hook is responsible to contact third-parties as necessary.
+
+    Must be post_save to allow auto-dispatching to third party when a new report is created. Without this post save, report id needed to generate the PDF is missing.
     """
     from apps.webhooks import outbound
-    is_transferred = instance.responsible_department and instance.__former['responsible_department'] != instance.responsible_department
-    if kwargs['raw'] or not is_transferred or not instance.is_in_progress():
-        return
 
-    webhook = outbound.ReportTransferRequestOutWebhook(instance, third_party=instance.responsible_department)
-    webhook.fire()
-#############################################################
-#post_save
+    is_transferred = instance.responsible_department and instance.__former['responsible_department'] != instance.responsible_department
+
+    if not kwargs['raw'] and is_transferred and (instance.is_created() or instance.is_in_progress()):
+        webhook = outbound.ReportTransferRequestOutWebhook(instance, third_party=instance.responsible_department)
+        webhook.fire()
+
 @receiver(post_save, sender=Report)
 def report_notify_created(sender, instance, **kwargs):
     """
