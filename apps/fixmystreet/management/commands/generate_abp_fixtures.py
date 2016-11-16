@@ -19,12 +19,17 @@ class Command(BaseCommand):
             action='store',
             dest='category_classes',
             default="",
-            help='Category classes to generate (comma separated)'),
+            help='Category classes to generate (ids comma separated)'),
         make_option('--abp_entity_id',
             action='store',
             dest='abp_entity_id',
             default="",
             help='ABP entity id'),
+        make_option('--dump',
+            action='store',
+            dest='dump',
+            default="",
+            help='Dump to generate (values are fms or fmsproxy)'),
     )
 
     idx_reportsecondarycategoryclass = 9
@@ -34,7 +39,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         logger.info('Loading file %s' % options['typology'])
 
-        fixtures = []
+        fixtures_fms = []
+        fixtures_fmsproxy = []
 
         bagtype_ids = []
 
@@ -60,7 +66,7 @@ class Command(BaseCommand):
                         "name_nl": typology_type['label']['nl']
                     }
                 }
-                fixtures.append(reportsecondarycategoryclass)
+                fixtures_fms.append(reportsecondarycategoryclass)
 
                 # Map natures id's and type id's
                 for nature in typology_type['nature_ids']:
@@ -69,6 +75,17 @@ class Command(BaseCommand):
                 # Flag if bagtypes
                 for bagtype in typology_type['bagtype_ids']:
                     types_bagtypes_flag[types_ids[typology_type['type_id']]] = True
+
+                # FMSProxy
+                fmsproxy_type = {
+                    "fields": {
+                        "fms_id": types_ids[typology_type['type_id']],
+                        "abp_id": typology_type['type_id']
+                    },
+                    "model": "abp.type",
+                    "pk": idx
+                }
+                fixtures_fmsproxy.append(fmsproxy_type)
 
                 idx = idx +1
 
@@ -86,8 +103,19 @@ class Command(BaseCommand):
                         "name_nl": typology_bagtype['label']['nl']
                     }
                 }
-                fixtures.append(reportsubcategory)
+                fixtures_fms.append(reportsubcategory)
                 bagtype_ids.append(bagtypes_ids[typology_bagtype['bagtype_id']])
+
+                # FMSProxy
+                fmsproxy_bagtype = {
+                    "fields": {
+                        "fms_id": bagtypes_ids[typology_bagtype['bagtype_id']],
+                        "abp_id": typology_bagtype['bagtype_id']
+                    },
+                    "model": "abp.bagtype",
+                    "pk": idx
+                }
+                fixtures_fmsproxy.append(fmsproxy_bagtype)
 
                 idx = idx +1
 
@@ -124,9 +152,25 @@ class Command(BaseCommand):
                         except KeyError:
                             pass
 
-                        fixtures.append(reportcategory)
+                        fixtures_fms.append(reportcategory)
+
+                        # FMSProxy
+                        fmsproxy_nature = {
+                            "fields": {
+                                "fms_id": natures_ids[typology_nature['nature_id']],
+                                "abp_id": typology_nature['nature_id']
+                            },
+                            "model": "abp.nature",
+                            "pk": idx
+                        }
+                        fixtures_fmsproxy.append(fmsproxy_nature)
 
                         idx = idx +1
 
-        logger.info('Dump fixtures')
-        print json.dumps(fixtures, indent=4)
+        if options['dump'] == 'fms':
+            logger.info('Dump fixtures fms')
+            print json.dumps(fixtures_fms, indent=4)
+
+        if options['dump'] == 'fmsproxy':
+            logger.info('Dump fixtures fmsproxy')
+            print json.dumps(fixtures_fmsproxy, indent=4)
