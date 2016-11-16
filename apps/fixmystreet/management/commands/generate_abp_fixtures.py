@@ -19,12 +19,12 @@ class Command(BaseCommand):
             action='store',
             dest='category_classes',
             default="",
-            help='Category classes to generate (comma separetaed)'),
+            help='Category classes to generate (comma separated)'),
         make_option('--abp_entity_id',
             action='store',
             dest='abp_entity_id',
             default="",
-            help='Category classes to generate (comma separetaed)'),
+            help='ABP entity id'),
     )
 
     idx_reportsecondarycategoryclass = 9
