@@ -1629,7 +1629,8 @@ class ReportCategory(UserTrackedModel):
                 d['s_c_n_nl'] = s_c_n_nl_value
 
             # Load sub_categories
-            for sub_category in current_element.sub_categories.all():
+            prev_d['sub_c'] = []
+            for sub_category in getattr(current_element, 'sub_categories').all():
                 sub_c = {}
                 sub_c['sub_c_id'] = sub_category.id
                 sub_c['sub_c_n_en'] = ""
@@ -1637,7 +1638,7 @@ class ReportCategory(UserTrackedModel):
                 sub_c['sub_c_n_nl'] = sub_category.name_nl
 
                 prev_d['sub_c'].append(sub_c)
-                d['sub_c'] = prev_d['sub_c']
+            d['sub_c'] = prev_d['sub_c']
 
             list_of_elements_as_json.append(d)
         return json.dumps(list_of_elements_as_json)
