@@ -63,7 +63,9 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
             WHERE att_photo.report_id=r.id AND file_type=4
     ) as photos_count,
     r.merged_with_id,
-    r.source
+    r.source,
+    cast(ST_X(r.point) as text) as x,
+    cast(ST_Y(r.point) as text) as y
 FROM fixmystreet_historicalreport r
     RIGHT JOIN fixmystreet_report original_report ON r.id=original_report.id
     LEFT JOIN fixmystreet_fmsuser created_by ON r.created_by_id=created_by.user_ptr_id
