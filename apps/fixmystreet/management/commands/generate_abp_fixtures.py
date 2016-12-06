@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.core.management.base import BaseCommand, CommandError
 
 from optparse import make_option
@@ -47,6 +49,13 @@ class Command(BaseCommand):
         nature_type_ids = {}
         types_bagtypes_flag = {}
 
+        translations_corrections = {
+            u"...autre...": u"Propreté",
+            u"...andere...": u"Netheid",
+            u"autre (Inclassable)": u"Inclassable",
+            u"andere (Onklasseerbaar)": u"Onklasseerbaar"
+        }
+
         with open(options['typology']) as json_data:
             typology = json.load(json_data)
             logger.info('Typology file loaded')
@@ -58,12 +67,19 @@ class Command(BaseCommand):
             for typology_type in typology['data']['types']:
                 types_ids[typology_type['type_id']] = self.idx_reportsecondarycategoryclass +idx
 
+                try:
+                    name_fr = translations_corrections[typology_type['label']['fr']]
+                    name_nl = translations_corrections[typology_type['label']['nl']]
+                except KeyError:
+                    name_fr = typology_type['label']['fr']
+                    name_nl = typology_type['label']['nl']
+
                 reportsecondarycategoryclass = {
                     "pk": types_ids[typology_type['type_id']],
                     "model": "fixmystreet.reportsecondarycategoryclass",
                     "fields": {
-                        "name_fr": typology_type['label']['fr'],
-                        "name_nl": typology_type['label']['nl']
+                        "name_fr": name_fr,
+                        "name_nl": name_nl
                     }
                 }
                 fixtures_fms.append(reportsecondarycategoryclass)
@@ -95,12 +111,19 @@ class Command(BaseCommand):
             for typology_bagtype in typology['data']['bagtypes']:
                 bagtypes_ids[typology_bagtype['bagtype_id']] = self.idx_reportsubcategory +idx
 
+                try:
+                    name_fr = translations_corrections[typology_bagtype['label']['fr']]
+                    name_nl = translations_corrections[typology_bagtype['label']['nl']]
+                except KeyError:
+                    name_fr = typology_bagtype['label']['fr']
+                    name_nl = typology_bagtype['label']['nl']
+
                 reportsubcategory = {
                     "pk": bagtypes_ids[typology_bagtype['bagtype_id']],
                     "model": "fixmystreet.reportsubcategory",
                     "fields": {
-                        "name_fr": typology_bagtype['label']['fr'],
-                        "name_nl": typology_bagtype['label']['nl']
+                        "name_fr": name_fr,
+                        "name_nl": name_nl
                     }
                 }
                 fixtures_fms.append(reportsubcategory)
@@ -130,12 +153,19 @@ class Command(BaseCommand):
                     for category_class in category_classes:
                         natures_ids[typology_nature['nature_id']] = self.idx_reportcategory +idx
 
+                        try:
+                            name_fr = translations_corrections[typology_nature['label']['fr']]
+                            name_nl = translations_corrections[typology_nature['label']['nl']]
+                        except KeyError:
+                            name_fr = typology_nature['label']['fr']
+                            name_nl = typology_nature['label']['nl']
+
                         reportcategory = {
                             "pk": natures_ids[typology_nature['nature_id']],
                             "model": "fixmystreet.reportcategory",
                             "fields": {
-                                "name_fr": typology_nature['label']['fr'],
-                                "name_nl": typology_nature['label']['nl'],
+                                "name_fr": name_fr,
+                                "name_nl": name_nl,
                                 "public": True,
                                 "organisation_regional": int(options['abp_entity_id']),
                                 "organisation_communal": int(options['abp_entity_id']),
