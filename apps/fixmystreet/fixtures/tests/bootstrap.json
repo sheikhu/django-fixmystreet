@@ -1189,7 +1189,7 @@
         "model": "fixmystreet.reportcategory",
         "fields": {
             "name_fr": "Feu defectueux",
-            "name_nl": "Defct verkeerslicht",
+            "name_nl": "Defect verkeerslicht",
             "category_class": 2,
             "secondary_category_class": 5,
             "public": false

@@ -1542,7 +1542,7 @@ class ReportCategory(UserTrackedModel):
 
     category_class = models.ForeignKey(ReportMainCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
     secondary_category_class = models.ForeignKey(ReportSecondaryCategoryClass, related_name="categories", verbose_name=_('Category group'), help_text="The category group container")
-    sub_categories = models.ManyToManyField('ReportSubCategory', related_name='subcategories')
+    sub_categories = models.ManyToManyField('ReportSubCategory', related_name='subcategories', blank=True)
 
     public = models.BooleanField(default=True)
 
