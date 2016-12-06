@@ -2779,6 +2779,14 @@ label strong{
 #coordonnees ul li input{
 	vertical-align:bottom;
 }
+
+#description #report-sub_category input {
+	margin-right: 7px;
+	margin-top: 0;
+}
+#description #report-sub_category label {
+    margin-left: 20px;
+}
 /* Input form not valid */
 input.invalid, textarea.invalid {
 	background-color: #FFDDDD;
