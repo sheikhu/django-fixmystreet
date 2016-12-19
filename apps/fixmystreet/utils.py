@@ -84,7 +84,7 @@ def generate_pdf(*args, **kwargs):
 
     pdf_tmp_file_path = "%s/export.pdf" % (tmpfolder)
 
-    wkhtmltopdf_cmd = """timeout 15s wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10\
+    wkhtmltopdf_cmd = """timeout 30s wkhtmltopdf -s A4 -T 5 -L 5 -R 5 -B 10\
     --encoding utf-8 \
     --footer-font-size 8 \
     --footer-left '{0}' \
