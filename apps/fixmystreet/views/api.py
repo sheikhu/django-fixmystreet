@@ -299,13 +299,20 @@ def create_report_photo(request):
 
     data_report_id = request.POST.get('report_id')
 
+    # Check if the photo is base64 encoded
     if request.POST.get('base64', False):
         image_data_base64 = request.POST.get('report_file')
 
-        decoded_data = image_data_base64.split(';base64,')
+        # Extract content and metadata from base64 info
+        metadata, file_base64 = image_data_base64.split(';base64,')
+        metadata = metadata.replace("data:", "")
 
-        data_file_content = ContentFile(decoded_data[1].decode('base64'), name="mobileuploadbase64.jpeg")
-        data_file_content.content_type = decoded_data[0].split('data:')[1]
+        # Extract name and type from metadata
+        data_file_type, data_file_name = metadata.split(',')
+
+        # Set (meta)data to file object
+        data_file_content = ContentFile(file_base64.decode('base64'), name=data_file_name)
+        data_file_content.content_type = data_file_type
     else:
         data_file_content = request.FILES.get('report_file')
 
