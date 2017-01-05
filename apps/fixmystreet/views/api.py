@@ -3,6 +3,7 @@ import json
 import urllib2
 import socket
 import logging
+import base64
 
 from django.shortcuts import get_object_or_404
 
@@ -10,6 +11,7 @@ from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequ
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.base import ContentFile
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
@@ -296,7 +298,16 @@ def create_report_photo(request):
         return HttpResponseBadRequest(json.dumps({"error_key": "ERROR_REPORT_FILE_EXCEED_SIZE", "request":request.POST}),content_type='application/json')
 
     data_report_id = request.POST.get('report_id')
-    data_file_content = request.FILES.get('report_file')
+
+    if request.POST.get('base64', False):
+        image_data_base64 = request.POST.get('report_file')
+
+        decoded_data = image_data_base64.split(';base64,')
+
+        data_file_content = ContentFile(decoded_data[1].decode('base64'), name="mobileuploadbase64.jpeg")
+        data_file_content.content_type = decoded_data[0].split('data:')[1]
+    else:
+        data_file_content = request.FILES.get('report_file')
 
     #Verify that everything has been posted to create a citizen report.
     if (data_report_id == None):
