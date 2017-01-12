@@ -20,8 +20,20 @@ def get_response():
         },
     }
 
-def return_response(response):
-    return HttpResponse(json.dumps(response), content_type="application/json")
+def return_response(response, status=200):
+    del response["exceptions"]
+
+    return HttpResponse(json.dumps(response), content_type="application/json", status=status)
+
+def return_exception(exception, status=500):
+    response = get_response()
+
+    del response["response"]
+    del response["_links"]
+
+    response["exceptions"] = exception
+
+    return HttpResponse(json.dumps(response), content_type="application/json", status=status)
 
 def ack(request):
     response = get_response()
@@ -65,11 +77,13 @@ def detail(request, report_id):
             "_self" : "/%s" % report.id
         }
     except Report.DoesNotExist:
-        response['exceptions'] = {
-          "type":"ERROR",
-          "code":0,
-          "description":"Report does not exist"
+        exception = {
+          "type": "ERROR",
+          "code": 404,
+          "description": "Report does not exist"
         }
+
+        return return_exception(exception, 404)
 
     return return_response(response)
 
