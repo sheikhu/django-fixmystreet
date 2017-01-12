@@ -3,6 +3,7 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from apps.fixmystreet.models import Report
 
 def get_response():
     return {
@@ -41,7 +42,34 @@ def categories(request):
 
 def detail(request, report_id):
     response = get_response()
-    response['response'] = report_id
+
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+
+        responsible = "%s - %s (%s)" %(report.responsible_department.name,report.responsible_entity.name, report.responsible_department.phone)
+
+        response['response'] = {
+            "id": report.get_ticket_number(),
+            "status": report.get_public_status_display(),
+            "category": report.display_category(),
+            "created": report.created.strftime('%d/%m/%Y'),
+            "responsible": responsible,
+            "address": report.display_address(),
+            "point": {
+                "x": report.point.x,
+                "y": report.point.y
+            },
+        }
+
+        response['_links'] = {
+            "_self" : "/%s" % report.id
+        }
+    except Report.DoesNotExist:
+        response['exceptions'] = {
+          "type":"ERROR",
+          "code":0,
+          "description":"Report does not exist"
+        }
 
     return return_response(response)
 
@@ -53,9 +81,9 @@ def stats(request):
 
     response = get_response()
     response['response'] = {
-        "created" : report_counts.recent_new(),
-        "in_progress": report_counts.recent_updated(),
-        "closed": report_counts.recent_fixed()
+        "createdCount" : report_counts.recent_new(),
+        "inProgressCount": report_counts.recent_updated(),
+        "closedCount": report_counts.recent_fixed()
     }
 
     return return_response(response)
