@@ -52,6 +52,9 @@ def categories(request):
 
     return return_response(response)
 
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
+
 def detail(request, report_id):
     response = get_response()
 
@@ -73,8 +76,15 @@ def detail(request, report_id):
             },
         }
 
+        # Generate PDF absolute url
+        site = Site.objects.get_current()
+        base_url = "http://{}".format(site.domain.rstrip("/"))
+        relative_pdf_url = reverse("report_pdf", args=[report_id]).lstrip("/")
+        absolute_pdf_url = "{}/{}".format(base_url, relative_pdf_url)
+
         response['_links'] = {
-            "_self" : "/%s" % report.id
+            "self" : "/%s" % report.id,
+            "download" : absolute_pdf_url
         }
     except Report.DoesNotExist:
         exception = {
