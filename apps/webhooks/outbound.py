@@ -153,7 +153,7 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
                     self.report.category.id,
                     self.report.secondary_category.secondary_category_class.id,
                     self.report.secondary_category.id,
-                    self.report.sub_category.id if self.report.sub_category.id else ""
+                    self.report.sub_category.id if self.report.sub_category
                 ]
             },
             "pdf_url": {
