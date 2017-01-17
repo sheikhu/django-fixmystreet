@@ -65,7 +65,8 @@ def detail(request, report_id):
 
         response['response'] = {
             "id": report.get_ticket_number(),
-            "status": report.get_public_status_display(),
+            "status": report.status,
+            "statusLabel": report.get_public_status_display(),
             "category": report.display_category(),
             "created": report.created.strftime('%d/%m/%Y'),
             "responsible": responsible,
