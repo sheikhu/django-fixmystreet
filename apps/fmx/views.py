@@ -41,10 +41,54 @@ def ack(request):
     return return_response(response)
 
 def attachments(request, report_id):
-    response = get_response()
-    response['response'] = "attachments of %s" % report_id
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+        response = get_response()
+        response['response'] = []
+        attachments = report.active_attachments()
+        for attachment in attachments:
+            res = {
+                "id": attachment.id,
+                "created": attachment.created.strftime('%d/%m/%Y')
+            }
 
-    return return_response(response)
+
+            if attachment.created_by.is_citizen():
+                res["created_by"] = "A citizen"
+            else:
+                res["created_by"] = attachment.get_display_name_as_citizen().name
+
+            if hasattr(attachment, 'reportfile'):
+                res["type"] = "attachment"
+                if attachment.reportfile.is_pdf():
+                    res["file-type"] = "PDF"
+                elif attachment.reportfile.is_word():
+                    res["file-type"] = "WORD"
+                elif attachment.reportfile.is_excel():
+                    res["file-type"] = "EXCEL"
+                elif attachment.reportfile.is_image():
+                    res["file-type"] = "IMG"
+
+                if attachment.reportfile.is_image():
+                    res["url"] = attachment.reportfile.image.url
+                else:
+                    res["url"] = attachment.reportfile.file.url
+
+                res["title"] =  attachment.reportfile.title
+            else:
+                res["type"] = "comment"
+                res["comment"] = attachment.reportcomment.text
+            response['response'].append(res)
+
+        return return_response(response)
+    except Report.DoesNotExist:
+        exception = {
+          "type": "ERROR",
+          "code": 404,
+          "description": "Report does not exist"
+        }
+
+        return return_exception(exception, 404)
 
 def categories(request):
     response = get_response()
