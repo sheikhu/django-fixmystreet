@@ -35,12 +35,48 @@ def return_exception(exception, status=500):
 
     return HttpResponse(json.dumps(response), content_type="application/json", status=status)
 
+def exit_with_error(description, code=500, type="ERROR"):
+    exception = {
+      "type": type,
+      "code": code,
+      "description": description
+    }
+
+    return return_exception(exception, code)
+
 def ack(request):
     response = get_response()
 
     return return_response(response)
 
 def attachments(request, report_id):
+    if request.method == "POST":
+        return add_attachment(request, report_id)
+    else:
+        return get_attachments(request, report_id)
+
+from apps.fixmystreet.forms import (CitizenForm, ReportCommentForm)
+def add_attachment(request, report_id):
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+    comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
+    citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+    if comment_form.is_valid() and citizen_form.is_valid():
+        citizen = citizen_form.save()
+        comment = comment_form.save(commit=False)
+        comment.created_by = citizen
+        #Initialize report variab
+        comment.report = report
+        comment.save()
+        response = get_response()
+        response['response'] = comment.id
+        return return_response(response)
+    else:
+        return exit_with_error("Comment is not valid", 400)
+
+def get_attachments(request, report_id):
     try:
         report = Report.objects.all().public().get(id=report_id)
         response = get_response()
@@ -82,13 +118,7 @@ def attachments(request, report_id):
 
         return return_response(response)
     except Report.DoesNotExist:
-        exception = {
-          "type": "ERROR",
-          "code": 404,
-          "description": "Report does not exist"
-        }
-
-        return return_exception(exception, 404)
+        return exit_with_error("Report does not exist", 404)
 
 def categories(request):
     response = get_response()
@@ -138,13 +168,8 @@ def detail(request, report_id):
 
         return return_response(response)
     except Report.DoesNotExist:
-        exception = {
-          "type": "ERROR",
-          "code": 404,
-          "description": "Report does not exist"
-        }
+        return exit_with_error("Report does not exist", 404)
 
-        return return_exception(exception, 404)
 
 from apps.fixmystreet.stats import ReportCountQuery
 from apps.fixmystreet.views.main import DEFAULT_SQL_INTERVAL_CITIZEN
@@ -168,26 +193,14 @@ def duplicates(request):
     y = request.GET.get("y", None)
 
     if x is None or y is None:
-        exception = {
-          "type": "ERROR",
-          "code": 404,
-          "description": "Missing coordinates"
-        }
-
-        return return_exception(exception, 404)
+        return exit_with_error("Missing coordinates", 400)
 
     try:
         #Check if coordinates are float
         float(x)
         float(y)
     except ValueError as e:
-        exception = {
-          "type": "ERROR",
-          "code": 404,
-          "description": "Invalid coordinates"
-        }
-
-        return return_exception(exception, 404)
+        return exit_with_error("Invalid coordinates", 400)
 
     pnt = fromstr("POINT(" + x + " " + y + ")", srid=31370)
     reports_nearby = Report.objects.all().visible().public().near(pnt, 20).related_fields()[0:6]
