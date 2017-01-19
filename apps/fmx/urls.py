@@ -8,4 +8,5 @@ urlpatterns = patterns('apps.fmx.views',
 
     (r'^(?P<report_id>\d+)$', 'detail'),
     (r'^(?P<report_id>\d+)/attachments/$', 'attachments'),
+    (r'^(?P<report_id>\d+)/history/$', 'history'),
 )

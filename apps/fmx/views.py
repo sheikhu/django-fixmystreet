@@ -7,6 +7,7 @@ from django.forms.models import inlineformset_factory
 from django.utils.translation import activate, deactivate
 from django.core.urlresolvers import reverse
 from apps.fixmystreet.utils import hack_multi_file
+from django.utils.translation import ugettext as _
 
 def get_response():
     return {
@@ -47,13 +48,16 @@ def exit_with_error(description, code=500, type="ERROR"):
 
     return return_exception(exception, code)
 
-def get_translated_value(object, lang):
+def get_translated_value(object, lang, use_uggetext=False):
     activate(lang)
 
-    if callable(object):
-        value = object()
+    if use_uggetext:
+        value = _(object)
     else:
-        value = object
+        if callable(object):
+            value = object()
+        else:
+            value = object
 
     return value
 
@@ -146,9 +150,17 @@ def get_attachments(request, report):
 
 
         if attachment.created_by.is_citizen():
-            res["created_by"] = "A citizen"
+            res["created_by"] = {
+                "en": get_translated_value("A citizen", "fr", True),
+                "fr": get_translated_value("A citizen", "fr", True),
+                "nl": get_translated_value("A citizen", "nl", True)
+            }
         else:
-            res["created_by"] = attachment.get_display_name_as_citizen().name
+            res["created_by"] = {
+                "en": get_translated_value(attachment.get_display_name_as_citizen, "fr").name,
+                "fr": get_translated_value(attachment.get_display_name_as_citizen, "fr").name,
+                "nl": get_translated_value(attachment.get_display_name_as_citizen, "nl").name,
+            }
 
         if hasattr(attachment, 'reportfile'):
             res["type"] = "attachment"
@@ -280,4 +292,33 @@ def duplicates(request):
         if res.get("response", None) is not None:
             response["response"].append(res.get("response", None))
 
+    return return_response(response)
+
+def history(request, report_id):
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+
+    response = get_response()
+    response["response"] = []
+
+    activities = report.activities.all().order_by('-event_at')
+    for activity in activities:
+        if activity.is_public_visible():
+            act ={
+                "id": activity.id,
+                "date": activity.event_at.strftime('%d/%m/%Y'),
+                "user":{
+                    "en":  get_translated_value(activity.organisation, "fr").name,
+                    "fr":  get_translated_value(activity.organisation, "fr").name,
+                    "nl":  get_translated_value(activity.organisation, "nl").name
+                },
+                "event": {
+                    "en": get_translated_value(activity.get_public_activity_text, "fr"),
+                    "fr": get_translated_value(activity.get_public_activity_text, "fr"),
+                    "nl": get_translated_value(activity.get_public_activity_text, "nl")
+                }
+            }
+            response["response"].append(act)
     return return_response(response)
