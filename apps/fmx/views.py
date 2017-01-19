@@ -3,7 +3,9 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from apps.fixmystreet.models import Report
+from apps.fixmystreet.models import (Report, FMSUser)
+
+from apps.fixmystreet.forms import (CitizenForm, ReportCommentForm)
 
 def get_response():
     return {
@@ -62,75 +64,104 @@ def ack(request):
     return return_response(response)
 
 def attachments(request, report_id):
-    if request.method == "POST":
-        return add_attachment(request, report_id)
-    else:
-        return get_attachments(request, report_id)
-
-from apps.fixmystreet.forms import (CitizenForm, ReportCommentForm)
-def add_attachment(request, report_id):
     try:
         report = Report.objects.all().public().get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
-    comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
+
+    if request.method == "POST":
+        return add_attachment(request, report)
+    else:
+        return get_attachments(request, report)
+
+def add_attachment(request, report):
+    if request.POST.get('username', None) != None and  request.POST.get('password', None) != None:
+        return add_attachment_pro(request, report)
+    else:
+        return add_attachment_citizen(request, report)
+
+def add_attachment_pro(request, report):
+    #Check login and password
+    try:
+        user_name    = request.POST.get('username')
+        user_password = request.POST.get('password')
+    except ValueError:
+        return exit_with_error("Attachment is not valid", 400)
+
+    if (user_name == None or user_password == None):
+        return exit_with_error("Unauthorized", 401)
+
+    try:
+        user_object   = FMSUser.objects.get(username=user_name)
+        if user_object.check_password(user_password) == False or not user_object.is_active:
+            return exit_with_error("Unauthorized", 401)
+    except ObjectDoesNotExist:
+        return exit_with_error("Unauthorized", 401)
+    return add_attachment_for_user(request, report, user_object)
+
+def add_attachment_citizen(request, report):
     citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
-    if comment_form.is_valid() and citizen_form.is_valid():
-        citizen = citizen_form.save()
+    if not citizen_form.is_valid():
+        return exit_with_error("Attachment is not valid", 400)
+
+    citizen = citizen_form.save()
+
+    return add_attachment_for_user(request, report, citizen)
+
+def add_attachment_for_user(request, report, user):
+    comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
+
+    if comment_form.is_valid():
         comment = comment_form.save(commit=False)
-        comment.created_by = citizen
-        #Initialize report variab
+        comment.created_by = user
         comment.report = report
         comment.save()
         response = get_response()
         response['response'] = comment.id
         return return_response(response)
     else:
-        return exit_with_error("Comment is not valid", 400)
+        return exit_with_error("Attachment is not valid", 400)
 
-def get_attachments(request, report_id):
-    try:
-        report = Report.objects.all().public().get(id=report_id)
-        response = get_response()
-        response['response'] = []
-        attachments = report.active_attachments()
-        for attachment in attachments:
-            res = {
-                "id": attachment.id,
-                "created": attachment.created.strftime('%d/%m/%Y')
-            }
+def get_attachments(request, report):
+    response = get_response()
+    response['response'] = []
+    attachments = report.active_attachments()
+    for attachment in attachments:
+        res = {
+            "id": attachment.id,
+            "created": attachment.created.strftime('%d/%m/%Y')
+        }
 
 
-            if attachment.created_by.is_citizen():
-                res["created_by"] = "A citizen"
+        if attachment.created_by.is_citizen():
+            res["created_by"] = "A citizen"
+        else:
+            res["created_by"] = attachment.get_display_name_as_citizen().name
+
+        if hasattr(attachment, 'reportfile'):
+            res["type"] = "attachment"
+            if attachment.reportfile.is_pdf():
+                res["file-type"] = "PDF"
+            elif attachment.reportfile.is_word():
+                res["file-type"] = "WORD"
+            elif attachment.reportfile.is_excel():
+                res["file-type"] = "EXCEL"
+            elif attachment.reportfile.is_image():
+                res["file-type"] = "IMG"
+
+            if attachment.reportfile.is_image():
+                res["url"] = attachment.reportfile.image.url
             else:
-                res["created_by"] = attachment.get_display_name_as_citizen().name
+                res["url"] = attachment.reportfile.file.url
 
-            if hasattr(attachment, 'reportfile'):
-                res["type"] = "attachment"
-                if attachment.reportfile.is_pdf():
-                    res["file-type"] = "PDF"
-                elif attachment.reportfile.is_word():
-                    res["file-type"] = "WORD"
-                elif attachment.reportfile.is_excel():
-                    res["file-type"] = "EXCEL"
-                elif attachment.reportfile.is_image():
-                    res["file-type"] = "IMG"
+            res["title"] =  attachment.reportfile.title
+        else:
+            res["type"] = "comment"
+            res["comment"] = attachment.reportcomment.text
+        response['response'].append(res)
 
-                if attachment.reportfile.is_image():
-                    res["url"] = attachment.reportfile.image.url
-                else:
-                    res["url"] = attachment.reportfile.file.url
+    return return_response(response)
 
-                res["title"] =  attachment.reportfile.title
-            else:
-                res["type"] = "comment"
-                res["comment"] = attachment.reportcomment.text
-            response['response'].append(res)
-
-        return return_response(response)
-    except Report.DoesNotExist:
-        return exit_with_error("Report does not exist", 404)
 
 def categories(request):
     response = get_response()
