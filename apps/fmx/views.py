@@ -340,3 +340,24 @@ def last_reports(request):
         if res.get("response", None) is not None:
             response["response"].append(res.get("response", None))
     return return_response(response)
+
+def reports(request):
+    #get filters and pagination
+    REPORTS_BY_PAGE = 6
+    page = request.GET.get('p', None)
+    if not page:
+        page = 1
+    try:
+        page = int(page)
+    except ValueError as e:
+        return exit_with_error("Invalid parameters", 400)
+
+    offset = (page -1) * REPORTS_BY_PAGE
+    reports = Report.objects.all().public().order_by('-created')[offset:offset + REPORTS_BY_PAGE]
+    response = get_response()
+    response["response"] = []
+    for report in reports:
+        res = generate_report_response(report)
+        if res.get("response", None) is not None:
+            response["response"].append(res.get("response", None))
+    return return_response(response)
