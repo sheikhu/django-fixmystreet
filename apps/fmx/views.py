@@ -322,3 +322,21 @@ def history(request, report_id):
             }
             response["response"].append(act)
     return return_response(response)
+
+def last_reports(request):
+    nbr = request.GET.get('n', None)
+    if not nbr:
+        nbr = 10
+    try:
+        nbr = int(nbr)
+    except ValueError as e:
+        return exit_with_error("Invalid number of reports", 400)
+
+    reports = Report.objects.all().public().order_by('-created')[:nbr]
+    response = get_response()
+    response["response"] = []
+    for report in reports:
+        res = generate_report_response(report)
+        if res.get("response", None) is not None:
+            response["response"].append(res.get("response", None))
+    return return_response(response)
