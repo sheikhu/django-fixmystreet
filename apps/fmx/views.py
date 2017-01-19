@@ -35,6 +35,18 @@ def return_exception(exception, status=500):
 
     return HttpResponse(json.dumps(response), content_type="application/json", status=status)
 
+from django.utils.translation import activate, deactivate
+
+def get_translated_value(object, lang):
+    activate(lang)
+
+    if callable(object):
+        value = object()
+    else:
+        value = object
+
+    return value
+
 def ack(request):
     response = get_response()
 
@@ -62,12 +74,28 @@ def generate_report_response(report):
 
     response['response'] = {
         "id": report.get_ticket_number(),
-        "status": report.status,
-        "statusLabel": report.get_public_status_display(),
-        "category": report.display_category(),
         "created": report.created.strftime('%d/%m/%Y'),
-        "responsible": responsible,
-        "address": report.display_address(),
+        "status": {
+            "value": report.status,
+            "en": get_translated_value(report.get_public_status_display, "fr"),
+            "fr": get_translated_value(report.get_public_status_display, "fr"),
+            "nl": get_translated_value(report.get_public_status_display, "nl"),
+        },
+        "category": {
+            "en": get_translated_value(report.display_category, "fr"),
+            "fr": get_translated_value(report.display_category, "fr"),
+            "nl": get_translated_value(report.display_category, "nl"),
+        },
+        "responsible": {
+            "en": get_translated_value(responsible, "fr"),
+            "fr": get_translated_value(responsible, "fr"),
+            "nl": get_translated_value(responsible, "nl"),
+        },
+        "address": {
+            "en": get_translated_value(report.display_address, "fr"),
+            "fr": get_translated_value(report.display_address, "fr"),
+            "nl": get_translated_value(report.display_address, "nl"),
+        },
         "point": {
             "x": report.point.x,
             "y": report.point.y
