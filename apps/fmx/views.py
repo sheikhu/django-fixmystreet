@@ -1,11 +1,12 @@
 import json
-
 from django.shortcuts import render
 from django.http import HttpResponse
-
-from apps.fixmystreet.models import (Report, FMSUser)
-
-from apps.fixmystreet.forms import (CitizenForm, ReportCommentForm)
+from apps.fixmystreet.models import Report, FMSUser, ReportFile, Site
+from apps.fixmystreet.forms import CitizenForm, ReportCommentForm, ReportFileForm
+from django.forms.models import inlineformset_factory
+from django.utils.translation import activate, deactivate
+from django.core.urlresolvers import reverse
+from apps.fixmystreet.utils import hack_multi_file
 
 def get_response():
     return {
@@ -45,8 +46,6 @@ def exit_with_error(description, code=500, type="ERROR"):
     }
 
     return return_exception(exception, code)
-
-from django.utils.translation import activate, deactivate
 
 def get_translated_value(object, lang):
     activate(lang)
@@ -109,18 +108,31 @@ def add_attachment_citizen(request, report):
     return add_attachment_for_user(request, report, citizen)
 
 def add_attachment_for_user(request, report, user):
+    ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
+    file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
 
+    response = get_response()
+    response['response'] = []
     if comment_form.is_valid():
         comment = comment_form.save(commit=False)
         comment.created_by = user
         comment.report = report
         comment.save()
-        response = get_response()
-        response['response'] = comment.id
-        return return_response(response)
+        response['response'].append(comment.id)
+    elif file_formset.is_valid():
+        if len(file_formset.files) > 0:
+            files = file_formset.save()
+            for report_file in files:
+                report_file.created_by = user
+                report_file.save()
+                response['response'].append(report_file.id)
+        else:
+            return exit_with_error("Attachment is not valid", 400)
     else:
         return exit_with_error("Attachment is not valid", 400)
+
+    return return_response(response)
 
 def get_attachments(request, report):
     response = get_response()
@@ -168,9 +180,6 @@ def categories(request):
     response['response'] = "categories"
 
     return return_response(response)
-
-from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
 
 def generate_report_response(report):
     response = get_response()
