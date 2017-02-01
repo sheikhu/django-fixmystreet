@@ -60,11 +60,13 @@ class Command(BaseCommand):
             # Lvl2: SecondaryCategory
             idx += 1
             secondary_category = category.secondary_category_class
+            secondary_key = "%s-%s" % (main_category.id, category.secondary_category_class.id)
+            print secondary_key
 
             try:
-                secondary_categories[secondary_category.id]
+                secondary_categories[secondary_key]
             except:
-                secondary_categories[secondary_category.id] = [
+                secondary_categories[secondary_key] = [
                     idx,
                     main_categories[main_category.id][0],
                     False,
@@ -78,7 +80,7 @@ class Command(BaseCommand):
             idx += 1
             categories[category.id] = [
                 idx,
-                secondary_categories[category.secondary_category_class.id][0],
+                secondary_categories[secondary_key][0],
                 not category.sub_categories.exists(),
                 category.name_fr.encode('utf8'),
                 category.name_nl.encode('utf8'),

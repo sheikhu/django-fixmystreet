@@ -3,12 +3,14 @@ from django.conf.urls import patterns
 urlpatterns = patterns('apps.fmx.views',
     (r'^ack/$', 'ack'),
     (r'^categories/$', 'categories'),
-    (r'^stats/$', 'stats'),
-    (r'^duplicates/$', 'duplicates'),
-    (r'^reports/last$', 'last_reports'),
-    (r'^reports$', 'reports'),
 
-    (r'^(?P<report_id>\d+)$', 'detail'),
-    (r'^(?P<report_id>\d+)/attachments/$', 'attachments'),
-    (r'^(?P<report_id>\d+)/history/$', 'history'),
+    (r'^duplicates/$', 'duplicates'),
+
+    (r'^incidents/(?P<report_id>\d+)$', 'detail'),
+    (r'^incidents/(?P<report_id>\d+)/attachments/$', 'attachments'),
+    (r'^incidents/(?P<report_id>\d+)/history/$', 'history'),
+    (r'^incidents/last$', 'last_reports'),
+    (r'^incidents$', 'reports'),
+
+    (r'^statistics/incidents/$', 'stats'),
 )

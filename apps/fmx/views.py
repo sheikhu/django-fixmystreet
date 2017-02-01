@@ -200,32 +200,34 @@ def generate_report_response(report):
 
     response['response'] = {
         "id": report.get_ticket_number(),
-        "created": report.created.strftime('%d/%m/%Y'),
-        "status": {
-            "value": report.status,
-            "en": get_translated_value(report.get_public_status_display, "fr"),
-            "fr": get_translated_value(report.get_public_status_display, "fr"),
-            "nl": get_translated_value(report.get_public_status_display, "nl"),
-        },
+        "creationDate": report.created.strftime('%d/%m/%Y'),
+        "status": "CREATED",
         "category": {
-            "en": get_translated_value(report.display_category, "fr"),
-            "fr": get_translated_value(report.display_category, "fr"),
-            "nl": get_translated_value(report.display_category, "nl"),
+            "id": report.category.id,
+            "nameEn": get_translated_value(report.display_category, "fr"),
+            "nameFr": get_translated_value(report.display_category, "fr"),
+            "nameNl": get_translated_value(report.display_category, "nl"),
         },
-        "responsible": {
-            "en": get_translated_value(responsible, "fr"),
-            "fr": get_translated_value(responsible, "fr"),
-            "nl": get_translated_value(responsible, "nl"),
+        "location": {
+            "coordinates": {
+                "x": report.point.x,
+                "y": report.point.y
+            },
+            "address": {
+                "addressType": "REGIONAL" if report.is_regional() else "MUNICIPALITY",
+                "streetNameEn": get_translated_value(report.address, "fr"),
+                "streetNameFr": get_translated_value(report.address, "fr"),
+                "streetNameNl": get_translated_value(report.address, "nl"),
+                "streetNumber": report.address_number,
+                "postalCode": report.postalcode
+            }
         },
-        "address": {
-            "en": get_translated_value(report.display_address, "fr"),
-            "fr": get_translated_value(report.display_address, "fr"),
-            "nl": get_translated_value(report.display_address, "nl"),
-        },
-        "point": {
-            "x": report.point.x,
-            "y": report.point.y
-        },
+        "assignee": {
+            "nameEn": get_translated_value(responsible, "fr"),
+            "nameFr": get_translated_value(responsible, "fr"),
+            "nameNl": get_translated_value(responsible, "nl"),
+            "phoneNumber": "029876543"
+        }
     }
 
     # Generate PDF absolute url

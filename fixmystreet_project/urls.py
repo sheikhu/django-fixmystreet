@@ -36,7 +36,7 @@ urlpatterns += patterns(
 )
 urlpatterns += patterns(
     '',
-    url(r'^fmx/', include('apps.fmx.urls', namespace='fmx'))
+    url(r'^fmx/api/', include('apps.fmx.urls', namespace='fmx'))
 )
 if settings.DEBUG:
     baseurlregex = r'^media/(?P<path>.*)$'
