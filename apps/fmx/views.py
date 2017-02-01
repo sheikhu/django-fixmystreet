@@ -152,7 +152,7 @@ def get_attachments(request, report):
         }
 
 
-        if attachment.created_by is None || attachment.created_by.is_citizen():
+        if attachment.created_by is None or attachment.created_by.is_citizen():
             res["created_by"] = {
                 "en": get_translated_value("A citizen", "fr", True),
                 "fr": get_translated_value("A citizen", "fr", True),
