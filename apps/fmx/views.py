@@ -178,6 +178,7 @@ def get_attachments(request, report):
 
             if attachment.reportfile.is_image():
                 res["url"] = attachment.reportfile.image.url
+                res["thumbnail"] = attachment.reportfile.image.thumbnail.url
             else:
                 res["url"] = attachment.reportfile.file.url
 
