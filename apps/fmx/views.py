@@ -105,7 +105,7 @@ def add_attachment_pro(request, report):
 def add_attachment_citizen(request, report):
     citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
     if not citizen_form.is_valid():
-        return exit_with_error("Attachment is not valid", 400)
+        return exit_with_error("Attachment is not valid : " + ", ".join(citizen_form.errors), 400)
 
     citizen = citizen_form.save()
 
@@ -118,23 +118,26 @@ def add_attachment_for_user(request, report, user):
 
     response = get_response()
     response['response'] = []
-    if comment_form.is_valid():
-        comment = comment_form.save(commit=False)
-        comment.created_by = user
-        comment.report = report
-        comment.save()
-        response['response'].append(comment.id)
-    elif file_formset.is_valid():
-        if len(file_formset.files) > 0:
-            files = file_formset.save()
-            for report_file in files:
-                report_file.created_by = user
-                report_file.save()
-                response['response'].append(report_file.id)
+    try:
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.created_by = user
+            comment.report = report
+            comment.save()
+            response['response'].append(comment.id)
+        elif file_formset.is_valid():
+            if len(file_formset.files) > 0:
+                files = file_formset.save()
+                for report_file in files:
+                    report_file.created_by = user
+                    report_file.save()
+                    response['response'].append(report_file.id)
+            else:
+                return exit_with_error("Attachment is not valid", 400)
         else:
-            return exit_with_error("Attachment is not valid", 400)
-    else:
-        return exit_with_error("Attachment is not valid", 400)
+            return exit_with_error("Attachment is not valid : " +  + ", ".join(comment_form.errors) + ", ".join(file_formset.errors), 400)
+    except Exception as e:
+        return exit_with_error("Attachment is not valid : " + str(e), 400)
 
     return return_response(response)
 
