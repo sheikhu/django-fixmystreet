@@ -334,7 +334,7 @@ def last_reports(request):
     except ValueError as e:
         return exit_with_error("Invalid number of reports", 400)
 
-    reports = Report.objects.all().public().order_by('-created')[:nbr]
+    reports = Report.objects.all().public().visible().order_by('-created')[:nbr]
     response = get_response()
     response["response"] = []
     for report in reports:
