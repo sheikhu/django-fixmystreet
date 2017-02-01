@@ -200,8 +200,6 @@ def categories(request):
 def generate_report_response(report):
     response = get_response()
 
-    responsible = "%s - %s (%s)" %(report.responsible_department.name,report.responsible_entity.name, report.responsible_department.phone)
-
     response['response'] = {
         "id": report.get_ticket_number(),
         "creationDate": report.created.strftime('%d/%m/%Y'),
@@ -227,9 +225,21 @@ def generate_report_response(report):
             }
         },
         "assignee": {
-            "nameEn": get_translated_value(responsible, "fr"),
-            "nameFr": get_translated_value(responsible, "fr"),
-            "nameNl": get_translated_value(responsible, "nl"),
+            "nameEn": "%s - %s (%s)" %(
+                get_translated_value(report.responsible_department, "fr").name,
+                get_translated_value(report.responsible_entity, "fr").name,
+                report.responsible_department.phone
+            ),
+            "nameFr": "%s - %s (%s)" %(
+                get_translated_value(report.responsible_department, "fr").name,
+                get_translated_value(report.responsible_entity, "fr").name,
+                report.responsible_department.phone
+            ),
+            "nameNl": "%s - %s (%s)" %(
+                get_translated_value(report.responsible_department, "nl").name,
+                get_translated_value(report.responsible_entity, "nl").name,
+                report.responsible_department.phone
+            ),
             "phoneNumber": "029876543"
         }
     }
