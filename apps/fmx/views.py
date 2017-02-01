@@ -295,7 +295,13 @@ def duplicates(request):
     for report in reports_nearby:
         res = generate_report_response(report)
         if res.get("response", None) is not None:
-            response["response"].append(res.get("response", None))
+            rep = res.get("response", None)
+            attachments = report.active_attachments().order_by('created')
+            for attachment in attachments:
+                if attachment.reportfile.is_image():
+                    rep['oldest_attachment'] = attachment.reportfile.image.thumbnail.url
+                    break
+            response["response"].append(rep)
 
     return return_response(response)
 
