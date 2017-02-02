@@ -202,7 +202,7 @@ def generate_report_response(report):
 
     response['response'] = {
         "id": report.get_ticket_number(),
-        "creationDate": report.created.strftime('%d/%m/%Y'),
+        "creationDate": report.created.isoformat(),
         "status": "CREATED",
         "category": {
             "id": report.category.id,
