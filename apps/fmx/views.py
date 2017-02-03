@@ -423,7 +423,15 @@ def subscribe(request, report_id):
 
     # get or create citizen
     email = request.POST.get('citizen-email', 'unvalid-email')
+    username = request.POST.get('username', None)
+    password = request.POST.get('password', None)
 
+    if username is not None:
+        return subscribe_pro(report, username, password)
+    else:
+        return subscribe_citizen(report, email)
+
+def subscribe_citizen(report, email):
     try:
         validate_email(email)
     except Error as e:
@@ -434,7 +442,20 @@ def subscribe(request, report_id):
     except FMSUser.DoesNotExist:
         #Add information about the citizen connected if it does not exist
         user = FMSUser.objects.create(username=email, email=email, first_name='ANONYMOUS', last_name='ANONYMOUS', agent=False, contractor=False, manager=False, leader=False)
+    return subscribe_user(report, user)
 
+def subscribe_pro(report, username, password):
+    try:
+        user_object   = FMSUser.objects.get(username=username)
+        if user_object.check_password(password) == False or not user_object.is_active:
+            return exit_with_error("Unauthorized", 401)
+    except ObjectDoesNotExist:
+        return exit_with_error("Unauthorized", 401)
+
+    return subscribe_user(report, user_object)
+
+
+def subscribe_user(report, user):
     #VERIFY THAT A SUBSCRIPTION DOES NOT ALREADY EXIST
     if not ReportSubscription.objects.filter(subscriber=user, report=report).exists():
         subscriber = ReportSubscription(subscriber=user, report=report)
@@ -447,7 +468,6 @@ def subscribe(request, report_id):
 
 
 def unsubscribe(request, report_id):
-    response = get_response()
     # get the report
     try:
         report = Report.objects.all().public().get(id=report_id)
@@ -456,7 +476,15 @@ def unsubscribe(request, report_id):
 
     # Get the user
     email = request.POST.get('citizen-email', 'unvalid-email')
+    username = request.POST.get('username', None)
+    password = request.POST.get('password', None)
 
+    if username is not None:
+        return unsubscribe_pro(report, username, password)
+    else:
+        return unsubscibe_citizen(report, email)
+
+def unsubscibe_citizen(report, email):
     try:
         validate_email(email)
     except Error as e:
@@ -466,8 +494,21 @@ def unsubscribe(request, report_id):
         user = FMSUser.objects.get(email=email)
     except FMSUser.DoesNotExist:
         return exit_with_error("Subscription does not exist", 404)
+    return unsubscribe_user(report, user)
+
+def unsubscribe_pro(report, username, password):
+    try:
+        user_object   = FMSUser.objects.get(username=username)
+        if user_object.check_password(password) == False or not user_object.is_active:
+            return exit_with_error("Unauthorized", 401)
+    except ObjectDoesNotExist:
+        return exit_with_error("Unauthorized", 401)
+
+    return unsubscribe_user(report, user_object)
 
 
+def unsubscribe_user(report, user):
+    response = get_response()
     try:
         subscription = ReportSubscription.objects.get(subscriber=user, report=report)
         subscription.delete()
