@@ -479,3 +479,18 @@ def unsubscribe(request, report_id):
 
 
 
+def isFixed(request, report_id):
+    # get the report
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+
+    report.status = Report.SOLVED
+    report.fixed_at = datetime.now()
+    report.save()
+    # Return code 200
+    return return_response(generate_report_response(report))
+
+
+
