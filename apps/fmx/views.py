@@ -8,6 +8,7 @@ from django.utils.translation import activate, deactivate
 from django.core.urlresolvers import reverse
 from apps.fixmystreet.utils import hack_multi_file
 from django.utils.translation import ugettext as _
+from datetime import datetime
 
 def get_response():
     return {
@@ -364,22 +365,50 @@ def last_reports(request):
     return return_response(response)
 
 def reports(request):
-    #get filters and pagination
-    REPORTS_BY_PAGE = 6
+    #Page number
+    REPORTS_BY_PAGE = 12
     page = request.GET.get('p', None)
     if not page:
         page = 1
     try:
         page = int(page)
     except ValueError as e:
-        return exit_with_error("Invalid parameters", 400)
+        return exit_with_error("Invalid page parameter", 400)
+
+    #Get filters
+    status = request.GET.get('status', None)
+    category = request.GET.get('category', None)
+    municipality = request.GET.get('municipality', None)
+    date_start = request.GET.get('date_start', None)
+    date_end = request.GET.get('date_end', None)
+
+    reports = Report.objects.all().public().visible().order_by('-created')
+    if(status is not None):
+        reports = reports.filter(status=status)
+
+    if(category is not None):
+        reports = reports.filter(category_id=category)
+
+    if(municipality is not None):
+        reports = reports.filter(postalcode=municipality)
+
+    if(date_start is not None):
+        date_start_date = datetime.strptime(date_start, '%Y-%M-%d')
+        reports = reports.filter(created__gte=date_start_date)
+
+    if(date_end is not None):
+        date_end_date = datetime.strptime(date_end, '%Y-%M-%d')
+        reports = reports.filter(created__lte=date_end_date)
 
     offset = (page -1) * REPORTS_BY_PAGE
-    reports = Report.objects.all().public().order_by('-created')[offset:offset + REPORTS_BY_PAGE]
+    # [offset:offset + REPORTS_BY_PAGE]
     response = get_response()
-    response["response"] = []
-    for report in reports:
+    response["response"] = {
+        "reports": [],
+        "count": reports.count()
+    }
+    for report in reports[offset:offset + REPORTS_BY_PAGE]:
         res = generate_report_response(report)
         if res.get("response", None) is not None:
-            response["response"].append(res.get("response", None))
+            response["response"]["reports"].append(res.get("response", None))
     return return_response(response)
