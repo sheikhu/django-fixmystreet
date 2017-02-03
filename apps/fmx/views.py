@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render
 from django.http import HttpResponse
-from apps.fixmystreet.models import Report, FMSUser, ReportFile, Site
+from apps.fixmystreet.models import Report, FMSUser, ReportFile, Site, ReportSubscription
 from apps.fixmystreet.forms import CitizenForm, ReportCommentForm, ReportFileForm
 from django.forms.models import inlineformset_factory
 from django.utils.translation import activate, deactivate
@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from apps.fixmystreet.utils import hack_multi_file
 from django.utils.translation import ugettext as _
 from datetime import datetime
+from django.core.validators import validate_email
 
 def get_response():
     return {
@@ -412,3 +413,69 @@ def reports(request):
         if res.get("response", None) is not None:
             response["response"]["reports"].append(res.get("response", None))
     return return_response(response)
+
+def subscribe(request, report_id):
+    # get the report
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+
+    # get or create citizen
+    email = request.POST.get('citizen-email', 'unvalid-email')
+
+    try:
+        validate_email(email)
+    except Error as e:
+        return exit_with_error("Email is not valid - " + str(e), 400)
+
+    try:
+        user = FMSUser.objects.get(email=email)
+    except FMSUser.DoesNotExist:
+        #Add information about the citizen connected if it does not exist
+        user = FMSUser.objects.create(username=email, email=email, first_name='ANONYMOUS', last_name='ANONYMOUS', agent=False, contractor=False, manager=False, leader=False)
+
+    #VERIFY THAT A SUBSCRIPTION DOES NOT ALREADY EXIST
+    if not ReportSubscription.objects.filter(subscriber=user, report=report).exists():
+        subscriber = ReportSubscription(subscriber=user, report=report)
+        subscriber.save()
+
+    # Return code 200
+    response = get_response()
+
+    return return_response(response)
+
+
+def unsubscribe(request, report_id):
+    response = get_response()
+    # get the report
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+
+    # Get the user
+    email = request.POST.get('citizen-email', 'unvalid-email')
+
+    try:
+        validate_email(email)
+    except Error as e:
+        return exit_with_error("Email is not valid - " + str(e), 400)
+
+    try:
+        user = FMSUser.objects.get(email=email)
+    except FMSUser.DoesNotExist:
+        return exit_with_error("Subscription does not exist", 404)
+
+
+    try:
+        subscription = ReportSubscription.objects.get(subscriber=user, report=report)
+        subscription.delete()
+        # Return code 200
+        return return_response(response)
+    except ReportSubscription.DoesNotExist:
+        # Return code 200
+        return return_response(response)
+
+
+
