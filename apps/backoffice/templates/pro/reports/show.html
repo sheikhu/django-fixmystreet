@@ -107,6 +107,15 @@
                                 {% endif %}
 
                                 {% if BACKOFFICE %}
+                                    {% if report.duplicates %}
+                                        <li class='report-duplicates'>{{report.duplicates}}&nbsp;
+                                            {% if report.duplicates > 1 %}
+                                                {% trans "duplicates" %}
+                                            {% else %}
+                                                {% trans "duplicate" %}
+                                            {% endif %}
+                                        </li>
+                                    {% endif %}
                                 <li>
                                     {% if report.get_priority == 0 %}
                                     <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/prior_off.png' %}" class="priorityLevel" /></a>

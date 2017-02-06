@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # afuca <afuca@cirb.brussels>, 2015
 # dfranklin <DFranklin@cirb.irisnet.be>, 2014-2016
@@ -12,14 +12,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-18 13:42+0200\n"
+"POT-Creation-Date: 2017-02-06 12:53+0100\n"
 "PO-Revision-Date: 2016-10-18 11:42+0000\n"
 "Last-Translator: afuca <afuca@cirb.brussels>\n"
-"Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/language/fr/)\n"
+"Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/"
+"language/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: fixmystreet/static/js/attachmentForms.js:122
@@ -190,25 +191,35 @@ msgid ""
 "vous demandons d’expliquer le problème de la manière la plus précise "
 "possible, de préférence avec une ou plusieurs photos du problème et de "
 "l’endroit où il se trouve."
-msgstr "L'incident que vous avez signalé n’est pas assez clairement décrit. Nous vous demandons d’expliquer le problème de la manière la plus précise possible, de préférence avec une ou plusieurs photos du problème et de l’endroit où il se trouve."
+msgstr ""
+"L'incident que vous avez signalé n’est pas assez clairement décrit. Nous "
+"vous demandons d’expliquer le problème de la manière la plus précise "
+"possible, de préférence avec une ou plusieurs photos du problème et de "
+"l’endroit où il se trouve."
 
 #: fixmystreet/static/js/report_refused.js:19
 msgid ""
-"L'incident que vous avez signalé ne rentre dans le domaine d’application  de"
-" Fix My Street."
-msgstr "L'incident que vous avez signalé ne rentre pas dans le domaine d’application de Fix My Street."
+"L'incident que vous avez signalé ne rentre dans le domaine d’application  de "
+"Fix My Street."
+msgstr ""
+"L'incident que vous avez signalé ne rentre pas dans le domaine d’application "
+"de Fix My Street."
 
 #: fixmystreet/static/js/report_refused.js:20
 msgid ""
-"L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un"
-" projet de réaménagement et sera restauré durant la mise en œuvre du projet."
-msgstr "L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un projet de réaménagement et sera restauré durant la mise en œuvre du projet."
+"L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un "
+"projet de réaménagement et sera restauré durant la mise en œuvre du projet."
+msgstr ""
+"L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un "
+"projet de réaménagement et sera restauré durant la mise en œuvre du projet."
 
 #: fixmystreet/static/js/report_refused.js:21
 msgid ""
 "L'incident que vous avez signalé est sur une propriété privée et n'est pas "
 "la responsabilité de Fix My Street."
-msgstr "L'incident que vous avez signalé est sur une propriété privée et n'est pas la responsabilité de Fix My Street."
+msgstr ""
+"L'incident que vous avez signalé est sur une propriété privée et n'est pas "
+"la responsabilité de Fix My Street."
 
 #: fixmystreet/static/js/report_refused.js:22
 msgid "Cet incident a déjà été signalé et est en attente de traitement."
@@ -231,7 +242,8 @@ msgstr "Ce nom de rue n'appartient pas à cette commune."
 #: fixmystreet/static/js/search-address-view.js:193
 #: fixmystreet/static/js/search.js:61
 msgid "This street exists in several municipalities, please be more specific."
-msgstr "Ce nom de rue existe dans plusieurs commune. Veuillez être plus précis."
+msgstr ""
+"Ce nom de rue existe dans plusieurs commune. Veuillez être plus précis."
 
 #: fixmystreet/static/js/search.js:166 fixmystreet/static/js/search.js:234
 msgid "Move the cursor"
@@ -241,13 +253,17 @@ msgstr "Positionnez-moi à l'endroit exact de l'incident"
 msgid ""
 "Please enter more information to describe why you changed the value of "
 "'third party responsibility'"
-msgstr "Veuillez décrire la raison pour laquelle vous avez modifié le statut \"responsabilité d'un tiers\""
+msgstr ""
+"Veuillez décrire la raison pour laquelle vous avez modifié le statut "
+"\"responsabilité d'un tiers\""
 
 #: fixmystreet/static/js/templates/reports/pro__actions.js:4
 msgid ""
 "Please enter more information to describe why you changed the value of "
 "'private property'"
-msgstr "Veuillez décrire la raison pour laquelle vous avez modifié le statut \"privatif\""
+msgstr ""
+"Veuillez décrire la raison pour laquelle vous avez modifié le statut "
+"\"privatif\""
 
 #: fixmystreet/static/js/templates/reports/pro__actions.js:5
 msgid "You are about to set the value of third party responsibility to : {0}."
@@ -261,7 +277,8 @@ msgstr "Vous allez changer le statut de 'privatif' à : {0}"
 msgid ""
 "Are you sure you want to make the incident private? This will notify all "
 "public subscribers."
-msgstr "Voulez-vous rendre cet incident privé ? Cela notifiera les abonnés publics."
+msgstr ""
+"Voulez-vous rendre cet incident privé ? Cela notifiera les abonnés publics."
 
 #: fixmystreet/static/js/templates/reports/pro__actions.js:8
 msgid "Select a Category"
