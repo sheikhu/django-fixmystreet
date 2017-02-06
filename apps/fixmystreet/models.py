@@ -717,6 +717,9 @@ class Report(UserTrackedModel):
     # Reference to a ticket ID from contractor IT system
     contractor_reference_id = models.CharField(max_length=20, null=True, blank=True)
 
+    # Duplicates counter
+    duplicates = models.IntegerField(default=0)
+
     def get_category_path(self):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
 
