@@ -173,3 +173,10 @@ def send_pdf(request, report_id):
     event.save()
 
     return JsonHttpResponse(to_return)
+
+def incrementDuplicates(request, report_id):
+    report = Report.objects.all().related_fields().visible().transform(DEFAULT_SRID).get(id=report_id)
+    report.duplicates = report.duplicates + 1
+    report.save()
+    to_return = {}
+    return JsonHttpResponse(to_return)

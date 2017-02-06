@@ -188,3 +188,10 @@ function planned(){
         window.location = url;
     }
 }
+
+function incrementDuplicates(){
+    $.get(DUPLICATE_URL, function (data) {
+        //We redirect to the same page to update the View
+        window.location.reload(true);
+    });
+}

@@ -82,6 +82,7 @@ urlpatterns += patterns(
     url(r'^ajax/secondary_category_for_main_category', 'secondary_category_for_main_category', name="secondary_category_for_main_category"),
     url(r'^ajax/update_category_for_report/(\d+)', 'update_category_for_report', name="update_category_for_report"),
     url(r'^ajax/send_pdf/(\d+)', 'send_pdf', name="send_pdf"),
+    url(r'^ajax/duplicate/(\d+)', 'incrementDuplicates', name="incrementDuplicates"),
 )
 
 urlpatterns += patterns(

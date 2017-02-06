@@ -2006,6 +2006,9 @@ SHOW REPORT
 .lead-container .icon-incident-actions{
 	background:#FFDB00 url('../images/pro_other-actions.png') center right no-repeat;
 }
+.lead-container .icon-duplicate{
+	background:#FFDB00 url('../images/pro_show-duplicate.png') center right no-repeat;
+}
 .lead-container ul{
 	margin:0;
 }
