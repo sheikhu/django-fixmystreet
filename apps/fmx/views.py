@@ -206,6 +206,7 @@ def generate_report_response(report):
         "id": report.get_ticket_number(),
         "creationDate": report.created.isoformat(),
         "status": "CREATED",
+        "duplicates": report.duplicates,
         "category": {
             "id": report.category.id,
             "nameEn": get_translated_value(report.display_category, "fr"),
@@ -533,5 +534,13 @@ def isFixed(request, report_id):
     # Return code 200
     return return_response(generate_report_response(report))
 
+def incDuplicateCounter(request, report_id):
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
 
-
+    report.duplicates = report.duplicates + 1
+    report.save()
+    # Return code 200
+    return return_response(generate_report_response(report))
