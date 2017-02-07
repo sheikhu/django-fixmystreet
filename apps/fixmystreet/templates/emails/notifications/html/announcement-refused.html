@@ -1,0 +1,27 @@
+{% extends 'emails/notifications/base.html' %}
+
+{% block content_mail_fr %}
+<p>{{responsible}} a classé sans suite l’incident.</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
+<p>Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :</p>
+<ul>
+<li><a href="{{reopen_request_url}}">{{reopen_request_url}}</a></li>
+</ul>
+<p>Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :</p>
+<ul>
+<li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
+</ul>
+{% endblock %}
+
+{% block content_mail_nl %}
+<p>{{responsible}} heeft het probleem als opgelost gemeld.</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>s
+<p>Indien u niet akkoord bent dat het incident werd afgesloten kan u via onderstaande link de beheerder vragen om het incident opnieuw te openen:</p>
+<ul>
+<li><a href="{{reopen_request_url}}">{{reopen_request_url}}</a></li>
+</ul>
+<p>Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:</p>
+<ul>
+<li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
+</ul>
+{% endblock %}

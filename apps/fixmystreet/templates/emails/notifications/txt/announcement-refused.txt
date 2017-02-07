@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content_mail_fr %}
-{{responsible}} a clôturé l’incident.
+{{responsible}} a classé sans suite l’incident.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
 Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :

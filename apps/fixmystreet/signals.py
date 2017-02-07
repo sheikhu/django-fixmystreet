@@ -249,6 +249,15 @@ def report_notify_status_changed(sender, instance, **kwargs):
                     user=event_log_user)
                 event.save()
 
+                # Notify author that the report is refused
+                ReportNotification(
+                    content_template='announcement-refused',
+                    recipient=report.citizen or report.created_by,
+                    related=report,
+                    reply_to=report.responsible_department.email,
+                ).save()
+
+
             # PROCESSED
             elif report.status == Report.PROCESSED:
                 ReportEventLog(
