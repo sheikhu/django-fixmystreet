@@ -220,9 +220,9 @@ def generate_report_response(report):
             },
             "address": {
                 "addressType": "REGIONAL" if report.is_regional() else "MUNICIPALITY",
-                "streetNameEn": get_translated_value(report.address, "fr"),
-                "streetNameFr": get_translated_value(report.address, "fr"),
-                "streetNameNl": get_translated_value(report.address, "nl"),
+                "streetNameEn": get_translated_value(report, "fr").address,
+                "streetNameFr": get_translated_value(report, "fr").address,
+                "streetNameNl": get_translated_value(report, "nl").address,
                 "streetNumber": report.address_number,
                 "postalCode": report.postalcode
             }
