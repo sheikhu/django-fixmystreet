@@ -240,7 +240,7 @@ def transform_notification_template(template_mail, report, user, old_responsible
     else:
         data["unsubscribe_url"] = lambda: "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
 
-    if template_mail == "announcement-processed":
+    if template_mail == "announcement-processed" or template_mail == "announcement-refused":
         if display_pro:
             data["reopen_request_url"] = lambda: "{0}{1}".format(SITE_URL,reverse('report_reopen_request_pro', kwargs={'report_id': report.id, 'slug':report.get_slug()}))
         else:

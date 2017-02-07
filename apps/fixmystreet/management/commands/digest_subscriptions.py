@@ -39,7 +39,7 @@ class Command(BaseCommand):
 
             ReportEventLog.APPLICANT_ASSIGNED, ReportEventLog.CONTRACTOR_ASSIGNED,
 
-            ReportEventLog.MANAGER_ASSIGNED,
+            ReportEventLog.MANAGER_ASSIGNED, ReportEventLog.REFUSE,
         ]
 
         # Date of yesterday (or specific date)
