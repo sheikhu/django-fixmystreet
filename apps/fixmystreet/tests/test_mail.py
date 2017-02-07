@@ -262,7 +262,7 @@ class MailTest(FMSTestCase):
         self.assertEquals(report.status, Report.REFUSED)
 
         # All mail are sent as digest to subscribers
-        self.assertEquals(len(mail.outbox), 0)
+        self.assertEquals(len(mail.outbox), 1)
 
     def test_subscription_for_citizen_mail(self):
         # Send a post request filling in the form to create a report
