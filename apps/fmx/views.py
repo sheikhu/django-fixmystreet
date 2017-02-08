@@ -149,7 +149,12 @@ def add_attachment_for_user(request, report, user):
 
     return return_response(response)
 
-def get_attachments(request, report):
+def get_attachments(request, report_id):
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+
     response = get_response()
     response['response'] = []
     attachments = report.active_attachments()
