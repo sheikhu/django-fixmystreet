@@ -69,23 +69,18 @@ def ack(request):
     return return_response(response)
 
 def attachments(request, report_id):
-    try:
-        report = Report.objects.all().public().get(id=report_id)
-    except Report.DoesNotExist:
-        return exit_with_error("Report does not exist", 404)
-
     if request.method == "POST":
-        return add_attachment(request, report)
+        return add_attachment(request, report_id)
     else:
-        return get_attachments(request, report)
+        return get_attachments(request, report_id)
 
-def add_attachment(request, report):
+def add_attachment(request, report_id):
     if request.POST.get('username', None) != None and  request.POST.get('password', None) != None:
-        return add_attachment_pro(request, report)
+        return add_attachment_pro(request, report_id)
     else:
-        return add_attachment_citizen(request, report)
+        return add_attachment_citizen(request, report_id)
 
-def add_attachment_pro(request, report):
+def add_attachment_pro(request, report_id):
     #Check login and password
     try:
         user_name    = request.POST.get('username')
@@ -102,9 +97,20 @@ def add_attachment_pro(request, report):
             return exit_with_error("Unauthorized", 401)
     except ObjectDoesNotExist:
         return exit_with_error("Unauthorized", 401)
+
+    try:
+        report = Report.objects.all().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+
     return add_attachment_for_user(request, report, user_object)
 
-def add_attachment_citizen(request, report):
+def add_attachment_citizen(request, report_id):
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+
     citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
     if not citizen_form.is_valid():
         return exit_with_error("Attachment is not valid : " + ", ".join(citizen_form.errors), 400)
