@@ -219,7 +219,7 @@ def generate_report_response(report):
         "status": "CREATED",
         "duplicates": report.duplicates,
         "category": {
-            "id": report.category.id,
+            "id": report.secondary_category.id,
             "nameEn": get_translated_value(report.display_category, "fr"),
             "nameFr": get_translated_value(report.display_category, "fr"),
             "nameNl": get_translated_value(report.display_category, "nl"),
