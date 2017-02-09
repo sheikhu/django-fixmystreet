@@ -216,7 +216,7 @@ def generate_report_response(report):
     response['response'] = {
         "id": report.get_ticket_number(),
         "creationDate": report.created.isoformat(),
-        "status": "CREATED",
+        "status": report.status,
         "duplicates": report.duplicates,
         "category": {
             "id": report.secondary_category.id,
