@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # afuca <afuca@cirb.brussels>, 2015
 # dfranklin <DFranklin@cirb.irisnet.be>, 2014-2016
@@ -10,14 +10,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-18 13:42+0200\n"
+"POT-Creation-Date: 2017-02-13 10:12+0100\n"
 "PO-Revision-Date: 2016-10-18 11:42+0000\n"
 "Last-Translator: afuca <afuca@cirb.brussels>\n"
-"Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/language/nl/)\n"
+"Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/"
+"language/nl/)\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: fixmystreet/static/js/attachmentForms.js:122
@@ -188,29 +189,41 @@ msgid ""
 "vous demandons d’expliquer le problème de la manière la plus précise "
 "possible, de préférence avec une ou plusieurs photos du problème et de "
 "l’endroit où il se trouve."
-msgstr "Het incident wat u heeft gemeld is onvoldoende duidelijk omschreven. Wij vragen u om het incident zo goed mogelijk toe te lichten en met voorkeur te voorzien van één of meerdere foto's van het incident en de plaats waar het zich bevindt."
+msgstr ""
+"Het incident wat u heeft gemeld is onvoldoende duidelijk omschreven. Wij "
+"vragen u om het incident zo goed mogelijk toe te lichten en met voorkeur te "
+"voorzien van één of meerdere foto's van het incident en de plaats waar het "
+"zich bevindt."
 
 #: fixmystreet/static/js/report_refused.js:19
 msgid ""
-"L'incident que vous avez signalé ne rentre dans le domaine d’application  de"
-" Fix My Street."
-msgstr "Het incident wat u heeft gemeld valt niet onder de bevoegdheid van 'Fix My Street'. "
+"L'incident que vous avez signalé ne rentre dans le domaine d’application  de "
+"Fix My Street."
+msgstr ""
+"Het incident wat u heeft gemeld valt niet onder de bevoegdheid van 'Fix My "
+"Street'. "
 
 #: fixmystreet/static/js/report_refused.js:20
 msgid ""
-"L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un"
-" projet de réaménagement et sera restauré durant la mise en œuvre du projet."
-msgstr "Het incident wat u heeft gemeld op een plaats die deel uitmaakt van reorganisatie project en zal bij de uitvoering van het project worden hersteld."
+"L'incident que vous avez signalé se trouve à un endroit qui fait partie d’un "
+"projet de réaménagement et sera restauré durant la mise en œuvre du projet."
+msgstr ""
+"Het incident wat u heeft gemeld op een plaats die deel uitmaakt van "
+"reorganisatie project en zal bij de uitvoering van het project worden "
+"hersteld."
 
 #: fixmystreet/static/js/report_refused.js:21
 msgid ""
 "L'incident que vous avez signalé est sur une propriété privée et n'est pas "
 "la responsabilité de Fix My Street."
-msgstr "Het incident wat u heeft gemeld bevindt zich op privé domein en valt buiten de verantwoordelijkheid van Fix My Street."
+msgstr ""
+"Het incident wat u heeft gemeld bevindt zich op privé domein en valt buiten "
+"de verantwoordelijkheid van Fix My Street."
 
 #: fixmystreet/static/js/report_refused.js:22
 msgid "Cet incident a déjà été signalé et est en attente de traitement."
-msgstr "Het incident wat u heeft gemeld werd reeds doorgegeven en is in behandeling."
+msgstr ""
+"Het incident wat u heeft gemeld werd reeds doorgegeven en is in behandeling."
 
 #: fixmystreet/static/js/report_refused.js:23
 msgid "Not for Sibelga eclairage"
@@ -239,7 +252,9 @@ msgstr "Ga naar de exacte plaats van het incident"
 msgid ""
 "Please enter more information to describe why you changed the value of "
 "'third party responsibility'"
-msgstr "Gelieve de reden te vermelden waarom u de waarde 'verantwoordelijkheid derde' gewijzigd heeft. "
+msgstr ""
+"Gelieve de reden te vermelden waarom u de waarde 'verantwoordelijkheid "
+"derde' gewijzigd heeft. "
 
 #: fixmystreet/static/js/templates/reports/pro__actions.js:4
 msgid ""

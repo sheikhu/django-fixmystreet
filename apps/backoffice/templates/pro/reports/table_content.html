@@ -87,7 +87,7 @@
                 <td class="s{{report.status}}">{{ report.citizen.get_quality_display }}</td>
                 <td class="s{{report.status}}">{{ report.is_pro|yesno:_("a pro,a citizen") }}</td>
 
-                <td class="s{{report.status}}">{{ report.contractor.name }}</td>
+                <td class="s{{report.status}}">{{ report.contractor.name|default:_("None") }}</td>
                 <td class="s{{report.status}}">{{ report.contractor_reference_id|default_if_none:"" }}</td>
                 <td class="s{{report.status}}">{{ report.responsible_department.name }}</td>
                 <td class="s{{report.status}}">{{ report.responsible_entity.name }}</td>
