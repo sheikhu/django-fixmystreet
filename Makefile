@@ -61,8 +61,8 @@ lint:
 	$(BIN_PATH)/flake8 --exclude migrations $(SRC_ROOT) || echo "lint errors"
 
 messages:
-	cd $(SRC_ROOT); $(BIN_PATH)/manage.py makemessages -l en
-	cd $(SRC_ROOT); $(BIN_PATH)/manage.py makemessages -l en -d djangojs
+	cd $(SRC_ROOT); $(BIN_PATH)/manage.py makemessages -a
+	cd $(SRC_ROOT); $(BIN_PATH)/manage.py makemessages -a -d djangojs
 	# $(BIN_PATH)/tx push -s
 	# $(BIN_PATH)/tx pull -a
 	cd $(SRC_ROOT); $(BIN_PATH)/manage.py compilemessages
