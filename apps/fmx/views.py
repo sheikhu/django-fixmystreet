@@ -111,11 +111,18 @@ def add_attachment_citizen(request, report_id):
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
-    citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
-    if not citizen_form.is_valid():
-        return exit_with_error("Attachment is not valid : " + ", ".join(citizen_form.errors), 400)
-
-    citizen = citizen_form.save()
+    if request.POST.get('citizen-last_name', None) == None and request.POST.get('citizen-quality', None) == None and request.POST.get('citizen-telephone', None) == None and request.POST.get('citizen-email', None) == None :
+        # No citizen info was sent. We try to get it from the incident
+        if report.is_pro():
+            return exit_with_error("Report is pro", 401)
+        else:
+            citizen = report.get_creator()
+    else:
+        citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
+        if not citizen_form.is_valid():
+            return exit_with_error("Attachment is not valid : " + ", ".join(citizen_form.errors), 400)
+        else:
+            citizen = citizen_form.save()
 
     return add_attachment_for_user(request, report, citizen)
 
