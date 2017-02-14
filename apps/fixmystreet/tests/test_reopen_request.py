@@ -233,7 +233,6 @@ class ReopenRequestTest(FMSTestCase):
 
 
     #Test that you cannot access the page if you don't have status closed. (Should be tested with all status
-    #except PROCESSED but let's test it with REFUSED)
     def testReopenRequestOnlyForProcessed(self):
         # New report
         response = self.client.post(reverse('report_new') + '?x=150056.538&y=170907.56', self.sample_post, follow=True)
@@ -242,8 +241,8 @@ class ReopenRequestTest(FMSTestCase):
         comment = ReportComment(report_id=report.id, text='test', type=3)
         comment.save()
 
-        # Set status to REFUSED (we want a status different that
-        report.status = Report.REFUSED
+        # Set status to IN_PROGRESS (we want a status different that
+        report.status = Report.IN_PROGRESS
         report.close_date = datetime.now()
         report.save()
 
@@ -260,7 +259,7 @@ class ReopenRequestTest(FMSTestCase):
 
         # Assert
         self.assertEqual(activities.count(), 2)
-        self.assertEquals(ReportEventLog.REFUSE, activities[1].event_type) #this can't be ReportEventLog.REOPEN_REQUEST
+        self.assertEquals(ReportEventLog.VALID, activities[1].event_type) #this can't be ReportEventLog.REOPEN_REQUEST
 
 
     def testReopenRequestNotAfter90Days(self):
