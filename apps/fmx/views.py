@@ -351,17 +351,13 @@ def history(request, report_id):
         if activity.is_public_visible():
             act ={
                 "id": activity.id,
-                "date": activity.event_at.strftime('%d/%m/%Y'),
-                "user":{
-                    "en":  get_translated_value(activity.organisation, "fr").name,
-                    "fr":  get_translated_value(activity.organisation, "fr").name,
-                    "nl":  get_translated_value(activity.organisation, "nl").name
-                },
-                "event": {
-                    "en": get_translated_value(activity.get_public_activity_text, "fr"),
-                    "fr": get_translated_value(activity.get_public_activity_text, "fr"),
-                    "nl": get_translated_value(activity.get_public_activity_text, "nl")
-                }
+                "date": activity.event_at.isoformat(),
+                "actorEn":  get_translated_value(activity.organisation, "fr").name,
+                "actorFr":  get_translated_value(activity.organisation, "fr").name,
+                "actorNl":  get_translated_value(activity.organisation, "nl").name,
+                "eventEn": get_translated_value(activity.get_public_activity_text, "fr"),
+                "eventFr": get_translated_value(activity.get_public_activity_text, "fr"),
+                "eventNl": get_translated_value(activity.get_public_activity_text, "nl")
             }
             response["response"].append(act)
     return return_response(response)
