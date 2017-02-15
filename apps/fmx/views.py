@@ -132,27 +132,48 @@ def add_attachment_for_user(request, report, user):
     file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
 
     response = get_response()
-    response['response'] = []
+
     try:
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.created_by = user
             comment.report = report
             comment.save()
-            response['response'].append(comment.id)
+            attachment = comment
         elif file_formset.is_valid():
             if len(file_formset.files) > 0:
                 files = file_formset.save()
                 for report_file in files:
                     report_file.created_by = user
                     report_file.save()
-                    response['response'].append(report_file.id)
+                    attachment = report_file
             else:
                 return exit_with_error("Attachment is not valid", 400)
         else:
             return exit_with_error("Attachment is not valid : " +  + ", ".join(comment_form.errors) + ", ".join(file_formset.errors), 400)
     except Exception as e:
         return exit_with_error("Attachment is not valid : " + str(e), 400)
+
+    res = {
+        "id": attachment.id,
+        "created": attachment.created.strftime('%d/%m/%Y')
+    }
+
+
+    if attachment.created_by is None or attachment.created_by.is_citizen():
+        res["created_by"] = {
+            "en": get_translated_value("A citizen", "fr", True),
+            "fr": get_translated_value("A citizen", "fr", True),
+            "nl": get_translated_value("A citizen", "nl", True)
+        }
+    else:
+        res["created_by"] = {
+            "en": get_translated_value(attachment.get_display_name_as_citizen, "fr").name,
+            "fr": get_translated_value(attachment.get_display_name_as_citizen, "fr").name,
+            "nl": get_translated_value(attachment.get_display_name_as_citizen, "nl").name,
+        }
+
+    response['response'] = res
 
     return return_response(response)
 
