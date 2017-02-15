@@ -68,7 +68,7 @@ class Command(BaseCommand):
             logger.info('   Number of activities: %s' % activities_list.count())
 
             for activity in activities_list:
-                logger.info('   %s %s %s' % (activity.event_at, activity.report.id, activity))
+                logger.info('   %s %s %s' % (activity.event_at, activity.report.id, activity.event_type))
 
             # If NOT option send, do not send email
             if not options['send']:
@@ -82,4 +82,4 @@ class Command(BaseCommand):
                 user.last_used_language = "fr"
 
                 # Render and send the digest by mail
-                send_digest(user, activity, activities_list, YESTERDAY)
+                send_digest(user, None, activities_list, YESTERDAY)
