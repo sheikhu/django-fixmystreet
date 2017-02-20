@@ -554,7 +554,18 @@ def unsubscribe_user(report, user):
         # Return code 200
         return return_response(response)
 
+def subscription_count(request, report_id):
+    try:
+        subscription_count = ReportSubscription.objects.filter(report=report_id).count()
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
 
+    response = get_response()
+    response['response'] = {
+        'count': subscription_count
+    }
+    # Return code 200
+    return return_response(response)
 
 def isFixed(request, report_id):
     # get the report
