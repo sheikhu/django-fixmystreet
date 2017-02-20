@@ -597,6 +597,18 @@ def reopen(request, report_id):
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
+    if report.status != Report.PROCESSED and report.status != Report.REFUSED:
+        return exit_with_error("900061 : Report status doesn't allow reopening", 400)
+
+    limit_date = datetime.now() - timedelta(days=90)
+    if report.close_date < limit_date:
+        return exit_with_error("900060 : Report reopening is expired", 400)
+
+
+    response = get_response()
+    if request.method == "GET":
+        return return_response(response, 204)
+
 
     if request.POST.get("username", None) != None:
         try:
@@ -609,14 +621,6 @@ def reopen(request, report_id):
         user_object = None
         if not report.citizen:
             return exit_with_error("Unauthorized", 401)
-
-    response = get_response()
-    if report.status != Report.PROCESSED and report.status != Report.REFUSED:
-        return exit_with_error("900061 : Report status doesn't allow reopening", 400)
-
-    limit_date = datetime.now() - timedelta(days=90)
-    if report.close_date < limit_date:
-        return exit_with_error("900060 : Report reopening is expired", 400)
 
     reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
 
