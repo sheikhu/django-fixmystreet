@@ -618,6 +618,6 @@ def reopen(request, report_id):
             reopen_reason.created_by = citizen
             reopen_reason.type = ReportAttachment.REOPEN_REQUEST
             reopen_reason.save()
-            return return_response(response)
+            return return_response(response, 204)
     else:
         return exit_with_error("Request is not valid : ".join(citizen_form.errors) + " ".join(reopen_form.errors), 400)
