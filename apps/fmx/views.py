@@ -1,14 +1,14 @@
 import json
 from django.shortcuts import render
 from django.http import HttpResponse
-from apps.fixmystreet.models import Report, FMSUser, ReportFile, Site, ReportSubscription
-from apps.fixmystreet.forms import CitizenForm, ReportCommentForm, ReportFileForm
+from apps.fixmystreet.models import Report, FMSUser, ReportFile, Site, ReportSubscription, ReportAttachment
+from apps.fixmystreet.forms import CitizenForm, ReportCommentForm, ReportFileForm, ReportReopenReasonForm
 from django.forms.models import inlineformset_factory
 from django.utils.translation import activate, deactivate
 from django.core.urlresolvers import reverse
 from apps.fixmystreet.utils import hack_multi_file
 from django.utils.translation import ugettext as _
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.core.validators import validate_email
 
 def get_response():
@@ -579,3 +579,34 @@ def incDuplicateCounter(request, report_id):
     report.save()
     # Return code 200
     return return_response(generate_report_response(report))
+
+def reopen(request, report_id):
+    try:
+        report = Report.objects.all().public().get(id=report_id)
+    except Report.DoesNotExist:
+        return exit_with_error("Report does not exist", 404)
+
+    response = get_response()
+    if report.status != Report.PROCESSED and report.status != Report.REFUSED:
+        return exit_with_error("900061 : Report status doesn't allow reopening", 400)
+
+    limit_date = datetime.now() - timedelta(days=90)
+    if report.close_date < limit_date:
+        return exit_with_error("900060 : Report reopening is expired", 400)
+
+    reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
+    citizen_form = CitizenForm(request.POST, prefix='citizen')
+
+    # this checks update is_valid too
+    if citizen_form.is_valid() and ("reopen-text" in request.POST and request.POST["reopen-text"] and len(request.POST["reopen-text"]) > 0
+        and "reopen-reason" in request.POST and request.POST["reopen-reason"] and reopen_form.is_valid()):
+            citizen = citizen_form.save()
+            reopen_reason = reopen_form.save(commit=False)
+            reopen_reason.text = request.POST["reopen-text"]
+            reopen_reason.report = report
+            reopen_reason.created_by = citizen
+            reopen_reason.type = ReportAttachment.REOPEN_REQUEST
+            reopen_reason.save()
+            return return_response(response)
+    else:
+        return exit_with_error("Request is not valid : ".join(citizen_form.errors) + " ".join(reopen_form.errors), 400)

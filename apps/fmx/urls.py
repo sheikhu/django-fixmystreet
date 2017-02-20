@@ -18,4 +18,5 @@ urlpatterns = patterns('apps.fmx.views',
     (r'^incidents/(?P<report_id>\d+)/unsubscribe/$', 'unsubscribe'),
     (r'^incidents/(?P<report_id>\d+)/is-fixed/$', 'isFixed'),
     (r'^incidents/(?P<report_id>\d+)/inc-duplicate-counter/$', 'incDuplicateCounter'),
+    (r'^incidents/(?P<report_id>\d+)/reopen/$', 'reopen'),
 )
