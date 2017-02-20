@@ -195,7 +195,10 @@ def create_report(request):
             return report
 
         # Set source
-        report.source = Report.SOURCES['MOBILE']
+        if request.POST.get('source', None) == 'WEB':
+            report.source = Report.SOURCES['WEB']
+        else:
+            report.source = Report.SOURCES['MOBILE']
         report.save()
 
         # Return json response
