@@ -597,6 +597,19 @@ def reopen(request, report_id):
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
+
+    if request.POST.get("username", None) != None:
+        try:
+            user_object   = FMSUser.objects.get(username=request.POST["username"])
+            if user_object.check_password(request.POST["password"]) == False or not user_object.is_active:
+                return exit_with_error("Unauthorized", 401)
+        except ObjectDoesNotExist:
+            return exit_with_error("Unauthorized", 401)
+    else:
+        user_object = None
+        if not report.citizen:
+            return exit_with_error("Unauthorized", 401)
+
     response = get_response()
     if report.status != Report.PROCESSED and report.status != Report.REFUSED:
         return exit_with_error("900061 : Report status doesn't allow reopening", 400)
@@ -606,18 +619,15 @@ def reopen(request, report_id):
         return exit_with_error("900060 : Report reopening is expired", 400)
 
     reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
-    citizen_form = CitizenForm(request.POST, prefix='citizen')
 
-    # this checks update is_valid too
-    if citizen_form.is_valid() and ("reopen-text" in request.POST and request.POST["reopen-text"] and len(request.POST["reopen-text"]) > 0
-        and "reopen-reason" in request.POST and request.POST["reopen-reason"] and reopen_form.is_valid()):
-            citizen = citizen_form.save()
-            reopen_reason = reopen_form.save(commit=False)
-            reopen_reason.text = request.POST["reopen-text"]
-            reopen_reason.report = report
-            reopen_reason.created_by = citizen
-            reopen_reason.type = ReportAttachment.REOPEN_REQUEST
-            reopen_reason.save()
-            return return_response(response, 204)
+    if "reopen-text" in request.POST and request.POST["reopen-text"] and len(request.POST["reopen-text"]) > 0 and "reopen-reason" in request.POST and request.POST["reopen-reason"] and reopen_form.is_valid():
+        citizen = user_object or report.citizen
+        reopen_reason = reopen_form.save(commit=False)
+        reopen_reason.text = request.POST["reopen-text"]
+        reopen_reason.report = report
+        reopen_reason.created_by = citizen
+        reopen_reason.type = ReportAttachment.REOPEN_REQUEST
+        reopen_reason.save()
+        return return_response(response, 204)
     else:
         return exit_with_error("Request is not valid : ".join(citizen_form.errors) + " ".join(reopen_form.errors), 400)
