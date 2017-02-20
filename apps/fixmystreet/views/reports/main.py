@@ -238,11 +238,11 @@ def reopen_request(request, slug, report_id):
         report = get_object_or_404(Report, id=report_id, private=False)
         limit_date = datetime.datetime.now() - datetime.timedelta(days=90)
 
-        if report.status != report.PROCESSED:
+        if report.status != Report.PROCESSED and report.status != Report.REFUSED:
             messages.add_message(request, messages.ERROR, _(ERROR_MSG_REOPEN_REQUEST_ONLY_CLOSED))
             return HttpResponseRedirect(report.get_absolute_url())
 
-        elif report.close_date < limit_date:
+        elif report.status == Report.PROCESSED and report.close_date < limit_date:
             messages.add_message(request, messages.ERROR, _(ERROR_MSG_REOPEN_REQUEST_90_DAYS))
             return HttpResponseRedirect(report.get_absolute_url())
 
