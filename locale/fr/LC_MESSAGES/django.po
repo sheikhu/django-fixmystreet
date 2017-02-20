@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-06 14:32+0100\n"
+"POT-Creation-Date: 2017-02-20 11:20+0100\n"
 "PO-Revision-Date: 2016-10-18 11:42+0000\n"
 "Last-Translator: afuca <afuca@cirb.brussels>\n"
 "Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/"
@@ -422,6 +422,7 @@ msgstr "Exécuteurs de travaux"
 
 #: backoffice/templates/pro/reports/_actions.html:116
 #: backoffice/templates/pro/reports/_actions.html:134
+#: backoffice/templates/pro/reports/table_content.html:90
 msgid "None"
 msgstr "Aucun(e)"
 

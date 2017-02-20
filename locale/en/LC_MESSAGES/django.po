@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-06 14:32+0100\n"
+"POT-Creation-Date: 2017-02-20 11:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -403,6 +403,7 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/_actions.html:116
 #: backoffice/templates/pro/reports/_actions.html:134
+#: backoffice/templates/pro/reports/table_content.html:90
 msgid "None"
 msgstr ""
 
