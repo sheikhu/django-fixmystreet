@@ -341,7 +341,7 @@ def duplicates(request):
         return exit_with_error("Invalid coordinates", 400)
 
     pnt = fromstr("POINT(" + x + " " + y + ")", srid=31370)
-    reports_nearby = Report.objects.all().visible().public().near(pnt, 20).related_fields()[0:6]
+    reports_nearby = Report.objects.all().visible().public().near(pnt, 20).related_fields()
 
     response = get_response()
     response["response"] = []
