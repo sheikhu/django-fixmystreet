@@ -634,4 +634,4 @@ def reopen(request, report_id):
         reopen_reason.save()
         return return_response(response, 204)
     else:
-        return exit_with_error("Request is not valid : ".join(citizen_form.errors) + " ".join(reopen_form.errors), 400)
+        return exit_with_error("Request is not valid : ".join(reopen_form.errors), 400)
