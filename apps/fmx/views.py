@@ -351,7 +351,7 @@ def duplicates(request):
             rep = res.get("response", None)
             attachments = report.active_attachments().order_by('created')
             for attachment in attachments:
-                if attachment.reportfile.is_image():
+                if hasattr(attachment, 'reportfile') and attachment.reportfile.is_image():
                     rep['oldest_attachment'] = attachment.reportfile.image.thumbnail.url
                     break
             response["response"].append(rep)
