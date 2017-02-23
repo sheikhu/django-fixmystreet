@@ -642,10 +642,10 @@ def is_pro(request):
     try:
         user_object   = FMSUser.objects.get(username=request.GET["username"])
     except FMSUser.DoesNotExist:
-        return exit_with_error("User doesn't exist", 404)
+        return exit_with_error("900070 : User doesn't exist", 404)
 
     if user_object.is_pro():
         response = get_response()
         return return_response(response, 200)
     else:
-        return exit_with_error("User is not pro", 404)
+        return exit_with_error("900071 : User is not pro", 404)
