@@ -1,6 +1,8 @@
 from django.conf.urls import patterns
 
 urlpatterns = patterns('apps.fmx.views',
+
+    (r'^is_pro/$', 'is_pro'),
     (r'^ack/$', 'ack'),
     (r'^categories/$', 'categories'),
 

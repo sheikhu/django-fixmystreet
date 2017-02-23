@@ -635,3 +635,17 @@ def reopen(request, report_id):
         return return_response(response, 204)
     else:
         return exit_with_error("Request is not valid : ".join(reopen_form.errors), 400)
+
+def is_pro(request):
+    if request.GET.get("username", None) == None:
+        return exit_with_error("username is mandatory", 400)
+    try:
+        user_object   = FMSUser.objects.get(username=request.GET["username"])
+    except FMSUser.DoesNotExist:
+        return exit_with_error("User doesn't exist", 404)
+
+    if user_object.is_pro():
+        response = get_response()
+        return return_response(response, 200)
+    else:
+        return exit_with_error("User is not pro", 404)
