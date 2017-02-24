@@ -185,7 +185,7 @@ def get_attachments(request, report_id):
 
     response = get_response()
     response['response'] = []
-    attachments = report.active_attachments()
+    attachments = report.active_attachments().order_by('-modified')
     for attachment in attachments:
         res = {
             "id": attachment.id,
