@@ -299,9 +299,6 @@ class ReportFileForm(forms.ModelForm):
     def save(self, commit=True):
         report_file = super(ReportFileForm, self).save(commit=False)
 
-        if (report_file.title == ''):
-            report_file.title = report_file.file.name
-
         if commit:
             report_file.save()
 
