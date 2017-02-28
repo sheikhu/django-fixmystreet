@@ -9,6 +9,7 @@ urlpatterns = patterns('apps.fmx.views',
     (r'^duplicates/$', 'duplicates'),
 
     (r'^password/reset$', 'userResetPassword'),
+    (r'^password/reset/(?P<uidb64>[0-9A-Za-z]+)/(?P<token>.+)/$', 'validatePasswordReset'),
 
     (r'^incidents/(?P<report_id>\d+)$', 'detail'),
     (r'^incidents/(?P<report_id>\d+)/attachments/$', 'attachments'),

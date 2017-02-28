@@ -10,6 +10,9 @@ from apps.fixmystreet.utils import hack_multi_file
 from django.utils.translation import ugettext as _
 from datetime import datetime, timedelta
 from django.core.validators import validate_email
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from  django.utils.http import urlsafe_base64_decode
 
 def get_response():
     return {
@@ -673,3 +676,20 @@ def userResetPassword(request):
         return return_response(response, 204)
     else:
         return exit_with_error("900082 : User doesn't exist", 404)
+
+def validatePasswordReset(request, uidb64, token):
+    if request.method != "GET":
+        return exit_with_error("Wrong method", 405)
+    if token == None or uidb64 == None:
+        return exit_with_error("Wrong request", 400)
+    UserModel = get_user_model()
+    try:
+        uid = urlsafe_base64_decode(uidb64)
+        user = UserModel._default_manager.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        return exit_with_error("Valid token", 204)
+    else:
+        return exit_with_error("Invalid token", 404)
