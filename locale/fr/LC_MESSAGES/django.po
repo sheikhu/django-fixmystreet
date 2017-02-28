@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-13 10:12+0100\n"
+"POT-Creation-Date: 2017-02-28 11:49+0100\n"
 "PO-Revision-Date: 2016-10-18 11:42+0000\n"
 "Last-Translator: afuca <afuca@cirb.brussels>\n"
 "Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/"
@@ -1360,11 +1360,16 @@ msgstr "Tous les incidents sous la responsabilité de mon entité"
 msgid "All incidents"
 msgstr "Tous les incidents"
 
+#: backoffice/templates/pro/reports/table.html:465
 #: backoffice/templates/pro/reports/table.html:466
+msgid "Transferred incidents"
+msgstr "Incidents transférés"
+
+#: backoffice/templates/pro/reports/table.html:475
 msgid "Export"
 msgstr "Export"
 
-#: backoffice/templates/pro/reports/table.html:468
+#: backoffice/templates/pro/reports/table.html:477
 msgctxt "button"
 msgid "Close"
 msgstr "Fermer"
