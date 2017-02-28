@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from apps.fixmystreet.models import Report, FMSUser, ReportFile, Site, ReportSubscription, ReportAttachment
-from apps.fixmystreet.forms import CitizenForm, ReportCommentForm, ReportFileForm, ReportReopenReasonForm
+from apps.fixmystreet.forms import CitizenForm, ReportCommentForm, ReportFileForm, ReportReopenReasonForm, FMSPasswordResetForm
 from django.forms.models import inlineformset_factory
 from django.utils.translation import activate, deactivate
 from django.core.urlresolvers import reverse
@@ -470,7 +470,7 @@ def subscribe(request, report_id):
 def subscribe_citizen(report, email):
     try:
         validate_email(email)
-    except Error as e:
+    except Exception as e:
         return exit_with_error("Email is not valid - " + str(e), 400)
 
     try:
@@ -523,7 +523,7 @@ def unsubscribe(request, report_id):
 def unsubscibe_citizen(report, email):
     try:
         validate_email(email)
-    except Error as e:
+    except Exception as e:
         return exit_with_error("Email is not valid - " + str(e), 400)
 
     try:
@@ -649,3 +649,23 @@ def is_pro(request):
         return return_response(response, 200)
     else:
         return exit_with_error("900071 : User is not pro", 404)
+
+def userResetPassword(request):
+    if request.method != "POST":
+        return exit_with_error("GET is not allowed", 405)
+
+    email = request.POST.get('email', None)
+    if email == None:
+        return exit_with_error("900080 Email is mandatory", 400)
+    try:
+        validate_email(email)
+    except Exception as e:
+        return exit_with_error("900081 Email is not valid - " + str(email), 400)
+
+    form = FMSPasswordResetForm(request.POST)
+    response = get_response()
+    if form.is_valid():
+        form.save()
+        return return_response(response, 204)
+    else:
+        return exit_with_error("900082 : User doesn't exist", 404)

@@ -8,6 +8,8 @@ urlpatterns = patterns('apps.fmx.views',
 
     (r'^duplicates/$', 'duplicates'),
 
+    (r'^password/reset$', 'userResetPassword'),
+
     (r'^incidents/(?P<report_id>\d+)$', 'detail'),
     (r'^incidents/(?P<report_id>\d+)/attachments/$', 'attachments'),
     (r'^incidents/(?P<report_id>\d+)/history/$', 'history'),
