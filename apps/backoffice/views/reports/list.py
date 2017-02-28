@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.utils.translation import get_language
 from django.core.exceptions import PermissionDenied
 
-from apps.fixmystreet.models import Report, ZipCode
+from apps.fixmystreet.models import Report, ReportEventLog, ZipCode
 
 default_position = {
     'x': '148954.431',
@@ -45,6 +45,21 @@ def table_content(request, selection=""):
         reports = reports.responsible_contractor(user)
     elif selection == "creator":
         reports = reports.filter(created_by=user)
+    elif selection == "transferred":
+        organisation = user.organisation
+
+        # Get all reports id from history concerning this entity
+        reports_transferred = ReportEventLog.objects \
+            .filter(event_type=6) \
+            .filter(organisation=organisation) \
+            .values('report')
+
+        # Get all reports objects without reports currently assigned to this entity
+        reports = Report.objects \
+            .filter(id__in=reports_transferred) \
+            .exclude(responsible_entity=organisation) \
+            .visible()
+
     elif selection == "all":
         # all reports
         pass

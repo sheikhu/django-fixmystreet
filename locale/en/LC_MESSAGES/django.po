@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-20 11:20+0100\n"
+"POT-Creation-Date: 2017-02-28 09:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1339,11 +1339,16 @@ msgstr ""
 msgid "All incidents"
 msgstr ""
 
+#: backoffice/templates/pro/reports/table.html:465
 #: backoffice/templates/pro/reports/table.html:466
+msgid "Transferred incidents"
+msgstr ""
+
+#: backoffice/templates/pro/reports/table.html:475
 msgid "Export"
 msgstr ""
 
-#: backoffice/templates/pro/reports/table.html:468
+#: backoffice/templates/pro/reports/table.html:477
 msgctxt "button"
 msgid "Close"
 msgstr ""
@@ -1679,39 +1684,39 @@ msgstr ""
 msgid "Your file description"
 msgstr ""
 
-#: fixmystreet/forms.py:317
+#: fixmystreet/forms.py:314
 msgid "Add a comment, please."
 msgstr ""
 
-#: fixmystreet/forms.py:332
+#: fixmystreet/forms.py:329
 msgid "Username"
 msgstr ""
 
-#: fixmystreet/forms.py:333
+#: fixmystreet/forms.py:330
 msgid "Password"
 msgstr ""
 
-#: fixmystreet/forms.py:336 fixmystreet/tests/test_views.py:669
+#: fixmystreet/forms.py:333 fixmystreet/tests/test_views.py:669
 msgid ""
 "Please enter a correct username and password. Note that both fields are case-"
 "sensitive."
 msgstr ""
 
-#: fixmystreet/forms.py:338
+#: fixmystreet/forms.py:335
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
 msgstr ""
 
-#: fixmystreet/forms.py:340
+#: fixmystreet/forms.py:337
 msgid "This account is inactive."
 msgstr ""
 
-#: fixmystreet/forms.py:364
+#: fixmystreet/forms.py:361
 msgid "That email address doesn't have an associated user account."
 msgstr ""
 
-#: fixmystreet/forms.py:366
+#: fixmystreet/forms.py:363
 msgid ""
 "The user account associated with this email address cannot reset the "
 "password."
@@ -1899,8 +1904,7 @@ msgid "ANONYMOUS"
 msgstr ""
 
 #: fixmystreet/models.py:1316 fixmystreet/models.py:1762
-#: fixmystreet/models.py:1898
-#: fixmystreet/templates/reports/_attachment.html:42
+#: fixmystreet/models.py:1898 fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:131
 #: fixmystreet/tests/test_history.py:849 fixmystreet/tests/test_history.py:853
 #: fixmystreet/tests/test_history.py:866 fixmystreet/utils.py:158
