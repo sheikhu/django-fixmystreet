@@ -13,6 +13,8 @@ from django.core.validators import validate_email
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from  django.utils.http import urlsafe_base64_decode
+import re
+from django.contrib.auth.forms import SetPasswordForm
 
 def get_response():
     return {
@@ -691,5 +693,49 @@ def validatePasswordReset(request, uidb64, token):
 
     if user is not None and default_token_generator.check_token(user, token):
         return exit_with_error("Valid token", 204)
+    else:
+        return exit_with_error("Invalid token", 404)
+
+def changePassword(request, uidb64, token):
+    if request.method != "POST":
+        return exit_with_error("Wrong method", 405)
+    password = request.POST.get('new_password1', None)
+    confirm = request.POST.get('new_password2', None)
+
+    if password == None or confirm == None:
+        return exit_with_error("900090 Wrong request", 400)
+
+    if token == None or uidb64 == None:
+        return exit_with_error("900090 Wrong request", 400)
+    UserModel = get_user_model()
+    try:
+        uid = urlsafe_base64_decode(uidb64)
+        user = UserModel._default_manager.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if password != confirm:
+            return exit_with_error("900091 Password and confirm do not match", 400)
+        # PWD validation
+        matches = 0
+        if re.search('[a-z]+', password):
+            matches += 1
+        if re.search('[A-Z]+', password):
+            matches += 1
+        if re.search('[0-9]+', password):
+            matches += 1
+        if re.search('[+=\[\]~!@#$%\^&*_-`|(){}:;<>,.?]+', password):
+            matches += 1
+
+        if len(password) < 7 or matches < 3:
+            return exit_with_error("900092 Password is not valid", 400)
+        form = SetPasswordForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            return exit_with_error("Password changed", 204)
+        else:
+            return exit_with_error("900093 Form errors : ".join(form.erros), 400)
+
     else:
         return exit_with_error("Invalid token", 404)
