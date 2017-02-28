@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-20 11:20+0100\n"
+"POT-Creation-Date: 2017-02-28 09:22+0100\n"
 "PO-Revision-Date: 2016-10-18 11:42+0000\n"
 "Last-Translator: afuca <afuca@cirb.brussels>\n"
 "Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/"
@@ -1369,11 +1369,16 @@ msgstr "Alle incidenten voor mijn entiteit"
 msgid "All incidents"
 msgstr "Alle incidenten"
 
+#: backoffice/templates/pro/reports/table.html:465
 #: backoffice/templates/pro/reports/table.html:466
+msgid "Transferred incidents"
+msgstr "Overgedragen incidenten"
+
+#: backoffice/templates/pro/reports/table.html:475
 msgid "Export"
 msgstr "Exporteren"
 
-#: backoffice/templates/pro/reports/table.html:468
+#: backoffice/templates/pro/reports/table.html:477
 msgctxt "button"
 msgid "Close"
 msgstr "Afsluiten"
@@ -1729,21 +1734,21 @@ msgstr "Om dit e-mailadres te gebruiken moet u aangemeld zijn. "
 msgid "Your file description"
 msgstr "Legende bij de foto"
 
-#: fixmystreet/forms.py:317
+#: fixmystreet/forms.py:314
 msgid "Add a comment, please."
 msgstr ""
 "Voeg commentaar toe. Hoe gedetailleerder het commentaar, hoe sneller het "
 "incident geïdentificeerd en behandeld kan worden."
 
-#: fixmystreet/forms.py:332
+#: fixmystreet/forms.py:329
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: fixmystreet/forms.py:333
+#: fixmystreet/forms.py:330
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: fixmystreet/forms.py:336 fixmystreet/tests/test_views.py:669
+#: fixmystreet/forms.py:333 fixmystreet/tests/test_views.py:669
 msgid ""
 "Please enter a correct username and password. Note that both fields are case-"
 "sensitive."
@@ -1751,7 +1756,7 @@ msgstr ""
 "Geef aub. een correcte gebruikersnaam en paswoord in. Let op, de invulvelden "
 "zijn hoofdlettergevoelig. "
 
-#: fixmystreet/forms.py:338
+#: fixmystreet/forms.py:335
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
@@ -1759,15 +1764,15 @@ msgstr ""
 "Het is mogelijk dat uw browser geconfigureerd is om geen cookies toe te "
 "laten. Het gebruik van cookies is noodzakelijk om u aan te melden. "
 
-#: fixmystreet/forms.py:340
+#: fixmystreet/forms.py:337
 msgid "This account is inactive."
 msgstr "Dit account is niet geactiveerd"
 
-#: fixmystreet/forms.py:364
+#: fixmystreet/forms.py:361
 msgid "That email address doesn't have an associated user account."
 msgstr "Er werd geen gebruiker gevonden voor dit e-mailadres."
 
-#: fixmystreet/forms.py:366
+#: fixmystreet/forms.py:363
 msgid ""
 "The user account associated with this email address cannot reset the "
 "password."
@@ -1956,8 +1961,7 @@ msgid "ANONYMOUS"
 msgstr "ANONIEM"
 
 #: fixmystreet/models.py:1316 fixmystreet/models.py:1762
-#: fixmystreet/models.py:1898
-#: fixmystreet/templates/reports/_attachment.html:42
+#: fixmystreet/models.py:1898 fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:131
 #: fixmystreet/tests/test_history.py:849 fixmystreet/tests/test_history.py:853
 #: fixmystreet/tests/test_history.py:866 fixmystreet/utils.py:158

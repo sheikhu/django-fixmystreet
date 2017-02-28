@@ -286,6 +286,10 @@ def generate_report_response(report):
         }
     }
 
+    # Manage sub_category
+    if report.sub_category:
+        response['response']['category']['subCategoryId'] = report.sub_category.id
+
     # Generate PDF absolute url
     site = Site.objects.get_current()
     base_url = "http://{}".format(site.domain.rstrip("/"))
