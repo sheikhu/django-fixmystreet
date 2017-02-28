@@ -15,6 +15,7 @@ from django.contrib.auth.tokens import default_token_generator
 from  django.utils.http import urlsafe_base64_decode
 import re
 from django.contrib.auth.forms import SetPasswordForm
+from apps.fixmystreet.views.api import create_report
 
 def get_response():
     return {
@@ -739,3 +740,20 @@ def changePassword(request, uidb64, token):
 
     else:
         return exit_with_error("Invalid token", 404)
+
+def create_incident(request):
+    incidentResult = create_report(request)
+    if incidentResult.status_code != 200:
+        return exit_with_error(incidentResult.content, incidentResult.status_code)
+
+    response = json.loads(incidentResult.content)
+    if response.get('id', None) != None:
+        try:
+            report = Report.objects.all().get(id=response.get('id', None))
+            response = generate_report_response(report)
+
+            return return_response(response)
+        except Report.DoesNotExist:
+            return exit_with_error("Report does not exist", 404)
+    else:
+        return exit_with_error(incidentResult.content, 400)
