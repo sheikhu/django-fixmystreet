@@ -129,11 +129,15 @@
 
         var previousTableSelection;
 
+        // Set default archive
+        var archive = document.querySelector('#archive');
+        archive.selectedIndex = 0;
 
         // Get table rendered by django
-        function generateTableContent(selection) {
+        function generateTableContent(selection, data) {
             $('#table-container').html('<div id="table-loading" class="span12"><img src="{% static 'images/spinner.gif' %}" /></div>');
             $("button").prop('disabled', true);
+            $("select").prop('disabled', true);
             if (selection !== 'current') {
                 previousTableSelection = selection;
             } else {
@@ -143,10 +147,11 @@
             $(".refresh-table[data-selection=" + selection + "]").addClass('active');
             $.ajax({
                 url: "{% url 'report_table_content_pro' %}" + selection,
-                data: "",
+                data: (data ? data : ""),
                 dataType: "html",
                 success: function(data) {
                     $("button").prop('disabled', false);
+                    $("select").prop('disabled', false);
 
                     //Retrieve the last used preferences
                     var sortPreferences = fms_store.getTablePreferedSortedColumn();
@@ -262,6 +267,7 @@
                 error: function () {
                     fms.map.hideSpinner();
                     $("button").prop('disabled', false);
+                    $("select").prop('disabled', false);
                     $('#table-container').html("<h1 class='text-error'>An error occurred...</h1>");
                 }
             });
@@ -284,9 +290,35 @@
                     // Destroy current table
                     table.fnDestroy(true);
                 }
+
+                var archiveValue = archive.options[archive.selectedIndex].value;
+
                 // Regenerate table
-                generateTableContent($(this).data('selection'));
+                generateTableContent($(this).data('selection'), { 'archive': archiveValue });
             });
+            $('#archive').change(function() {
+                //Show loading icon
+                fms.map.showSpinner();
+
+                if (table) {
+                    // Destroy current table
+                    table.fnDestroy(true);
+                }
+
+                var archiveValue = archive.options[archive.selectedIndex].value;
+
+                if (archiveValue) {
+                    archive.classList.add("active");
+                } else {
+                    archive.classList.remove("active");
+                }
+
+                archive.blur();
+
+                // Regenerate table
+                generateTableContent(previousTableSelection, { 'archive': archiveValue });
+            });
+
             //Event implementation for checkbox value change
             $('#column-visibility').delegate(':checkbox', 'change', function () {
                 //Store column selection
@@ -419,6 +451,22 @@
 
                 <button class="refresh-table btn" data-selection="current">{% trans "Refresh table" %}</button>
 
+                <select
+                    class="myTooltip btn archive"
+                    data-placement="bottom"
+                    data-toggle='tooltip'
+                    data-original-title="{% trans "Archive tooltip" %}"
+
+                    id="archive"
+                    name="year">
+                        <option value="" selected="selected">{% trans "No archive" %}</option>
+                        <option value="2013">2013</option>
+                        <option value="2014">2014</option>
+                        <option value="2015">2015</option>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                </select>
+
                 {% if request.fmsuser.manager %}
                     <button
                         class="refresh-table btn myTooltip"
@@ -450,20 +498,20 @@
 
                 <button
                     class="refresh-table btn myTooltip"
-                    data-selection="all"
-                    data-placement="bottom"
-                    data-toggle='tooltip'
-                    data-original-title="{% trans "All incidents tooltip" %}">
-                        {% trans "All incidents" %}
-                </button>
-
-                <button
-                    class="refresh-table btn myTooltip"
                     data-selection="transferred"
                     data-placement="bottom"
                     data-toggle='tooltip'
                     data-original-title="{% trans "Transferred incidents" %}">
                         {% trans "Transferred incidents" %}
+                </button>
+
+                <button
+                    class="refresh-table btn myTooltip"
+                    data-selection="all"
+                    data-placement="bottom"
+                    data-toggle='tooltip'
+                    data-original-title="{% trans "All incidents tooltip" %}">
+                        {% trans "All incidents" %}
                 </button>
 
             </div>
