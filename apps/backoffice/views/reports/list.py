@@ -1,5 +1,7 @@
 from collections import OrderedDict
 
+from datetime import datetime
+
 from django.db.models import Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -26,7 +28,7 @@ def table(request):
 
 def table_content(request, selection=""):
     user = request.fmsuser
-    reports = Report.objects.all().visible().related_fields()
+    reports = Report.objects.all().related_fields()
 
     if selection != "subscribed" and selection != "creator":
         if user.organisation:
@@ -57,14 +59,23 @@ def table_content(request, selection=""):
         # Get all reports objects without reports currently assigned to this entity
         reports = Report.objects \
             .filter(id__in=reports_transferred) \
-            .exclude(responsible_entity=organisation) \
-            .visible()
-
+            .exclude(responsible_entity=organisation)
     elif selection == "all":
         # all reports
         pass
     else:
         raise Exception('Bad paramettre selection ' + selection)
+
+    # Get normal incidents or archives
+    if request.GET.get('archive', ""):
+        year = request.GET.get('archive')
+
+        date_min = datetime.strptime(year, '%Y')
+        date_max = datetime.strptime(str(int(year) +1), '%Y')
+
+        reports = reports.filter(created__gt=date_min, created__lt=date_max)
+    else:
+        reports = reports.visible()
 
     reports = reports.extra(
         select=OrderedDict([
