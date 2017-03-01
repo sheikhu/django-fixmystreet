@@ -92,7 +92,7 @@ def add_attachment_pro(request, report_id):
         user_name    = request.POST.get('username')
         user_password = request.POST.get('password')
     except ValueError:
-        return exit_with_error("Attachment is not valid", 400)
+        return exit_with_error("Attachment is not valid (pro credentials error)", 400)
 
     if (user_name == None or user_password == None):
         return exit_with_error("Unauthorized", 401)
@@ -126,7 +126,7 @@ def add_attachment_citizen(request, report_id):
     else:
         citizen_form = CitizenForm(request.POST, request.FILES, prefix='citizen')
         if not citizen_form.is_valid():
-            return exit_with_error("Attachment is not valid : " + ", ".join(citizen_form.errors), 400)
+            return exit_with_error("Attachment is not valid (citizen form is not valid) : " + ", ".join(citizen_form.errors), 400)
         else:
             citizen = citizen_form.save()
 
@@ -154,11 +154,11 @@ def add_attachment_for_user(request, report, user):
                     report_file.save()
                     attachment = report_file
             else:
-                return exit_with_error("Attachment is not valid", 400)
+                return exit_with_error("Attachment is not valid (no file received)", 400)
         else:
-            return exit_with_error("Attachment is not valid : " +  + ", ".join(comment_form.errors) + ", ".join(file_formset.errors), 400)
+            return exit_with_error("Attachment is not valid (file_formset is not valid) : " +  + ", ".join(comment_form.errors) + ", ".join(file_formset.errors), 400)
     except Exception as e:
-        return exit_with_error("Attachment is not valid : " + str(e), 400)
+        return exit_with_error("Attachment is not valid (exception): " + str(e), 400)
 
     res = {
         "id": attachment.id,
