@@ -16,6 +16,7 @@ urlpatterns = patterns('apps.fmx.views',
     (r'^incidents/(?P<report_id>\d+)/attachments/$', 'attachments'),
     (r'^incidents/(?P<report_id>\d+)/history/$', 'history'),
     (r'^incidents/last$', 'last_reports'),
+    (r'^incidents/map$', 'map_reports'),
     (r'^incidents$', 'reports'),
     (r'^incidents/create-report/$', 'create_incident'),
 

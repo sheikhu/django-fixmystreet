@@ -244,6 +244,20 @@ def categories(request):
 
     return return_response(response)
 
+def generate_map_report_response(report):
+    response = get_response()
+
+    response['response'] = {
+        "id": report.get_ticket_number(),
+        "status": report.status,
+        "coordinates": {
+            "x": report.point.x,
+            "y": report.point.y
+        }
+    }
+
+    return response
+
 def generate_report_response(report):
     response = get_response()
 
@@ -411,17 +425,23 @@ def last_reports(request):
             response["response"].append(res.get("response", None))
     return return_response(response)
 
-def reports(request):
-    #Page number
-    REPORTS_BY_PAGE = 12
-    page = request.GET.get('p', None)
-    if not page:
-        page = 1
-    try:
-        page = int(page)
-    except ValueError as e:
-        return exit_with_error("Invalid page parameter", 400)
+def map_reports(request):
+    reports = list_reports(request)
 
+    response = get_response()
+    response["response"] = {
+        "reports": [],
+        "count": reports.count()
+    }
+    for report in reports:
+        res = generate_map_report_response(report)
+
+        if res.get("response", None) is not None:
+            response["response"]["reports"].append(res.get("response", None))
+
+    return return_response(response)
+
+def list_reports(request):
     #Get filters
     status = request.GET.get('status', None)
     category = request.GET.get('category', None)
@@ -447,8 +467,24 @@ def reports(request):
         date_end_date = datetime.strptime(date_end, '%Y-%M-%d')
         reports = reports.filter(created__lte=date_end_date)
 
+    return reports
+
+def reports(request):
+    #Page number
+    REPORTS_BY_PAGE = 12
+    page = request.GET.get('p', None)
+    if not page:
+        page = 1
+    try:
+        page = int(page)
+    except ValueError as e:
+        return exit_with_error("Invalid page parameter", 400)
+
     offset = (page -1) * REPORTS_BY_PAGE
     # [offset:offset + REPORTS_BY_PAGE]
+
+    reports = list_reports(request)
+
     response = get_response()
     response["response"] = {
         "reports": [],
@@ -458,6 +494,7 @@ def reports(request):
         res = generate_report_response(report)
         if res.get("response", None) is not None:
             response["response"]["reports"].append(res.get("response", None))
+
     return return_response(response)
 
 def subscribe(request, report_id):
