@@ -450,20 +450,20 @@ def list_reports(request):
     date_end = request.GET.get('date_end', None)
 
     reports = Report.objects.all().public().visible().order_by('-created')
-    if(status is not None):
+    if(status):
         reports = reports.filter(status=status)
 
-    if(category is not None):
+    if(category):
         reports = reports.filter(category_id=category)
 
-    if(municipality is not None):
+    if(municipality):
         reports = reports.filter(postalcode=municipality)
 
-    if(date_start is not None):
+    if(date_start):
         date_start_date = datetime.strptime(date_start, '%Y-%M-%d')
         reports = reports.filter(created__gte=date_start_date)
 
-    if(date_end is not None):
+    if(date_end):
         date_end_date = datetime.strptime(date_end, '%Y-%M-%d')
         reports = reports.filter(created__lte=date_end_date)
 
