@@ -103,3 +103,22 @@ def percentage(value):
     if value is None:
         return None
     return floatformat(value * 100.0, 2) + '%'
+
+@register.filter
+def callMethod(obj, methodName):
+    method = getattr(obj, methodName)
+
+    if obj.__dict__.has_key("__callArg"):
+        ret = method(*obj.__callArg)
+        del obj.__callArg
+
+        return ret
+    return method()
+
+@register.filter
+def argsMethod(obj, arg):
+    if not obj.__dict__.has_key("__callArg"):
+        obj.__callArg = []
+
+        obj.__callArg += [arg]
+    return obj

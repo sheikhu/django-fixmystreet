@@ -89,7 +89,11 @@ var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
                                     {% ifequal report.responsible_entity.id entity.id %}
                                         class="active"
                                     {% else %}
-                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL, 'entity_{{institution.id}}')"
+                                        {% if institution|argsMethod:report.secondary_category|callMethod:"isCategoryCompatible" %}
+                                            href="javascript:confirmTransfer(CHANGE_MANAGER_URL,    'entity_{{institution.id}}')"
+                                         {% else %}
+                                            class="disabled"
+                                        {% endif %}
                                     {% endifequal %}
                                     tabindex="-1"
                                 >

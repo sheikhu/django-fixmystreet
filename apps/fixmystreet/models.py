@@ -303,6 +303,13 @@ class OrganisationEntity(UserTrackedModel):
     def get_mail_config(self):
         return GroupMailConfig.objects.get(group=self)
 
+    # Check if organisation is campatible with a category
+    def isCategoryCompatible(self, category):
+        if self.categories_communal.all().exists() and not self.categories_communal.filter(id=category.id).exists():
+            return False
+
+        return True
+
     def __unicode__(self):
         return self.name
 
