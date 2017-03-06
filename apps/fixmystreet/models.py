@@ -305,7 +305,10 @@ class OrganisationEntity(UserTrackedModel):
 
     # Check if organisation is campatible with a category
     def isCategoryCompatible(self, category):
-        if self.categories_communal.all().exists() and not self.categories_communal.filter(id=category.id).exists():
+        if self.categories_communal.all().exists() and (not self.categories_communal.filter(id=category.id).exists()):
+            return False
+
+        if self.categories_regional.all().exists() and (not self.categories_regional.filter(id=category.id).exists()):
             return False
 
         return True
