@@ -73,12 +73,8 @@
             <tr>
                 <td>{{ activity.event_at|date:"H:i" }}</td>
                 <td>
-                    {% if user_is_pro %}
-                        <a href="{{ site_url }}{{ activity.report.get_absolute_url_pro }}">
-                    {% else %}
-                        <a href="{{ site_url }}{{ activity.report.get_absolute_url }}">
-                    {% endif %}
-                    #{{ activity.report.id }}
+                    <a href="{{ site_url }}{{ activity.report.id }}">
+                        #{{ activity.report.id }}
                     </a>
                 </td>
                 <td>{{ activity.get_status }}</td>
