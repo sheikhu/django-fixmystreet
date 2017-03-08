@@ -233,7 +233,7 @@ def transform_notification_template(template_mail, report, user, old_responsible
     data["unsubscribe_url"] = lambda: "{0}/{1}/unsubscribe".format(SITE_URL, report.id)
 
     if template_mail == "announcement-processed" or template_mail == "announcement-refused":
-        data["reopen_request_url"] = lambda: "{0}/{1}/reopen".format(SITE_URL, report.id)
+        data["reopen_request_url"] = lambda: "{0}/{1}/reopen/1234567890".format(SITE_URL, report.id)
 
 
     if template_mail == "mark-as-done":
