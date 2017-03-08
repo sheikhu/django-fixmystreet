@@ -460,11 +460,11 @@ def list_reports(request):
         reports = reports.filter(postalcode=municipality)
 
     if(date_start):
-        date_start_date = datetime.strptime(date_start, '%Y-%M-%d')
+        date_start_date = datetime.strptime(date_start, '%Y-%m-%d')
         reports = reports.filter(created__gte=date_start_date)
 
     if(date_end):
-        date_end_date = datetime.strptime(date_end, '%Y-%M-%d')
+        date_end_date = datetime.strptime(date_end, '%Y-%m-%d')
         reports = reports.filter(created__lte=date_end_date)
 
     return reports
