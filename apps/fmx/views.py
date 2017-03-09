@@ -250,12 +250,6 @@ def generate_map_report_response(report):
     response['response'] = {
         "id": report.get_ticket_number(),
         "status": report.status,
-        "category": {
-            "id": report.secondary_category.id,
-            "nameEn": get_translated_value(report.display_category, "fr"),
-            "nameFr": get_translated_value(report.display_category, "fr"),
-            "nameNl": get_translated_value(report.display_category, "nl"),
-        },
         "coordinates": {
             "x": report.point.x,
             "y": report.point.y
