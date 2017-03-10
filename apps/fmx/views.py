@@ -571,12 +571,12 @@ def unsubscibe_citizen(report, email):
     try:
         validate_email(email)
     except Exception as e:
-        return exit_with_error("Email is not valid - " + str(e), 400)
+        return exit_with_error("900100 Email is not valid - " + str(e), 400)
 
     try:
         user = FMSUser.objects.get(email=email)
     except FMSUser.DoesNotExist:
-        return exit_with_error("Subscription does not exist", 404)
+        return exit_with_error("900101 Subscription does not exist", 404)
     return unsubscribe_user(report, user)
 
 def unsubscribe_pro(report, username, password):
