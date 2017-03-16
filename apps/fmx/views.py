@@ -453,7 +453,12 @@ def list_reports(request):
 
     reports = Report.objects.all().public().visible().order_by('-created')
     if(status):
-        reports = reports.filter(status=status)
+        if int(status) in Report.REPORT_STATUS_IN_PROGRESS:
+            reports = reports.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
+        elif int(status) == Report.DELETED or int(status) == Report.REFUSED:
+            reports = reports.filter(Q(status=Report.DELETED) | Q(status=Report.REFUSED))
+        else:
+            reports = reports.filter(status=status)
 
     if(category):
         reports = reports.filter(category_id=category)
