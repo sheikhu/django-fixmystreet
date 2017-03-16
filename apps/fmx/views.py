@@ -267,6 +267,7 @@ def generate_report_response(report):
         "creationDate": report.created.isoformat(),
         "status": report.status,
         "duplicates": report.duplicates,
+        "several_occurences": report.several_occurences,
         "category": {
             "id": report.secondary_category.id,
             "nameEn": get_translated_value(report.display_category, "fr"),
