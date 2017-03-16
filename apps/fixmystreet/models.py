@@ -720,6 +720,9 @@ class Report(UserTrackedModel):
     # Duplicates counter
     duplicates = models.IntegerField(default=0)
 
+    # Several occurences flag
+    several_occurences = models.BooleanField(default=False)
+
     def get_category_path(self):
         return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
 

@@ -16,6 +16,7 @@ from  django.utils.http import urlsafe_base64_decode
 import re
 from django.contrib.auth.forms import SetPasswordForm
 from apps.fixmystreet.views.api import create_report
+from apps.fmx.forms import SeveralOccurencesForm
 
 def get_response():
     return {
@@ -787,6 +788,11 @@ def create_incident(request):
     if response.get('id', None) != None:
         try:
             report = Report.objects.all().get(id=response.get('id', None))
+            # Deal with several_occurences
+            several_occurences_form = SeveralOccurencesForm(request.POST)
+            if several_occurences_form.is_valid():
+                report.several_occurences = several_occurences_form.cleaned_data['several_occurences']
+                report.save()
             response = generate_report_response(report)
 
             return return_response(response)
