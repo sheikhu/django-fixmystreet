@@ -43,6 +43,9 @@ class ReportAcceptInWebhookMixin(object):
         if not self._data.get("reference_id"):
             raise BadRequestError(u"'data.referenceId' is required.")
 
+        if not self._data.get("comment"):
+            self._data["comment"] = ""
+
 
 class ReportRejectInWebhookMixin(object):
 
@@ -86,6 +89,8 @@ class ReportCloseInWebhookMixin(object):
         if not self._data.get("reference_id"):
             raise BadRequestError(u"'data.referenceId' is required.")
 
+        if not self._data.get("comment"):
+            self._data["comment"] = ""
 
 class AbstractBaseInWebhook(object):
     """
@@ -256,8 +261,9 @@ class ReportTransferRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportTr
             self._report.status = Report.MANAGER_ASSIGNED
             self._report.save()
         except ReportEventLog.DoesNotExist:
-            # If no previous group of manager, do nothing.
-            pass
+            # If no previous group of manager, refused it.
+            self._report.status = Report.REFUSED
+            self._report.save()
 
 
 class ReportTransferCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportTransferInWebhook):
