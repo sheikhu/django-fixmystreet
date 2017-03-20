@@ -308,6 +308,13 @@ def generate_report_response(report):
         }
     }
 
+    #oldest attachment image
+    attachments = report.active_attachments().order_by('created')
+    response['response']['oldest_attachment'] = ''
+    for attachment in attachments:
+        if hasattr(attachment, 'reportfile') and attachment.reportfile.is_image():
+            response['response']['oldest_attachment'] = attachment.reportfile.image.thumbnail.url
+
     # Manage sub_category
     if report.sub_category:
         response['response']['category']['subCategoryId'] = report.sub_category.id
@@ -375,11 +382,6 @@ def duplicates(request):
         res = generate_report_response(report)
         if res.get("response", None) is not None:
             rep = res.get("response", None)
-            attachments = report.active_attachments().order_by('created')
-            for attachment in attachments:
-                if hasattr(attachment, 'reportfile') and attachment.reportfile.is_image():
-                    rep['oldest_attachment'] = attachment.reportfile.image.thumbnail.url
-                    break
             response["response"].append(rep)
 
     return return_response(response)
@@ -418,7 +420,12 @@ def last_reports(request):
     except ValueError as e:
         return exit_with_error("Invalid number of reports", 400)
 
-    reports = Report.objects.all().public().visible().order_by('-created')[:nbr]
+    DEFAULT_TIMEDELTA_CITIZEN = {"days": -30}
+    last_30_days = datetime.today() + timedelta(**DEFAULT_TIMEDELTA_CITIZEN)
+    reports = Report.objects.all().public().visible()
+    reports = reports.extra(select={"has_thumbnail": "CASE WHEN thumbnail IS NULL OR thumbnail = '' THEN 0 ELSE 1 END"})
+    reports = reports.order_by('-has_thumbnail', '-created')
+    reports = reports.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, created__gte=last_30_days)[:nbr]
     response = get_response()
     response["response"] = []
     for report in reports:
