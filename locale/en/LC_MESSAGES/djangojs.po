@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-28 11:53+0100\n"
+"POT-Creation-Date: 2017-03-20 16:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -266,15 +266,20 @@ msgstr ""
 msgid "Are you sure you want to close this report?"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:29
+#: fixmystreet/static/js/templates/reports/pro__actions.js:10
+msgid ""
+"This incident was assigned to the contractor/applicant {0}, can it stay?"
+msgstr ""
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:30
 msgid "yes"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:32
+#: fixmystreet/static/js/templates/reports/pro__actions.js:33
 msgid "no"
 msgstr ""
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:91
+#: fixmystreet/static/js/templates/reports/pro__actions.js:92
 msgid "Are you sure you want to change the contractor/applicant?"
 msgstr ""
 

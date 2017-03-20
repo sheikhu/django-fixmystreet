@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-28 11:53+0100\n"
+"POT-Creation-Date: 2017-03-20 16:56+0100\n"
 "PO-Revision-Date: 2016-10-18 11:42+0000\n"
 "Last-Translator: afuca <afuca@cirb.brussels>\n"
 "Language-Team: French (http://www.transifex.com/cirb/django-fixmystreet/"
@@ -288,15 +288,22 @@ msgstr "Localisation de l'incident"
 msgid "Are you sure you want to close this report?"
 msgstr "Êtes-vous sur de vouloir clôturer cet incident?"
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:29
+#: fixmystreet/static/js/templates/reports/pro__actions.js:10
+msgid ""
+"This incident was assigned to the contractor/applicant {0}, can it stay?"
+msgstr ""
+"Cet incident est actuellement assigné au groupe {0}. Doit-on le réouvrir au "
+"sein du même groupe ou voulez-vous le récupérer ?"
+
+#: fixmystreet/static/js/templates/reports/pro__actions.js:30
 msgid "yes"
 msgstr "oui"
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:32
+#: fixmystreet/static/js/templates/reports/pro__actions.js:33
 msgid "no"
 msgstr "non"
 
-#: fixmystreet/static/js/templates/reports/pro__actions.js:91
+#: fixmystreet/static/js/templates/reports/pro__actions.js:92
 msgid "Are you sure you want to change the contractor/applicant?"
 msgstr "Etes-vous sûr de vouloir changer l'exécuteur de travaux/impétrant?"
 

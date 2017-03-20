@@ -183,7 +183,7 @@
 
                     {# DISPLAY WHEN REPORT STATUS IS CLOSED OR REFUSED #}
                     {% if report.is_closed or report.is_refused %}
-                    <a href="{% url 'report_reopen_pro' report.id %}" class="btn accept yelloww" style="    color:black;
+                    <a href="javascript:reopen('{{ report.contractor.name }}');" class="btn accept yelloww" style="    color:black;
                     text-decoration:none;" >{% trans 'Reopen' %}</a>
                     {% endif %}
                     {% endif %}
