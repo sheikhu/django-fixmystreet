@@ -176,4 +176,3 @@ Import dump DB:
     createdb fixmystreet -U postgres -O fixmystreet
     psql fixmystreet -U postgres -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;"
     cat fixmystreet_dump.sql | psql -U fixmystreet
-
