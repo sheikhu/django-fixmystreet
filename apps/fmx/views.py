@@ -454,6 +454,8 @@ def list_reports(request):
     #Get filters
     status = request.GET.get('status', None)
     category = request.GET.get('category', None)
+    secondary_category = request.GET.get('secondary_category', None)
+    sub_category = request.GET.get('sub_category', None)
     municipality = request.GET.get('municipality', None)
     date_start = request.GET.get('date_start', None)
     date_end = request.GET.get('date_end', None)
@@ -469,6 +471,12 @@ def list_reports(request):
 
     if(category):
         reports = reports.filter(category_id=category)
+
+    if(secondary_category):
+        reports = reports.filter(secondary_category_id=secondary_category)
+
+    if(sub_category):
+        reports = reports.filter(sub_category_id=sub_category)
 
     if(municipality):
         reports = reports.filter(postalcode=municipality)
