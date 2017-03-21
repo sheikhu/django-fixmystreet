@@ -182,7 +182,10 @@ def webhook_transfer(sender, instance, **kwargs):
 
     is_transferred = instance.responsible_department and instance.__former['responsible_department'] != instance.responsible_department
 
-    if not kwargs['raw'] and is_transferred and (instance.is_created() or instance.is_in_progress()):
+    if hasattr(instance, 'forceAutoDispatching'):
+        forceAutoDispatching = instance.forceAutoDispatching
+
+    if forceAutoDispatching or (not kwargs['raw'] and is_transferred and (instance.is_created() or instance.is_in_progress()) and not hasattr(instance, 'forceAutoDispatching')):
         webhook = outbound.ReportTransferRequestOutWebhook(instance, third_party=instance.responsible_department)
         webhook.fire()
 

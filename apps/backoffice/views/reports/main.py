@@ -47,6 +47,7 @@ def new(request):
 
                 fingerprint.save()
 
+                report.forceAutoDispatching = False
                 report.save()
 
                 if report_form.cleaned_data['subscription']:
@@ -67,6 +68,9 @@ def new(request):
                     # Used for file post_save signal:
                     report_file.is_new_report = True
                     report_file.save()
+
+                report.forceAutoDispatching = True
+                report.save()
 
                 messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"), extra_tags="new_report")
                 return HttpResponseRedirect(report.get_absolute_url_pro())

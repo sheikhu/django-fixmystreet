@@ -58,6 +58,7 @@ def new(request):
 
                 report.citizen = citizen
                 report.quality = citizen_form.cleaned_data["quality"]
+                report.forceAutoDispatching = False
                 report.save()
 
                 if report_form.cleaned_data['subscription']:
@@ -78,6 +79,10 @@ def new(request):
                     # Used for file post_save signal:
                     report_file.is_new_report = True
                     report_file.save()
+
+                report.forceAutoDispatching = True
+                report.save()
+
                 messages.add_message(request, messages.SUCCESS, _("Newly created report successfull"))
                 return HttpResponseRedirect(report.get_absolute_url())
 
