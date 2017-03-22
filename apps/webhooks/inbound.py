@@ -275,3 +275,9 @@ class ReportTransferCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportTran
         super(ReportTransferCloseInWebhook, self).run()
 
         self._report.close()
+
+    def _validate(self):
+        super(ReportTransferCloseInWebhook, self)._validate()
+
+        if not self._report.is_in_progress():
+            raise InvalidReportStatusError(u"Transfer report (%s) not in a valid state (%s)." % (self._report.id, self._report.status))
