@@ -182,6 +182,7 @@ def webhook_transfer(sender, instance, **kwargs):
 
     is_transferred = instance.responsible_department and instance.__former['responsible_department'] != instance.responsible_department
 
+    forceAutoDispatching = False
     if hasattr(instance, 'forceAutoDispatching'):
         forceAutoDispatching = instance.forceAutoDispatching
 
