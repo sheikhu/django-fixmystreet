@@ -486,7 +486,8 @@ def list_reports(request):
         reports = reports.filter(created__gte=date_start_date)
 
     if(date_end):
-        date_end_date = datetime.strptime(date_end, '%Y-%m-%d')
+        date_end = date_end + ' 23:59:59'
+        date_end_date = datetime.strptime(date_end, '%Y-%m-%d %H:%M:%S')
         reports = reports.filter(created__lte=date_end_date)
 
     return reports
