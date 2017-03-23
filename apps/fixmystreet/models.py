@@ -369,6 +369,26 @@ class UserOrganisationMembership(UserTrackedModel):
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
+    def fmxPublic(self):
+        return self.filter(private=False, status__in=Report.FMX_REPORT_STATUS_VIEWABLE)
+
+    def fmxNotClosed(self):
+        return self.filter(status__in=Report.FMX_REPORT_STATUS_OPEN)
+
+    def fmxLastVisible(self):
+        return self.filter(status__in=Report.FMX_REPORT_STATUS_LAST_VISIBLE)
+
+    def fmxListing(self):
+        return self.filter(status__in=Report.FMX_REPORT_STATUS_LISTING)
+
+    def fmxCreatedLast30Days(self):
+        limit_date = datetime.date.today() - datetime.timedelta(30)
+        return self.filter(created__gte=limit_date)
+
+    def fmxExcludeClosedLastMonth(self):
+        limit_date = datetime.date.today() - datetime.timedelta(30)
+        return self.exclude(status=Report.PROCESSED, fixed_at__lt=limit_date)
+
     def public(self):
         return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
 
@@ -605,6 +625,10 @@ class Report(UserTrackedModel):
     REPORT_STATUS_ASSIGNED = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_CLOSED = (PROCESSED, DELETED)
     REPORT_STATUS_OFF = (DELETED, TEMP)
+    FMX_REPORT_STATUS_VIEWABLE = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED, REFUSED)
+    FMX_REPORT_STATUS_OPEN = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
+    FMX_REPORT_STATUS_LAST_VISIBLE = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
+    FMX_REPORT_STATUS_LISTING = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED, REFUSED)
 
     REPORT_STATUS_CHOICES = (
         (_("Created"), (

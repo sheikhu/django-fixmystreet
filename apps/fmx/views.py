@@ -114,7 +114,7 @@ def add_attachment_pro(request, report_id):
 
 def add_attachment_citizen(request, report_id):
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().fmxPublic().get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
@@ -186,7 +186,7 @@ def add_attachment_for_user(request, report, user):
 
 def get_attachments(request, report_id):
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().fmxPublic().get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
@@ -334,7 +334,7 @@ def generate_report_response(report):
 
 def detail(request, report_id):
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().fmxPublic().get(id=report_id)
         response = generate_report_response(report)
 
         return return_response(response)
@@ -374,7 +374,7 @@ def duplicates(request):
         return exit_with_error("Invalid coordinates", 400)
 
     pnt = fromstr("POINT(" + x + " " + y + ")", srid=31370)
-    reports_nearby = Report.objects.all().visible().public().near(pnt, 20).related_fields()
+    reports_nearby = Report.objects.all().fmxPublic().fmxNotClosed().near(pnt, 20).related_fields()
 
     response = get_response()
     response["response"] = []
@@ -388,7 +388,7 @@ def duplicates(request):
 
 def history(request, report_id):
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().fmxPublic().get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
@@ -420,12 +420,9 @@ def last_reports(request):
     except ValueError as e:
         return exit_with_error("Invalid number of reports", 400)
 
-    DEFAULT_TIMEDELTA_CITIZEN = {"days": -30}
-    last_30_days = datetime.today() + timedelta(**DEFAULT_TIMEDELTA_CITIZEN)
-    reports = Report.objects.all().public().visible()
+    reports = Report.objects.all().fmxPublic().fmxLastVisible().fmxCreatedLast30Days()
     reports = reports.extra(select={"has_thumbnail": "CASE WHEN thumbnail IS NULL OR thumbnail = '' THEN 0 ELSE 1 END"})
-    reports = reports.order_by('-has_thumbnail', '-created')
-    reports = reports.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS, created__gte=last_30_days)[:nbr]
+    reports = reports.order_by('-has_thumbnail', '-created')[:nbr]
     response = get_response()
     response["response"] = []
     for report in reports:
@@ -460,7 +457,7 @@ def list_reports(request):
     date_start = request.GET.get('date_start', None)
     date_end = request.GET.get('date_end', None)
 
-    reports = Report.objects.all().public().visible().order_by('-created')
+    reports = Report.objects.all().fmxPublic().fmxListing().order_by('-created')
     if(status):
         if int(status) in Report.REPORT_STATUS_IN_PROGRESS:
             reports = reports.filter(status__in=Report.REPORT_STATUS_IN_PROGRESS)
@@ -468,6 +465,9 @@ def list_reports(request):
             reports = reports.filter(Q(status=Report.DELETED) | Q(status=Report.REFUSED))
         else:
             reports = reports.filter(status=status)
+    else:
+        # Reports closed since more than 30 days shouldn't be returned
+        reports = reports.fmxExcludeClosedLastMonth()
 
     if(category):
         reports = reports.filter(category_id=category)
@@ -523,7 +523,7 @@ def reports(request):
 def subscribe(request, report_id):
     # get the report
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().fmxPublic().filter(status__in=Report.REPORT_STATUS_IN_PROGRESS).get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
@@ -576,7 +576,7 @@ def subscribe_user(report, user):
 def unsubscribe(request, report_id):
     # get the report
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
@@ -640,7 +640,7 @@ def subscription_count(request, report_id):
 def isFixed(request, report_id):
     # get the report
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().fmxPublic().fmxNotClosed().get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
@@ -652,7 +652,7 @@ def isFixed(request, report_id):
 
 def incDuplicateCounter(request, report_id):
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().fmxPublic().fmxNotClosed().get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
@@ -663,7 +663,7 @@ def incDuplicateCounter(request, report_id):
 
 def reopen(request, report_id):
     try:
-        report = Report.objects.all().public().get(id=report_id)
+        report = Report.objects.all().fmxPublic().get(id=report_id)
     except Report.DoesNotExist:
         return exit_with_error("Report does not exist", 404)
 
