@@ -711,12 +711,21 @@ def report_attachment_created(sender, instance, **kwargs):
             # Send notifications to correct recipients
             recipients += mail_config.get_manager_recipients(user)
 
+        send_email = True
+        if instance_comment != None and instance_comment.is_incident_creation:
+            send_email = False
+        elif instance_files != None and len(instance_files) > 0 :
+            for f in instance_files:
+                if f.is_incident_creation:
+                    send_email = False
+
         for email in recipients:
-            ReportNotification(
-                content_template='notify-updates',
-                recipient_mail=email,
-                related=report,
-            ).save(updater=user, comment=instance_comment, files=instance_files)
+            if send_email:
+                ReportNotification(
+                    content_template='notify-updates',
+                    recipient_mail=email,
+                    related=report,
+                ).save(updater=user, comment=instance_comment, files=instance_files)
 
 @receiver(post_save, sender=ReportAttachment)
 def report_attachment_published(sender, instance, **kwargs):

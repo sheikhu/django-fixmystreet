@@ -16,7 +16,7 @@ from  django.utils.http import urlsafe_base64_decode
 import re
 from django.contrib.auth.forms import SetPasswordForm
 from apps.fixmystreet.views.api import create_report
-from apps.fmx.forms import SeveralOccurencesForm
+from apps.fmx.forms import SeveralOccurencesForm, IsIncidentCreationForm
 
 def get_response():
     return {
@@ -137,6 +137,11 @@ def add_attachment_for_user(request, report, user):
     ReportFileFormSet = inlineformset_factory(Report, ReportFile, form=ReportFileForm, extra=0)
     comment_form = ReportCommentForm(request.POST, request.FILES, prefix='comment')
     file_formset = ReportFileFormSet(request.POST, hack_multi_file(request), instance=report, prefix='files', queryset=ReportFile.objects.none())
+    is_incident_creation_form = IsIncidentCreationForm(request.POST)
+    if is_incident_creation_form.is_valid():
+        is_incident_creation = is_incident_creation_form.cleaned_data['is_incident_creation']
+    else:
+        is_incident_creation = False
 
     response = get_response()
 
@@ -145,13 +150,17 @@ def add_attachment_for_user(request, report, user):
             comment = comment_form.save(commit=False)
             comment.created_by = user
             comment.report = report
+            comment.is_incident_creation = is_incident_creation
+
             comment.save()
             attachment = comment
         elif file_formset.is_valid():
             if len(file_formset.files) > 0:
+                file_formset.form.is_incident_creation = is_incident_creation
                 files = file_formset.save()
                 for report_file in files:
                     report_file.created_by = user
+                    report_file.is_incident_creation = is_incident_creation
                     report_file.save()
                     attachment = report_file
             else:

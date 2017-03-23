@@ -266,6 +266,7 @@ class CitizenForm(forms.Form):
 
 class ReportFileForm(forms.ModelForm):
     required_css_class = 'required'
+    is_incident_creation = False
 
     class Meta:
         model = ReportFile
@@ -298,6 +299,7 @@ class ReportFileForm(forms.ModelForm):
 
     def save(self, commit=True):
         report_file = super(ReportFileForm, self).save(commit=False)
+        report_file.is_incident_creation = self.is_incident_creation
 
         if commit:
             report_file.save()

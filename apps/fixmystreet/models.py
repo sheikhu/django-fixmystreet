@@ -1372,6 +1372,7 @@ class ReportAttachment(UserTrackedModel):
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
+    is_incident_creation = False
 
 
 def move_to(instance, filename):
@@ -1399,6 +1400,7 @@ class ReportFile(ReportAttachment):
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date = models.DateTimeField(blank=False, null=True)
+    is_incident_creation = False
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
