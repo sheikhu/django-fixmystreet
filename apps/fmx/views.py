@@ -671,7 +671,7 @@ def reopen(request, report_id):
         return exit_with_error("900061 : Report status doesn't allow reopening", 400)
 
     limit_date = datetime.now() - timedelta(days=90)
-    if report.close_date < limit_date:
+    if report.status == Report.PROCESSED and report.close_date < limit_date:
         return exit_with_error("900060 : Report reopening is expired", 400)
 
 
