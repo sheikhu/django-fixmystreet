@@ -785,7 +785,7 @@ class Report(UserTrackedModel):
         category = "%s / %s : %s" % (self.category.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name)
 
         if self.sub_category:
-            category += " (%s)" % self.sub_category
+            category += " (%s)" % self.sub_category.name
 
         activate(current_lang)
 
