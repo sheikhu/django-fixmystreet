@@ -1216,6 +1216,25 @@ class Report(UserTrackedModel):
             self.fixed_at = self.close_date
         self.save()
 
+    def dispatch(self):
+        reponsibles = OrganisationEntitySurface.objects.filter(geom__contains=self.point)
+        if len(reponsibles) == 1:
+            self.responsible_entity = reponsibles[0].owner
+            print "Get geographic responsible"
+        else:
+            raise Exception("point does not match any entity surface")
+
+        # Detect who is the responsible Manager for the given type
+        # Search the right responsible for the current organisation.
+        departements = self.responsible_entity.associates.filter(
+            type=OrganisationEntity.DEPARTMENT)
+
+        # Get the responsible according to dispatching category
+        self.responsible_department = departements.get(dispatch_categories=self.secondary_category)
+
+        self.forceTransfer = True
+        self.save()
+
     class Meta:
         translate = ('address',)
         # unique_together = (("point", "citizen"), ("point", "created_by"))

@@ -357,7 +357,7 @@ def report_notify_responsible_changed(sender, instance, **kwargs):
 
         if report.__former['responsible_department'] != report.responsible_department:
 
-            if report.status != Report.CREATED and report.status != Report.TEMP:
+            if hasattr(report, 'forceTransfer') and report.forceTransfer or report.status != Report.CREATED and report.status != Report.TEMP:
 
                 # Send notifications to group or members according to group configuration
                 mail_config = report.responsible_department.get_mail_config()
