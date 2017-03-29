@@ -8,7 +8,7 @@ from datetime import datetime
 import requests
 
 from ..api.utils.conversion import dict_walk_python_to_json, dict_walk_json_to_python
-from ..fixmystreet.models import OrganisationEntity
+from ..fixmystreet.models import OrganisationEntity, ReportEventLog
 from ..fixmystreet.utils import sign_message
 from .models import WebhookConfig
 
@@ -193,6 +193,8 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
                 "text": comment.reportcomment.text,
             })
 
+        logger.debug(payload)
+
         return payload
 
 
@@ -210,3 +212,30 @@ class AbstractReportTransferOutWebhook(AbstractReportOutWebhook):
 
 class ReportTransferRequestOutWebhook(AbstractReportTransferOutWebhook):
     action_slug = "request"
+
+    def fire(self):
+        try:
+            super(ReportTransferRequestOutWebhook, self).fire()
+        except Exception, e:
+            logger.error('ReportTransfer failed (%s)' % self.report.id)
+
+            # Transfer to the previous group of managers if exist
+            try:
+                responsible_department = ReportEventLog.objects.filter(
+                    report=self.report,
+                    organisation=self.report.responsible_entity,
+                    event_type=ReportEventLog.MANAGER_ASSIGNED
+                ).latest("event_at").related_old
+
+                if responsible_department:
+                    self.report.responsible_department = responsible_department
+                    self.report.responsible_entity = self.report.responsible_department.dependency
+                    self.report.status = Report.MANAGER_ASSIGNED
+                    self.report.save()
+                    print 'redispatch to pro'
+                else:
+                    raise ReportEventLog.DoesNotExist()
+            except ReportEventLog.DoesNotExist:
+                # If no previous group of manager, dispatch it.
+                print 'redispatch'
+                self.report.dispatch()

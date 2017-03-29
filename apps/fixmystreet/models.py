@@ -1234,6 +1234,7 @@ class Report(UserTrackedModel):
 
         self.forceTransfer = True
         self.save()
+        self.forceTransfer = False
 
     class Meta:
         translate = ('address',)
