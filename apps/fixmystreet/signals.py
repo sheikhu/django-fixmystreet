@@ -701,11 +701,10 @@ def report_attachment_created(sender, instance, **kwargs):
         # Send notifications to group or members according to group configuration
         mail_config = report.responsible_department.get_mail_config()
 
+        instance_comment = None
+        instance_files   = []
         if not mail_config.digest_created and not mail_config.digest_inprogress:
             # Check type of instance to pass correct arg to ReportNotification
-            instance_comment = None
-            instance_files   = []
-
             if type(instance) is ReportFile:
                 instance_files = [instance]
 
