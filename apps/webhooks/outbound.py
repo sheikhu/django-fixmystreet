@@ -217,7 +217,7 @@ class ReportTransferRequestOutWebhook(AbstractReportTransferOutWebhook):
         try:
             super(ReportTransferRequestOutWebhook, self).fire()
         except Exception, e:
-            logger.error('ReportTransfer failed (%s)' % self.report.id)
+            logger.error(u"ReportTransfer failed ({}): {}".format(self.report.id, e.message))
 
             # Transfer to the previous group of managers if exist
             try:
