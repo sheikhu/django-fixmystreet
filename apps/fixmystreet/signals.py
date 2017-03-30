@@ -355,6 +355,11 @@ def report_notify_responsible_changed(sender, instance, **kwargs):
         report = instance
         event_log_user = report.modified_by
 
+        # Change of responsability can only be done by a pro => event_log_user must be a fill with a pro.
+        # Try to fetch the contact_user of the former responsible_department. Fallback with the new.
+        if not event_log_user:
+            event_log_user = report.__former['responsible_department'].contact_user() if report.__former['responsible_department'] else report.responsible_department.contact_user()
+
         if report.__former['responsible_department'] != report.responsible_department:
 
             if hasattr(report, 'forceTransfer') and report.forceTransfer or report.status != Report.CREATED and report.status != Report.TEMP:
