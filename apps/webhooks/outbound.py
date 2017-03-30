@@ -232,10 +232,8 @@ class ReportTransferRequestOutWebhook(AbstractReportTransferOutWebhook):
                     self.report.responsible_entity = self.report.responsible_department.dependency
                     self.report.status = Report.MANAGER_ASSIGNED
                     self.report.save()
-                    print 'redispatch to pro'
                 else:
                     raise ReportEventLog.DoesNotExist()
             except ReportEventLog.DoesNotExist:
                 # If no previous group of manager, dispatch it.
-                print 'redispatch'
                 self.report.dispatch()
