@@ -182,7 +182,11 @@ def webhook_transfer(sender, instance, **kwargs):
 
     is_transferred = instance.responsible_department and instance.__former['responsible_department'] != instance.responsible_department
 
-    if not kwargs['raw'] and is_transferred and (instance.is_created() or instance.is_in_progress()):
+    forceAutoDispatching = False
+    if hasattr(instance, 'forceAutoDispatching'):
+        forceAutoDispatching = instance.forceAutoDispatching
+
+    if forceAutoDispatching or (not kwargs['raw'] and is_transferred and (instance.is_created() or instance.is_in_progress()) and not hasattr(instance, 'forceAutoDispatching')):
         webhook = outbound.ReportTransferRequestOutWebhook(instance, third_party=instance.responsible_department)
         webhook.fire()
 
@@ -351,9 +355,14 @@ def report_notify_responsible_changed(sender, instance, **kwargs):
         report = instance
         event_log_user = report.modified_by
 
+        # Change of responsability can only be done by a pro => event_log_user must be a fill with a pro.
+        # Try to fetch the contact_user of the former responsible_department. Fallback with the new.
+        if not event_log_user:
+            event_log_user = report.__former['responsible_department'].contact_user() if report.__former['responsible_department'] else report.responsible_department.contact_user()
+
         if report.__former['responsible_department'] != report.responsible_department:
 
-            if report.status != Report.CREATED and report.status != Report.TEMP:
+            if hasattr(report, 'forceTransfer') and report.forceTransfer or report.status != Report.CREATED and report.status != Report.TEMP:
 
                 # Send notifications to group or members according to group configuration
                 mail_config = report.responsible_department.get_mail_config()
@@ -697,11 +706,10 @@ def report_attachment_created(sender, instance, **kwargs):
         # Send notifications to group or members according to group configuration
         mail_config = report.responsible_department.get_mail_config()
 
+        instance_comment = None
+        instance_files   = []
         if not mail_config.digest_created and not mail_config.digest_inprogress:
             # Check type of instance to pass correct arg to ReportNotification
-            instance_comment = None
-            instance_files   = []
-
             if type(instance) is ReportFile:
                 instance_files = [instance]
 

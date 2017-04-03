@@ -303,6 +303,16 @@ class OrganisationEntity(UserTrackedModel):
     def get_mail_config(self):
         return GroupMailConfig.objects.get(group=self)
 
+    # Check if organisation is campatible with a category
+    def isCategoryCompatible(self, category):
+        if self.categories_communal.all().exists() and (not self.categories_communal.filter(id=category.id).exists()):
+            return False
+
+        if self.categories_regional.all().exists() and (not self.categories_regional.filter(id=category.id).exists()):
+            return False
+
+        return True
+
     def __unicode__(self):
         return self.name
 
@@ -628,7 +638,7 @@ class Report(UserTrackedModel):
     FMX_REPORT_STATUS_VIEWABLE = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED, REFUSED)
     FMX_REPORT_STATUS_OPEN = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
     FMX_REPORT_STATUS_LAST_VISIBLE = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
-    FMX_REPORT_STATUS_LISTING = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED, REFUSED)
+    FMX_REPORT_STATUS_LISTING = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
 
     REPORT_STATUS_CHOICES = (
         (_("Created"), (
@@ -810,7 +820,7 @@ class Report(UserTrackedModel):
         category = "%s / %s : %s" % (self.category.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name)
 
         if self.sub_category:
-            category += " (%s)" % self.sub_category
+            category += " (%s)" % self.sub_category.name
 
         activate(current_lang)
 
@@ -1240,6 +1250,26 @@ class Report(UserTrackedModel):
         if not self.fixed_at:
             self.fixed_at = self.close_date
         self.save()
+
+    def dispatch(self):
+        reponsibles = OrganisationEntitySurface.objects.filter(geom__contains=self.point)
+        if len(reponsibles) == 1:
+            self.responsible_entity = reponsibles[0].owner
+            print "Get geographic responsible"
+        else:
+            raise Exception("point does not match any entity surface")
+
+        # Detect who is the responsible Manager for the given type
+        # Search the right responsible for the current organisation.
+        departements = self.responsible_entity.associates.filter(
+            type=OrganisationEntity.DEPARTMENT)
+
+        # Get the responsible according to dispatching category
+        self.responsible_department = departements.get(dispatch_categories=self.secondary_category)
+
+        self.forceTransfer = True
+        self.save()
+        self.forceTransfer = False
 
     class Meta:
         translate = ('address',)

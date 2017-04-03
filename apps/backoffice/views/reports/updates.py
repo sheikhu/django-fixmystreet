@@ -117,7 +117,12 @@ def reopen(request, report_id):
             if (report.citizen):
                 validateAll(request, report.id)
 
-        report.status = Report.MANAGER_ASSIGNED
+        keep_executor = request.GET.get('keep', None)
+        if keep_executor == '1':
+            report.status = Report.APPLICANT_RESPONSIBLE
+        else:
+            report.status = Report.MANAGER_ASSIGNED
+            report.contractor = None
         report.save()
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
