@@ -43,6 +43,9 @@ class ReportAcceptInWebhookMixin(object):
         if not self._data.get("reference_id"):
             raise BadRequestError(u"'data.referenceId' is required.")
 
+        if not self._data.get("comment"):
+            self._data["comment"] = ""
+
 
 class ReportRejectInWebhookMixin(object):
 
@@ -86,6 +89,8 @@ class ReportCloseInWebhookMixin(object):
         if not self._data.get("reference_id"):
             raise BadRequestError(u"'data.referenceId' is required.")
 
+        if not self._data.get("comment"):
+            self._data["comment"] = ""
 
 class AbstractBaseInWebhook(object):
     """
@@ -247,17 +252,22 @@ class ReportTransferRejectInWebhook(ReportRejectInWebhookMixin, AbstractReportTr
 
         # Transfer to the previous group of managers if exist
         try:
-            self._report.responsible_department = ReportEventLog.objects.filter(
+            responsible_department = ReportEventLog.objects.filter(
                 report=self._report,
                 organisation=self._report.responsible_entity,
                 event_type=ReportEventLog.MANAGER_ASSIGNED
             ).latest("event_at").related_old
-            self._report.responsible_entity = self._report.responsible_department.dependency
-            self._report.status = Report.MANAGER_ASSIGNED
-            self._report.save()
+
+            if responsible_department:
+                self._report.responsible_department = responsible_department
+                self._report.responsible_entity = self._report.responsible_department.dependency
+                self._report.status = Report.MANAGER_ASSIGNED
+                self._report.save()
+            else:
+                raise ReportEventLog.DoesNotExist()
         except ReportEventLog.DoesNotExist:
-            # If no previous group of manager, do nothing.
-            pass
+            # If no previous group of manager, dispatch it.
+            self._report.dispatch()
 
 
 class ReportTransferCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportTransferInWebhook):
@@ -269,3 +279,9 @@ class ReportTransferCloseInWebhook(ReportCloseInWebhookMixin, AbstractReportTran
         super(ReportTransferCloseInWebhook, self).run()
 
         self._report.close()
+
+    def _validate(self):
+        super(ReportTransferCloseInWebhook, self)._validate()
+
+        if not self._report.is_in_progress():
+            raise InvalidReportStatusError(u"Transfer report (%s) not in a valid state (%s)." % (self._report.id, self._report.status))

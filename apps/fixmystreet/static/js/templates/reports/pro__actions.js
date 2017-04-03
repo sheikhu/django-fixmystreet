@@ -7,6 +7,7 @@ var TRAD_PRIVATE_PROPERTY_MESSAGE = gettext("You are about to set the value of p
 var TRAD_SET_PRIVATE = gettext('Are you sure you want to make the incident private? This will notify all public subscribers.');
 var TRAD_SELECT_CATEGORY = gettext('Select a Category');
 var TRAD_CLOSE_REPORT = gettext('Are you sure you want to close this report?');
+var TRAD_REOPEN_REPORT = gettext('This incident was assigned to the contractor/applicant {0}, can it stay?');
 
 function setThirdPartyResponsibility(boolVal) {
     //hiddenThirdPartyResponsibility is used in updates.py : change_flag_and_add_comment
@@ -163,6 +164,18 @@ function close(){
     if (r==true){
         window.location = CLOSE_REPORT_URL;
     }
+}
+
+function reopen(executor) {
+    var url = REOPEN_REPORT_URL + '?keep=';
+    var trad = TRAD_REOPEN_REPORT.replace('{0}', executor);
+    if(executor && confirm(trad)) {
+        url += '1';
+    }
+    else {
+        url += '0';
+    }
+    window.location = url;
 }
 
 function cancelPriorityUpdate(){

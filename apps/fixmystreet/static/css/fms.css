@@ -2968,6 +2968,9 @@ label.invalid {
 	white-space: nowrap;
 	text-align: left;
 }
+.lead-container .dropdown-menu > li > a.disabled {
+	color:rgba(0,0,0,0.5);
+}
 .lead-container .dropdown-menu{
 	font-size:12px !important;
 }
