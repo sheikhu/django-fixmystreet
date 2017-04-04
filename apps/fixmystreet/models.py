@@ -393,7 +393,7 @@ class ReportQuerySet(models.query.GeoQuerySet):
 
     def fmxCreatedLast30Days(self):
         limit_date = datetime.date.today() - datetime.timedelta(30)
-        return self.filter(created__gte=limit_date)
+        return self.filter(modified__gte=limit_date)
 
     def fmxExcludeClosedLastMonth(self):
         limit_date = datetime.date.today() - datetime.timedelta(30)

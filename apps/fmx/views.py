@@ -429,15 +429,28 @@ def last_reports(request):
     except ValueError as e:
         return exit_with_error("Invalid number of reports", 400)
 
-    reports = Report.objects.all().fmxPublic().fmxLastVisible().fmxCreatedLast30Days()
-    reports = reports.extra(select={"has_thumbnail": "CASE WHEN thumbnail IS NULL OR thumbnail = '' THEN 0 ELSE 1 END"})
-    reports = reports.order_by('-has_thumbnail', '-modified')[:nbr]
+    # Get all public files
+    files = ReportFile.objects.filter(file_type=ReportFile.IMAGE).filter(security_level=1).filter(logical_deleted=False)
+    reports_with_images = files.values('report').distinct()
+    reports = Report.objects.filter(id__in=reports_with_images).fmxPublic().fmxLastVisible().fmxCreatedLast30Days()
+    reports = reports.order_by('-modified')[:nbr]
     response = get_response()
     response["response"] = []
     for report in reports:
         res = generate_report_response(report)
         if res.get("response", None) is not None:
             response["response"].append(res.get("response", None))
+    if len(response["response"]) < nbr:
+        # Add reports without pics
+        nbr2 = nbr - len(response["response"])
+        reports = Report.objects.all().exclude(id__in=reports_with_images).fmxPublic().fmxLastVisible().fmxCreatedLast30Days()
+        reports = reports.order_by('-modified')[:nbr2]
+        for report in reports:
+            res = generate_report_response(report)
+            if res.get("response", None) is not None:
+                response["response"].append(res.get("response", None))
+
+
     return return_response(response)
 
 def map_reports(request):
