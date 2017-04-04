@@ -25,13 +25,17 @@ class Command(BaseCommand):
     NEW_LVL_3 = []
 
     def handle(self, *args, **options):
-        with open(options['mapping_csv'], 'rb') as mapping_file:
+        mapping_csv = options['mapping_csv'] if options['mapping_csv'] else 'apps/fixmystreet/migrations/categories_mapping.csv'
+
+        with open(mapping_csv, 'rb') as mapping_file:
             mapping_reader = csv.reader(mapping_file, delimiter=',', quotechar='"')
             self.generate_fixtures(mapping_reader)
 
         new_categories_fixtures = self.NEW_LVL_1 + self.NEW_LVL_2 + self.NEW_LVL_3
 
-        print json.dumps(new_categories_fixtures, indent=4, default=self.date_handler)
+        categories_json = open('apps/fixmystreet/migrations/new_categories.json', 'w')
+        categories_json.write(json.dumps(new_categories_fixtures, indent=4, default=self.date_handler))
+        categories_json.close()
 
 
     def generate_fixtures(self, mapping_reader):

@@ -7,7 +7,6 @@ from ..management.commands.new_category_consts import *
 from apps.fixmystreet.models import ReportCategory
 
 import logging, csv
-
 logger = logging.getLogger("fixmystreet")
 
 
@@ -16,7 +15,7 @@ class Migration(migrations.Migration):
     def copy_dispatching_to_new_categories(apps, schema_editor):
         logger.info('Copy dispatching from old to new categories')
 
-        with open("apps/resources/categories_mapping.csv", 'rb') as mapping_file:
+        with open("apps/fixmystreet/migrations/categories_mapping.csv", 'rb') as mapping_file:
             mapping_reader = csv.reader(mapping_file, delimiter=','.encode('utf-8'), quotechar='"'.encode('utf-8'))
 
             for row in mapping_reader:
@@ -31,7 +30,7 @@ class Migration(migrations.Migration):
 
 
     dependencies = [
-        ('fixmystreet', '0019_auto_20170316_0848'),
+        ('fixmystreet', '0020_auto_20170404_1505'),
     ]
 
     operations = [

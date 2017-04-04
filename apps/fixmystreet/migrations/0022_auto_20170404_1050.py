@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
 
         # CATEGORIES MAPPING
         NEW_LVL = {}
-        with open("apps/resources/categories_mapping.csv", 'rb') as mapping_file:
+        with open("apps/fixmystreet/migrations/categories_mapping.csv", 'rb') as mapping_file:
             mapping_reader = csv.reader(mapping_file, delimiter=','.encode('utf-8'), quotechar='"'.encode('utf-8'))
 
             for row in mapping_reader:
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
 
 
     dependencies = [
-        ('fixmystreet', '0020_auto_20170404_1411'),
+        ('fixmystreet', '0021_auto_20170404_1411'),
     ]
 
     operations = [
