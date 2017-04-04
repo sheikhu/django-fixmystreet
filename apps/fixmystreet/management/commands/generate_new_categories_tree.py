@@ -1,10 +1,12 @@
 from django.core.management.base import BaseCommand, CommandError
 
 from optparse import make_option
-
 import datetime, logging, csv, json
 
+from .new_category_consts import *
+
 logger = logging.getLogger("fixmystreet")
+
 
 class Command(BaseCommand):
     help = 'Generate a new categories tree from existing'
@@ -16,20 +18,6 @@ class Command(BaseCommand):
             default="",
             help='The mapping csv file'),
     )
-
-    # Example of line in the mapping file:
-    # Eclairage,Degat au luminaire,Chaussee,6,2,126,Eclairage,Lampe,degats,1006,1002,1126
-    LVL_1_ID_IDX = 3
-    LVL_2_ID_IDX = 4
-    LVL_3_ID_IDX = 5
-
-    NEW_LVL_1_ID_IDX = 9
-    NEW_LVL_2_ID_IDX = 10
-    NEW_LVL_3_ID_IDX = 11
-
-    NEW_LVL_1_NAME_IDX = 6
-    NEW_LVL_2_NAME_IDX = 7
-    NEW_LVL_3_NAME_IDX = 8
 
     NEW_LVL_1 = []
     NEW_LVL_2 = []
@@ -55,57 +43,57 @@ class Command(BaseCommand):
     def create_new_lvl1_category(self, data):
         return {
             "fields": {
-                "name_fr": data[self.NEW_LVL_1_NAME_IDX],
+                "name_fr": data[NEW_LVL_1_NAME_IDX],
                 "modified_by": None,
-                "name_nl": data[self.NEW_LVL_1_NAME_IDX],
+                "name_nl": data[NEW_LVL_1_NAME_IDX],
                 "created": datetime.datetime.now(),
                 "modified": datetime.datetime.now(),
                 "created_by": None,
-                "slug_fr": data[self.NEW_LVL_1_NAME_IDX],
-                "slug_nl": data[self.NEW_LVL_1_NAME_IDX]
+                "slug_fr": data[NEW_LVL_1_NAME_IDX],
+                "slug_nl": data[NEW_LVL_1_NAME_IDX]
             },
             "model": "fixmystreet.reportmaincategoryclass",
-            "pk": int(data[self.NEW_LVL_1_ID_IDX])
+            "pk": int(data[NEW_LVL_1_ID_IDX])
         }
 
 
     def create_new_lvl2_category(self, data):
         return {
             "fields": {
-                "name_fr": data[self.NEW_LVL_2_NAME_IDX],
+                "name_fr": data[NEW_LVL_2_NAME_IDX],
                 "modified_by": None,
-                "name_nl": data[self.NEW_LVL_2_NAME_IDX],
+                "name_nl": data[NEW_LVL_2_NAME_IDX],
                 "created": datetime.datetime.now(),
                 "modified": datetime.datetime.now(),
                 "created_by": None,
-                "slug_fr": data[self.NEW_LVL_2_NAME_IDX],
-                "slug_nl": data[self.NEW_LVL_2_NAME_IDX]
+                "slug_fr": data[NEW_LVL_2_NAME_IDX],
+                "slug_nl": data[NEW_LVL_2_NAME_IDX]
             },
             "model": "fixmystreet.reportsecondarycategoryclass",
-            "pk":  int(data[self.NEW_LVL_2_ID_IDX])
+            "pk":  int(data[NEW_LVL_2_ID_IDX])
         }
 
 
     def create_new_lvl3_category(self, data):
         return {
             "fields": {
-                "name_fr": data[self.NEW_LVL_3_NAME_IDX],
+                "name_fr": data[NEW_LVL_3_NAME_IDX],
                 "modified_by": None,
-                "name_nl": data[self.NEW_LVL_3_NAME_IDX],
+                "name_nl": data[NEW_LVL_3_NAME_IDX],
                 "created": datetime.datetime.now(),
-                "category_class": int(data[self.NEW_LVL_1_ID_IDX]),
+                "category_class": int(data[NEW_LVL_1_ID_IDX]),
                 "modified": datetime.datetime.now(),
                 "created_by": None,
                 "public": True,
                 "organisation_regional": None,
                 "organisation_communal": None,
                 # "sub_categories": [],
-                "secondary_category_class": int(data[self.NEW_LVL_2_ID_IDX]),
-                "slug_fr": data[self.NEW_LVL_3_NAME_IDX],
-                "slug_nl": data[self.NEW_LVL_3_NAME_IDX]
+                "secondary_category_class": int(data[NEW_LVL_2_ID_IDX]),
+                "slug_fr": data[NEW_LVL_3_NAME_IDX],
+                "slug_nl": data[NEW_LVL_3_NAME_IDX]
             },
             "model": "fixmystreet.reportcategory",
-            "pk": int(data[self.NEW_LVL_3_ID_IDX])
+            "pk": int(data[NEW_LVL_3_ID_IDX])
         }
 
     def date_handler(self, obj):
