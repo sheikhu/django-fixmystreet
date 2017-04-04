@@ -431,7 +431,7 @@ def last_reports(request):
 
     reports = Report.objects.all().fmxPublic().fmxLastVisible().fmxCreatedLast30Days()
     reports = reports.extra(select={"has_thumbnail": "CASE WHEN thumbnail IS NULL OR thumbnail = '' THEN 0 ELSE 1 END"})
-    reports = reports.order_by('-has_thumbnail', '-created')[:nbr]
+    reports = reports.order_by('-has_thumbnail', '-modified')[:nbr]
     response = get_response()
     response["response"] = []
     for report in reports:
