@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 from optparse import make_option
 import datetime, logging, csv, json
 
+from apps.fixmystreet.models import ReportCategory
 from .new_category_consts import *
 
 logger = logging.getLogger("fixmystreet")
@@ -75,6 +76,8 @@ class Command(BaseCommand):
 
 
     def create_new_lvl3_category(self, data):
+        category_lvl_3 = ReportCategory.objects.get(id=int(data[LVL_3_ID_IDX]))
+
         return {
             "fields": {
                 "name_fr": data[NEW_LVL_3_NAME_IDX],
@@ -85,8 +88,8 @@ class Command(BaseCommand):
                 "modified": datetime.datetime.now(),
                 "created_by": None,
                 "public": True,
-                "organisation_regional": None,
-                "organisation_communal": None,
+                "organisation_regional": category_lvl_3.organisation_regional.id if category_lvl_3.organisation_regional else None,
+                "organisation_communal": category_lvl_3.organisation_communal.id if category_lvl_3.organisation_communal else None,
                 # "sub_categories": [],
                 "secondary_category_class": int(data[NEW_LVL_2_ID_IDX]),
                 "slug_fr": data[NEW_LVL_3_NAME_IDX],
