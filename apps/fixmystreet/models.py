@@ -758,7 +758,12 @@ class Report(UserTrackedModel):
     several_occurences = models.BooleanField(default=False)
 
     def get_category_path(self):
-        return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
+        path = " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
+
+        if self.sub_category:
+            path = " > ".join([path, self.sub_category.name])
+
+        return path
 
     def get_marker(self):
         marker_color = "green"

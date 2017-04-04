@@ -13,7 +13,7 @@ from django.core.validators import validate_email
 from django.conf import settings
 from django.template import RequestContext
 
-from apps.fixmystreet.models import OrganisationEntity, ReportCategory, Report, ReportMainCategoryClass, ReportEventLog
+from apps.fixmystreet.models import OrganisationEntity, ReportCategory, Report, ReportMainCategoryClass, ReportSubCategory, ReportEventLog
 from apps.fixmystreet.utils import get_current_user, transform_notification_template
 from apps.fixmystreet.utils import generate_pdf, JsonHttpResponse
 
@@ -71,18 +71,33 @@ def secondary_category_for_main_category(request):
     return HttpResponse(jsonstring, content_type="application/json")
 
 
+def sub_category_for_main_category_and_secondary_category(request):
+    main_category_id = int(request.GET["main_category"])
+    sec_category_id = int(request.GET["sec_category"])
+
+    secondary_categories = ReportCategory.objects.filter(category_class=main_category_id, id=sec_category_id)
+    jsonstring = ReportCategory.listToJSON(secondary_categories)
+    return HttpResponse(jsonstring, content_type="application/json")
+
+
 def update_category_for_report(request, report_id):
     main_category_id      = int(request.POST["main_category"])
     secondary_category_id = int(request.POST["secondary_category"])
+    sub_category_id       = int(request.POST.get("sub_category", None)) if request.POST.get("sub_category", None) else None
 
     report             = get_object_or_404(Report, id=report_id)
     secondary_category = ReportCategory.objects.get(id=secondary_category_id)
+    sub_category       = None
+
+    if sub_category_id:
+        sub_category = secondary_category.sub_categories.get(id=sub_category_id)
 
     if not report.private and not secondary_category.public:
         messages.add_message(request, messages.ERROR, _("Cannot set a private category to a public report"))
     else:
         report.category = ReportMainCategoryClass.objects.get(id=main_category_id)
         report.secondary_category = secondary_category
+        report.sub_category = sub_category
         report.save()
 
     return HttpResponseRedirect(report.get_absolute_url_pro())
