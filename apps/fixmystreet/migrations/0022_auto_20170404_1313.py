@@ -1,0 +1,29 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import migrations, models
+
+import logging
+logger = logging.getLogger("fixmystreet")
+
+
+class Migration(migrations.Migration):
+
+    def delete_old_categories(apps, schema_editor):
+        logger.info('Delete old categories')
+
+        Category_LVL_1 = apps.get_model("fixmystreet", "ReportMainCategoryClass")
+        Category_LVL_2 = apps.get_model("fixmystreet", "ReportSecondaryCategoryClass")
+        Category_LVL_3 = apps.get_model("fixmystreet", "ReportCategory")
+
+        Category_LVL_1.objects.filter(id__lt=1000).delete()
+        Category_LVL_2.objects.filter(id__lt=2000).delete()
+        Category_LVL_3.objects.filter(id__lt=3000).delete()
+
+    dependencies = [
+        ('fixmystreet', '0021_auto_20170404_1050'),
+    ]
+
+    operations = [
+        migrations.RunPython(delete_old_categories),
+    ]
