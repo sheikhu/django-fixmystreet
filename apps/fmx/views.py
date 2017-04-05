@@ -322,7 +322,8 @@ def generate_report_response(report):
     response['response']['oldest_attachment'] = ''
     for attachment in attachments:
         if hasattr(attachment, 'reportfile') and attachment.reportfile.is_image():
-            response['response']['oldest_attachment'] = attachment.reportfile.image.thumbnail.url
+            response['response']['oldest_attachment_thumbnail'] = attachment.reportfile.image.thumbnail.url
+            response['response']['oldest_attachment'] = attachment.reportfile.image.url
 
     # Manage sub_category
     if report.sub_category:
