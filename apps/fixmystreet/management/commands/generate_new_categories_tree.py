@@ -129,8 +129,6 @@ class Command(BaseCommand):
 
 
     def create_new_lvl4_category(self, data):
-        print data[LVL_4_ID_IDX], data[NEW_LVL_4_ID_IDX]
-
         if data[LVL_4_ID_IDX] or data[NEW_LVL_4_ID_IDX]:
             try:
                 self.NEW_LVL_3_SUBCAT[data[NEW_LVL_3_ID_IDX]].append(int(data[NEW_LVL_4_ID_IDX]))

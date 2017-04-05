@@ -221,7 +221,7 @@ admin.site.register(ReportMainCategoryClass, ReportMainCategoryClassAdmin)
 
 
 class ReportCategoryAdmin(admin.ModelAdmin):
-    list_display = ('secondary_category_class', 'category_class', 'name', 'get_secondary_category_class_id', 'get_category_class_id', 'get_id')
+    list_display = ('secondary_category_class', 'category_class', 'name', 'get_secondary_category_class_id', 'get_category_class_id', 'get_id', 'get_sub_categories_id')
     list_filter  = ('secondary_category_class', 'category_class')
 
     def get_secondary_category_class_id(self, obj):
@@ -231,6 +231,10 @@ class ReportCategoryAdmin(admin.ModelAdmin):
     def get_category_class_id(self, obj):
         return obj.category_class.id
     get_category_class_id.short_description = 'LVL 2 ID'
+
+    def get_sub_categories_id(self, obj):
+        return obj.sub_categories.all().values_list('id', flat=True) if obj.sub_categories.all().exists() else ""
+    get_sub_categories_id.short_description = 'LVL 4 ID'
 
     def get_id(self, obj):
         return obj.id

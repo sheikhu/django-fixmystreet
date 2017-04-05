@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         call_command('loaddata', 'apps/fixmystreet/migrations/new_categories.json')
 
     dependencies = [
-        ('fixmystreet', '0019_auto_20170316_0848'),
+        ('fixmystreet', '0020_auto_20170405_1600'),
     ]
 
     operations = [

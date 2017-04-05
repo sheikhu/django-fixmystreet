@@ -54,11 +54,11 @@ class Migration(migrations.Migration):
             except KeyError:
                 LVL_3_ERRORS.append({ 'report' : report.id,'cat': report.secondary_category.id})
 
-        logger.info('\nLVL3 ERRORS: %s' % LVL_3_ERRORS)
+        logger.info('LVL3 ERRORS: %s' % LVL_3_ERRORS)
 
 
     dependencies = [
-        ('fixmystreet', '0021_auto_20170404_1411'),
+        ('fixmystreet', '0022_auto_20170404_1411'),
     ]
 
     operations = [
