@@ -1,7 +1,11 @@
 from django.core.management.base import BaseCommand, CommandError
 from apps.fixmystreet.models import ReportFile
-import Image
-import ImageOps
+try:
+    from PIL import Image, ImageOps
+except ImportError:
+    import Image
+    import ImageOps
+
 
 class Command(BaseCommand):
     help = 'Resize existing thumbnail files to 140*140'
