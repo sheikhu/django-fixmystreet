@@ -1431,7 +1431,7 @@ class ReportFile(ReportAttachment):
     )
 
     file = models.FileField(upload_to=move_to, blank=True)
-    image = StdImageField(upload_to=move_to, blank=True, variations={'thumbnail': {'width': 80, 'height': 120}})
+    image = StdImageField(upload_to=move_to, blank=True, variations={'thumbnail': {'width': 140, 'height': 140}})
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date = models.DateTimeField(blank=False, null=True)
