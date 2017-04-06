@@ -197,6 +197,22 @@ class Command(BaseCommand):
 
                         idx = idx +1
 
+            # Add ABP Entity
+            fixtures_fms.append({
+                "fields": {
+                    "name_fr": "ABP",
+                    "name_nl": "ABP",
+                    "email": "pro@arp-gan.be",
+                    "phone": "0800/981 81",
+                    "active": True,
+                    "slug_fr": "abp",
+                    "type": "R",
+                    "slug_nl": "abp"
+                },
+                "model": "fixmystreet.organisationentity",
+                "pk": int(options['abp_entity_id'])
+            })
+
             # Add ABP Group and generate dispatching for it
             fixtures_fms.append({
                 "fields": {

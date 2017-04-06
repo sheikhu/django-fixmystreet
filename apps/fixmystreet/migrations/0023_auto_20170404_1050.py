@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 
-import logging, csv
+import logging, csv, os
 
 from ..management.commands.new_category_consts import *
 
@@ -12,6 +12,9 @@ logger = logging.getLogger("fixmystreet")
 class Migration(migrations.Migration):
 
     def reports_migrations(apps, schema_editor):
+        if os.environ.get('SKIP_MIGRATIONS', False):
+            return
+
         Report = apps.get_model("fixmystreet", "Report")
         Category_LVL_1 = apps.get_model("fixmystreet", "ReportMainCategoryClass")
         Category_LVL_2 = apps.get_model("fixmystreet", "ReportSecondaryCategoryClass")
