@@ -920,5 +920,65 @@
             "organisation_communal": 218, 
             "public": true
         }
+    }, 
+    {
+        "fields": {
+            "name_fr": "ABP Group", 
+            "dispatch_categories": [
+                119, 
+                121, 
+                123, 
+                125, 
+                127, 
+                129, 
+                131, 
+                133, 
+                135, 
+                137, 
+                139, 
+                141, 
+                143, 
+                145, 
+                147, 
+                149, 
+                151, 
+                153, 
+                155, 
+                157, 
+                159, 
+                161, 
+                163, 
+                165, 
+                167, 
+                169, 
+                171, 
+                173, 
+                175
+            ], 
+            "phone": "0800/981 81", 
+            "active": true, 
+            "slug_nl": "ABP Group", 
+            "name_nl": "ABP Group", 
+            "created": "2017-04-06T10:20:52.278161", 
+            "modified": "2017-04-06T10:20:52.278164", 
+            "dependency": 218, 
+            "slug_fr": "ABP Group", 
+            "type": "D", 
+            "email": "pro@arp-gan.be"
+        }, 
+        "model": "fixmystreet.organisationentity", 
+        "pk": 300
+    }, 
+    {
+        "fields": {
+            "notify_members": false, 
+            "group": 300, 
+            "digest_closed": false, 
+            "digest_other": false, 
+            "digest_created": false, 
+            "digest_inprogress": false, 
+            "notify_group": false
+        }, 
+        "model": "fixmystreet.groupmailconfig"
     }
 ]

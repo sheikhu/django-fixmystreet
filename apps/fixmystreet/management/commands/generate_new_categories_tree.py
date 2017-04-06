@@ -27,7 +27,7 @@ class Command(BaseCommand):
 
     NEW_LVL_3_SUBCAT = {}
 
-    FIXTURES_FMSPROXY = []
+    FIXTURES_FMSPROXY = {}
 
     def handle(self, *args, **options):
         mapping_csv = options['mapping_csv'] if options['mapping_csv'] else 'apps/fixmystreet/migrations/categories_mapping.csv'
@@ -38,15 +38,12 @@ class Command(BaseCommand):
 
         new_categories_fixtures = self.NEW_LVL_1 + self.NEW_LVL_2 + self.NEW_LVL_3 + self.NEW_LVL_4
 
-        # print new_categories_fixtures
-        # print self.FIXTURES_FMSPROXY
-
         categories_json = open('apps/fixmystreet/migrations/new_categories.json', 'w')
         categories_json.write(json.dumps(new_categories_fixtures, indent=4, default=self.date_handler))
         categories_json.close()
 
         categories_fmxproxy_json = open('apps/fixmystreet/migrations/new_categories_fmxproxy.json', 'w')
-        categories_fmxproxy_json.write(json.dumps(self.FIXTURES_FMSPROXY, indent=4))
+        categories_fmxproxy_json.write(json.dumps(self.FIXTURES_FMSPROXY.values(), indent=4))
         categories_fmxproxy_json.close()
 
 
@@ -162,7 +159,7 @@ class Command(BaseCommand):
                 },
                 "model": "abp.type"
             }
-            self.FIXTURES_FMSPROXY.append(fmsproxy_type)
+            self.FIXTURES_FMSPROXY[int(data[NEW_LVL_2_ID_IDX])] = fmsproxy_type
 
             # FMSProxy nature
             fmsproxy_nature = {
@@ -172,7 +169,7 @@ class Command(BaseCommand):
                 },
                 "model": "abp.nature"
             }
-            self.FIXTURES_FMSPROXY.append(fmsproxy_nature)
+            self.FIXTURES_FMSPROXY[int(data[NEW_LVL_3_ID_IDX])] = fmsproxy_nature
 
             try:
                 # FMSProxy bagtype
@@ -183,7 +180,7 @@ class Command(BaseCommand):
                     },
                     "model": "abp.bagtype"
                 }
-                self.FIXTURES_FMSPROXY.append(fmsproxy_bagtype)
+                self.FIXTURES_FMSPROXY[int(data[NEW_LVL_4_ID_IDX])] = fmsproxy_bagtype
             except ValueError:
                 pass
 

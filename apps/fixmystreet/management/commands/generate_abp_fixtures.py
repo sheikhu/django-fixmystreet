@@ -197,10 +197,50 @@ class Command(BaseCommand):
 
                         idx = idx +1
 
+            # Add ABP Group and generate dispatching for it
+            fixtures_fms.append({
+                "fields": {
+                    "name_fr": "ABP Group",
+                    "name_nl": "ABP Group",
+                    "created": datetime.datetime.now(),
+                    "dispatch_categories": natures_ids.values(),
+                    "dependency": int(options['abp_entity_id']),
+                    "modified": datetime.datetime.now(),
+                    "email": "pro@arp-gan.be",
+                    "phone": "0800/981 81",
+                    "active": True,
+                    "slug_fr": "ABP Group",
+                    "type": "D",
+                    "slug_nl": "ABP Group"
+                },
+                "model": "fixmystreet.organisationentity",
+                "pk": 300
+            })
+
+            # Add GroupMailConfig for Abp Group
+            fixtures_fms.append({
+                "fields": {
+                    "notify_members": False,
+                    "group": 300,
+                    "digest_closed": False,
+                    "digest_other": False,
+                    "digest_created": False,
+                    "digest_inprogress": False,
+                    "notify_group": False
+                },
+                "model": "fixmystreet.groupmailconfig"
+            })
+
         if options['dump'] == 'fms':
             logger.info('Dump fixtures fms')
-            print json.dumps(fixtures_fms, indent=4)
+            print json.dumps(fixtures_fms, indent=4, default=self.date_handler)
 
         if options['dump'] == 'fmsproxy':
             logger.info('Dump fixtures fmsproxy')
             print json.dumps(fixtures_fmsproxy, indent=4)
+
+    def date_handler(self, obj):
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        else:
+            raise TypeError
