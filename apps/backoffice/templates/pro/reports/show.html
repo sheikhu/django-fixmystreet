@@ -140,6 +140,9 @@
 
                             <!--/div-->
                             <span class="reportVisibility"><br/>{% trans 'Visibility' %} : {{ report.private|yesno:_("pro,public") }}<br/><br/></span>
+                            {% if report.several_occurences %}
+                                <span class="reportVisibility"><br/>{% trans 'Several Occurences' %}<br/><br/></span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="span6" id="postedbytitle">
