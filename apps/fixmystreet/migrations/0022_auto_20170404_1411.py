@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
 
         logger.info('Copy dispatching from old to new categories')
 
-        # Create new dispatching
+        # Create new dispatching by copying old
         with open("apps/fixmystreet/migrations/categories_mapping.csv", 'rb') as mapping_file:
             mapping_reader = csv.reader(mapping_file, delimiter=','.encode('utf-8'), quotechar='"'.encode('utf-8'))
 
@@ -37,18 +37,15 @@ class Migration(migrations.Migration):
 
         # Check and fix missing dispatching
         categories = ReportCategory.objects.filter(id__gte=3000)
+        arbitrary_category = ReportCategory.objects.get(id=29)
+        departments = arbitrary_category.assigned_to_department.all()
 
         for category in categories:
-            if category.assigned_to_department.all().count() < 23:
-                logger.info('-- Missing dispatching: %s', category.id)
-
-                arbitrary_category = ReportCategory.objects.get(id=29)
-                departments = arbitrary_category.assigned_to_department.all()
-                for department in departments:
-                    # Do not associate more than 1 group from the same entity to the same category
-                    if not category.assigned_to_department.filter(dependency=department.dependency).exists():
-                        logger.info('---- Fix missing dispatching: %s', department.id)
-                        department.dispatch_categories.add(category)
+            for department in departments:
+                # Do not associate more than 1 group from the same entity to the same category
+                if not category.assigned_to_department.filter(dependency=department.dependency).exists():
+                    logger.info('-- Missing dispatching: %s - %s' % (category.id, department.id))
+                    department.dispatch_categories.add(category)
 
 
         logger.info('Remove old dispatching')
