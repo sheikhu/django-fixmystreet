@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FixMyStreet\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-10 13:59+0200\n"
+"POT-Creation-Date: 2017-04-10 16:46+0200\n"
 "PO-Revision-Date: 2016-10-18 11:42+0000\n"
 "Last-Translator: afuca <afuca@cirb.brussels>\n"
 "Language-Team: Dutch (http://www.transifex.com/cirb/django-fixmystreet/"
@@ -58,7 +58,7 @@ msgstr "Achternaam"
 #: backoffice/templates/pro/auth/groups_list.html:32
 #: backoffice/templates/pro/auth/users_list.html:28
 #: backoffice/templates/pro/auth/users_list.html:34 fixmystreet/forms.py:214
-#: fixmystreet/templates/reports/_documentreport.html:116
+#: fixmystreet/templates/reports/_documentreport.html:131
 #: fixmystreet/templates/reports/reopen.html:170
 msgid "Email"
 msgstr "E-mail"
@@ -66,7 +66,7 @@ msgstr "E-mail"
 #: backoffice/forms.py:106 backoffice/forms.py:268
 #: backoffice/templates/pro/auth/users_list.html:27
 #: backoffice/templates/pro/auth/users_list.html:33
-#: fixmystreet/templates/reports/_documentreport.html:142
+#: fixmystreet/templates/reports/_documentreport.html:157
 #: fixmystreet/templates/reports/reopen.html:162
 msgid "Phone"
 msgstr "Tel."
@@ -199,7 +199,7 @@ msgstr "Mail configuratie"
 #: backoffice/templates/pro/auth/group_create.html:69
 #: backoffice/templates/pro/auth/user_edit.html:46
 #: fixmystreet/templates/contact/new.html:20
-#: fixmystreet/templates/reports/_documentreport.html:186
+#: fixmystreet/templates/reports/_documentreport.html:201
 #: fixmystreet/templates/reports/reopen.html:179
 msgid "* This fields are required"
 msgstr ""
@@ -237,8 +237,8 @@ msgstr "Bent u zeker dat u de groep \"%(group)s\" wilt verwijderen? "
 #: backoffice/templates/pro/reports/_actions.html:392
 #: backoffice/templates/pro/reports/_actions.html:422
 #: backoffice/templates/pro/reports/merge.html:253
-#: fixmystreet/templates/reports/_documentreport.html:62
-#: fixmystreet/templates/reports/_documentreport.html:85
+#: fixmystreet/templates/reports/_documentreport.html:77
+#: fixmystreet/templates/reports/_documentreport.html:100
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -252,7 +252,7 @@ msgstr "Groep administratie"
 #: backoffice/templates/pro/auth/users_list.html:32 fixmystreet/models.py:273
 #: fixmystreet/models.py:1515 fixmystreet/models.py:1547
 #: fixmystreet/models.py:1579 fixmystreet/models.py:1607
-#: fixmystreet/templates/reports/_documentreport.html:107
+#: fixmystreet/templates/reports/_documentreport.html:122
 #: fixmystreet/templates/reports/reopen.html:144
 msgid "Name"
 msgstr "Naam"
@@ -1275,7 +1275,7 @@ msgstr "Laatste actie"
 #: backoffice/templates/pro/reports/table.html:433
 #: backoffice/templates/pro/reports/table_content.html:51
 #: fixmystreet/forms.py:215
-#: fixmystreet/templates/reports/_documentreport.html:133
+#: fixmystreet/templates/reports/_documentreport.html:148
 #: fixmystreet/templates/reports/reopen.html:153
 msgid "Quality"
 msgstr "Hoedanigheid"
@@ -2637,42 +2637,52 @@ msgstr "Aard van het incident"
 msgid "sub_category"
 msgstr "Kleur van de vuilniszak"
 
-#: fixmystreet/templates/reports/_documentreport.html:51
+#: fixmystreet/templates/reports/_documentreport.html:49
+msgid "Several Occurences"
+msgstr "Neemt plaats over een afstand van enkele meters"
+
+#: fixmystreet/templates/reports/_documentreport.html:54
+msgid "Check the box if this incident is taking place on several meters"
+msgstr ""
+"Kruis dit vakje aan als dit incident opnieuw voorkomt over een afstand van "
+"enkele meters (<20m)"
+
+#: fixmystreet/templates/reports/_documentreport.html:66
 #: fixmystreet/templates/reports/reopen.html:128
 msgid "Comment"
 msgstr "Commentaar"
 
-#: fixmystreet/templates/reports/_documentreport.html:52
+#: fixmystreet/templates/reports/_documentreport.html:67
 msgid "Votre commentaire sera validé avant publication sur le site."
 msgstr "Voor publicatie wordt uw commentaar gevalideerd."
 
-#: fixmystreet/templates/reports/_documentreport.html:65
+#: fixmystreet/templates/reports/_documentreport.html:80
 msgid "Next step"
 msgstr "Verder"
 
-#: fixmystreet/templates/reports/_documentreport.html:71
-#: fixmystreet/templates/reports/_documentreport.html:156
+#: fixmystreet/templates/reports/_documentreport.html:86
+#: fixmystreet/templates/reports/_documentreport.html:171
 msgid "Notifications"
 msgstr "Opvolging"
 
-#: fixmystreet/templates/reports/_documentreport.html:77
-#: fixmystreet/templates/reports/_documentreport.html:163
+#: fixmystreet/templates/reports/_documentreport.html:92
+#: fixmystreet/templates/reports/_documentreport.html:178
 msgid "I want to be notified of the evolution of the incident"
 msgstr ""
 "Ik wens via e-mail op de hoogte gehouden te worden over de evolutie van het "
 "incident."
 
-#: fixmystreet/templates/reports/_documentreport.html:87
-#: fixmystreet/templates/reports/_documentreport.html:192
+#: fixmystreet/templates/reports/_documentreport.html:102
+#: fixmystreet/templates/reports/_documentreport.html:207
 #: fixmystreet/templates/reports/reopen.html:184
 msgid "Send"
 msgstr "Verzenden"
 
-#: fixmystreet/templates/reports/_documentreport.html:173
+#: fixmystreet/templates/reports/_documentreport.html:188
 msgid "Terms of use"
 msgstr "Voorwaarden"
 
-#: fixmystreet/templates/reports/_documentreport.html:179
+#: fixmystreet/templates/reports/_documentreport.html:194
 msgid ""
 "I have read and agree to the <a href='/terms-of-use' target='blank'>terms of "
 "use</a>"
@@ -2680,11 +2690,11 @@ msgstr ""
 "Ik heb gelezen en ingestemd met de <a href=\"/nl/gebruiksvoorwaarden/\" "
 "target=\"_blank\">gebruiksvoorwaarden</a>"
 
-#: fixmystreet/templates/reports/_documentreport.html:188
+#: fixmystreet/templates/reports/_documentreport.html:203
 msgid "The report will be send to you by mail."
 msgstr "Onmiddellijk na het verzenden ontvangt u een e-mail met het rapport."
 
-#: fixmystreet/templates/reports/_documentreport.html:196
+#: fixmystreet/templates/reports/_documentreport.html:211
 msgid "Previous step"
 msgstr "Terug"
 

@@ -42,6 +42,21 @@
             </div>
         </div>
 
+
+        <div id="report-several_occurences" class="control-group span11">
+
+            <label class="control-label" for="category_select">
+                <span class="dosisformblue">{% trans 'Several Occurences' %}</span>
+            </label>
+            <div class="controls">
+                <label class="checkbox inline" style="color:#2c3e50">
+                    {% input_class report_form.several_occurences 'several_occurences_check' %}
+                    {% trans "Check the box if this incident is taking place on several meters" %}
+                </label>
+            </div>
+        </div>
+
+
         {% endif %}
 
         {% include "reports/_photo_form.html" %}
