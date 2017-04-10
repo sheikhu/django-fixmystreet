@@ -29,13 +29,27 @@ class Migration(migrations.Migration):
                 departments  = []
                 if old_category.assigned_to_department.all().exists():
                     departments = old_category.assigned_to_department.all()
-                else:
-                    arbitrary_category = ReportCategory.objects.get(id=29)
-                    departments = arbitrary_category.assigned_to_department.all()
 
                 for department in departments:
+                    # Do not associate more than 1 group from the same entity to the same category
                     if not new_category.assigned_to_department.filter(dependency=department.dependency).exists():
                         department.dispatch_categories.add(new_category)
+
+        # Check and fix missing dispatching
+        categories = ReportCategory.objects.filter(id__gte=3000)
+
+        for category in categories:
+            if category.assigned_to_department.all().count() < 23:
+                logger.info('-- Missing dispatching: %s', category.id)
+
+                arbitrary_category = ReportCategory.objects.get(id=29)
+                departments = arbitrary_category.assigned_to_department.all()
+                for department in departments:
+                    # Do not associate more than 1 group from the same entity to the same category
+                    if not category.assigned_to_department.filter(dependency=department.dependency).exists():
+                        logger.info('---- Fix missing dispatching: %s', department.id)
+                        department.dispatch_categories.add(category)
+
 
         logger.info('Remove old dispatching')
 
@@ -49,13 +63,10 @@ class Migration(migrations.Migration):
                 department.dispatch_categories.remove(old_category)
 
 
-    def yo(apps, schema_editor):
-        pass
-
     dependencies = [
         ('fixmystreet', '0021_auto_20170404_1505'),
     ]
 
     operations = [
-        migrations.RunPython(copy_dispatching_to_new_categories, reverse_code=yo),
+        migrations.RunPython(copy_dispatching_to_new_categories),
     ]
