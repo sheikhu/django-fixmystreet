@@ -20,6 +20,14 @@ class Migration(migrations.Migration):
         logger.info('Import new categories')
         call_command('loaddata', 'apps/fixmystreet/migrations/new_categories.json')
 
+        logger.info('Delete duplicate ABP entity')
+        OrganisationEntity = apps.get_model("fixmystreet", "OrganisationEntity")
+
+        abp_entity_to_delete_id = 218
+
+        abp_entity_to_delete = OrganisationEntity.objects.get(id=abp_entity_to_delete_id)
+        abp_entity_to_delete.delete()
+
     dependencies = [
         ('fixmystreet', '0020_auto_20170405_1600'),
     ]
