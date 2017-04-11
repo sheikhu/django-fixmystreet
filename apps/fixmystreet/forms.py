@@ -76,6 +76,7 @@ class ReportForm(forms.ModelForm):
     sub_category = forms.ModelChoiceField(label=_("subcategory"), queryset=ReportSubCategory.objects.order_by('name_' + get_language()), widget=forms.RadioSelect, required=False)
 
     subscription = forms.BooleanField(label=_('Subscription and report follow-up'), initial=True, required=False)
+    several_occurences = forms.BooleanField(label=_('Several occurences'), initial=False, required=False)
 
     # hidden inputs
     address_nl = forms.CharField(widget=forms.widgets.HiddenInput)
