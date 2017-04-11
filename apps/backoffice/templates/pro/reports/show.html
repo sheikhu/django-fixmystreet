@@ -239,16 +239,6 @@
                     <!-- Actions -->
                     {% include "pro/reports/_actions.html" %}
 
-                    {% if from_verification %}
-                    <a href="#" onclick="incrementDuplicates()" role="button" class="btn lk-subscribe" data-toggle="modal">
-                        {% if report.duplicates %}
-                        <span class="badge badge-inverse">{{ report.duplicates }}</span>
-                        {% endif %}
-                        <i class="icon-duplicate"> </i>
-
-                        {% trans "confirm is duplicate" %}
-                    </a>
-                    {% endif %}
                 </div>
             </div>
         </div>
