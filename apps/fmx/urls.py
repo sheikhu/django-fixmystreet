@@ -4,7 +4,9 @@ urlpatterns = patterns('apps.fmx.views',
 
     (r'^is_pro/$', 'is_pro'),
     (r'^ack/$', 'ack'),
+
     (r'^categories/$', 'categories'),
+    (r'^categories_status/$', 'categories_status'),
 
     (r'^duplicates/$', 'duplicates'),
 
