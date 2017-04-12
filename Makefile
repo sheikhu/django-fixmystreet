@@ -55,7 +55,7 @@ jenkins: develop
 	rm -rf reports
 	mkdir reports
 	$(BIN_PATH)/flake8 --exclude migrations $(SRC_ROOT) > reports/flake8.report || echo "lint errors"
-	$(BIN_PATH)/manage.py jenkins $(APP_NAME)
+	SKIP_MIGRATIONS=true $(BIN_PATH)/manage.py jenkins $(APP_NAME)
 
 lint:
 	$(BIN_PATH)/flake8 --exclude migrations $(SRC_ROOT) || echo "lint errors"
@@ -87,7 +87,7 @@ run: $(BIN_PATH)
 	$(BIN_PATH)/manage.py runserver
 
 test: $(BIN_PATH)/manage.py
-	$(BIN_PATH)/manage.py test
+	SKIP_MIGRATIONS=true $(BIN_PATH)/manage.py test
 
 test-js:
 	testem ci -t apps/fixmystreet/static/tests/index.html
