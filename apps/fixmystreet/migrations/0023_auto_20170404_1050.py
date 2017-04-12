@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.conf import settings
 
 import logging, csv, os
 
@@ -12,7 +13,7 @@ logger = logging.getLogger("fixmystreet")
 class Migration(migrations.Migration):
 
     def reports_migrations(apps, schema_editor):
-        if os.environ.get('SKIP_MIGRATIONS', False):
+        if os.environ.get('SKIP_MIGRATIONS', False) or settings.ENVIRONMENT == "jenkins":
             return
 
         Report = apps.get_model("fixmystreet", "Report")

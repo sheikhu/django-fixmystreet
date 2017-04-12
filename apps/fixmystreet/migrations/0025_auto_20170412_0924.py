@@ -2,11 +2,14 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-
+from django.conf import settings
 
 class Migration(migrations.Migration):
 
     def increment_mobile_version(apps, schema_editor):
+        if settings.ENVIRONMENT == "jenkins":
+            return
+
         MobileServerStatus = apps.get_model("mobileserverstatus", "Message")
         message = MobileServerStatus.objects.all()[0]
         message.version = 2

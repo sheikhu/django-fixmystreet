@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.conf import settings
 
 import logging, os
 logger = logging.getLogger("fixmystreet")
@@ -10,7 +11,7 @@ logger = logging.getLogger("fixmystreet")
 class Migration(migrations.Migration):
 
     def delete_old_categories(apps, schema_editor):
-        if os.environ.get('SKIP_MIGRATIONS', False):
+        if os.environ.get('SKIP_MIGRATIONS', False) or settings.ENVIRONMENT == "jenkins":
             return
 
         logger.info('Delete old categories')

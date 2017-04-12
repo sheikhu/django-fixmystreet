@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 from django.core.management import call_command
+from django.conf import settings
 
 import logging, csv, os
 logger = logging.getLogger("fixmystreet")
@@ -11,7 +12,7 @@ logger = logging.getLogger("fixmystreet")
 class Migration(migrations.Migration):
 
     def import_new_categories(apps, schema_editor):
-        if os.environ.get('SKIP_MIGRATIONS', False):
+        if os.environ.get('SKIP_MIGRATIONS', False) or settings.ENVIRONMENT == "jenkins":
             return
 
         logger.info('Generate new categories from mapping')

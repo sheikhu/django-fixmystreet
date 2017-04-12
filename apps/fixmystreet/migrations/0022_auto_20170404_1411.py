@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.conf import settings
 
 from ..management.commands.new_category_consts import *
 from apps.fixmystreet.models import ReportCategory
@@ -13,7 +14,7 @@ logger = logging.getLogger("fixmystreet")
 class Migration(migrations.Migration):
 
     def copy_dispatching_to_new_categories(apps, schema_editor):
-        if os.environ.get('SKIP_MIGRATIONS', False):
+        if os.environ.get('SKIP_MIGRATIONS', False) or settings.ENVIRONMENT == "jenkins":
             return
 
         logger.info('Copy dispatching from old to new categories')
