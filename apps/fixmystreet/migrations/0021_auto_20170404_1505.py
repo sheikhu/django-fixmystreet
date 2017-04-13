@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         call_command('generate_new_categories_tree')
 
         logger.info('Import new categories')
-        call_command('loaddata', 'apps/fixmystreet/migrations/new_categories.json')
+        call_command('loaddata', 'new_categories.json')
 
         logger.info('Delete duplicate ABP entity')
         OrganisationEntity = apps.get_model("fixmystreet", "OrganisationEntity")

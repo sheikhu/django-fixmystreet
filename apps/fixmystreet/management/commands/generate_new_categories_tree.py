@@ -38,11 +38,11 @@ class Command(BaseCommand):
 
         new_categories_fixtures = self.NEW_LVL_1 + self.NEW_LVL_2 + self.NEW_LVL_3 + self.NEW_LVL_4
 
-        categories_json = open('apps/fixmystreet/migrations/new_categories.json', 'w')
+        categories_json = open('new_categories.json', 'w')
         categories_json.write(json.dumps(new_categories_fixtures, indent=4, default=self.date_handler))
         categories_json.close()
 
-        categories_fmxproxy_json = open('apps/fixmystreet/migrations/new_categories_fmxproxy.json', 'w')
+        categories_fmxproxy_json = open('new_categories_fmxproxy.json', 'w')
         categories_fmxproxy_json.write(json.dumps(self.FIXTURES_FMSPROXY.values(), indent=4))
         categories_fmxproxy_json.close()
 
