@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
     idx_reportsecondarycategoryclass = 9
     idx_reportsubcategory = 0
-    idx_reportcategory = 118
+    idx_reportcategory = 150
 
     abp_entity_id = 23
     abp_group_id = 300
