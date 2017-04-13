@@ -118,9 +118,6 @@ class Command(BaseCommand):
         }
 
         if category_lvl_3.organisation_regional:
-            if int(data[NEW_LVL_3_ID_IDX]) == 3123:
-                print 'organisation_regional', category_lvl_3.id, category_lvl_3.organisation_regional.id
-                print 'organisation_communal', category_lvl_3.id, category_lvl_3.organisation_communal.id
             field['fields']['organisation_regional'] = category_lvl_3.organisation_regional.id
         if category_lvl_3.organisation_communal:
             field['fields']['organisation_communal'] = category_lvl_3.organisation_communal.id
