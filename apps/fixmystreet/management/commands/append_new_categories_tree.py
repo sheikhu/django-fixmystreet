@@ -43,6 +43,10 @@ class Command(BaseCommand):
     AUTO_DISPATCHING_COMMUNAL_IDX = 16
     AUTO_DISPATCHING_REGIONAL_IDX = 17
 
+    ABP_TYPE_ID_IDX = 18
+    ABP_NATURE_ID_IDX = 19
+    ABP_BAGTYPE_ID_IDX = 20
+
     LVL_1 = []
     LVL_2 = []
     LVL_3 = []
@@ -86,7 +90,7 @@ class Command(BaseCommand):
                 self.LVL_3.append(self.create_LVL3_category(row))
 
                 # FMSProxy fixtures
-                # self.create_fmsproxy_mapping(row)
+                self.create_fmsproxy_mapping(row)
 
     def create_LVL1_category(self, data):
         return {
@@ -172,7 +176,7 @@ class Command(BaseCommand):
 
     def create_fmsproxy_mapping(self, data):
 
-        if not data[ABP_TYPE_ID_IDX]:
+        if not data[self.ABP_TYPE_ID_IDX]:
             return
 
         try:
@@ -180,7 +184,7 @@ class Command(BaseCommand):
             fmsproxy_type = {
                 "fields": {
                     "fms_id": int(data[self.LVL_2_ID_IDX]),
-                    "abp_id": int(data[ABP_TYPE_ID_IDX])
+                    "abp_id": int(data[self.ABP_TYPE_ID_IDX])
                 },
                 "model": "abp.type"
             }
@@ -190,7 +194,7 @@ class Command(BaseCommand):
             fmsproxy_nature = {
                 "fields": {
                     "fms_id": int(data[self.LVL_3_ID_IDX]),
-                    "abp_id": int(data[ABP_NATURE_ID_IDX])
+                    "abp_id": int(data[self.ABP_NATURE_ID_IDX])
                 },
                 "model": "abp.nature"
             }
@@ -201,7 +205,7 @@ class Command(BaseCommand):
                 fmsproxy_bagtype = {
                     "fields": {
                         "fms_id": int(data[self.LVL_4_ID_IDX]),
-                        "abp_id": int(data[ABP_BAGTYPE_ID_IDX])
+                        "abp_id": int(data[self.ABP_BAGTYPE_ID_IDX])
                     },
                     "model": "abp.bagtype"
                 }
