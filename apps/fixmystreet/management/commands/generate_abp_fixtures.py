@@ -199,10 +199,10 @@ class Command(BaseCommand):
             # Add ABP Entity
             fixtures_fms.append({
                 "fields": {
-                    "name_fr": "Bruxelles Proprete",
-                    "name_nl": "Net Brussel",
+                    "name_fr": "Bruxelles-Propreté",
+                    "name_nl": "Net Brussels",
                     "email": "pro@arp-gan.be",
-                    "phone": "0800/981 81",
+                    "phone": "0800 981 81",
                     "active": True,
                     "type": "R",
                 },
@@ -213,18 +213,18 @@ class Command(BaseCommand):
             # Add ABP Group and generate dispatching for it
             fixtures_fms.append({
                 "fields": {
-                    "name_fr": "ABP Group",
-                    "name_nl": "ABP Group",
+                    "name_fr": "Bruxelles-Propreté Groupe",
+                    "name_nl": "Net Brussels Group",
                     "created": datetime.datetime.now(),
                     "dispatch_categories": natures_ids.values(),
                     "dependency": self.abp_entity_id,
                     "modified": datetime.datetime.now(),
                     "email": "pro@arp-gan.be",
-                    "phone": "0800/981 81",
+                    "phone": "0800 981 81",
                     "active": True,
-                    "slug_fr": "ABP Group",
+                    "slug_fr": "Bruxelles-Propreté Groupe",
                     "type": "D",
-                    "slug_nl": "ABP Group"
+                    "slug_nl": "Net Brussels Group"
                 },
                 "model": "fixmystreet.organisationentity",
                 "pk": self.abp_group_id
@@ -250,7 +250,7 @@ class Command(BaseCommand):
                     "applicant": False,
                     "logical_deleted": False,
                     "organisation": self.abp_entity_id,
-                    "telephone": "0800/981 81",
+                    "telephone": "0800 981 81",
                     "agent": False,
                     "contractor": False,
                     "manager": True,
