@@ -12,7 +12,7 @@ logger = logging.getLogger("fixmystreet")
 class Migration(migrations.Migration):
 
     def fix_dispatching_by_looking_similar_categories(apps, schema_editor):
-        if settings.ENVIRONMENT == "jenkins":
+        if os.environ.get('SKIP_MIGRATIONS', False) or settings.ENVIRONMENT == "jenkins":
             return
 
         # Check and fix missing dispatching
@@ -34,8 +34,9 @@ class Migration(migrations.Migration):
                             department.dispatch_categories.add(category)
                             break
 
+
     def fix_dispatching_force(apps, schema_editor):
-        if settings.ENVIRONMENT == "jenkins":
+        if os.environ.get('SKIP_MIGRATIONS', False) or settings.ENVIRONMENT == "jenkins":
             return
 
         # Check and fix missing dispatching
