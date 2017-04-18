@@ -40,6 +40,9 @@ class Command(BaseCommand):
     LVL_3_ID_IDX = 14
     LVL_4_ID_IDX = 15
 
+    AUTO_DISPATCHING_COMMUNAL_IDX = 16
+    AUTO_DISPATCHING_REGIONAL_IDX = 17
+
     LVL_1 = []
     LVL_2 = []
     LVL_3 = []
@@ -117,11 +120,6 @@ class Command(BaseCommand):
 
     def create_LVL3_category(self, data):
         try:
-            category_lvl_3 = ReportCategory.objects.get(id=int(data[self.LVL_3_ID_IDX]))
-        except ReportCategory.DoesNotExist:
-            category_lvl_3 = None
-
-        try:
             self.LVL_3_SUBCAT[data[self.LVL_3_ID_IDX]]
         except KeyError:
             self.LVL_3_SUBCAT[data[self.LVL_3_ID_IDX]] = []
@@ -143,11 +141,11 @@ class Command(BaseCommand):
             "pk": int(data[self.LVL_3_ID_IDX])
         }
 
-        if category_lvl_3:
-            if category_lvl_3.organisation_regional:
-                field['fields']['organisation_regional'] = category_lvl_3.organisation_regional.id
-            if category_lvl_3.organisation_communal:
-                field['fields']['organisation_communal'] = category_lvl_3.organisation_communal.id
+        if data[self.AUTO_DISPATCHING_COMMUNAL_IDX]:
+            field['fields']['organisation_communal'] = data[self.AUTO_DISPATCHING_COMMUNAL_IDX]
+        if data[self.AUTO_DISPATCHING_REGIONAL_IDX]:
+            field['fields']['organisation_regional'] = data[self.AUTO_DISPATCHING_REGIONAL_IDX]
+
 
         return field
 
