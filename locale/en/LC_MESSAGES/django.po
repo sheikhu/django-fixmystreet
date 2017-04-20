@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-20 16:56+0100\n"
+"POT-Creation-Date: 2017-04-20 10:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,7 +117,7 @@ msgid "In progress and assigned"
 msgstr ""
 
 #: backoffice/forms.py:249 backoffice/templates/pro/home.html:67
-#: fixmystreet/models.py:1814
+#: fixmystreet/models.py:1834
 msgid "Closed"
 msgstr ""
 
@@ -238,8 +238,8 @@ msgstr ""
 #: backoffice/templates/pro/auth/groups_list.html:31
 #: backoffice/templates/pro/auth/users_list.html:26
 #: backoffice/templates/pro/auth/users_list.html:32 fixmystreet/models.py:273
-#: fixmystreet/models.py:1458 fixmystreet/models.py:1490
-#: fixmystreet/models.py:1522 fixmystreet/models.py:1550
+#: fixmystreet/models.py:1478 fixmystreet/models.py:1510
+#: fixmystreet/models.py:1542 fixmystreet/models.py:1570
 #: fixmystreet/templates/reports/_documentreport.html:107
 #: fixmystreet/templates/reports/reopen.html:144
 msgid "Name"
@@ -869,11 +869,11 @@ msgstr ""
 msgid "Accept"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:187 fixmystreet/models.py:1831
+#: backoffice/templates/pro/reports/show.html:187 fixmystreet/models.py:1851
 msgid "Reopen"
 msgstr ""
 
-#: backoffice/templates/pro/reports/show.html:196 fixmystreet/models.py:1832
+#: backoffice/templates/pro/reports/show.html:196 fixmystreet/models.py:1852
 #: fixmystreet/templates/reports/reopen.html:6
 #: fixmystreet/templates/reports/reopen.html:39
 msgid "Reopen request"
@@ -1158,7 +1158,7 @@ msgstr ""
 
 #: backoffice/templates/pro/reports/table.html:226 fixmystreet/models.py:620
 #: fixmystreet/models.py:621 fixmystreet/models.py:921
-#: fixmystreet/models.py:1826
+#: fixmystreet/models.py:1846
 msgid "Created"
 msgstr ""
 
@@ -1570,25 +1570,25 @@ msgstr ""
 msgid "A request to reopen this ticket was sent to the person in charge."
 msgstr ""
 
-#: backoffice/views/reports/main.py:71 fixmystreet/views/reports/main.py:81
+#: backoffice/views/reports/main.py:75 fixmystreet/views/reports/main.py:86
 msgid "Newly created report successfull"
 msgstr ""
 
-#: backoffice/views/reports/main.py:144 backoffice/views/reports/main.py:354
-#: fixmystreet/views/reports/main.py:221 fixmystreet/views/reports/main.py:278
+#: backoffice/views/reports/main.py:148 backoffice/views/reports/main.py:358
+#: fixmystreet/views/reports/main.py:226 fixmystreet/views/reports/main.py:283
 msgid "No incident found with this ticket number"
 msgstr ""
 
-#: backoffice/views/reports/main.py:151
+#: backoffice/views/reports/main.py:155
 msgid "Report successfully deleted"
 msgstr ""
 
-#: backoffice/views/reports/main.py:181 backoffice/views/reports/main.py:280
-#: fixmystreet/views/reports/main.py:178
+#: backoffice/views/reports/main.py:185 backoffice/views/reports/main.py:284
+#: fixmystreet/views/reports/main.py:183
 msgid "Modification(s) registered"
 msgstr ""
 
-#: backoffice/views/reports/main.py:262 fixmystreet/views/reports/main.py:158
+#: backoffice/views/reports/main.py:266 fixmystreet/views/reports/main.py:163
 msgid "You must add a comment, a photo or a document to continue."
 msgstr ""
 
@@ -1742,7 +1742,7 @@ msgstr ""
 msgid "Association"
 msgstr ""
 
-#: fixmystreet/models.py:101 fixmystreet/models.py:1677
+#: fixmystreet/models.py:101 fixmystreet/models.py:1697
 msgid "Other"
 msgstr ""
 
@@ -1770,9 +1770,9 @@ msgstr ""
 msgid "Neighbour house"
 msgstr ""
 
-#: fixmystreet/models.py:274 fixmystreet/models.py:1459
-#: fixmystreet/models.py:1491 fixmystreet/models.py:1523
-#: fixmystreet/models.py:1551
+#: fixmystreet/models.py:274 fixmystreet/models.py:1479
+#: fixmystreet/models.py:1511 fixmystreet/models.py:1543
+#: fixmystreet/models.py:1571
 msgid "Slug"
 msgstr ""
 
@@ -1785,7 +1785,7 @@ msgid "Notify members"
 msgstr ""
 
 #: fixmystreet/models.py:622 fixmystreet/models.py:923
-#: fixmystreet/models.py:1813
+#: fixmystreet/models.py:1833
 msgid "Refused"
 msgstr ""
 
@@ -1857,51 +1857,50 @@ msgstr ""
 msgid "Temporary"
 msgstr ""
 
-#: fixmystreet/models.py:1275
+#: fixmystreet/models.py:1295
 #: fixmystreet/templates/reports/_visibility_control.html:5
 #: fixmystreet/templates/reports/_visibility_control.html:24
 msgid "Public"
 msgstr ""
 
-#: fixmystreet/models.py:1276
+#: fixmystreet/models.py:1296
 #: fixmystreet/templates/reports/_visibility_control.html:10
 #: fixmystreet/templates/reports/_visibility_control.html:32
 msgid "Private"
 msgstr ""
 
-#: fixmystreet/models.py:1277
+#: fixmystreet/models.py:1297
 #: fixmystreet/templates/reports/_visibility_control.html:15
 #: fixmystreet/templates/reports/_visibility_control.html:40
 msgid "Confidential"
 msgstr ""
 
-#: fixmystreet/models.py:1281
+#: fixmystreet/models.py:1301
 msgid "Documentation"
 msgstr ""
 
-#: fixmystreet/models.py:1282
+#: fixmystreet/models.py:1302
 msgid "Closing message"
 msgstr ""
 
-#: fixmystreet/models.py:1283
+#: fixmystreet/models.py:1303
 msgid "Refusing message"
 msgstr ""
 
-#: fixmystreet/models.py:1284
+#: fixmystreet/models.py:1304
 msgid "Mark as done message"
 msgstr ""
 
-#: fixmystreet/models.py:1285
+#: fixmystreet/models.py:1305
 msgid "Reopen request message"
 msgstr ""
 
-#: fixmystreet/models.py:1316 fixmystreet/models.py:1329
+#: fixmystreet/models.py:1336 fixmystreet/models.py:1349
 msgid "ANONYMOUS"
 msgstr ""
 
-#: fixmystreet/models.py:1323 fixmystreet/models.py:1769
-#: fixmystreet/models.py:1905
-#: fixmystreet/templates/reports/_attachment.html:42
+#: fixmystreet/models.py:1343 fixmystreet/models.py:1789
+#: fixmystreet/models.py:1925 fixmystreet/templates/reports/_attachment.html:42
 #: fixmystreet/templates/reports/_attachment.html:131
 #: fixmystreet/tests/test_history.py:849 fixmystreet/tests/test_history.py:853
 #: fixmystreet/tests/test_history.py:866 fixmystreet/utils.py:158
@@ -1909,224 +1908,224 @@ msgstr ""
 msgid "a citizen"
 msgstr ""
 
-#: fixmystreet/models.py:1553 fixmystreet/models.py:1554
+#: fixmystreet/models.py:1573 fixmystreet/models.py:1574
 msgid "Category group"
 msgstr ""
 
-#: fixmystreet/models.py:1664 fixmystreet/models.py:1975
+#: fixmystreet/models.py:1684 fixmystreet/models.py:1995
 msgid "Label"
 msgstr ""
 
-#: fixmystreet/models.py:1675
+#: fixmystreet/models.py:1695
 msgid "Not repaired"
 msgstr ""
 
-#: fixmystreet/models.py:1676
+#: fixmystreet/models.py:1696
 msgid "Badly repaired"
 msgstr ""
 
-#: fixmystreet/models.py:1815
+#: fixmystreet/models.py:1835
 msgid "Marked as Done"
 msgstr ""
 
-#: fixmystreet/models.py:1816
+#: fixmystreet/models.py:1836
 msgid "Manager assigned"
 msgstr ""
 
-#: fixmystreet/models.py:1818
+#: fixmystreet/models.py:1838
 msgid "Valid"
 msgstr ""
 
-#: fixmystreet/models.py:1819
+#: fixmystreet/models.py:1839
 msgid "Organisation assigned"
 msgstr ""
 
-#: fixmystreet/models.py:1821
+#: fixmystreet/models.py:1841
 msgid "Contractor assigned"
 msgstr ""
 
-#: fixmystreet/models.py:1822
+#: fixmystreet/models.py:1842
 msgid "Contractor changed"
 msgstr ""
 
-#: fixmystreet/models.py:1823
+#: fixmystreet/models.py:1843
 msgid "Applicant assigned"
 msgstr ""
 
-#: fixmystreet/models.py:1824
+#: fixmystreet/models.py:1844
 msgid "Applicant changed"
 msgstr ""
 
-#: fixmystreet/models.py:1827
+#: fixmystreet/models.py:1847
 msgid "Updated"
 msgstr ""
 
-#: fixmystreet/models.py:1828
+#: fixmystreet/models.py:1848
 msgid "Update published"
 msgstr ""
 
-#: fixmystreet/models.py:1829
+#: fixmystreet/models.py:1849
 msgid "Planned"
 msgstr ""
 
-#: fixmystreet/models.py:1830
+#: fixmystreet/models.py:1850
 msgid "Merged"
 msgstr ""
 
-#: fixmystreet/models.py:1833
+#: fixmystreet/models.py:1853
 msgid "Became private"
 msgstr ""
 
-#: fixmystreet/models.py:1834
+#: fixmystreet/models.py:1854
 msgid "Became public"
 msgstr ""
 
-#: fixmystreet/models.py:1835
+#: fixmystreet/models.py:1855
 msgid "PDF was sent by email"
 msgstr ""
 
-#: fixmystreet/models.py:1836
+#: fixmystreet/models.py:1856
 msgid "A comment was deleted"
 msgstr ""
 
-#: fixmystreet/models.py:1837
+#: fixmystreet/models.py:1857
 msgid "A picture or document was deleted"
 msgstr ""
 
-#: fixmystreet/models.py:1838
+#: fixmystreet/models.py:1858
 msgid "The value of the 'third party responsibility' flag was changed"
 msgstr ""
 
-#: fixmystreet/models.py:1839
-msgid "The value of the 'private property flag' was changed"
-msgstr ""
-
-#: fixmystreet/models.py:1842
-#, python-brace-format
-msgid "Report refused by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1843
-#, python-brace-format
-msgid "Report closed by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1844
-#, python-brace-format
-msgid "Report pointed as solved by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1845
-#, python-brace-format
-msgid "Report transferred to {related_new} by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1847
-#, python-brace-format
-msgid "Report has been approved by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1848
-#, python-brace-format
-msgid "{related_new} is responsible for the report"
-msgstr ""
-
-#: fixmystreet/models.py:1850
-#, python-brace-format
-msgid "Applicant {related_new} is assigned to the report by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1851
-#, python-brace-format
-msgid "Applicant changed from {related_old} to {related_new}"
-msgstr ""
-
-#: fixmystreet/models.py:1852
-#, python-brace-format
-msgid "Contractor {related_new} is assigned to the report by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1853
-#, python-brace-format
-msgid "Contractor changed from {related_old} to {related_new}"
-msgstr ""
-
-#: fixmystreet/models.py:1855
-#, python-brace-format
-msgid "Report created by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1856
-#, python-brace-format
-msgid "Report updated by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1857
-#, python-brace-format
-msgid "Informations published by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1858
-#, python-brace-format
-msgid "Report planned to {date_planned} by {user}"
-msgstr ""
-
 #: fixmystreet/models.py:1859
-#, python-brace-format
-msgid "Report merged with report #{merged_with_id} by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1860
-#, python-brace-format
-msgid "Report reopen by {user}"
-msgstr ""
-
-#: fixmystreet/models.py:1861
-#, python-brace-format
-msgid "Request to reopen report made by {user}"
+msgid "The value of the 'private property flag' was changed"
 msgstr ""
 
 #: fixmystreet/models.py:1862
 #, python-brace-format
-msgid "Report became private by {user}"
+msgid "Report refused by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:1863
 #, python-brace-format
-msgid "Report became public by {user}"
+msgid "Report closed by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:1864
 #, python-brace-format
-msgid "The PDF was sent by {user} to {text}"
+msgid "Report pointed as solved by {user}"
 msgstr ""
 
 #: fixmystreet/models.py:1865
 #, python-brace-format
+msgid "Report transferred to {related_new} by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1867
+#, python-brace-format
+msgid "Report has been approved by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1868
+#, python-brace-format
+msgid "{related_new} is responsible for the report"
+msgstr ""
+
+#: fixmystreet/models.py:1870
+#, python-brace-format
+msgid "Applicant {related_new} is assigned to the report by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1871
+#, python-brace-format
+msgid "Applicant changed from {related_old} to {related_new}"
+msgstr ""
+
+#: fixmystreet/models.py:1872
+#, python-brace-format
+msgid "Contractor {related_new} is assigned to the report by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1873
+#, python-brace-format
+msgid "Contractor changed from {related_old} to {related_new}"
+msgstr ""
+
+#: fixmystreet/models.py:1875
+#, python-brace-format
+msgid "Report created by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1876
+#, python-brace-format
+msgid "Report updated by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1877
+#, python-brace-format
+msgid "Informations published by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1878
+#, python-brace-format
+msgid "Report planned to {date_planned} by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1879
+#, python-brace-format
+msgid "Report merged with report #{merged_with_id} by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1880
+#, python-brace-format
+msgid "Report reopen by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1881
+#, python-brace-format
+msgid "Request to reopen report made by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1882
+#, python-brace-format
+msgid "Report became private by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1883
+#, python-brace-format
+msgid "Report became public by {user}"
+msgstr ""
+
+#: fixmystreet/models.py:1884
+#, python-brace-format
+msgid "The PDF was sent by {user} to {text}"
+msgstr ""
+
+#: fixmystreet/models.py:1885
+#, python-brace-format
 msgid "A comment was deleted by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:1866
+#: fixmystreet/models.py:1886
 #, python-brace-format
 msgid "A picture or document was deleted by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:1867
+#: fixmystreet/models.py:1887
 #, python-brace-format
 msgid ""
 "The value of the 'third party responsibility' flag was changed by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:1868
+#: fixmystreet/models.py:1888
 #, python-brace-format
 msgid "The value of the 'private property flag' was changed by {user}"
 msgstr ""
 
-#: fixmystreet/models.py:1976
+#: fixmystreet/models.py:1996
 msgid "Related model class name"
 msgstr ""
 
-#: fixmystreet/models.py:1977
+#: fixmystreet/models.py:1997
 msgid "Related model field"
 msgstr ""
 
@@ -2870,42 +2869,42 @@ msgstr ""
 msgid "Incident was updated by"
 msgstr ""
 
-#: webhooks/inbound.py:165
+#: webhooks/inbound.py:170
 #, python-brace-format
 msgid "Report assignment was registered by {third_party}."
 msgstr ""
 
-#: webhooks/inbound.py:171
+#: webhooks/inbound.py:176
 #, python-brace-format
 msgid "Report assignment was accepted by {third_party}."
 msgstr ""
 
-#: webhooks/inbound.py:177
+#: webhooks/inbound.py:182
 #, python-brace-format
 msgid "Report assignment was updated by {third_party}."
 msgstr ""
 
-#: webhooks/inbound.py:182
+#: webhooks/inbound.py:187
 #, python-brace-format
 msgid "Report assignment was rejected by {third_party}."
 msgstr ""
 
-#: webhooks/inbound.py:196
+#: webhooks/inbound.py:201
 #, python-brace-format
 msgid "Report assignment was closed by {third_party}."
 msgstr ""
 
-#: webhooks/inbound.py:228
+#: webhooks/inbound.py:233
 #, python-brace-format
 msgid "Report transfer was accepted by {third_party}."
 msgstr ""
 
-#: webhooks/inbound.py:243
+#: webhooks/inbound.py:248
 #, python-brace-format
 msgid "Report transfer was rejected by {third_party}."
 msgstr ""
 
-#: webhooks/inbound.py:266
+#: webhooks/inbound.py:276
 #, python-brace-format
 msgid "Report transfer was closed by {third_party}."
 msgstr ""
