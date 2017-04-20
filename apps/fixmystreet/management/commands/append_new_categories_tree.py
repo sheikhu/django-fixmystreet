@@ -95,12 +95,12 @@ class Command(BaseCommand):
     def create_LVL1_category(self, data):
         return {
             "fields": {
-                "name_fr": data[self.LVL_1_NAME_FR_IDX],
-                "name_nl": data[self.LVL_1_NAME_NL_IDX],
+                "name_fr": data[self.LVL_1_NAME_FR_IDX].strip().capitalize(),
+                "name_nl": data[self.LVL_1_NAME_NL_IDX].strip().capitalize(),
                 "created": datetime.datetime.now(),
                 "modified": datetime.datetime.now(),
-                "slug_fr": data[self.LVL_1_NAME_FR_IDX],
-                "slug_nl": data[self.LVL_1_NAME_NL_IDX]
+                "slug_fr": data[self.LVL_1_NAME_FR_IDX].strip(),
+                "slug_nl": data[self.LVL_1_NAME_NL_IDX].strip()
             },
             "model": "fixmystreet.reportmaincategoryclass",
             "pk": int(data[self.LVL_1_ID_IDX])
@@ -110,12 +110,12 @@ class Command(BaseCommand):
     def create_LVL2_category(self, data):
         return {
             "fields": {
-                "name_fr": data[self.LVL_2_NAME_FR_IDX],
-                "name_nl": data[self.LVL_2_NAME_NL_IDX],
+                "name_fr": data[self.LVL_2_NAME_FR_IDX].strip().capitalize(),
+                "name_nl": data[self.LVL_2_NAME_NL_IDX].strip().capitalize(),
                 "created": datetime.datetime.now(),
                 "modified": datetime.datetime.now(),
-                "slug_fr": data[self.LVL_2_NAME_FR_IDX],
-                "slug_nl": data[self.LVL_2_NAME_NL_IDX]
+                "slug_fr": data[self.LVL_2_NAME_FR_IDX].strip(),
+                "slug_nl": data[self.LVL_2_NAME_NL_IDX].strip()
             },
             "model": "fixmystreet.reportsecondarycategoryclass",
             "pk":  int(data[self.LVL_2_ID_IDX])
@@ -130,16 +130,16 @@ class Command(BaseCommand):
 
         field = {
             "fields": {
-                "name_fr": data[self.LVL_3_NAME_FR_IDX],
-                "name_nl": data[self.LVL_3_NAME_NL_IDX],
+                "name_fr": data[self.LVL_3_NAME_FR_IDX].strip().capitalize(),
+                "name_nl": data[self.LVL_3_NAME_NL_IDX].strip().capitalize(),
                 "created": datetime.datetime.now(),
                 "category_class": int(data[self.LVL_1_ID_IDX]),
                 "modified": datetime.datetime.now(),
                 "public": True,
                 "sub_categories": self.LVL_3_SUBCAT[data[self.LVL_3_ID_IDX]],
                 "secondary_category_class": int(data[self.LVL_2_ID_IDX]),
-                "slug_fr": data[self.LVL_3_NAME_FR_IDX],
-                "slug_nl": data[self.LVL_3_NAME_NL_IDX]
+                "slug_fr": data[self.LVL_3_NAME_FR_IDX].strip(),
+                "slug_nl": data[self.LVL_3_NAME_NL_IDX].strip()
             },
             "model": "fixmystreet.reportcategory",
             "pk": int(data[self.LVL_3_ID_IDX])
@@ -163,8 +163,8 @@ class Command(BaseCommand):
 
             return {
                 "fields": {
-                    "name_fr": data[self.LVL_4_NAME_FR_IDX],
-                    "name_nl": data[self.LVL_4_NAME_NL_IDX],
+                    "name_fr": data[self.LVL_4_NAME_FR_IDX].strip().capitalize(),
+                    "name_nl": data[self.LVL_4_NAME_NL_IDX].strip().capitalize(),
                     "created": datetime.datetime.now(),
                     "modified": datetime.datetime.now(),
                     "slug_fr": "",
