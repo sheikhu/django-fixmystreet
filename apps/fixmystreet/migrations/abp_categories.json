@@ -923,9 +923,9 @@
     }, 
     {
         "fields": {
-            "name_fr": "Bruxelles Proprete", 
-            "name_nl": "Net Brussel", 
-            "phone": "0800/981 81", 
+            "name_fr": "Bruxelles-Propret\u00e9", 
+            "name_nl": "Net Brussels", 
+            "phone": "0800 981 81", 
             "active": true, 
             "type": "R", 
             "email": "pro@arp-gan.be"
@@ -935,7 +935,7 @@
     }, 
     {
         "fields": {
-            "name_fr": "ABP Group", 
+            "name_fr": "Bruxelles-Propret\u00e9 Groupe", 
             "dispatch_categories": [
                 151, 
                 153, 
@@ -967,14 +967,14 @@
                 205, 
                 207
             ], 
-            "phone": "0800/981 81", 
+            "phone": "0800 981 81", 
             "active": true, 
-            "slug_nl": "ABP Group", 
-            "name_nl": "ABP Group", 
-            "created": "2017-04-13T11:21:31.848290", 
-            "modified": "2017-04-13T11:21:31.848294", 
+            "slug_nl": "Net Brussels Group", 
+            "name_nl": "Net Brussels Group", 
+            "created": "2017-04-26T15:00:32.926171", 
+            "modified": "2017-04-26T15:00:32.926175", 
             "dependency": 23, 
-            "slug_fr": "ABP Group", 
+            "slug_fr": "Bruxelles-Propret\u00e9 Groupe", 
             "type": "D", 
             "email": "pro@arp-gan.be"
         }, 
@@ -991,11 +991,12 @@
             "digest_inprogress": false, 
             "notify_group": false
         }, 
-        "model": "fixmystreet.groupmailconfig"
+        "model": "fixmystreet.groupmailconfig", 
+        "pk": 200
     }, 
     {
         "fields": {
-            "telephone": "0800/981 81", 
+            "telephone": "0800 981 81", 
             "agent": false, 
             "manager": true, 
             "groups": [], 
@@ -1004,7 +1005,7 @@
             "logical_deleted": false, 
             "organisation": 23, 
             "applicant": false, 
-            "modified": "2017-04-13T11:21:31.848299", 
+            "modified": "2017-04-26T15:00:32.926180", 
             "contractor": false, 
             "leader": false
         }, 
@@ -1015,9 +1016,9 @@
         "fields": {
             "user": 10673, 
             "organisation": 300, 
-            "modified": "2017-04-13T11:21:31.848303", 
+            "modified": "2017-04-26T15:00:32.926183", 
             "contact_user": true, 
-            "created": "2017-04-13T11:21:31.848302"
+            "created": "2017-04-26T15:00:32.926182"
         }, 
         "model": "fixmystreet.userorganisationmembership"
     }

@@ -162,14 +162,23 @@ class Command(BaseCommand):
             self.FIXTURES_FMSPROXY[int(data[NEW_LVL_2_ID_IDX])] = fmsproxy_type
 
             # FMSProxy nature
+            try:
+                nature_id = int(data[ABP_NATURE_ID_IDX])
+                fms_id = int(data[NEW_LVL_3_ID_IDX])
+            except ValueError:
+                nature_id = int(data[ABP_NATURE_ID_ALT_IDX])
+                fms_id = int(data[NEW_LVL_4_ID_IDX])
+
+                logger.debug('ABP Nature Alt: %s - %s' %(int(data[ABP_NATURE_ID_ALT_IDX]), int(data[NEW_LVL_4_ID_IDX])))
+
             fmsproxy_nature = {
                 "fields": {
-                    "fms_id": int(data[NEW_LVL_3_ID_IDX]),
-                    "abp_id": int(data[ABP_NATURE_ID_IDX])
+                    "fms_id": fms_id,
+                    "abp_id": nature_id
                 },
                 "model": "abp.nature"
             }
-            self.FIXTURES_FMSPROXY[int(data[NEW_LVL_3_ID_IDX])] = fmsproxy_nature
+            self.FIXTURES_FMSPROXY[fms_id] = fmsproxy_nature
 
             try:
                 # FMSProxy bagtype

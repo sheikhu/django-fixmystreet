@@ -35,6 +35,7 @@ class Command(BaseCommand):
 
     abp_entity_id = 23
     abp_group_id = 300
+    abp_groupmail_id = 200
     abp_user_id = 10673
 
     def handle(self, *args, **options):
@@ -241,7 +242,8 @@ class Command(BaseCommand):
                     "digest_inprogress": False,
                     "notify_group": False
                 },
-                "model": "fixmystreet.groupmailconfig"
+                "model": "fixmystreet.groupmailconfig",
+                "pk": self.abp_groupmail_id
             })
 
             # Fix abp user entity
