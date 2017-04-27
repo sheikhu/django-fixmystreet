@@ -1,0 +1,468 @@
+{
+  "meta": {},
+  "data": {
+    "types": [
+      {
+        "type_id": 1,
+        "label": {
+          "fr": "...autre...",
+          "nl": "...andere..."
+        },
+        "nature_ids": [
+          4
+        ],
+        "bagtype_ids": [],
+        "loc_types": [
+          "address",
+          "xy+address",
+          "xy+streetside",
+          "xy"
+        ]
+      },
+      {
+        "type_id": 4,
+        "label": {
+          "fr": "Collecte",
+          "nl": "Ophaling"
+        },
+        "nature_ids": [
+          7,
+          8,
+          9,
+          37
+        ],
+        "bagtype_ids": [
+          1,
+          3,
+          9,
+          12,
+          13,
+          14
+        ],
+        "loc_types": [
+          "address",
+          "xy+address"
+        ]
+      },
+      {
+        "type_id": 5,
+        "label": {
+          "fr": "Bulles à verre",
+          "nl": "Glasbol"
+        },
+        "nature_ids": [
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "bagtype_ids": [],
+        "loc_types": [
+          "address",
+          "xy+address",
+          "arpgan_site/glass"
+        ]
+      },
+      {
+        "type_id": 6,
+        "label": {
+          "fr": "Balayage",
+          "nl": "Veegdienst"
+        },
+        "nature_ids": [
+          22,
+          23,
+          24,
+          25
+        ],
+        "bagtype_ids": [],
+        "loc_types": [
+          "address",
+          "xy+address",
+          "xy+streetside",
+          "xy"
+        ]
+      },
+      {
+        "type_id": 7,
+        "label": {
+          "fr": "Dépôts clandestins",
+          "nl": "Sluikstorten"
+        },
+        "nature_ids": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          68,
+          78
+        ],
+        "bagtype_ids": [],
+        "loc_types": [
+          "address",
+          "xy+address",
+          "xy+streetside",
+          "xy"
+        ]
+      },
+      {
+        "type_id": 8,
+        "label": {
+          "fr": "Corbeilles",
+          "nl": "Stadsprullenmanden"
+        },
+        "nature_ids": [
+          26,
+          27,
+          38,
+          96
+        ],
+        "bagtype_ids": [],
+        "loc_types": [
+          "address",
+          "xy+address",
+          "xy+streetside",
+          "xy"
+        ]
+      },
+      {
+        "type_id": 10,
+        "label": {
+          "fr": "Avaloirs",
+          "nl": "Straatkolken"
+        },
+        "nature_ids": [
+          29,
+          30
+        ],
+        "bagtype_ids": [],
+        "loc_types": [
+          "address",
+          "xy+address",
+          "xy+streetside",
+          "xy"
+        ]
+      }
+    ],
+    "natures": [
+      {
+        "nature_id": 4,
+        "label": {
+          "fr": "autre (Inclassable)",
+          "nl": "andere (Onklasseerbaar)"
+        },
+        "display_order": 999,
+        "subnature_ids": [],
+        "requires_comment": true
+      },
+      {
+        "nature_id": 7,
+        "label": {
+          "fr": "plusieurs adresses non collectées",
+          "nl": "meerdere adressen niet opgehaald"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 8,
+        "label": {
+          "fr": "une adresse non collectée",
+          "nl": "niet opgehaald adres"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 9,
+        "label": {
+          "fr": "sacs éventrés sur le trottoir ou en voirie",
+          "nl": "gescheurde zakken op het trottoir of op de straat"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 10,
+        "label": {
+          "fr": "bulle sale",
+          "nl": "vuile glasbol"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 11,
+        "label": {
+          "fr": "bulle débordante",
+          "nl": "overvolle glasbol"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 12,
+        "label": {
+          "fr": "petits déchets aux abords",
+          "nl": "klein afval in de omgeving"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 13,
+        "label": {
+          "fr": "versage sauvage aux abords",
+          "nl": "sluikstort in de omgeving"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 14,
+        "label": {
+          "fr": "graphitis sur la bulle",
+          "nl": "graffiti op de glasbol"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 15,
+        "label": {
+          "fr": "immondices ménagers",
+          "nl": "huisvuil"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 16,
+        "label": {
+          "fr": "petits encombrants (< 1 m3)",
+          "nl": "klein grofvuil (< 1 m³)"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 17,
+        "label": {
+          "fr": "gros encombrants (> 1 m3)",
+          "nl": "groot grofvuil (> 1 m³)"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 18,
+        "label": {
+          "fr": "déchets de construction",
+          "nl": "bouwafval"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 19,
+        "label": {
+          "fr": "huile en fûts",
+          "nl": "olie in vaten"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 20,
+        "label": {
+          "fr": "autres déchets liquides de nature inconnue",
+          "nl": "andere vloeibare afval van onbekende aard"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 21,
+        "label": {
+          "fr": "huile sur la chaussée",
+          "nl": "olie op het wegdek"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 22,
+        "label": {
+          "fr": "trottoir / caniveau sale non balayé",
+          "nl": "trottoir/ straatgoot vuil : niet geveegd"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 23,
+        "label": {
+          "fr": "espace sale (marché ...)",
+          "nl": "vervuilde ruimte (markt ...)"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 24,
+        "label": {
+          "fr": "déjection canine sur espace piéton",
+          "nl": "Hondenuitwerpselen op voetgangerszone"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 25,
+        "label": {
+          "fr": "déjections canines : zone très polluée",
+          "nl": "Hondenuitwerpselen : zeer vervuilde zone"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 26,
+        "label": {
+          "fr": "débordante",
+          "nl": "overlopend"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 27,
+        "label": {
+          "fr": "endommagée",
+          "nl": "beschadigd"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 29,
+        "label": {
+          "fr": "bouchage ordinaire",
+          "nl": "gewone verstopping"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 30,
+        "label": {
+          "fr": "bouchage en dur (bétonné)",
+          "nl": "verharde verstopping (gebetonneerd)"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 37,
+        "label": {
+          "fr": "autre (Collecte)",
+          "nl": "andere (Ophaling)"
+        },
+        "display_order": 999,
+        "subnature_ids": [],
+        "requires_comment": true
+      },
+      {
+        "nature_id": 38,
+        "label": {
+          "fr": "petits déchets aux abords",
+          "nl": "klein afval in de omgeving"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 68,
+        "label": {
+          "fr": "Pots de peinture",
+          "nl": "Verfpotten"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 78,
+        "label": {
+          "fr": "m³ de déchets verts et/ou branches",
+          "nl": "m³ tuinafval en/of takken"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 96,
+        "label": {
+          "fr": "élastique manquant sur corbeille vigipirate",
+          "nl": "Ontbrekende elastieken aan de open vuilbakken (vigipirate)"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      }
+    ],
+    "subnatures": [],
+    "bagtypes": [
+      {
+        "bagtype_id": 1,
+        "label": {
+          "fr": "blanc",
+          "nl": "wit"
+        },
+        "display_order": 100
+      },
+      {
+        "bagtype_id": 3,
+        "label": {
+          "fr": "vert",
+          "nl": "groen"
+        },
+        "display_order": 300
+      },
+      {
+        "bagtype_id": 9,
+        "label": {
+          "fr": "fuchsia",
+          "nl": "fuchsia"
+        },
+        "display_order": 900
+      },
+      {
+        "bagtype_id": 12,
+        "label": {
+          "fr": "jaune",
+          "nl": "geel"
+        },
+        "display_order": 210
+      },
+      {
+        "bagtype_id": 13,
+        "label": {
+          "fr": "bleu",
+          "nl": "blauw"
+        },
+        "display_order": 220
+      },
+      {
+        "bagtype_id": 14,
+        "label": {
+          "fr": "orange (déchets organiques)",
+          "nl": "bruin (organisch afval)"
+        },
+        "display_order": 350
+      }
+    ]
+  }
+}
