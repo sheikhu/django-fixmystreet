@@ -1,0 +1,13 @@
+Revêtement,Revêtement,Coating,Neige-Verglas,Neige-Verglas,Ice or snow,Trottoir - Piste cyclable,Trottoir - Piste cyclable,Sidewalk - Bike path,,,,1001,2300,3400,,,,,
+Signalisation,Signalisation,Signage,Poteau,Poteau,Pole,Poteau,Poteau,Pole,,,,1005,2301,3401,,,,,
+Signalisation,Signalisation,Signage,Panneau message variable,Panneau message variable,Variable message signs,Panneau message variable,Panneau message variable,Variable message signs,,,,1005,2302,3402,,,,,
+Plantation,Plantation,Vegetation,Désherbage/Tonte,Désherbage/Tonte,Weeding/Mowing,Désherbage/Tonte,Désherbage/Tonte,Weeding/Mowing,,,,1004,2303,3403,,,,,
+Plantation,Plantation,Vegetation,Déchets verts,Déchets verts,Green wastes,Déchets verts,Déchets verts,Green wastes,,,,1004,2304,3404,,23,23,7,78
+Taque,Taque,Sewer cover,Cassée,Cassée,Broken,Cassée,Cassée,Broken,,,,1010,2305,3405,,,,,
+Mobilier urbain,Mobilier urbain,Public furnitures,Banc,Banc,Bench,Banc,Banc,Bench,,,,1007,2306,3406,,,,,
+Mobilier urbain,Mobilier urbain,Public furnitures,Arceau à vélo,Arceau à vélo,Bike rack,Arceau à vélo,Arceau à vélo,Bike rack,,,,1007,2307,3407,,,,,
+Eclairage,Eclairage,Public lightning,Tronçon,Tronçon,Section,Dégats,Dégats,Damaged,,,,1006,2012,3408,,143,20,,
+Fontaine,Fontaine,Public foutain,Vandalisée,Vandalisée,Vandalized,Vandalisée,Vandalisée,Vandalized,,,,1008,2308,3409,,,,,
+Fontaine,Fontaine,Public foutain,Mousse,Mousse,Foam,Mousse,Mousse,Foam,,,,1008,2309,3410,,,,,
+Monument,Monument,Monument,Tag,Tag,Graffiti,Tag,Tag,Graffiti,,,,1100,2311,3411,,,,,
+Monument,Monument,Monument,Vandalisme,Vandalisme,Vandalized,Vandalisme,Vandalisme,Vandalized,,,,1100,2312,3412,,,,,

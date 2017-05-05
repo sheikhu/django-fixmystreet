@@ -87,7 +87,7 @@ run: $(BIN_PATH)
 	$(BIN_PATH)/manage.py runserver
 
 test: $(BIN_PATH)/manage.py
-	$(BIN_PATH)/manage.py test
+	SKIP_MIGRATIONS=true $(BIN_PATH)/manage.py test
 
 test-js:
 	testem ci -t apps/fixmystreet/static/tests/index.html

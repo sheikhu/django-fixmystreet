@@ -29,7 +29,7 @@ def secondaryCategoryChoices(show_private):
     choices.append(('', _("Select a secondary Category")))
 
     # HACK: Exclude Eclairage (id=6)
-    category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().exclude(id=6).order_by('name_' + get_language())
+    category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().order_by('name_' + get_language())
 
     for category_class in category_classes:
         values = []
@@ -44,21 +44,6 @@ def secondaryCategoryChoices(show_private):
 
         if len(categories):
             choices.append((category_class.name, values))
-
-    # HACK: Add Eclairage (id=6) at the end
-    category_class_eclairage = ReportSecondaryCategoryClass.objects.prefetch_related('categories').get(id=6)
-    values = []
-
-    categories = category_class_eclairage.categories.all().order_by('name_' + get_language())
-
-    if not show_private:
-        categories = categories.filter(public=True)
-
-    for category in categories:
-        values.append((category.id, category.name))
-
-    if len(categories):
-        choices.append((category_class_eclairage.name, values))
 
     return choices
 

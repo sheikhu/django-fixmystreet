@@ -17,6 +17,7 @@ import re
 from django.contrib.auth.forms import SetPasswordForm
 from apps.fixmystreet.views.api import create_report
 from apps.fmx.forms import SeveralOccurencesForm, IsIncidentCreationForm
+from mobileserverstatus.models import Message
 
 def get_response():
     return {
@@ -845,3 +846,10 @@ def create_incident(request):
             return exit_with_error("Report does not exist", 404)
     else:
         return exit_with_error(incidentResult.content, 400)
+
+def categories_status(request):
+    message = Message.objects.all().last()
+
+    response = get_response()
+    response['response'] = { 'version': message.version }
+    return return_response(response)
