@@ -3908,3 +3908,6 @@ div.carousel-inner{
 	max-width:100px;
 	max-height:100px;
 }
+.spaced{
+	line-height: 25px;
+}
