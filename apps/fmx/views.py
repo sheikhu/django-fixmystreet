@@ -18,6 +18,7 @@ from django.contrib.auth.forms import SetPasswordForm
 from apps.fixmystreet.views.api import create_report
 from apps.fmx.forms import SeveralOccurencesForm, IsIncidentCreationForm
 from mobileserverstatus.models import Message
+from PIL import Image
 
 def get_response():
     return {
@@ -144,6 +145,13 @@ def add_attachment_for_user(request, report, user):
     else:
         is_incident_creation = False
 
+    if 'rotation' in request.POST and request.POST['rotation'] in ['90', '180', '270']:
+        image_rotation = int(request.POST['rotation'])
+    else:
+        image_rotation = 0
+
+
+
     response = get_response()
 
     try:
@@ -164,6 +172,14 @@ def add_attachment_for_user(request, report, user):
                     report_file.is_incident_creation = is_incident_creation
                     report_file.save()
                     attachment = report_file
+                    if report_file.file_type == ReportFile.IMAGE and image_rotation > 0:
+                        src_im = Image.open(report_file.image.path)
+                        im = src_im.rotate(0 - image_rotation, expand=True)
+                        im.save(report_file.image.path)
+
+                        src_im = Image.open(report_file.image.thumbnail.path)
+                        im = src_im.rotate(0 - image_rotation, expand=True)
+                        im.save(report_file.image.thumbnail.path)
             else:
                 return exit_with_error("Attachment is not valid (no file received)", 400)
         else:
