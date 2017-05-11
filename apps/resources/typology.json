@@ -14,7 +14,6 @@
         "bagtype_ids": [],
         "loc_types": [
           "address",
-          "xy+address",
           "xy+streetside",
           "xy"
         ]
@@ -40,8 +39,7 @@
           14
         ],
         "loc_types": [
-          "address",
-          "xy+address"
+          "address"
         ]
       },
       {
@@ -55,12 +53,13 @@
           11,
           12,
           13,
-          14
+          14,
+          104,
+          105
         ],
         "bagtype_ids": [],
         "loc_types": [
           "address",
-          "xy+address",
           "arpgan_site/glass"
         ]
       },
@@ -79,7 +78,6 @@
         "bagtype_ids": [],
         "loc_types": [
           "address",
-          "xy+address",
           "xy+streetside",
           "xy"
         ]
@@ -104,7 +102,6 @@
         "bagtype_ids": [],
         "loc_types": [
           "address",
-          "xy+address",
           "xy+streetside",
           "xy"
         ]
@@ -124,7 +121,6 @@
         "bagtype_ids": [],
         "loc_types": [
           "address",
-          "xy+address",
           "xy+streetside",
           "xy"
         ]
@@ -142,7 +138,6 @@
         "bagtype_ids": [],
         "loc_types": [
           "address",
-          "xy+address",
           "xy+streetside",
           "xy"
         ]
@@ -201,7 +196,14 @@
           "fr": "bulle débordante",
           "nl": "overvolle glasbol"
         },
-        "subnature_ids": [],
+        "subnature_ids": [
+          8,
+          9
+        ],
+        "subnature_title": {
+          "fr": "Type de bulle",
+          "nl": "Type de bulle"
+        },
         "requires_comment": false
       },
       {
@@ -411,9 +413,42 @@
         },
         "subnature_ids": [],
         "requires_comment": false
+      },
+      {
+        "nature_id": 104,
+        "label": {
+          "fr": "Défaillance technique",
+          "nl": "Technische storing"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
+      },
+      {
+        "nature_id": 105,
+        "label": {
+          "fr": "déchet chimique type Huile, Peinture",
+          "nl": "déchet chimique type Huile, Peinture"
+        },
+        "subnature_ids": [],
+        "requires_comment": false
       }
     ],
-    "subnatures": [],
+    "subnatures": [
+      {
+        "subnature_id": 8,
+        "label": {
+          "fr": "blanche",
+          "nl": "blanche"
+        }
+      },
+      {
+        "subnature_id": 9,
+        "label": {
+          "fr": "couleur",
+          "nl": "couleur"
+        }
+      }
+    ],
     "bagtypes": [
       {
         "bagtype_id": 1,
