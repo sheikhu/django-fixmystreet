@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
             return
 
         Report = apps.get_model("fixmystreet", "Report")
+        HistoricalReport = apps.get_model("fixmystreet", "HistoricalReport")
         Category_LVL_1 = apps.get_model("fixmystreet", "ReportMainCategoryClass")
         Category_LVL_2 = apps.get_model("fixmystreet", "ReportSecondaryCategoryClass")
         Category_LVL_3 = apps.get_model("fixmystreet", "ReportCategory")
@@ -42,7 +43,7 @@ class Migration(migrations.Migration):
         for idx, report in enumerate(reports):
             progression = (idx + 0.0) / max_reports * 100
 
-            logger.info("%.2f%%  -  %s  %s  %s" % (progression, report.id, report.category.id, report.secondary_category.id))
+            logger.info("Reports: %.2f%%  -  %s  %s  %s" % (progression, report.id, report.category.id, report.secondary_category.id))
 
             try:
                 new_categories = NEW_LVL[report.secondary_category.id]
@@ -58,8 +59,43 @@ class Migration(migrations.Migration):
             except KeyError:
                 LVL_3_ERRORS.append({ 'report' : report.id,'cat': report.secondary_category.id})
 
-        logger.info('LVL3 ERRORS: %s' % LVL_3_ERRORS)
+        # Empty reports array
+        reports = None
 
+        # HISTORICAL REPORTS MIGRATION
+        max_reports = HistoricalReport.objects.all().count()
+        HISTORICAL_LVL_3_ERRORS = []
+
+        step = 10000
+        loop = 0
+
+        while HistoricalReport.objects.filter(category_id__lt=1000).exists():
+
+            partial_reports = HistoricalReport.objects.filter(category_id__lt=1000).order_by("id")[:step]
+
+            for idx, report in enumerate(partial_reports):
+                progression = (loop * step + idx + 0.0) / max_reports * 100
+
+                logger.info("Historical Reports: %.2f%%  -  %s  %s  %s" % (progression, report.id, report.category.id, report.secondary_category.id))
+
+                try:
+                    new_categories = NEW_LVL[report.secondary_category.id]
+
+                    # LVL 1
+                    report.category = new_categories['LVL_1']
+
+                    # LVL 3
+                    report.secondary_category = new_categories['LVL_3']
+
+                    # Save
+                    report.save()
+                except KeyError:
+                    LVL_3_ERRORS.append({ 'report' : report.id,'cat': report.secondary_category.id})
+
+            loop += 1
+
+        logger.info('LVL3 ERRORS: %s' % LVL_3_ERRORS)
+        logger.info('HISTORICAL LVL3 ERRORS: %s' % HISTORICAL_LVL_3_ERRORS)
 
     dependencies = [
         ('fixmystreet', '0022_auto_20170404_1411'),
