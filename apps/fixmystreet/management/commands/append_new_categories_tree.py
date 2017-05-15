@@ -41,11 +41,12 @@ class Command(BaseCommand):
     LVL_4_ID_IDX = 15
 
     AUTO_DISPATCHING_COMMUNAL_IDX = 16
-    AUTO_DISPATCHING_REGIONAL_IDX = 17
+    AUTO_DISPATCHING_REGIONAL_IDX = 16
 
-    ABP_TYPE_ID_IDX = 18
-    ABP_NATURE_ID_IDX = 19
-    ABP_BAGTYPE_ID_IDX = 20
+    ABP_TYPE_ID_IDX = 17
+    ABP_NATURE_ID_IDX = 18
+    ABP_BAGTYPE_ID_IDX = 19
+    ABP_SUBNATURE_ID_IDX = 20
 
     LVL_1 = []
     LVL_2 = []
@@ -123,6 +124,7 @@ class Command(BaseCommand):
 
 
     def create_LVL3_category(self, data):
+        sub_categories = []
         try:
             self.LVL_3_SUBCAT[data[self.LVL_3_ID_IDX]]
         except KeyError:
@@ -161,6 +163,10 @@ class Command(BaseCommand):
             except KeyError:
                 self.LVL_3_SUBCAT[data[self.LVL_3_ID_IDX]] = [int(data[self.LVL_4_ID_IDX])]
 
+            # Add already existing subcategories
+            sub_categories = list(ReportCategory.objects.get(id=data[self.LVL_3_ID_IDX]).sub_categories.all().values_list("id", flat=True))
+            self.LVL_3_SUBCAT[data[self.LVL_3_ID_IDX]] += sub_categories
+
             return {
                 "fields": {
                     "name_fr": data[self.LVL_4_NAME_FR_IDX].strip().capitalize(),
@@ -186,7 +192,8 @@ class Command(BaseCommand):
                     "fms_id": int(data[self.LVL_2_ID_IDX]),
                     "abp_id": int(data[self.ABP_TYPE_ID_IDX])
                 },
-                "model": "abp.type"
+                "model": "abp.type",
+                "pk": int(data[self.LVL_2_ID_IDX])
             }
             self.FIXTURES_FMSPROXY[int(data[self.LVL_2_ID_IDX])] = fmsproxy_type
 
@@ -196,7 +203,8 @@ class Command(BaseCommand):
                     "fms_id": int(data[self.LVL_3_ID_IDX]),
                     "abp_id": int(data[self.ABP_NATURE_ID_IDX])
                 },
-                "model": "abp.nature"
+                "model": "abp.nature",
+                "pk": int(data[self.LVL_3_ID_IDX])
             }
             self.FIXTURES_FMSPROXY[int(data[self.LVL_3_ID_IDX])] = fmsproxy_nature
 
@@ -207,9 +215,24 @@ class Command(BaseCommand):
                         "fms_id": int(data[self.LVL_4_ID_IDX]),
                         "abp_id": int(data[self.ABP_BAGTYPE_ID_IDX])
                     },
-                    "model": "abp.bagtype"
+                    "model": "abp.bagtype",
+                    "pk": int(data[self.LVL_4_ID_IDX])
                 }
                 self.FIXTURES_FMSPROXY[int(data[self.LVL_4_ID_IDX])] = fmsproxy_bagtype
+            except ValueError:
+                pass
+
+            try:
+                # FMSProxy subnature
+                fmsproxy_subnature = {
+                    "fields": {
+                        "fms_id": int(data[self.LVL_4_ID_IDX]),
+                        "abp_id": int(data[self.ABP_SUBNATURE_ID_IDX])
+                    },
+                    "model": "abp.subnature",
+                    "pk": int(data[self.LVL_4_ID_IDX])
+                }
+                self.FIXTURES_FMSPROXY[int(data[self.LVL_4_ID_IDX])] = fmsproxy_subnature
             except ValueError:
                 pass
 
