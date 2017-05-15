@@ -157,7 +157,8 @@ class Command(BaseCommand):
                     "fms_id": int(data[NEW_LVL_2_ID_IDX]),
                     "abp_id": int(data[ABP_TYPE_ID_IDX])
                 },
-                "model": "abp.type"
+                "model": "abp.type",
+                "pk": int(data[NEW_LVL_2_ID_IDX])
             }
             self.FIXTURES_FMSPROXY[int(data[NEW_LVL_2_ID_IDX])] = fmsproxy_type
 
@@ -176,18 +177,34 @@ class Command(BaseCommand):
                     "fms_id": fms_id,
                     "abp_id": nature_id
                 },
-                "model": "abp.nature"
+                "model": "abp.nature",
+                "pk": fms_id
             }
             self.FIXTURES_FMSPROXY[fms_id] = fmsproxy_nature
 
+            # FMSProxy subnature
             try:
-                # FMSProxy bagtype
+                fmsproxy_subnature = {
+                    "fields": {
+                        "fms_id": int(data[NEW_LVL_4_ID_IDX]),
+                        "abp_id": int(data[ABP_SUBNATURE_ID_IDX])
+                    },
+                    "model": "abp.subnature",
+                    "pk": int(data[NEW_LVL_4_ID_IDX])
+                }
+                self.FIXTURES_FMSPROXY[int(data[NEW_LVL_3_ID_IDX])] = fmsproxy_subnature
+            except ValueError:
+                pass
+
+            # FMSProxy bagtype
+            try:
                 fmsproxy_bagtype = {
                     "fields": {
                         "fms_id": int(data[NEW_LVL_4_ID_IDX]),
                         "abp_id": int(data[ABP_BAGTYPE_ID_IDX])
                     },
-                    "model": "abp.bagtype"
+                    "model": "abp.bagtype",
+                    "pk": int(data[NEW_LVL_4_ID_IDX])
                 }
                 self.FIXTURES_FMSPROXY[int(data[NEW_LVL_4_ID_IDX])] = fmsproxy_bagtype
             except ValueError:
