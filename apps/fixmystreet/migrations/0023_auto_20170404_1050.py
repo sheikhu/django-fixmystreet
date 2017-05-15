@@ -63,6 +63,9 @@ class Migration(migrations.Migration):
         reports = None
 
         # HISTORICAL REPORTS MIGRATION
+        if os.environ.get('SKIP_MIGRATIONS_HISTORICALREPORT', False):
+            return
+
         max_reports = HistoricalReport.objects.all().count()
         HISTORICAL_LVL_3_ERRORS = []
 
