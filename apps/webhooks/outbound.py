@@ -184,6 +184,7 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
                 "email": creator.email,
             },
             "comments": [],
+            "several_occurences": self.report.several_occurences
         }
 
         for comment in self.report.comments():
