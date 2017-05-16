@@ -182,6 +182,22 @@ class Command(BaseCommand):
             }
             self.FIXTURES_FMSPROXY[fms_id] = fmsproxy_nature
 
+            # FMSProxy nature substitution
+            try:
+                fms_id = int(data[NEW_LVL_3_ID_IDX])
+                fmsproxy_naturesubstitution = {
+                    "fields": {
+                        "fms_id": fms_id,
+                        "abp_id": int(data[ABP_NATURESUBSTITUTION_ID_IDX])
+                    },
+                    "model": "abp.naturesubstitution",
+                    "pk": fms_id
+                }
+                self.FIXTURES_FMSPROXY[10000 + fms_id] = fmsproxy_naturesubstitution
+
+            except ValueError:
+                pass
+
             # FMSProxy subnature
             try:
                 fmsproxy_subnature = {
