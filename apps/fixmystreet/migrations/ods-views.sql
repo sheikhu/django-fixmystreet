@@ -65,7 +65,8 @@ CREATE OR REPLACE VIEW ods_incident_event AS SELECT
     r.merged_with_id,
     r.source,
     cast(ST_X(r.point) as text) as x,
-    cast(ST_Y(r.point) as text) as y
+    cast(ST_Y(r.point) as text) as y,
+    r.sub_category_id
 FROM fixmystreet_historicalreport r
     RIGHT JOIN fixmystreet_report original_report ON r.id=original_report.id
     LEFT JOIN fixmystreet_fmsuser created_by ON r.created_by_id=created_by.user_ptr_id
@@ -164,3 +165,10 @@ CREATE OR REPLACE VIEW ods_dim_secondary_category_class AS SELECT
 FROM fixmystreet_reportsecondarycategoryclass;
 
 COMMIT;
+
+
+CREATE OR REPLACE VIEW ods_dim_sub_category AS SELECT
+    id,
+    name_fr,
+    name_nl
+FROM fixmystreet_reportsubcategory;

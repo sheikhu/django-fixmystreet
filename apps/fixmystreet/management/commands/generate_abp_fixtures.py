@@ -44,6 +44,7 @@ class Command(BaseCommand):
         fixtures_fms = []
         fixtures_fmsproxy = []
 
+        subnature_ids = []
         bagtype_ids = []
 
         nature_type_ids = {}
@@ -104,6 +105,43 @@ class Command(BaseCommand):
                 fixtures_fmsproxy.append(fmsproxy_type)
 
                 idx = idx +1
+
+                logger.info('Processing subnatures')
+                idx = 1
+                subnatures_ids = {}
+                for typology_subnature in typology['data']['subnatures']:
+                    subnatures_ids[typology_subnature['subnature_id']] = self.idx_reportsubcategory +idx
+
+                    try:
+                        name_fr = translations_corrections[typology_subnature['label']['fr']]
+                        name_nl = translations_corrections[typology_subnature['label']['nl']]
+                    except KeyError:
+                        name_fr = typology_subnature['label']['fr']
+                        name_nl = typology_subnature['label']['nl']
+
+                    reportsubcategory = {
+                        "pk": subnatures_ids[typology_subnature['subnature_id']],
+                        "model": "fixmystreet.reportsubcategory",
+                        "fields": {
+                            "name_fr": name_fr,
+                            "name_nl": name_nl
+                        }
+                    }
+                    fixtures_fms.append(reportsubcategory)
+                    subnature_ids.append(subnatures_ids[typology_subnature['subnature_id']])
+
+                    # FMSProxy
+                    fmsproxy_subnature = {
+                        "fields": {
+                            "fms_id": subnatures_ids[typology_subnature['subnature_id']],
+                            "abp_id": typology_subnature['subnature_id']
+                        },
+                        "model": "abp.subnature",
+                        "pk": idx
+                    }
+                    fixtures_fmsproxy.append(fmsproxy_subnature)
+
+                    idx = idx +1
 
             logger.info('Processing bagtypes')
             idx = 1

@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
         Category_LVL_3 = apps.get_model("fixmystreet", "ReportCategory")
 
         reports = Report.objects.all()
+        historical_reports = HistoricalReport.objects.all()
 
         # CATEGORIES MAPPING
         NEW_LVL = {}
@@ -37,65 +38,31 @@ class Migration(migrations.Migration):
                 }
 
         # REPORTS MIGRATION
-        max_reports = len(reports)
-        LVL_3_ERRORS = []
+        for key in NEW_LVL.keys():
+            new_categories = NEW_LVL[key]
+            count = reports.filter(secondary_category=key).update(secondary_category=new_categories['LVL_3'], category=new_categories['LVL_1'])
 
-        for idx, report in enumerate(reports):
-            progression = (idx + 0.0) / max_reports * 100
+            logger.info("Report - Secondary category / affected  |  %s / %s" %(key, count))
 
-            logger.info("Reports: %.2f%%  -  %s  %s  %s" % (progression, report.id, report.category.id, report.secondary_category.id))
-
-            try:
-                new_categories = NEW_LVL[report.secondary_category.id]
-
-                # LVL 1
-                report.category = new_categories['LVL_1']
-
-                # LVL 3
-                report.secondary_category = new_categories['LVL_3']
-
-                # Save
-                report.save()
-            except KeyError:
-                LVL_3_ERRORS.append({ 'report' : report.id,'cat': report.secondary_category.id})
-
-        # Empty reports array
         reports = None
 
         # HISTORICAL REPORTS MIGRATION
-        max_reports = HistoricalReport.objects.all().count()
-        HISTORICAL_LVL_3_ERRORS = []
+        for key in NEW_LVL.keys():
+            new_categories = NEW_LVL[key]
+            count = historical_reports.filter(secondary_category=key).update(secondary_category=new_categories['LVL_3'], category=new_categories['LVL_1'])
 
-        step = 10000
-        loop = 0
+            logger.info("Historical Report - Secondary category / affected  |  %s / %s" %(key, count))
 
-        while HistoricalReport.objects.filter(category_id__lt=1000).exists():
+        historical_reports = None
 
-            partial_reports = HistoricalReport.objects.filter(category_id__lt=1000).order_by("id")[:step]
+        # Check that all reports are migrated
+        if Report.objects.filter(category__lt=1000).exists() or Report.objects.filter(secondary_category__lt=3000).exists():
+            logger.error('Some reports are not migrated')
 
-            for idx, report in enumerate(partial_reports):
-                progression = (loop * step + idx + 0.0) / max_reports * 100
+        # Check that all historical reports are migrated
+        if HistoricalReport.objects.filter(category__lt=1000).exists() or HistoricalReport.objects.filter(secondary_category__lt=3000).exists():
+            logger.error('Some historical reports are not migrated')
 
-                logger.info("Historical Reports: %.2f%%  -  %s  %s  %s" % (progression, report.id, report.category.id, report.secondary_category.id))
-
-                try:
-                    new_categories = NEW_LVL[report.secondary_category.id]
-
-                    # LVL 1
-                    report.category = new_categories['LVL_1']
-
-                    # LVL 3
-                    report.secondary_category = new_categories['LVL_3']
-
-                    # Save
-                    report.save()
-                except KeyError:
-                    LVL_3_ERRORS.append({ 'report' : report.id,'cat': report.secondary_category.id})
-
-            loop += 1
-
-        logger.info('LVL3 ERRORS: %s' % LVL_3_ERRORS)
-        logger.info('HISTORICAL LVL3 ERRORS: %s' % HISTORICAL_LVL_3_ERRORS)
 
     dependencies = [
         ('fixmystreet', '0022_auto_20170404_1411'),

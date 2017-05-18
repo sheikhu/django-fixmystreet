@@ -161,7 +161,8 @@ class CitizenReportForm(ReportForm):
             'category', 'secondary_category', 'sub_category',
             'postalcode',
             'subscription',
-            'terms_of_use_validated')
+            'terms_of_use_validated',
+            'several_occurences')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
