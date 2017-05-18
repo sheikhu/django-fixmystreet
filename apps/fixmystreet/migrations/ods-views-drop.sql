@@ -8,3 +8,4 @@ DROP VIEW ods_dim_entity_contractor;
 DROP VIEW ods_dim_category;
 DROP VIEW ods_dim_main_category_class;
 DROP VIEW ods_dim_secondary_category_class;
+DROP VIEW ods_dim_sub_category;
