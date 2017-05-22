@@ -842,7 +842,12 @@ def changePassword(request, uidb64, token):
         return exit_with_error("Invalid token", 404)
 
 def create_incident(request):
-    incidentResult = create_report(request)
+    several_occurences = False
+    several_occurences_form = SeveralOccurencesForm(request.POST)
+    if several_occurences_form.is_valid():
+        several_occurences = True
+
+    incidentResult = create_report(request, several_occurences)
     if incidentResult.status_code != 200:
         return exit_with_error(incidentResult.content, incidentResult.status_code)
 
@@ -850,11 +855,6 @@ def create_incident(request):
     if response.get('id', None) != None:
         try:
             report = Report.objects.all().get(id=response.get('id', None))
-            # Deal with several_occurences
-            several_occurences_form = SeveralOccurencesForm(request.POST)
-            if several_occurences_form.is_valid():
-                report.several_occurences = several_occurences_form.cleaned_data['several_occurences']
-                report.save()
             response = generate_report_response(report)
 
             return return_response(response)
