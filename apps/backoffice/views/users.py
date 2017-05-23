@@ -20,6 +20,9 @@ logger = logging.getLogger("fixmystreet")
 
 
 def login_view(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('home_pro'))
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
