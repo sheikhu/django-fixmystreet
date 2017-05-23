@@ -205,7 +205,6 @@ mail_titles = {
 def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None, reopen_reason=None):
     # Define site url
     SITE_URL = "https://{0}".format(Site.objects.get_current().domain)
-
     # Prepare data for mail
     display_pro = not user  # send to department
     display_pro = display_pro or user.is_pro()
@@ -225,11 +224,12 @@ def transform_notification_template(template_mail, report, user, old_responsible
 
     if display_pro:
         data["status"] = lambda: report.get_status_display()
+        data["display_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
+        data["pdf_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
     else:
         data["status"] = lambda: report.get_public_status_display()
-
-    data["display_url"] = lambda: "{0}/{1}".format(SITE_URL, report.id)
-    data["pdf_url"] = lambda: "{0}/{1}/pdf".format(SITE_URL, report.id)
+        data["display_url"] = lambda: "{0}/{1}".format(SITE_URL, report.id)
+        data["pdf_url"] = lambda: "{0}/{1}/pdf".format(SITE_URL, report.id)
     if(user):
         user_email = user.email
     else:

@@ -794,7 +794,6 @@ def report_reopen_reason_notify(sender, instance, **kwargs):
 
     report = instance.report
     user   = instance.created_by
-
     ReportEventLog(
         report=report,
         event_type=ReportEventLog.REOPEN_REQUEST,
@@ -819,6 +818,7 @@ def report_reopen_reason_notify(sender, instance, **kwargs):
         ReportNotification(
             content_template='acknowledge-reopen-request',
             recipient_mail=user.email,
+            recipient=user,
             related=report,
         ).save(updater=user, reopen_reason=instance)
 #############################################################

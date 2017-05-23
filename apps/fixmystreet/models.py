@@ -1757,7 +1757,6 @@ class ReportNotification(models.Model):
         date_planned = None
         merged_with = None
         reopen_reason = None
-
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']

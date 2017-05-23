@@ -733,7 +733,6 @@ def reopen(request, report_id):
             return exit_with_error("Unauthorized", 401)
 
     reopen_form = ReportReopenReasonForm(request.POST, prefix='reopen')
-
     if "reopen-text" in request.POST and request.POST["reopen-text"] and len(request.POST["reopen-text"]) > 0 and "reopen-reason" in request.POST and request.POST["reopen-reason"] and reopen_form.is_valid():
         citizen = user_object or report.citizen
         reopen_reason = reopen_form.save(commit=False)
