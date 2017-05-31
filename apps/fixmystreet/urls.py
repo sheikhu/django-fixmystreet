@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, url
 from django.utils.translation import ugettext_lazy as _
-
+from django.http import HttpResponse
 
 urlpatterns = patterns(
     'apps.fixmystreet.views.main',
     url(_(r'^$'), 'home', name='home'),
+    url(_(r'^robots.txt$'), lambda r: HttpResponse("User-agent: Sogou web spider\nDisallow: /", content_type="text/plain")),
     url(_(r'^about/$'), 'page', name='about'),
     url(_(r'^faq-pro/$'), 'faq_pro', name='faq_pro'),
     url(_(r'^faq/$'), 'page', name='faq'),
