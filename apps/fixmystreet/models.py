@@ -851,7 +851,7 @@ class Report(UserTrackedModel):
             return self.citizen
 
     def get_absolute_url(self):
-        return reverse("report_show", kwargs={'report_id': self.id, 'slug': self.get_slug()})
+        return "/" + str(self.id)
 
     def get_absolute_url_pro(self):
         return reverse("report_show_pro", kwargs={'report_id': self.id, 'slug': self.get_slug()})
