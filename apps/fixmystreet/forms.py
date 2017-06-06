@@ -29,7 +29,7 @@ def secondaryCategoryChoices(show_private):
     choices.append(('', _("Select a secondary Category")))
 
     # HACK: Exclude Eclairage (id=6)
-    category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().exclude(id=6).order_by('name_' + get_language())
+    category_classes = ReportSecondaryCategoryClass.objects.prefetch_related('categories').all().order_by('name_' + get_language())
 
     for category_class in category_classes:
         values = []
@@ -44,21 +44,6 @@ def secondaryCategoryChoices(show_private):
 
         if len(categories):
             choices.append((category_class.name, values))
-
-    # HACK: Add Eclairage (id=6) at the end
-    category_class_eclairage = ReportSecondaryCategoryClass.objects.prefetch_related('categories').get(id=6)
-    values = []
-
-    categories = category_class_eclairage.categories.all().order_by('name_' + get_language())
-
-    if not show_private:
-        categories = categories.filter(public=True)
-
-    for category in categories:
-        values.append((category.id, category.name))
-
-    if len(categories):
-        choices.append((category_class_eclairage.name, values))
 
     return choices
 
@@ -76,6 +61,7 @@ class ReportForm(forms.ModelForm):
     sub_category = forms.ModelChoiceField(label=_("subcategory"), queryset=ReportSubCategory.objects.order_by('name_' + get_language()), widget=forms.RadioSelect, required=False)
 
     subscription = forms.BooleanField(label=_('Subscription and report follow-up'), initial=True, required=False)
+    several_occurences = forms.BooleanField(label=_('Several occurences'), initial=False, required=False)
 
     # hidden inputs
     address_nl = forms.CharField(widget=forms.widgets.HiddenInput)
@@ -144,7 +130,7 @@ class ProReportForm(ReportForm):
 
     class Meta:
         model = Report
-        fields = ('x', 'y', 'address_nl', 'address_fr', 'address_number', 'postalcode', 'category', 'secondary_category', 'sub_category', 'postalcode', 'private', 'subscription')
+        fields = ('x', 'y', 'address_nl', 'address_fr', 'address_number', 'postalcode', 'category', 'secondary_category', 'sub_category', 'postalcode', 'private', 'subscription', 'several_occurences')
 
     def save(self, commit=True):
         report = super(ProReportForm, self).save(commit=False)
@@ -175,7 +161,8 @@ class CitizenReportForm(ReportForm):
             'category', 'secondary_category', 'sub_category',
             'postalcode',
             'subscription',
-            'terms_of_use_validated')
+            'terms_of_use_validated',
+            'several_occurences')
 
     def save(self, commit=True):
         report = super(CitizenReportForm, self).save(commit=False)
@@ -266,6 +253,7 @@ class CitizenForm(forms.Form):
 
 class ReportFileForm(forms.ModelForm):
     required_css_class = 'required'
+    is_incident_creation = False
 
     class Meta:
         model = ReportFile
@@ -298,9 +286,7 @@ class ReportFileForm(forms.ModelForm):
 
     def save(self, commit=True):
         report_file = super(ReportFileForm, self).save(commit=False)
-
-        if (report_file.title == ''):
-            report_file.title = report_file.file.name
+        report_file.is_incident_creation = self.is_incident_creation
 
         if commit:
             report_file.save()

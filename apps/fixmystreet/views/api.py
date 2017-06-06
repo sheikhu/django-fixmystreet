@@ -179,7 +179,7 @@ from apps.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm
 from apps.fixmystreet.utils import RequestFingerprint
 from django.core.serializers.json import DjangoJSONEncoder
 
-def create_report(request):
+def create_report(request, several_occurences=False):
     fingerprint = RequestFingerprint(request)
 
     if not fingerprint.is_duplicate():
@@ -187,15 +187,18 @@ def create_report(request):
 
         # Check if citizen or pro
         if request.POST.get('username', False):
-            report = create_pro(request)
+            report = create_pro(request, several_occurences)
         else:
-            report = create_citizen(request)
+            report = create_citizen(request, several_occurences)
 
         if isinstance(report, HttpResponse):
             return report
 
         # Set source
-        report.source = Report.SOURCES['MOBILE']
+        if request.POST.get('source', '').lower() == 'web':
+            report.source = Report.SOURCES['WEB']
+        else:
+            report.source = Report.SOURCES['MOBILE']
         report.save()
 
         # Return json response
@@ -224,7 +227,7 @@ def create_report(request):
     response = { "error" : "Duplicate fingerprint"}
     return HttpResponse(json.dumps(response, cls=DjangoJSONEncoder), content_type="application/json; charset=utf-8")
 
-def create_citizen(request):
+def create_citizen(request, several_occurences=False):
     # Get user in DB or create it
 
     citizen_form = CitizenForm(request.POST, prefix='citizen')
@@ -243,6 +246,7 @@ def create_citizen(request):
 
     report = report_form.save(commit=False)
     report.citizen = citizen
+    report.several_occurences = several_occurences
     report.save()
 
     # Subscribe if wanted
@@ -259,7 +263,7 @@ def create_citizen(request):
 
     return report
 
-def create_pro(request):
+def create_pro(request, several_occurences=False):
     # Login the user
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
 
@@ -277,6 +281,7 @@ def create_pro(request):
     report = report_form.save(commit=False)
 
     report.private = True
+    report.several_occurences = several_occurences
     report.save()
     report.subscribe_author()
 

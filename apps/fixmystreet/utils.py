@@ -205,7 +205,6 @@ mail_titles = {
 def transform_notification_template(template_mail, report, user, old_responsible=None, updater=None, comment=None, files=None, date_planned=None, merged_with=None, reopen_reason=None):
     # Define site url
     SITE_URL = "https://{0}".format(Site.objects.get_current().domain)
-
     # Prepare data for mail
     display_pro = not user  # send to department
     display_pro = display_pro or user.is_pro()
@@ -225,26 +224,21 @@ def transform_notification_template(template_mail, report, user, old_responsible
 
     if display_pro:
         data["status"] = lambda: report.get_status_display()
-    else:
-        data["status"] = lambda: report.get_public_status_display()
-
-    if display_pro:
         data["display_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
         data["pdf_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
     else:
-        data["display_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_absolute_url())
-        data["pdf_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_pdf_url())
-
-    if display_pro:
-        data["unsubscribe_url"] = lambda: "{0}{1}".format(SITE_URL, reverse("unsubscribe_pro", args=[report.id]))
+        data["status"] = lambda: report.get_public_status_display()
+        data["display_url"] = lambda: "{0}/{1}".format(SITE_URL, report.id)
+        data["pdf_url"] = lambda: "{0}/{1}/pdf".format(SITE_URL, report.id)
+    if(user):
+        user_email = user.email
     else:
-        data["unsubscribe_url"] = lambda: "{0}{1}?citizen_email={2}".format(SITE_URL, reverse("unsubscribe", args=[report.id]), user.email)
+        user_email = ''
+    data["unsubscribe_url"] = lambda: "{0}/{1}/unsubscribe/{2}".format(SITE_URL, report.id, user_email)
 
     if template_mail == "announcement-processed" or template_mail == "announcement-refused":
-        if display_pro:
-            data["reopen_request_url"] = lambda: "{0}{1}".format(SITE_URL,reverse('report_reopen_request_pro', kwargs={'report_id': report.id, 'slug':report.get_slug()}))
-        else:
-            data["reopen_request_url"] = lambda: "{0}{1}".format(SITE_URL,reverse('report_reopen_request', kwargs={'report_id': report.id, 'slug':report.get_slug()}))
+        data["reopen_request_url"] = lambda: "{0}/{1}/reopen/1234567890".format(SITE_URL, report.id)
+
 
     if template_mail == "mark-as-done":
         if updater and updater.is_pro():

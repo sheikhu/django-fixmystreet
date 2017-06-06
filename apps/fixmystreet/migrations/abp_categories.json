@@ -1,0 +1,1607 @@
+[
+    {
+        "pk": 9, 
+        "model": "fixmystreet.reportsecondarycategoryclass", 
+        "fields": {
+            "name_fr": "Propret\u00e9", 
+            "name_nl": "Netheid"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "blanche", 
+            "name_nl": "blanche"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "couleur", 
+            "name_nl": "couleur"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "fixmystreet.reportsecondarycategoryclass", 
+        "fields": {
+            "name_fr": "Collecte", 
+            "name_nl": "Ophaling"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "blanche", 
+            "name_nl": "blanche"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "couleur", 
+            "name_nl": "couleur"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "fixmystreet.reportsecondarycategoryclass", 
+        "fields": {
+            "name_fr": "Bulles \u00e0 verre", 
+            "name_nl": "Glasbol"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "blanche", 
+            "name_nl": "blanche"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "couleur", 
+            "name_nl": "couleur"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "fixmystreet.reportsecondarycategoryclass", 
+        "fields": {
+            "name_fr": "Balayage", 
+            "name_nl": "Veegdienst"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "blanche", 
+            "name_nl": "blanche"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "couleur", 
+            "name_nl": "couleur"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "fixmystreet.reportsecondarycategoryclass", 
+        "fields": {
+            "name_fr": "D\u00e9p\u00f4ts clandestins", 
+            "name_nl": "Sluikstorten"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "blanche", 
+            "name_nl": "blanche"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "couleur", 
+            "name_nl": "couleur"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "fixmystreet.reportsecondarycategoryclass", 
+        "fields": {
+            "name_fr": "Corbeilles", 
+            "name_nl": "Stadsprullenmanden"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "blanche", 
+            "name_nl": "blanche"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "couleur", 
+            "name_nl": "couleur"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "fixmystreet.reportsecondarycategoryclass", 
+        "fields": {
+            "name_fr": "Avaloirs", 
+            "name_nl": "Straatkolken"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "blanche", 
+            "name_nl": "blanche"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "couleur", 
+            "name_nl": "couleur"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "blanc", 
+            "name_nl": "wit"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "vert", 
+            "name_nl": "groen"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "fuchsia", 
+            "name_nl": "fuchsia"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "jaune", 
+            "name_nl": "geel"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "bleu", 
+            "name_nl": "blauw"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "fixmystreet.reportsubcategory", 
+        "fields": {
+            "name_fr": "orange (d\u00e9chets organiques)", 
+            "name_nl": "bruin (organisch afval)"
+        }
+    }, 
+    {
+        "pk": 150, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "Inclassable", 
+            "secondary_category_class": 9, 
+            "name_nl": "Onklasseerbaar", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 151, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "Inclassable", 
+            "secondary_category_class": 9, 
+            "name_nl": "Onklasseerbaar", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 152, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "plusieurs adresses non collect\u00e9es", 
+            "secondary_category_class": 12, 
+            "name_nl": "meerdere adressen niet opgehaald", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 153, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "plusieurs adresses non collect\u00e9es", 
+            "secondary_category_class": 12, 
+            "name_nl": "meerdere adressen niet opgehaald", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 154, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "une adresse non collect\u00e9e", 
+            "secondary_category_class": 12, 
+            "name_nl": "niet opgehaald adres", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 155, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "une adresse non collect\u00e9e", 
+            "secondary_category_class": 12, 
+            "name_nl": "niet opgehaald adres", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 156, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "sacs \u00e9ventr\u00e9s sur le trottoir ou en voirie", 
+            "secondary_category_class": 12, 
+            "name_nl": "gescheurde zakken op het trottoir of op de straat", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 157, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "sacs \u00e9ventr\u00e9s sur le trottoir ou en voirie", 
+            "secondary_category_class": 12, 
+            "name_nl": "gescheurde zakken op het trottoir of op de straat", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 158, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "bulle sale", 
+            "secondary_category_class": 12, 
+            "name_nl": "vuile glasbol", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 159, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "bulle sale", 
+            "secondary_category_class": 12, 
+            "name_nl": "vuile glasbol", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 160, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "bulle d\u00e9bordante", 
+            "secondary_category_class": 12, 
+            "name_nl": "overvolle glasbol", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 161, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "bulle d\u00e9bordante", 
+            "secondary_category_class": 12, 
+            "name_nl": "overvolle glasbol", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 162, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "petits d\u00e9chets aux abords", 
+            "secondary_category_class": 12, 
+            "name_nl": "klein afval in de omgeving", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 163, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "petits d\u00e9chets aux abords", 
+            "secondary_category_class": 12, 
+            "name_nl": "klein afval in de omgeving", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 164, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "versage sauvage aux abords", 
+            "secondary_category_class": 12, 
+            "name_nl": "sluikstort in de omgeving", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 165, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "versage sauvage aux abords", 
+            "secondary_category_class": 12, 
+            "name_nl": "sluikstort in de omgeving", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 166, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "graphitis sur la bulle", 
+            "secondary_category_class": 12, 
+            "name_nl": "graffiti op de glasbol", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 167, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "graphitis sur la bulle", 
+            "secondary_category_class": 12, 
+            "name_nl": "graffiti op de glasbol", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 168, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "immondices m\u00e9nagers", 
+            "secondary_category_class": 12, 
+            "name_nl": "huisvuil", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 169, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "immondices m\u00e9nagers", 
+            "secondary_category_class": 12, 
+            "name_nl": "huisvuil", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 170, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "petits encombrants (< 1 m3)", 
+            "secondary_category_class": 12, 
+            "name_nl": "klein grofvuil (< 1 m\u00b3)", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 171, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "petits encombrants (< 1 m3)", 
+            "secondary_category_class": 12, 
+            "name_nl": "klein grofvuil (< 1 m\u00b3)", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 172, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "gros encombrants (> 1 m3)", 
+            "secondary_category_class": 12, 
+            "name_nl": "groot grofvuil (> 1 m\u00b3)", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 173, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "gros encombrants (> 1 m3)", 
+            "secondary_category_class": 12, 
+            "name_nl": "groot grofvuil (> 1 m\u00b3)", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 174, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9chets de construction", 
+            "secondary_category_class": 12, 
+            "name_nl": "bouwafval", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 175, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9chets de construction", 
+            "secondary_category_class": 12, 
+            "name_nl": "bouwafval", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 176, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "huile en f\u00fbts", 
+            "secondary_category_class": 12, 
+            "name_nl": "olie in vaten", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 177, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "huile en f\u00fbts", 
+            "secondary_category_class": 12, 
+            "name_nl": "olie in vaten", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 178, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "autres d\u00e9chets liquides de nature inconnue", 
+            "secondary_category_class": 12, 
+            "name_nl": "andere vloeibare afval van onbekende aard", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 179, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "autres d\u00e9chets liquides de nature inconnue", 
+            "secondary_category_class": 12, 
+            "name_nl": "andere vloeibare afval van onbekende aard", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 180, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "huile sur la chauss\u00e9e", 
+            "secondary_category_class": 12, 
+            "name_nl": "olie op het wegdek", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 181, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "huile sur la chauss\u00e9e", 
+            "secondary_category_class": 12, 
+            "name_nl": "olie op het wegdek", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 182, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "trottoir / caniveau sale non balay\u00e9", 
+            "secondary_category_class": 12, 
+            "name_nl": "trottoir/ straatgoot vuil : niet geveegd", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 183, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "trottoir / caniveau sale non balay\u00e9", 
+            "secondary_category_class": 12, 
+            "name_nl": "trottoir/ straatgoot vuil : niet geveegd", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 184, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "espace sale (march\u00e9 ...)", 
+            "secondary_category_class": 12, 
+            "name_nl": "vervuilde ruimte (markt ...)", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 185, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "espace sale (march\u00e9 ...)", 
+            "secondary_category_class": 12, 
+            "name_nl": "vervuilde ruimte (markt ...)", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 186, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9jection canine sur espace pi\u00e9ton", 
+            "secondary_category_class": 12, 
+            "name_nl": "Hondenuitwerpselen op voetgangerszone", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 187, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9jection canine sur espace pi\u00e9ton", 
+            "secondary_category_class": 12, 
+            "name_nl": "Hondenuitwerpselen op voetgangerszone", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 188, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9jections canines : zone tr\u00e8s pollu\u00e9e", 
+            "secondary_category_class": 12, 
+            "name_nl": "Hondenuitwerpselen : zeer vervuilde zone", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 189, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9jections canines : zone tr\u00e8s pollu\u00e9e", 
+            "secondary_category_class": 12, 
+            "name_nl": "Hondenuitwerpselen : zeer vervuilde zone", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 190, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9bordante", 
+            "secondary_category_class": 12, 
+            "name_nl": "overlopend", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 191, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9bordante", 
+            "secondary_category_class": 12, 
+            "name_nl": "overlopend", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 192, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "endommag\u00e9e", 
+            "secondary_category_class": 12, 
+            "name_nl": "beschadigd", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 193, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "endommag\u00e9e", 
+            "secondary_category_class": 12, 
+            "name_nl": "beschadigd", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 194, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "bouchage ordinaire", 
+            "secondary_category_class": 12, 
+            "name_nl": "gewone verstopping", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 195, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "bouchage ordinaire", 
+            "secondary_category_class": 12, 
+            "name_nl": "gewone verstopping", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 196, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "bouchage en dur (b\u00e9tonn\u00e9)", 
+            "secondary_category_class": 12, 
+            "name_nl": "verharde verstopping (gebetonneerd)", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 197, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "bouchage en dur (b\u00e9tonn\u00e9)", 
+            "secondary_category_class": 12, 
+            "name_nl": "verharde verstopping (gebetonneerd)", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 198, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "autre (Collecte)", 
+            "secondary_category_class": 12, 
+            "name_nl": "andere (Ophaling)", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 199, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "autre (Collecte)", 
+            "secondary_category_class": 12, 
+            "name_nl": "andere (Ophaling)", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 200, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "petits d\u00e9chets aux abords", 
+            "secondary_category_class": 12, 
+            "name_nl": "klein afval in de omgeving", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 201, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "petits d\u00e9chets aux abords", 
+            "secondary_category_class": 12, 
+            "name_nl": "klein afval in de omgeving", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 202, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "Pots de peinture", 
+            "secondary_category_class": 12, 
+            "name_nl": "Verfpotten", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 203, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "Pots de peinture", 
+            "secondary_category_class": 12, 
+            "name_nl": "Verfpotten", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 204, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "m\u00b3 de d\u00e9chets verts et/ou branches", 
+            "secondary_category_class": 12, 
+            "name_nl": "m\u00b3 tuinafval en/of takken", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 205, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "m\u00b3 de d\u00e9chets verts et/ou branches", 
+            "secondary_category_class": 12, 
+            "name_nl": "m\u00b3 tuinafval en/of takken", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 206, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "\u00e9lastique manquant sur corbeille vigipirate", 
+            "secondary_category_class": 12, 
+            "name_nl": "Ontbrekende elastieken aan de open vuilbakken (vigipirate)", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 207, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "\u00e9lastique manquant sur corbeille vigipirate", 
+            "secondary_category_class": 12, 
+            "name_nl": "Ontbrekende elastieken aan de open vuilbakken (vigipirate)", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 208, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "D\u00e9faillance technique", 
+            "secondary_category_class": 12, 
+            "name_nl": "Technische storing", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 209, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "D\u00e9faillance technique", 
+            "secondary_category_class": 12, 
+            "name_nl": "Technische storing", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 210, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9chet chimique type Huile, Peinture", 
+            "secondary_category_class": 12, 
+            "name_nl": "d\u00e9chet chimique type Huile, Peinture", 
+            "category_class": 1, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "pk": 211, 
+        "model": "fixmystreet.reportcategory", 
+        "fields": {
+            "name_fr": "d\u00e9chet chimique type Huile, Peinture", 
+            "secondary_category_class": 12, 
+            "name_nl": "d\u00e9chet chimique type Huile, Peinture", 
+            "category_class": 2, 
+            "organisation_regional": 23, 
+            "organisation_communal": 23, 
+            "sub_categories": [
+                1, 
+                2, 
+                3, 
+                4, 
+                5, 
+                6
+            ], 
+            "public": true
+        }
+    }, 
+    {
+        "fields": {
+            "name_fr": "Bruxelles-Propret\u00e9", 
+            "name_nl": "Net Brussels", 
+            "phone": "0800 981 81", 
+            "active": true, 
+            "type": "R", 
+            "email": "pro@arp-gan.be"
+        }, 
+        "model": "fixmystreet.organisationentity", 
+        "pk": 23
+    }, 
+    {
+        "fields": {
+            "name_fr": "Bruxelles-Propret\u00e9 Groupe", 
+            "dispatch_categories": [
+                151, 
+                153, 
+                155, 
+                157, 
+                159, 
+                161, 
+                163, 
+                165, 
+                167, 
+                169, 
+                171, 
+                173, 
+                175, 
+                177, 
+                179, 
+                181, 
+                183, 
+                185, 
+                187, 
+                189, 
+                191, 
+                193, 
+                195, 
+                197, 
+                199, 
+                201, 
+                203, 
+                205, 
+                207, 
+                209, 
+                211
+            ], 
+            "phone": "0800 981 81", 
+            "active": true, 
+            "slug_nl": "Net Brussels Group", 
+            "name_nl": "Net Brussels Group", 
+            "created": "2017-05-10T16:02:39.482513", 
+            "modified": "2017-05-10T16:02:39.482516", 
+            "dependency": 23, 
+            "slug_fr": "Bruxelles-Propret\u00e9 Groupe", 
+            "type": "D", 
+            "email": "pro@arp-gan.be"
+        }, 
+        "model": "fixmystreet.organisationentity", 
+        "pk": 300
+    }, 
+    {
+        "fields": {
+            "notify_members": false, 
+            "group": 300, 
+            "digest_closed": false, 
+            "digest_other": false, 
+            "digest_created": false, 
+            "digest_inprogress": false, 
+            "notify_group": false
+        }, 
+        "model": "fixmystreet.groupmailconfig", 
+        "pk": 200
+    }, 
+    {
+        "fields": {
+            "telephone": "0800 981 81", 
+            "agent": false, 
+            "manager": true, 
+            "groups": [], 
+            "user_permissions": [], 
+            "quality": null, 
+            "logical_deleted": false, 
+            "organisation": 23, 
+            "applicant": false, 
+            "modified": "2017-05-10T16:02:39.482522", 
+            "contractor": false, 
+            "leader": false
+        }, 
+        "model": "fixmystreet.fmsuser", 
+        "pk": 10673
+    }, 
+    {
+        "fields": {
+            "user": 10673, 
+            "organisation": 300, 
+            "modified": "2017-05-10T16:02:39.482525", 
+            "contact_user": true, 
+            "created": "2017-05-10T16:02:39.482524"
+        }, 
+        "model": "fixmystreet.userorganisationmembership"
+    }
+]

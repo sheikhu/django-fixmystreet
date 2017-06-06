@@ -264,22 +264,57 @@ $(function() {
         }
     });
 
-    //reset second category when main category changes
+    //fill sub cat based on main category
+    $.ajax({
+        url:URL_SUB_CAT_FOR_MAIN_CAT_AND_SEC_CAT + "?main_category=" + REPORT_CAT_ID + "&sec_category=" + REPORT_SEC_CAT_ID,
+        type:"GET",
+        success:function(data){
+            sortAndAppendSubCat(data);
+        }
+    });
+
+    //reset second category and sub category when main category changes
     $('#main_cat_select').change(function(){
         if(this.value !== "0"){
             $("#sec_cat_select").removeAttr("disabled");
             $("#sec_cat_select").empty();
+
+            $("#sub_cat_select").removeAttr("disabled");
+            $("#sub_cat_select").empty();
 
             $.ajax({
                 url:URL_SEC_CAT_FOR_MAIN_CAT + "?main_category=" +this.value,
                 type:"GET",
                 success:function(data){
                     sortAndAppendSecCat(data);
+                    sortAndAppendSubCat(data);
                 }
             });
         }
         else {
             $("#sec_cat_select").attr("disabled","disabled");
+            $("#sub_cat_select").attr("disabled","disabled");
+        }
+    });
+
+    //reset sub category when main secondary category changes
+    $('#sec_cat_select').change(function(){
+        if(this.value !== "0"){
+            $("#sub_cat_select").removeAttr("disabled");
+            $("#sub_cat_select").empty();
+
+            var main_category_id = $("#main_cat_select").val();
+
+            $.ajax({
+                url:URL_SUB_CAT_FOR_MAIN_CAT_AND_SEC_CAT + "?main_category=" + main_category_id + "&sec_category=" + this.value,
+                type:"GET",
+                success:function(data){
+                    sortAndAppendSubCat(data);
+                }
+            });
+        }
+        else {
+            $("#sub_cat_select").attr("disabled","disabled");
         }
     });
 

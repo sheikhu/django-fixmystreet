@@ -137,10 +137,38 @@ function sortAndAppendSecCat(data) {
     $("#sec_cat_select").val(REPORT_SEC_CAT_ID);
 }
 
+function sortAndAppendSubCat(data) {
+    var sortedSubCat = data[0].sub_c;
+
+    if (!sortedSubCat.length) {
+        $("#sub_cat_select").hide();
+        return;
+    }
+
+    // Sort sub_cat
+    sortedSubCat = sortedSubCat.sort(function(a,b) {
+        var aSubCat = a["sub_c_n_"+LANGUAGE_CODE] + a["n_"+LANGUAGE_CODE];
+        var bSubCat = b["sub_c_n_"+LANGUAGE_CODE] + b["n_"+LANGUAGE_CODE];
+
+        return aSubCat == bSubCat ? 0 : aSubCat < bSubCat ? -1 : 1;
+    });
+
+    // Create select with optgroups
+    var currentOptGroup = null;
+    for(var i = 0; i < sortedSubCat.length;++i) {
+        var option = "<option value='"+sortedSubCat[i].sub_c_id+"'>" + sortedSubCat[i]["sub_c_n_"+LANGUAGE_CODE] + "</option>";
+        $("#sub_cat_select").append(option);
+    }
+    $("#sub_cat_select").prepend("<option value='0'>" + TRAD_SELECT_CATEGORY + "</option>");
+
+    $("#sub_cat_select").val(REPORT_SUB_CAT_ID);
+    $("#sub_cat_select").show();
+}
+
 function validateCategories() {
     var valid = true;
     var form =  $('#update_cat_form');
-    form.find('#main_cat_select, #sec_cat_select').each(function(ind, field) {
+    form.find('#main_cat_select, #sec_cat_select, #sub_cat_select').each(function(ind, field) {
         var value = true;
         var field = $(field);
         if(field.val() == 0){
@@ -200,4 +228,11 @@ function planned(){
         var url = PLANNED_URL + "?date_planned=" + date_planned;
         window.location = url;
     }
+}
+
+function incrementDuplicates(){
+    $.get(DUPLICATE_URL, function (data) {
+        //We redirect to the same page to update the View
+        window.location.assign(window.location.href);
+    });
 }

@@ -379,6 +379,26 @@ class UserOrganisationMembership(UserTrackedModel):
 
 class ReportQuerySet(models.query.GeoQuerySet):
 
+    def fmxPublic(self):
+        return self.filter(private=False, status__in=Report.FMX_REPORT_STATUS_VIEWABLE)
+
+    def fmxNotClosed(self):
+        return self.filter(status__in=Report.FMX_REPORT_STATUS_OPEN)
+
+    def fmxLastVisible(self):
+        return self.filter(status__in=Report.FMX_REPORT_STATUS_LAST_VISIBLE)
+
+    def fmxListing(self):
+        return self.filter(status__in=Report.FMX_REPORT_STATUS_LISTING)
+
+    def fmxCreatedLast30Days(self):
+        limit_date = datetime.date.today() - datetime.timedelta(30)
+        return self.filter(modified__gte=limit_date)
+
+    def fmxExcludeClosedLastMonth(self):
+        limit_date = datetime.date.today() - datetime.timedelta(30)
+        return self.exclude(status=Report.PROCESSED, fixed_at__lt=limit_date)
+
     def public(self):
         return self.filter(private=False, status__in=Report.REPORT_STATUS_VIEWABLE)
 
@@ -615,6 +635,10 @@ class Report(UserTrackedModel):
     REPORT_STATUS_ASSIGNED = (APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED)
     REPORT_STATUS_CLOSED = (PROCESSED, DELETED)
     REPORT_STATUS_OFF = (DELETED, TEMP)
+    FMX_REPORT_STATUS_VIEWABLE = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED, REFUSED)
+    FMX_REPORT_STATUS_OPEN = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, SOLVED)
+    FMX_REPORT_STATUS_LAST_VISIBLE = (IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
+    FMX_REPORT_STATUS_LISTING = (CREATED, IN_PROGRESS, MANAGER_ASSIGNED, APPLICANT_RESPONSIBLE, CONTRACTOR_ASSIGNED, PROCESSED, SOLVED)
 
     REPORT_STATUS_CHOICES = (
         (_("Created"), (
@@ -727,8 +751,19 @@ class Report(UserTrackedModel):
     # Reference to a ticket ID from contractor IT system
     contractor_reference_id = models.CharField(max_length=20, null=True, blank=True)
 
+    # Duplicates counter
+    duplicates = models.IntegerField(default=0)
+
+    # Several occurences flag
+    several_occurences = models.BooleanField(default=False)
+
     def get_category_path(self):
-        return " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
+        path = " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
+
+        if self.sub_category:
+            path = " > ".join([path, self.sub_category.name])
+
+        return path
 
     def get_marker(self):
         marker_color = "green"
@@ -816,7 +851,7 @@ class Report(UserTrackedModel):
             return self.citizen
 
     def get_absolute_url(self):
-        return reverse("report_show", kwargs={'report_id': self.id, 'slug': self.get_slug()})
+        return "/" + str(self.id)
 
     def get_absolute_url_pro(self):
         return reverse("report_show_pro", kwargs={'report_id': self.id, 'slug': self.get_slug()})
@@ -1372,6 +1407,7 @@ class ReportAttachment(UserTrackedModel):
 
 class ReportComment(ReportAttachment):
     text = models.TextField()
+    is_incident_creation = False
 
 
 def move_to(instance, filename):
@@ -1395,10 +1431,11 @@ class ReportFile(ReportAttachment):
     )
 
     file = models.FileField(upload_to=move_to, blank=True)
-    image = StdImageField(upload_to=move_to, blank=True, variations={'thumbnail': {'width': 80, 'height': 120}})
+    image = StdImageField(upload_to=move_to, blank=True, variations={'thumbnail': {'width': 140, 'height': 140}})
     file_type = models.IntegerField(choices=attachment_type)
     title = models.TextField(max_length=250, null=True, blank=True)
     file_creation_date = models.DateTimeField(blank=False, null=True)
+    is_incident_creation = False
 
     def is_pdf(self):
         return self.file_type == ReportFile.PDF
@@ -1720,7 +1757,6 @@ class ReportNotification(models.Model):
         date_planned = None
         merged_with = None
         reopen_reason = None
-
         if 'old_responsible' in kwargs:
             old_responsible = kwargs['old_responsible']
             del kwargs['old_responsible']

@@ -22,11 +22,6 @@ class Command(BaseCommand):
             dest='category_classes',
             default="",
             help='Category classes to generate (ids comma separated)'),
-        make_option('--abp_entity_id',
-            action='store',
-            dest='abp_entity_id',
-            default="",
-            help='ABP entity id'),
         make_option('--dump',
             action='store',
             dest='dump',
@@ -36,7 +31,12 @@ class Command(BaseCommand):
 
     idx_reportsecondarycategoryclass = 9
     idx_reportsubcategory = 0
-    idx_reportcategory = 118
+    idx_reportcategory = 150
+
+    abp_entity_id = 23
+    abp_group_id = 300
+    abp_groupmail_id = 200
+    abp_user_id = 10673
 
     def handle(self, *args, **options):
         logger.info('Loading file %s' % options['typology'])
@@ -44,6 +44,7 @@ class Command(BaseCommand):
         fixtures_fms = []
         fixtures_fmsproxy = []
 
+        subnature_ids = []
         bagtype_ids = []
 
         nature_type_ids = {}
@@ -104,6 +105,43 @@ class Command(BaseCommand):
                 fixtures_fmsproxy.append(fmsproxy_type)
 
                 idx = idx +1
+
+                logger.info('Processing subnatures')
+                idx = 1
+                subnatures_ids = {}
+                for typology_subnature in typology['data']['subnatures']:
+                    subnatures_ids[typology_subnature['subnature_id']] = self.idx_reportsubcategory +idx
+
+                    try:
+                        name_fr = translations_corrections[typology_subnature['label']['fr']]
+                        name_nl = translations_corrections[typology_subnature['label']['nl']]
+                    except KeyError:
+                        name_fr = typology_subnature['label']['fr']
+                        name_nl = typology_subnature['label']['nl']
+
+                    reportsubcategory = {
+                        "pk": subnatures_ids[typology_subnature['subnature_id']],
+                        "model": "fixmystreet.reportsubcategory",
+                        "fields": {
+                            "name_fr": name_fr,
+                            "name_nl": name_nl
+                        }
+                    }
+                    fixtures_fms.append(reportsubcategory)
+                    subnature_ids.append(subnatures_ids[typology_subnature['subnature_id']])
+
+                    # FMSProxy
+                    fmsproxy_subnature = {
+                        "fields": {
+                            "fms_id": subnatures_ids[typology_subnature['subnature_id']],
+                            "abp_id": typology_subnature['subnature_id']
+                        },
+                        "model": "abp.subnature",
+                        "pk": idx
+                    }
+                    fixtures_fmsproxy.append(fmsproxy_subnature)
+
+                    idx = idx +1
 
             logger.info('Processing bagtypes')
             idx = 1
@@ -167,8 +205,8 @@ class Command(BaseCommand):
                                 "name_fr": name_fr,
                                 "name_nl": name_nl,
                                 "public": True,
-                                "organisation_regional": int(options['abp_entity_id']),
-                                "organisation_communal": int(options['abp_entity_id']),
+                                "organisation_regional": self.abp_entity_id,
+                                "organisation_communal": self.abp_entity_id,
 
                                 "category_class": int(category_class),
                                 "secondary_category_class": nature_type_ids[typology_nature['nature_id']]
@@ -197,10 +235,97 @@ class Command(BaseCommand):
 
                         idx = idx +1
 
+            # Add ABP Entity
+            fixtures_fms.append({
+                "fields": {
+                    "name_fr": "Bruxelles-Propreté",
+                    "name_nl": "Net Brussels",
+                    "email": "pro@arp-gan.be",
+                    "phone": "0800 981 81",
+                    "active": True,
+                    "type": "R",
+                },
+                "model": "fixmystreet.organisationentity",
+                "pk": self.abp_entity_id
+            })
+
+            # Add ABP Group and generate dispatching for it
+            fixtures_fms.append({
+                "fields": {
+                    "name_fr": "Bruxelles-Propreté Groupe",
+                    "name_nl": "Net Brussels Group",
+                    "created": datetime.datetime.now(),
+                    "dispatch_categories": natures_ids.values(),
+                    "dependency": self.abp_entity_id,
+                    "modified": datetime.datetime.now(),
+                    "email": "pro@arp-gan.be",
+                    "phone": "0800 981 81",
+                    "active": True,
+                    "slug_fr": "Bruxelles-Propreté Groupe",
+                    "type": "D",
+                    "slug_nl": "Net Brussels Group"
+                },
+                "model": "fixmystreet.organisationentity",
+                "pk": self.abp_group_id
+            })
+
+            # Add GroupMailConfig for Abp Group
+            fixtures_fms.append({
+                "fields": {
+                    "notify_members": False,
+                    "group": self.abp_group_id,
+                    "digest_closed": False,
+                    "digest_other": False,
+                    "digest_created": False,
+                    "digest_inprogress": False,
+                    "notify_group": False
+                },
+                "model": "fixmystreet.groupmailconfig",
+                "pk": self.abp_groupmail_id
+            })
+
+            # Fix abp user entity
+            fixtures_fms.append({
+                "fields": {
+                    "applicant": False,
+                    "logical_deleted": False,
+                    "organisation": self.abp_entity_id,
+                    "telephone": "0800 981 81",
+                    "agent": False,
+                    "contractor": False,
+                    "manager": True,
+                    "groups": [],
+                    "modified": datetime.datetime.now(),
+                    "user_permissions": [],
+                    "quality": None,
+                    "leader": False
+                },
+                "model": "fixmystreet.fmsuser",
+                "pk": self.abp_user_id
+            })
+
+            # Create membership to group
+            fixtures_fms.append({
+                "fields": {
+                    "created": datetime.datetime.now(),
+                    "organisation": self.abp_group_id,
+                    "contact_user": True,
+                    "modified": datetime.datetime.now(),
+                    "user": self.abp_user_id
+                },
+                "model": "fixmystreet.userorganisationmembership"
+            })
+
         if options['dump'] == 'fms':
             logger.info('Dump fixtures fms')
-            print json.dumps(fixtures_fms, indent=4)
+            print json.dumps(fixtures_fms, indent=4, default=self.date_handler)
 
         if options['dump'] == 'fmsproxy':
             logger.info('Dump fixtures fmsproxy')
             print json.dumps(fixtures_fmsproxy, indent=4)
+
+    def date_handler(self, obj):
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        else:
+            raise TypeError

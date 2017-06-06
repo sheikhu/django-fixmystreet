@@ -217,7 +217,7 @@ class ReopenRequestTest(FMSTestCase):
 
         # Request reopen report
         response = self.client.post(reverse('report_reopen_request', args=["hello", report.id]), self.sample_post_reopen_request, follow=True)
-        url = reverse('report_show', args=[report.get_slug(), report.id])
+        url = reverse('report_show2', args=[report.id])
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
         #test there is a message
@@ -248,7 +248,7 @@ class ReopenRequestTest(FMSTestCase):
 
         # Request reopen report
         response = self.client.post(reverse('report_reopen_request', args=["hello", report.id]), self.sample_post_reopen_request, follow=True)
-        url = reverse('report_show', args=[report.get_slug(), report.id])
+        url = reverse('report_show2', args=[report.id])
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
         error_msg = str(list(response.context["messages"])[0])
@@ -275,7 +275,7 @@ class ReopenRequestTest(FMSTestCase):
 
         # Request reopen report
         response = self.client.post(reverse('report_reopen_request', args=["hello", report.id]), self.sample_post_reopen_request, follow=True)
-        url = reverse('report_show', args=[report.get_slug(), report.id])
+        url = reverse('report_show2', args=[report.id])
         self.assertRedirects(response, url, status_code=302, target_status_code=200)
 
         error_msg = str(list(response.context["messages"])[0])

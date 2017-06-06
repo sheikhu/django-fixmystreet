@@ -210,6 +210,11 @@ def show(request, slug, report_id):
     can_edit_attachment = request.fmsuser.memberships.filter(organisation=report.responsible_department).exists() \
                           and not report.is_merged()
 
+    from_verification = False
+    if 'HTTP_REFERER' in request.META:
+        if "/rapport/verification" in request.META['HTTP_REFERER']:
+            from_verification = True
+
     return render_to_response("pro/reports/show.html", {
         "fms_user": request.fmsuser,
         "report": report,
@@ -231,6 +236,7 @@ def show(request, slug, report_id):
         "attachment_edit": can_edit_attachment,
         "category_list": ReportMainCategoryClass.objects.all().order_by('name_' + get_language()),
         "contact_list": contact_list,
+        "from_verification": from_verification,
 
     }, context_instance=RequestContext(request))
 

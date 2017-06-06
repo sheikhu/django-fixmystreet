@@ -25,6 +25,7 @@
                 var URL_REPORT_UPDATE_ATTACHMENT = "{% url 'report_update_attachment' report.id %}";
                 var URL_SEND_PDF = "{% url 'send_pdf' report.id %}";
                 var URL_SEC_CAT_FOR_MAIN_CAT = "{% url 'secondary_category_for_main_category' %}";
+                var URL_SUB_CAT_FOR_MAIN_CAT_AND_SEC_CAT = "{% url 'sub_category_for_main_category_and_secondary_category' %}";
                 var URL_UNSUBSCRIBE_PRO = "{% url 'unsubscribe_pro' report.id %}";
                 var URL_SUBSCRIBE_PRO = "{% url 'subscribe_pro' report.id %}";
             </script>
@@ -107,6 +108,15 @@
                                 {% endif %}
 
                                 {% if BACKOFFICE %}
+                                    {% if report.duplicates %}
+                                        <li class='report-duplicates'>{{report.duplicates}}&nbsp;
+                                            {% if report.duplicates > 1 %}
+                                                {% trans "duplicates" %}
+                                            {% else %}
+                                                {% trans "duplicate" %}
+                                            {% endif %}
+                                        </li>
+                                    {% endif %}
                                 <li>
                                     {% if report.get_priority == 0 %}
                                     <a class="myTooltip" data-placement='bottom' data-toggle='tooltip' data-original-title='{% trans "This incident has no defined priority" %}'><img src="{% static 'images/prior_off.png' %}" class="priorityLevel" /></a>
@@ -130,6 +140,9 @@
 
                             <!--/div-->
                             <span class="reportVisibility"><br/>{% trans 'Visibility' %} : {{ report.private|yesno:_("pro,public") }}<br/><br/></span>
+                            {% if report.several_occurences %}
+                                <span class="reportVisibility"><br/>{% trans 'Several Occurences' %}<br/><br/></span>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="span6" id="postedbytitle">
@@ -225,6 +238,7 @@
 
                     <!-- Actions -->
                     {% include "pro/reports/_actions.html" %}
+
                 </div>
             </div>
         </div>

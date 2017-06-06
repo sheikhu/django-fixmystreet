@@ -164,6 +164,7 @@ INSTALLED_APPS = (
     'apps.fmsproxy',
     'apps.api',
     'apps.webhooks',
+    'apps.fmx',
     'mobileserverstatus',
 )
 

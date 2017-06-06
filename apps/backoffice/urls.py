@@ -80,8 +80,10 @@ urlpatterns += patterns(
     url(r'^ajax/reportPopupDetails', 'get_report_popup_details', name="get_report_popup_details_pro"),
     # url(r'^ajax/map/filter/', 'filter_map', name="filter_map"),
     url(r'^ajax/secondary_category_for_main_category', 'secondary_category_for_main_category', name="secondary_category_for_main_category"),
+    url(r'^ajax/sub_category_for_main_category_and_secondary_category', 'sub_category_for_main_category_and_secondary_category', name="sub_category_for_main_category_and_secondary_category"),
     url(r'^ajax/update_category_for_report/(\d+)', 'update_category_for_report', name="update_category_for_report"),
     url(r'^ajax/send_pdf/(\d+)', 'send_pdf', name="send_pdf"),
+    url(r'^ajax/duplicate/(\d+)', 'incrementDuplicates', name="incrementDuplicates"),
 )
 
 urlpatterns += patterns(

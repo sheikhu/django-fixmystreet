@@ -2006,6 +2006,9 @@ SHOW REPORT
 .lead-container .icon-incident-actions{
 	background:#FFDB00 url('../images/pro_other-actions.png') center right no-repeat;
 }
+.lead-container .icon-duplicate{
+	background:#FFDB00 url('../images/pro_show-duplicate.png') center right no-repeat;
+}
 .lead-container ul{
 	margin:0;
 }
@@ -2995,16 +2998,8 @@ label.invalid {
 	border-bottom-color:transparent;
 	border-right-color:#808080;
 }
-#main_cat_select, #sec_cat_select{
-	float:left;
-	font-size:12px;
-	height:25px;
-}
-#main_cat_select{
-	width:180px;
-}
-#sec_cat_select{
-	margin-left:5px;
+#main_cat_select, #sec_cat_select, #sub_cat_select{
+	width: 100%
 }
 /*
 .priorityLevel{
@@ -3912,4 +3907,7 @@ div.carousel-inner{
 .table_thumbnail img{
 	max-width:100px;
 	max-height:100px;
+}
+.spaced{
+	line-height: 25px;
 }

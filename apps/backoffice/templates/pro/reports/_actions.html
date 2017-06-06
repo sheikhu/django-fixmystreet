@@ -6,6 +6,7 @@
 <script type="text/javascript">
 
 var REPORT_SEC_CAT_ID = "{{report.secondary_category.id}}";
+var REPORT_SUB_CAT_ID = "{{report.sub_category.id}}";
 var REPORT_GRAVITY = "{{report.gravity}}";
 var REPORT_PROBABILITY = "{{report.probability}}";
 
@@ -16,6 +17,7 @@ var CLOSE_REPORT_URL = "{% url 'report_close_pro' report.id %}";
 var UPDATE_PRIORITY_URL = "{% url 'report_update_priority' report.id %}";
 var PLANNED_URL = "{% url 'report_planned_pro' report.id %}";
 var CHANGE_MANAGER_URL = "{% url 'report_change_manager_pro' report.id %}";
+var DUPLICATE_URL = "{% url 'incrementDuplicates' report.id %}";
 var REOPEN_REPORT_URL = "{% url 'report_reopen_pro' report.id %}";
 
 
@@ -327,20 +329,18 @@ var REOPEN_REPORT_URL = "{% url 'report_reopen_pro' report.id %}";
 
         <div class="modal-body">
             <form id="update_cat_form" method="POST" action="{% url 'update_category_for_report' report.id %}">
-                <tr>
-                    <td colspan="5">
-                        <select id="main_cat_select" name="main_category">
-                            <option value="0">{% trans "Select a Category" %}</option>
-                            {% for cat in category_list%}
-                                <option value="{{cat.id}}">{{cat.name}}</option>
-                            {% endfor %}
-                        </select>
-                        <select id="sec_cat_select" name="secondary_category">
-                        </select>
-                    </td>
-                </tr>
-                <br/><br/>
-                <tr>
+
+                <select id="main_cat_select" name="main_category">
+                    <option value="0">{% trans "Select a Category" %}</option>
+                    {% for cat in category_list%}
+                        <option value="{{cat.id}}">{{cat.name}}</option>
+                    {% endfor %}
+                </select>
+                <select id="sec_cat_select" name="secondary_category">
+                </select>
+                <select id="sub_cat_select" name="sub_category">
+                </select>
+
                 <div style="width:100%; margin-top:50px;" align="right">
                         <input class="btn" type="button" name="submit" value="{% trans 'Annuler' %}" onclick="cancelCategoryUpdate()">
                         <input class="btn" type="submit" name="submit" value="{% trans 'Accepter' %}">

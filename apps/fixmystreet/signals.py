@@ -719,12 +719,21 @@ def report_attachment_created(sender, instance, **kwargs):
             # Send notifications to correct recipients
             recipients += mail_config.get_manager_recipients(user)
 
+        send_email = True
+        if instance_comment != None and instance_comment.is_incident_creation:
+            send_email = False
+        elif instance_files != None and len(instance_files) > 0 :
+            for f in instance_files:
+                if f.is_incident_creation:
+                    send_email = False
+
         for email in recipients:
-            ReportNotification(
-                content_template='notify-updates',
-                recipient_mail=email,
-                related=report,
-            ).save(updater=user, comment=instance_comment, files=instance_files)
+            if send_email:
+                ReportNotification(
+                    content_template='notify-updates',
+                    recipient_mail=email,
+                    related=report,
+                ).save(updater=user, comment=instance_comment, files=instance_files)
 
 @receiver(post_save, sender=ReportAttachment)
 def report_attachment_published(sender, instance, **kwargs):
@@ -785,7 +794,6 @@ def report_reopen_reason_notify(sender, instance, **kwargs):
 
     report = instance.report
     user   = instance.created_by
-
     ReportEventLog(
         report=report,
         event_type=ReportEventLog.REOPEN_REQUEST,
@@ -810,6 +818,7 @@ def report_reopen_reason_notify(sender, instance, **kwargs):
         ReportNotification(
             content_template='acknowledge-reopen-request',
             recipient_mail=user.email,
+            recipient=user,
             related=report,
         ).save(updater=user, reopen_reason=instance)
 #############################################################

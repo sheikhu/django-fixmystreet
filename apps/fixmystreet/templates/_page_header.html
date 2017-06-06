@@ -47,7 +47,7 @@
         {% endif %}
         <div class="block clearfix row-fluid" align="left" >
             {% if search_report %} <span style="font-family:'dosis'; font-size:18px; color:#c5ced6">{% trans "or" context "or per incident" %}</span> <span style="font-family:'dosis'; font-size:18px; color:white; margin-right:45px;">{% trans "per incident Nr" %}</span>
-            <form id="search-ticket-form" class="input-append form-inline" action="{% url 'search_ticket' %}">
+            <form id="search-ticket-form" class="input-append form-inline" action="{% url 'search_ticket_pro' %}">
                 <input id="input-ticket-search" class="input-medium" style="width:100%" type="search" name="report_id" placeholder="{% trans 'Ticket number...' %}" />
                 <input id="widget-search-ticket-button1" class="btn" type="submit" name="submit" value="">
             </form>
