@@ -288,7 +288,8 @@ class ReportViewsTest(FMSTestCase):
             'files-MAX_NUM_FORMS': 0
         }, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, report.get_absolute_url())
+        url = reverse('report_show2', args=[report.id])
+        self.assertRedirects(response, url)
 
         self.assertEqual(report.comments().count(), 2)
         self.assertEqual(report.comments()[1].created_by, self.user)
@@ -381,7 +382,8 @@ class ReportViewsTest(FMSTestCase):
 
         #unsubscribe to the report
         response = self.client.get(reverse('unsubscribe', args=[report.id]) + '?citizen_email=' + self.citizen.email, {}, follow=True)
-        self.assertRedirects(response, report.get_absolute_url())
+        url = reverse('report_show2', args=[report.id])
+        self.assertRedirects(response, url)
         self.assertEqual(response.status_code, 200)
 
         #current user is no more subscribed

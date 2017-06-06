@@ -123,6 +123,8 @@ def verify(request):
 
     return new(request)
 
+def show2 (request, report_id):
+    return show(request, 'none', report_id)
 
 def show(request, slug, report_id):
     report = get_object_or_404(Report, id=report_id, private=False)
