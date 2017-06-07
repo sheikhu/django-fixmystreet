@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         Category_LVL_4.objects.filter(id__lt=4000).delete()
 
     dependencies = [
-        ('fixmystreet', '0023_auto_20170404_1050'),
+        ('fixmystreet', '0024_auto_20170404_1050'),
     ]
 
     operations = [

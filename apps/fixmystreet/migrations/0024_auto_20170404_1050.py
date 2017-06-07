@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
 
 
     dependencies = [
-        ('fixmystreet', '0022_auto_20170404_1411'),
+        ('fixmystreet', '0023_auto_20170404_1411'),
     ]
 
     operations = [

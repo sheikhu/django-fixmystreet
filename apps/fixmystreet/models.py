@@ -1526,7 +1526,7 @@ class ReportMainCategoryClass(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            d['name_en'] = getattr(current_element, 'name_fr')
+            d['name_en'] = getattr(current_element, 'name_en')
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
@@ -1556,7 +1556,7 @@ class ReportSecondaryCategoryClass(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            d['name_en'] = getattr(current_element, 'name_fr')
+            d['name_en'] = getattr(current_element, 'name_en')
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
@@ -1588,7 +1588,7 @@ class ReportSubCategory(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            d['name_en'] = getattr(current_element, 'name_fr')
+            d['name_en'] = getattr(current_element, 'name_en')
             d['name_fr'] = getattr(current_element, 'name_fr')
             d['name_nl'] = getattr(current_element, 'name_nl')
             list_of_elements_as_json.append(d)
@@ -1654,7 +1654,7 @@ class ReportCategory(UserTrackedModel):
         for current_element in list_of_elements:
             d = {}
             d['id'] = getattr(current_element, 'id')
-            d['n_en'] = getattr(current_element, 'name_fr')
+            d['n_en'] = getattr(current_element, 'name_en')
             d['n_fr'] = getattr(current_element, 'name_fr')
             d['n_nl'] = getattr(current_element, 'name_nl')
             d['m_c_id'] = getattr(getattr(current_element, 'category_class'), 'id')
@@ -1666,8 +1666,7 @@ class ReportCategory(UserTrackedModel):
                 d['p'] = 0
 
             # Optimize data transfered removing duplicates on main class names
-            # m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
-            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
+            m_c_n_en_value = getattr(getattr(current_element, 'category_class'), 'name_en')
             if is_it_public or not prev_d['m_c_n_en'] == m_c_n_en_value:
                 prev_d['m_c_n_en'] = d['m_c_n_en'] = m_c_n_en_value
             # m_c_n_fr_value = getattr(getattr(current_element, 'category_class'), 'name_fr')
@@ -1682,8 +1681,7 @@ class ReportCategory(UserTrackedModel):
             d['s_c_id'] = getattr(getattr(current_element, 'secondary_category_class'), 'id')
 
             # Optimize data transfered removing duplicates on main class names
-            # s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
-            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
+            s_c_n_en_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_en')
             if is_it_public or not prev_d['s_c_n_en'] == s_c_n_en_value:
                 d['s_c_n_en'] = s_c_n_en_value
             # s_c_n_fr_value = getattr(getattr(current_element, 'secondary_category_class'), 'name_fr')
@@ -1700,7 +1698,7 @@ class ReportCategory(UserTrackedModel):
             for sub_category in getattr(current_element, 'sub_categories').all():
                 sub_c = {}
                 sub_c['sub_c_id'] = sub_category.id
-                sub_c['sub_c_n_en'] = ""
+                sub_c['sub_c_n_en'] = sub_category.name_en
                 sub_c['sub_c_n_fr'] = sub_category.name_fr
                 sub_c['sub_c_n_nl'] = sub_category.name_nl
 

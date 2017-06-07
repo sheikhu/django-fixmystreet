@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
         abp_entity_to_delete.delete()
 
     dependencies = [
-        ('fixmystreet', '0020_auto_20170405_1600'),
+        ('fixmystreet', '0021_auto_20170405_1600'),
     ]
 
     operations = [

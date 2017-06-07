@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         message.save()
 
     dependencies = [
-        ('fixmystreet', '0024_auto_20170404_1313'),
+        ('fixmystreet', '0025_auto_20170404_1313'),
     ]
 
     operations = [

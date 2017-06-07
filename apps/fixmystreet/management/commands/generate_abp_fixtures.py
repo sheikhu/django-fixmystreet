@@ -79,6 +79,7 @@ class Command(BaseCommand):
                     "pk": types_ids[typology_type['type_id']],
                     "model": "fixmystreet.reportsecondarycategoryclass",
                     "fields": {
+                        "name_en": name_fr,
                         "name_fr": name_fr,
                         "name_nl": name_nl
                     }
@@ -123,6 +124,7 @@ class Command(BaseCommand):
                         "pk": subnatures_ids[typology_subnature['subnature_id']],
                         "model": "fixmystreet.reportsubcategory",
                         "fields": {
+                            "name_en": name_fr,
                             "name_fr": name_fr,
                             "name_nl": name_nl
                         }
@@ -160,6 +162,7 @@ class Command(BaseCommand):
                     "pk": bagtypes_ids[typology_bagtype['bagtype_id']],
                     "model": "fixmystreet.reportsubcategory",
                     "fields": {
+                        "name_en": name_fr,
                         "name_fr": name_fr,
                         "name_nl": name_nl
                     }
@@ -202,6 +205,7 @@ class Command(BaseCommand):
                             "pk": natures_ids[typology_nature['nature_id']],
                             "model": "fixmystreet.reportcategory",
                             "fields": {
+                                "name_en": name_fr,
                                 "name_fr": name_fr,
                                 "name_nl": name_nl,
                                 "public": True,
@@ -238,6 +242,7 @@ class Command(BaseCommand):
             # Add ABP Entity
             fixtures_fms.append({
                 "fields": {
+                    "name_en": "Bruxelles-Propreté",
                     "name_fr": "Bruxelles-Propreté",
                     "name_nl": "Net Brussels",
                     "email": "pro@arp-gan.be",
@@ -252,6 +257,7 @@ class Command(BaseCommand):
             # Add ABP Group and generate dispatching for it
             fixtures_fms.append({
                 "fields": {
+                    "name_en": "Bruxelles-Propreté Group",
                     "name_fr": "Bruxelles-Propreté Groupe",
                     "name_nl": "Net Brussels Group",
                     "created": datetime.datetime.now(),

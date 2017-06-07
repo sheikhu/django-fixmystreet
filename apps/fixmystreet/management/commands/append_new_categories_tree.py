@@ -96,10 +96,12 @@ class Command(BaseCommand):
     def create_LVL1_category(self, data):
         return {
             "fields": {
+                "name_en": data[self.LVL_1_NAME_EN_IDX].strip().capitalize(),
                 "name_fr": data[self.LVL_1_NAME_FR_IDX].strip().capitalize(),
                 "name_nl": data[self.LVL_1_NAME_NL_IDX].strip().capitalize(),
                 "created": datetime.datetime.now(),
                 "modified": datetime.datetime.now(),
+                "slug_en": data[self.LVL_1_NAME_EN_IDX].strip(),
                 "slug_fr": data[self.LVL_1_NAME_FR_IDX].strip(),
                 "slug_nl": data[self.LVL_1_NAME_NL_IDX].strip()
             },
@@ -111,10 +113,12 @@ class Command(BaseCommand):
     def create_LVL2_category(self, data):
         return {
             "fields": {
+                "name_en": data[self.LVL_2_NAME_EN_IDX].strip().capitalize(),
                 "name_fr": data[self.LVL_2_NAME_FR_IDX].strip().capitalize(),
                 "name_nl": data[self.LVL_2_NAME_NL_IDX].strip().capitalize(),
                 "created": datetime.datetime.now(),
                 "modified": datetime.datetime.now(),
+                "slug_en": data[self.LVL_2_NAME_EN_IDX].strip(),
                 "slug_fr": data[self.LVL_2_NAME_FR_IDX].strip(),
                 "slug_nl": data[self.LVL_2_NAME_NL_IDX].strip()
             },
@@ -132,6 +136,7 @@ class Command(BaseCommand):
 
         field = {
             "fields": {
+                "name_en": data[self.LVL_3_NAME_EN_IDX].strip().capitalize(),
                 "name_fr": data[self.LVL_3_NAME_FR_IDX].strip().capitalize(),
                 "name_nl": data[self.LVL_3_NAME_NL_IDX].strip().capitalize(),
                 "created": datetime.datetime.now(),
@@ -140,6 +145,7 @@ class Command(BaseCommand):
                 "public": True,
                 "sub_categories": self.LVL_3_SUBCAT[data[self.LVL_3_ID_IDX]],
                 "secondary_category_class": int(data[self.LVL_2_ID_IDX]),
+                "slug_en": data[self.LVL_3_NAME_EN_IDX].strip(),
                 "slug_fr": data[self.LVL_3_NAME_FR_IDX].strip(),
                 "slug_nl": data[self.LVL_3_NAME_NL_IDX].strip()
             },
@@ -169,10 +175,12 @@ class Command(BaseCommand):
 
             return {
                 "fields": {
+                    "name_en": data[self.LVL_4_NAME_EN_IDX].strip().capitalize(),
                     "name_fr": data[self.LVL_4_NAME_FR_IDX].strip().capitalize(),
                     "name_nl": data[self.LVL_4_NAME_NL_IDX].strip().capitalize(),
                     "created": datetime.datetime.now(),
                     "modified": datetime.datetime.now(),
+                    "slug_en": "",
                     "slug_fr": "",
                     "slug_nl": ""
                 },
