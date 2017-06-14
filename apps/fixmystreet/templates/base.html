@@ -114,13 +114,10 @@
                     </li>
                     {% endif %}
 
-                    {% get_available_languages as LANGUAGES %}
-                    {% for l in LANGUAGES %}
-                        {% get_language_info for l.0 as lang %}
-                        <a  class="lang{% if lang.code == LANGUAGE_CODE %} selected{% endif %}"
-                            href="{% url 'update_current_language' %}?from={{ request.get_full_path|urlencode }}&language={{ lang.code }}"
-                            title="{{ lang.name_local }}">{{ lang.code }}</a>
-                    {% endfor %}
+                    <a  class="lang{% if 'fr' == LANGUAGE_CODE %} selected{% endif %}"
+                        href="{% url 'update_current_language' %}?from={{ request.get_full_path|urlencode }}&language=fr">FR</a>
+                    <a  class="lang{% if 'nl' == LANGUAGE_CODE %} selected{% endif %}"
+                        href="{% url 'update_current_language' %}?from={{ request.get_full_path|urlencode }}&language=nl">NL</a>
 
                 </section>
                 {% endblock %}
