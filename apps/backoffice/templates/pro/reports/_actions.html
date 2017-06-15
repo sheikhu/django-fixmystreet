@@ -92,11 +92,7 @@ var REOPEN_REPORT_URL = "{% url 'report_reopen_pro' report.id %}";
                                     {% ifequal report.responsible_entity.id entity.id %}
                                         class="active"
                                     {% else %}
-                                        {% if institution|argsMethod:report.secondary_category|callMethod:"isCategoryCompatible" %}
-                                            href="javascript:confirmTransfer(CHANGE_MANAGER_URL,    'entity_{{institution.id}}')"
-                                         {% else %}
-                                            class="disabled"
-                                        {% endif %}
+                                        href="javascript:confirmTransfer(CHANGE_MANAGER_URL,    'entity_{{institution.id}}')"
                                     {% endifequal %}
                                     tabindex="-1"
                                 >
