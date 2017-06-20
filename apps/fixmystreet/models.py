@@ -285,6 +285,8 @@ class OrganisationEntity(UserTrackedModel):
 
     history = HistoricalRecords()
 
+    categories_transfer_restriction = models.ManyToManyField('ReportCategory', related_name='transferred_by', blank=True)
+
     class Meta:
         translate = ('name', 'slug')
         ordering = ['name_fr']
@@ -303,13 +305,13 @@ class OrganisationEntity(UserTrackedModel):
     def get_mail_config(self):
         return GroupMailConfig.objects.get(group=self)
 
-    # Check if organisation is campatible with a category
-    def isCategoryCompatible(self, category):
-        if self.categories_communal.all().exists() and (not self.categories_communal.filter(id=category.id).exists()):
-            return False
-
-        if self.categories_regional.all().exists() and (not self.categories_regional.filter(id=category.id).exists()):
-            return False
+    # Check if organisation is campatible with a category of report
+    def isCategoryCompatible(self, report):
+        # If institution has transfer restriction(s)...
+        if self.categories_transfer_restriction.all().exists():
+            # If institution is NOT compatible with the current category.
+            if report.secondary_category not in self.categories_transfer_restriction.all():
+                return False
 
         return True
 
