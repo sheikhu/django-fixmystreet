@@ -182,6 +182,7 @@ class AbstractReportOutWebhook(AbstractBaseOutWebhook):
                 "last_name": creator.last_name,
                 "phone": creator.telephone,
                 "email": creator.email,
+                "language": creator.last_used_language.lower()
             },
             "comments": [],
             "several_occurences": self.report.several_occurences
