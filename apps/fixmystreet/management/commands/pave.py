@@ -5,7 +5,7 @@ from django.contrib.gis.geos import GEOSGeometry
 
 from optparse import make_option
 
-from apps.fixmystreet.models import Report, FMSUser
+from apps.fixmystreet.models import Report, ReportComment, FMSUser
 
 import csv, json, logging, requests
 
@@ -45,8 +45,9 @@ class Command(BaseCommand):
         }
     }
 
+    PAVE_ID_IDX = 0
     PAVE_CATEGORY_IDX = 1
-
+    PAVE_SOLUTION_IDX = 2
     PAVE_LAT_IDX = 3
     PAVE_LONG_IDX = 4
 
@@ -80,8 +81,9 @@ class Command(BaseCommand):
                 #     continue
 
                 self.set_address(report, row)
-                # self.set_description(report, row)
+                self.set_description(report, row)
                 # self.set_attachments(report, row)
+                self.set_external_id(report, row)
                 # self.dispatch(report, row)
 
                 # report.save()
@@ -162,3 +164,22 @@ class Command(BaseCommand):
 
         logger.error('Address cannot be fetched from urbis')
         return None
+
+
+    def set_description(self, report, row):
+        description = "PAVE-{} - {}: {}".format(
+            row[self.PAVE_ID_IDX],
+            row[self.PAVE_CATEGORY_IDX],
+            row[self.PAVE_SOLUTION_IDX]
+        )
+
+        comment = ReportComment(
+            text=description,
+            security_level=ReportComment.PRIVATE,
+            report=report
+        )
+        # comment.save()
+
+
+    def set_external_id(self, report, row):
+        report.contractor_reference_id = "PAVE-{}".format(row[self.PAVE_ID_IDX])
