@@ -80,9 +80,11 @@ class Command(BaseCommand):
                 #     continue
 
                 self.set_address(report, row)
-                # self.dispatch(report, row)
                 # self.set_description(report, row)
                 # self.set_attachments(report, row)
+                # self.dispatch(report, row)
+
+                # report.save()
 
         if errors:
             logger.error(errors)
@@ -147,9 +149,9 @@ class Command(BaseCommand):
             # report.address_regional
 
         if address_nl:
-            report.address_nl = address_fr.get('address').get('street').get('name')
-            report.address_number = address_fr.get('address').get('number')
-            report.postalcode = address_fr.get('address').get('street').get('postCode')
+            report.address_nl = address_nl.get('address').get('street').get('name')
+            report.address_number = address_nl.get('address').get('number')
+            report.postalcode = address_nl.get('address').get('street').get('postCode')
             # report.address_regional
 
     def _get_urbis_address(self, json_data):
@@ -158,5 +160,5 @@ class Command(BaseCommand):
         if response.status_code == requests.codes.ok:
             return response.json().get('result')
 
-        logger.error('Address: cannot fetch urbis address')
+        logger.error('Address cannot be fetched from urbis')
         return None
