@@ -86,7 +86,7 @@ class Command(BaseCommand):
                 report.save()
 
                 self.set_description(report, row)
-                # self.set_attachments(report, row)
+                # self.set_pictures(report, row)
 
         if errors:
             logger.error(errors)
@@ -141,8 +141,6 @@ class Command(BaseCommand):
 
         address_fr = self._get_urbis_address(json_data_fr)
         address_nl = self._get_urbis_address(json_data_nl)
-
-        print address_nl
 
         # Set address
         if address_fr:
