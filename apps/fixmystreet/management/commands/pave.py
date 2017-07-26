@@ -62,12 +62,15 @@ class Command(BaseCommand):
             for row in pave_reader:
                 logger.info(row)
 
+                # Avoid CSV headers
                 if firstline:
                     firstline = False
                     continue
 
+                # Create new report
                 report = Report(
-                    citizen=self.get_pave_user()
+                    citizen=self.get_pave_user(),
+                    private=True
                 )
 
                 # try:
