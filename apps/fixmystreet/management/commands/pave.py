@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.core.management.base import BaseCommand, CommandError
-from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import GEOSGeometry, Point
 
 from optparse import make_option
 
-from apps.fixmystreet.models import Report, ReportComment, FMSUser
+from apps.fixmystreet.models import Report, ReportComment, FMSUser, ReportMainCategoryClass, ReportCategory
 
 import csv, json, logging, requests
 
@@ -74,19 +74,19 @@ class Command(BaseCommand):
                     private=True
                 )
 
-                # try:
-                #     self.set_category(report, row)
-                # except KeyError:
-                #     errors.append(row)
-                #     continue
+                try:
+                    self.set_category(report, row)
+                except KeyError:
+                    errors.append(row)
+                    continue
 
                 self.set_address(report, row)
+                self.set_external_id(report, row)
+
+                report.save()
+
                 self.set_description(report, row)
                 # self.set_attachments(report, row)
-                self.set_external_id(report, row)
-                # self.dispatch(report, row)
-
-                # report.save()
 
         if errors:
             logger.error(errors)
@@ -110,27 +110,26 @@ class Command(BaseCommand):
 
 
     def set_category(self, report, row):
-        pave_category = self.PAVE_CATEGORIES[row[self.PAVE_CATEGORY_IDX]]
+        pave_category = self.PAVE_CATEGORIES[unicode(row[self.PAVE_CATEGORY_IDX].strip(), 'utf-8')]
 
-        report.category = pave_category['category']
-        report.secondary_category = pave_category['secondary_category']
+        report.category = ReportMainCategoryClass.objects.get(id=pave_category['category'])
+        report.secondary_category = ReportCategory.objects.get(id=pave_category['secondary_category'])
 
 
     def set_address(self, report, row):
         # Set point
-        x = row[self.PAVE_LAT_IDX].replace(',','.')
-        y = row[self.PAVE_LONG_IDX].replace(',','.')
+        y = float(row[self.PAVE_LAT_IDX].replace(',','.'))
+        x = float(row[self.PAVE_LONG_IDX].replace(',','.'))
 
-        report.point = GEOSGeometry(
-            "POINT(" + x + " " + y + ")",
-            srid=4326
-        )
+        point = Point(x=x, y=y, srid=4326)
+        report.point = point
 
         # Fetch address from urbis
+        # xy has to be inverted
         json_data = {
             "point": {
-                "x": x,
-                "y": y
+                "x": y,
+                "y": x
             },
             "SRS_In":"4326"
         }
@@ -143,18 +142,18 @@ class Command(BaseCommand):
         address_fr = self._get_urbis_address(json_data_fr)
         address_nl = self._get_urbis_address(json_data_nl)
 
+        print address_nl
+
         # Set address
         if address_fr:
             report.address_fr = address_fr.get('address').get('street').get('name')
             report.address_number = address_fr.get('address').get('number')
             report.postalcode = address_fr.get('address').get('street').get('postCode')
-            # report.address_regional
 
         if address_nl:
             report.address_nl = address_nl.get('address').get('street').get('name')
             report.address_number = address_nl.get('address').get('number')
             report.postalcode = address_nl.get('address').get('street').get('postCode')
-            # report.address_regional
 
     def _get_urbis_address(self, json_data):
         response = requests.get("http://geoservices.irisnet.be/localization/Rest/Localize/getaddressfromxy?json=" + json.dumps(json_data))
@@ -176,9 +175,10 @@ class Command(BaseCommand):
         comment = ReportComment(
             text=description,
             security_level=ReportComment.PRIVATE,
-            report=report
+            report=report,
+            created_by=self.get_pave_user()
         )
-        # comment.save()
+        comment.save()
 
 
     def set_external_id(self, report, row):
