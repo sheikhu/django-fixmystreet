@@ -77,7 +77,7 @@ class Command(BaseCommand):
                 try:
                     self.set_category(report, row)
                 except KeyError:
-                    errors.append(row)
+                    errors.append(row[self.PAVE_ID_IDX])
                     continue
 
                 self.set_address(report, row)
@@ -90,6 +90,7 @@ class Command(BaseCommand):
 
         if errors:
             logger.error(errors)
+            logger.error("{} errors".format(len(errors)))
 
 
     def get_pave_user(self):
@@ -100,11 +101,6 @@ class Command(BaseCommand):
             quality=FMSUser.OTHER,
             telephone="-"
         )
-
-        if isCreated:
-            logger.info("Pave user CREATED")
-        else:
-            logger.info("Pave user ALREADY EXISTS")
 
         return pave_user
 
