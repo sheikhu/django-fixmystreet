@@ -19,7 +19,13 @@ class Command(BaseCommand):
             action='store',
             dest='pave_csv',
             default="",
-            help='The pave csv file'),
+            help='The pave csv file to parse'),
+
+        make_option('--municipality',
+            action='store',
+            dest='municipality',
+            default="",
+            help='The municipality string to use as PAVE username and email'),
     )
 
     PAVE_CATEGORIES = {
@@ -51,7 +57,15 @@ class Command(BaseCommand):
     PAVE_LAT_IDX = 3
     PAVE_LONG_IDX = 4
 
+    municipality = None
+
     def handle(self, *args, **options):
+        if not options['municipality']:
+            logger.error('No municipality supplied. See help. Aborted.')
+            return
+
+        self.municipality = options['municipality']
+
         pave_csv = options['pave_csv'] if options['pave_csv'] else 'apps/resources/PAVE/pave.csv'
 
         with open(pave_csv, 'rb') as pave_file:
@@ -70,7 +84,7 @@ class Command(BaseCommand):
 
                 # Create new report
                 report = Report(
-                    citizen=self.get_pave_user(),
+                    citizen=self._get_pave_user(),
                     private=True
                 )
 
@@ -96,11 +110,16 @@ class Command(BaseCommand):
     def _get_pave_id(self, row):
         return "PAVE-{}".format(row[self.PAVE_ID_IDX])
 
-    def get_pave_user(self):
+    def _get_pave_name(self):
+        return "PAVE [{}]".format(self.municipality)
+
+    def _get_pave_email(self):
+        return "pave-{}@noresponse.com".format(self.municipality)
+
+    def _get_pave_user(self):
         pave_user, isCreated = FMSUser.objects.get_or_create(
-            first_name='PAVE',
-            last_name='PAVE',
-            email="pave@noresponse.com",
+            last_name=self._get_pave_name(),
+            email=self._get_pave_email(),
             quality=FMSUser.OTHER,
             telephone="-"
         )
@@ -173,7 +192,7 @@ class Command(BaseCommand):
             text=description,
             security_level=ReportComment.PRIVATE,
             report=report,
-            created_by=self.get_pave_user()
+            created_by=self._get_pave_user()
         )
         comment.save()
 
@@ -192,6 +211,7 @@ class Command(BaseCommand):
             title=self._get_pave_id(row),
             report=report,
             file=file_path,
-            image=image_path
+            image=image_path,
+            created_by=self._get_pave_user()
         )
         report_file.save()
