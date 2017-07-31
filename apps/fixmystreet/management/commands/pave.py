@@ -2,12 +2,13 @@
 
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.gis.geos import GEOSGeometry, Point
+from django.conf import settings
 
 from optparse import make_option
 
 from apps.fixmystreet.models import Report, ReportComment, FMSUser, ReportMainCategoryClass, ReportCategory, ReportFile
 
-import csv, datetime, json, logging, requests
+import csv, datetime, json, logging, requests, subprocess
 
 logger = logging.getLogger("fixmystreet")
 
@@ -26,6 +27,12 @@ class Command(BaseCommand):
             dest='municipality',
             default="",
             help='The municipality string to use as PAVE username and email'),
+
+        make_option('--pictures_folder',
+            action='store',
+            dest='pictures_folder',
+            default="",
+            help='The folder containing original pictures'),
     )
 
     PAVE_CATEGORIES = {
@@ -56,19 +63,39 @@ class Command(BaseCommand):
     PAVE_SOLUTION_IDX = 2
     PAVE_LAT_IDX = 3
     PAVE_LONG_IDX = 4
+    PAVE_PICTURE_IDX = 5
 
     municipality = None
+    pave_csv = None
+    pictures_folder = None
 
     def handle(self, *args, **options):
         if not options['municipality']:
             logger.error('No municipality supplied. See help. Aborted.')
             return
 
+        if not options['pictures_folder']:
+            logger.error('No pictures folder supplied. See help. Aborted.')
+            return
+
         self.municipality = options['municipality']
+        self.pave_csv = options['pave_csv'] if options['pave_csv'] else 'apps/resources/PAVE/pave.csv'
+        self.pictures_folder = options['pictures_folder']
 
-        pave_csv = options['pave_csv'] if options['pave_csv'] else 'apps/resources/PAVE/pave.csv'
+        self.resize_pictures()
+        self.inject_data()
 
-        with open(pave_csv, 'rb') as pave_file:
+
+    def resize_pictures(self):
+        command = "convert {}/*.JPG".format(self.pictures_folder)
+        command += " "
+        command += "-resize 140x140 -set filename:myname '%t' '{}/%[filename:myname].thumbnail.jpg'".format(self.pictures_folder)
+
+        subprocess.call(command, shell=True)
+
+
+    def inject_data(self):
+        with open(self.pave_csv, 'rb') as pave_file:
             pave_reader = csv.reader(pave_file, delimiter=';', quotechar='"')
             firstline = True
 
@@ -92,7 +119,7 @@ class Command(BaseCommand):
                 try:
                     self.set_category(report, row)
                 except KeyError:
-                    errors.append(row[self.PAVE_ID_IDX])
+                    errors.append({row[self.PAVE_ID_IDX]: "Invalid categories"})
                     continue
 
                 self.set_address(report, row)
@@ -101,7 +128,12 @@ class Command(BaseCommand):
                 report.save()
 
                 self.set_description(report, row)
-                self.set_pictures(report, row)
+
+                try:
+                    self.set_pictures(report, row)
+                except:
+                    errors.append({row[self.PAVE_ID_IDX]: "Picture problem"})
+                    continue
 
         if errors:
             logger.error(errors)
@@ -204,17 +236,34 @@ class Command(BaseCommand):
 
 
     def set_pictures(self, report, row):
-        file_path = "PAVE/image.jpg"
-        image_path = "PAVE/image.jpg"
+        # Generate path and name
+        now = datetime.datetime.now()
+        picture_name= row[self.PAVE_PICTURE_IDX]
+        thumbnail_name = picture_name[:-3] + "thumbnail.jpg"
 
+        path = "files/{}/{}/{}/".format(now.year, now.month, report.id)
+        file_path = path + "/" + picture_name
+
+        # Move pictures to expected path
+        self._move_to_media(picture_name, thumbnail_name, path)
+
+        # Create FMS attachment
         report_file = ReportFile(
             file_type=ReportFile.IMAGE,
-            file_creation_date=datetime.datetime.now(),
+            file_creation_date=now,
             title=self._get_pave_id(row),
             report=report,
             file=file_path,
-            image=image_path,
+            image=file_path,
             created_by=self._get_pave_user()
         )
         report_file.bypassNotification = True
         report_file.save()
+
+    def _move_to_media(self, picture_name, thumbnail_name, path):
+        target_path = "{}".format(self.pictures_folder) + "/" + path
+
+        subprocess.call("mkdir -p {}".format(target_path), shell=True)
+        subprocess.call("cp {}/{} {}/{}".format(self.pictures_folder, picture_name, target_path, picture_name), shell=True)
+        subprocess.call("cp {}/{} {}/{}".format(self.pictures_folder, thumbnail_name, target_path, thumbnail_name), shell=True)
+        subprocess.call("cp -r {}/files {}".format(self.pictures_folder, settings.MEDIA_ROOT), shell=True)
