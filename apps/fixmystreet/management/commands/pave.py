@@ -87,6 +87,7 @@ class Command(BaseCommand):
                     citizen=self._get_pave_user(),
                     private=True
                 )
+                report.bypassNotification = True
 
                 try:
                     self.set_category(report, row)
@@ -100,7 +101,7 @@ class Command(BaseCommand):
                 report.save()
 
                 self.set_description(report, row)
-                # self.set_pictures(report, row)
+                self.set_pictures(report, row)
 
         if errors:
             logger.error(errors)
@@ -194,6 +195,7 @@ class Command(BaseCommand):
             report=report,
             created_by=self._get_pave_user()
         )
+        comment.bypassNotification = True
         comment.save()
 
 
@@ -214,4 +216,5 @@ class Command(BaseCommand):
             image=image_path,
             created_by=self._get_pave_user()
         )
+        report_file.bypassNotification = True
         report_file.save()
