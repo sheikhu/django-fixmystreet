@@ -78,8 +78,12 @@ class Command(BaseCommand):
             logger.error('No pictures folder supplied. See help. Aborted.')
             return
 
+        if not options['pave_csv']:
+            logger.error('No csv file supplied. See help. Aborted.')
+            return
+
         self.municipality = options['municipality']
-        self.pave_csv = options['pave_csv'] if options['pave_csv'] else 'apps/resources/PAVE/pave.csv'
+        self.pave_csv = options['pave_csv']
         self.pictures_folder = options['pictures_folder']
 
         self.resize_pictures()
