@@ -5,9 +5,9 @@ from django.contrib.gis.geos import GEOSGeometry, Point
 
 from optparse import make_option
 
-from apps.fixmystreet.models import Report, ReportComment, FMSUser, ReportMainCategoryClass, ReportCategory
+from apps.fixmystreet.models import Report, ReportComment, FMSUser, ReportMainCategoryClass, ReportCategory, ReportFile
 
-import csv, json, logging, requests
+import csv, datetime, json, logging, requests
 
 logger = logging.getLogger("fixmystreet")
 
@@ -93,6 +93,9 @@ class Command(BaseCommand):
             logger.error("{} errors".format(len(errors)))
 
 
+    def _get_pave_id(self, row):
+        return "PAVE-{}".format(row[self.PAVE_ID_IDX])
+
     def get_pave_user(self):
         pave_user, isCreated = FMSUser.objects.get_or_create(
             first_name='PAVE',
@@ -160,8 +163,8 @@ class Command(BaseCommand):
 
 
     def set_description(self, report, row):
-        description = "PAVE-{} - {}: {}".format(
-            row[self.PAVE_ID_IDX],
+        description = "{} - {}: {}".format(
+            self._get_pave_id(row),
             row[self.PAVE_CATEGORY_IDX],
             row[self.PAVE_SOLUTION_IDX]
         )
@@ -176,4 +179,19 @@ class Command(BaseCommand):
 
 
     def set_external_id(self, report, row):
-        report.contractor_reference_id = "PAVE-{}".format(row[self.PAVE_ID_IDX])
+        report.contractor_reference_id = self._get_pave_id(row)
+
+
+    def set_pictures(self, report, row):
+        file_path = "PAVE/image.jpg"
+        image_path = "PAVE/image.jpg"
+
+        report_file = ReportFile(
+            file_type=ReportFile.IMAGE,
+            file_creation_date=datetime.datetime.now(),
+            title=self._get_pave_id(row),
+            report=report,
+            file=file_path,
+            image=image_path
+        )
+        report_file.save()
