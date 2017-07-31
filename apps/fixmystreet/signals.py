@@ -196,7 +196,7 @@ def report_notify_created(sender, instance, **kwargs):
     signal on a report to notify author and manager that the report is created
     """
 
-    if instance.bypassNotification:
+    if hasattr(instance, 'bypassNotification') and instance.bypassNotification:
         return
 
     if not kwargs['raw'] and kwargs['created']:
@@ -354,7 +354,7 @@ def report_notify_responsible_changed(sender, instance, **kwargs):
     signal on a report to notify author and manager that the responsible of the report has changed
     """
 
-    if instance.bypassNotification:
+    if hasattr(instance, 'bypassNotification') and instance.bypassNotification:
         return
 
     if not kwargs['raw']:
@@ -684,7 +684,7 @@ def init_report_overview(sender, instance, **kwargs):
 @receiver(post_save, sender=ReportAttachment)
 def report_attachment_created(sender, instance, **kwargs):
 
-    if instance.bypassNotification:
+    if hasattr(instance, 'bypassNotification') and instance.bypassNotification:
         return
 
     if kwargs['raw'] or not kwargs['created']:
