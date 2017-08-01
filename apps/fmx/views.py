@@ -870,6 +870,8 @@ def categories_status(request):
     return return_response(response)
 
 def status(request):
+    message = Message.objects.all().last()
+
     response = get_response()
-    response['response'] = { 'version': 1 }
+    response['response'] = { 'version': int(message.status) }
     return return_response(response)
