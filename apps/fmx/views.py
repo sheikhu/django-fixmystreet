@@ -868,3 +868,8 @@ def categories_status(request):
     response = get_response()
     response['response'] = { 'version': message.version }
     return return_response(response)
+
+def status(request):
+    response = get_response()
+    response['response'] = { 'version': 1 }
+    return return_response(response)
