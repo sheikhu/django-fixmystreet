@@ -11,3 +11,9 @@
 
  {{comment}}
 {% endblock %}
+
+{% block content_mail_en%}
+{{user}} has sent you a PDF with the following message:
+
+{{comment}}
+{% endblock %}

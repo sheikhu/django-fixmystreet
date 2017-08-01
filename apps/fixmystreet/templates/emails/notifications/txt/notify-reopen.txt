@@ -11,3 +11,9 @@ Dit incident werd heropend.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 {% endblock %}
+
+{% block content_mail_en %}
+This incident has been reopened.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
+{% endblock %}

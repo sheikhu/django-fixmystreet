@@ -9,3 +9,8 @@
 <p>Dit incident werd heropend.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
 {% endblock %}
+
+{% block content_mail_en %}
+<p>This incident has been reopened.</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>
+{% endblock %}

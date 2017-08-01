@@ -1,7 +1,7 @@
 {% extends 'emails/notifications/base.txt' %}
 
 {% block content_mail_fr %}
-{{responsible}} a invalidé l’incident que vous avez signalé pour le motif  suivant : 
+{{responsible}} a invalidé l’incident que vous avez signalé pour le motif  suivant :
 
 > {{comment}}
 
@@ -9,9 +9,17 @@
 {% endblock %}
 
 {% block content_mail_nl %}
-{{responsible}} heeft het probleem dat u gemeld heeft niet goedgekeurd omwille van de volgende reden : 
+{{responsible}} heeft het probleem dat u gemeld heeft niet goedgekeurd omwille van de volgende reden :
 
 > {{comment}}
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+{% endblock %}
+
+{% block content_mail_en %}
+{{responsible}} hasn’t approved the incident you’ve reported for the following reason:
+
+> {{comment}}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
 {% endblock %}

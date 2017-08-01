@@ -16,3 +16,12 @@
 <p>{{ reopen_comment }}</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
 {% endblock %}
+
+{% block content_mail_en %}
+<p>Request for the reopening of the reporting done by {{updater}}.</p>
+
+<p> Reason : {{ reopen_reason }} </p>
+
+<p>{{ reopen_comment }}</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>
+{% endblock %}

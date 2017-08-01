@@ -15,3 +15,11 @@
 </blockquote>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
 {% endblock %}
+
+{% block content_mail_en %}
+<p>{{resolver}} has reported the incident as resolved.</p>
+<blockquote>
+<p>{{done_motivation}}</p>
+</blockquote>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>
+{% endblock %}

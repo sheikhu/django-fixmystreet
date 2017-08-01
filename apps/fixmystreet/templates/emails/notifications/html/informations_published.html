@@ -1,7 +1,7 @@
 {% extends 'emails/notifications/base.html' %}
 
 {% block content_mail_fr %}
-<p>{{updater}} a publié de nouvelles informations</p>
+<p>{{updater}} a publié de nouvelles informations.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
 <p>Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :</p>
 <ul>
@@ -10,9 +10,18 @@
 {% endblock %}
 
 {% block content_mail_nl %}
-<p>{{updater}} heeft nieuw informatie gepubliceerd</p>
+<p>{{updater}} heeft nieuw informatie gepubliceerd.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
 <p>Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven via onderstaande link:</p>
+<ul>
+<li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
+</ul>
+{% endblock %}
+
+{% block content_mail_en %}
+<p>{{updater}} has published new information.</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>
+<p>If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:</p>
 <ul>
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
 </ul>

@@ -15,3 +15,11 @@
 </blockquote>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
 {% endblock %}
+
+{% block content_mail_en %}
+<p>{{responsible}} hasn’t approved the incident you’ve reported for the following reason: </p>
+<blockquote>
+<p>{{comment}}</p>
+</blockquote>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>
+{% endblock %}

@@ -21,3 +21,14 @@
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
 </ul>
 {% endblock %}
+
+{% block content_mail_en %}
+<p>An incident has been updated by {{updater}}.</p>
+<hr />
+<h2>{{comment}}</h2>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>
+<p>If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:</p>
+<ul>
+<li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
+</ul>
+{% endblock %}

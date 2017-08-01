@@ -19,3 +19,14 @@ Goededag,
 
 *Disclaimer: Fix My Street heeft tot doel de communicatie tussen de bevolking en de verschillende beheerders van de openbare ruimte te vereenvoudigen. De door de bevolking bezorgde informatie dient beschouwd te worden als een werkdocument om de bevoegde overheden te helpen hun actie te organiseren. In geen geval verbindt het de Brusselse gemeenten, Mobiel Brussel of andere beheerders van de openbare ruimte om in te grijpen binnen een gegeven tijdspanne. Voor alle bijkomende informatie kunt u de [Algemene voorwaarden](http://fixmystreet.irisnet.be/conditions) lezen.*
 {% endlanguage %}
+
+---------------------------
+
+{% language 'en' %}
+Good day,
+
+{% block content_mail_en %}
+{% endblock %}
+
+* Disclaimer: Fix My Street aims to simplify the communication between the population and the various public space managers. The information provided by the population should be considered as a working document to help the competent authorities to organize their action. In no case it connects the Brussels municipalities, Mobile Brussels or other public space managers to intervene within a given period of time. For all additional information, read the [Terms and Conditions] (http://fixmystreet.irisnet.be/conditions). *
+{% endlanguage %}

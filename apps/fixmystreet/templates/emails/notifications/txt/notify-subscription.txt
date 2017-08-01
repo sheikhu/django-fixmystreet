@@ -11,11 +11,21 @@ Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant s
 {% endblock %}
 
 {% block content_mail_nl %}
-Via Fix My Street heeft u zich geabonneerd op een probleem om de evolutie ervan op te volgen. 
+Via Fix My Street heeft u zich geabonneerd op een probleem om de evolutie ervan op te volgen.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 
 Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:
+
+- {{unsubscribe_url}}
+{% endblock %}
+
+{% block content_mail_en %}
+You’ve subscribed yourself on an incident via Fix My Street to follow up its evolution.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
+
+If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:
 
 - {{unsubscribe_url}}
 {% endblock %}

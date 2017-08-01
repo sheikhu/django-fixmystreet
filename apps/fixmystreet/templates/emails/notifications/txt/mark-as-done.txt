@@ -15,3 +15,11 @@
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 {% endblock %}
+
+{% block content_mail_en %}
+{{resolver}} has reported the incident as resolved.
+
+> {{done_motivation}}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
+{% endblock %}

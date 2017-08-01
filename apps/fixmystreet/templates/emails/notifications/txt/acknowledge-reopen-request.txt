@@ -7,7 +7,13 @@ Vous avez demandé la réouverture d'un  incident sur Fix My Street
 {% endblock %}
 
 {% block content_mail_nl %}
-TO TRANSLATE NL: Vous avez demandé la réouverture d'un  incident sur Fix My Street
+U hebt de heropening gevraagd van een incident van Fix My street.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+{% endblock %}
+
+{% block content_mail_en %}
+You have asked for the reopening of an incident at Fix My Street
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
 {% endblock %}

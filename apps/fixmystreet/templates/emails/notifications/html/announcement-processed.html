@@ -25,3 +25,16 @@
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
 </ul>
 {% endblock %}
+
+{% block content_mail_en %}
+<p>{{responsible}} has reported the incident as resolved.</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>s
+<p>If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:</p>
+<ul>
+<li><a href="{{reopen_request_url}}">{{reopen_request_url}}</a></li>
+</ul>
+<p>If you don’t want to receive notifications anymore you can unsubscribe  to the incident by following  the link below:</p>
+<ul>
+<li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
+</ul>
+{% endblock %}

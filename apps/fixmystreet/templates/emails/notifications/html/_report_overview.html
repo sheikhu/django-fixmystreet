@@ -30,3 +30,20 @@
 </ul>
 {% endblock %}
 {% endifequal %}
+
+{% ifequal lang "en" %}
+{% block content_mail_en %}
+<ul>
+<li><strong>Incident Nr</strong> {{report.id}}</li>
+<li><strong>Reported on</strong> {{created_at}}</li>
+<li><strong>Address</strong> {{address}}</li>
+<li><strong>Category</strong> {{category}}</li>
+<li><strong>Status</strong> {{status}}</li>
+<li><strong>Manager</strong> {{responsible}}</li>
+</ul>
+<p>You can consult the incident by clicking on the link below  :</p>
+<ul>
+<li><a href="{{display_url}}">{{display_url}}</a></li>
+</ul>
+{% endblock %}
+{% endifequal %}

@@ -26,3 +26,19 @@ U kunt het incident raadplegen door op onderstaande link te klikken :
 - {{display_url}}
 {% endblock %}
 {% endifequal %}
+{% ifequal lang "en" %}
+
+{% block content_mail_en %}
+
+- Incident Nr {{report.id}}
+- Reported on {{created_at}}
+- Address {{address}}
+- Category {{category}}
+- Status {{status}}
+- Manager {{responsible}}
+
+You can consult the incident by clicking on the link below  :
+
+- {{display_url}}
+{% endblock %}
+{% endifequal %}

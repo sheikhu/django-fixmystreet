@@ -5,6 +5,7 @@
 {{responsible}} a classé sans suite l’incident.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='fr' %}
+
 Si vous n’êtes pas satisfait, vous pouvez demander au gestionnaire la réouverture de cet incident en suivant le lien ci-dessous :
 
 - {{reopen_request_url}}
@@ -15,15 +16,29 @@ Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant s
 {% endblock %}
 
 {% block content_mail_nl %}
-{{responsible}} heeft het probleem als opgelost gemeld.
+{{responsible}} heeft het probleem als zonder gevolg gemeld.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 
-Indien u niet akkoord bent dat het incident werd afgesloten kan u via onderstaande link de beheerder vragen om het incident opnieuw te openen:
+Indien u niet akkoord bent, kan u via onderstaande link de beheerder vragen om het incident opnieuw te openen:
 
 - {{reopen_request_url}}
 
 Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:
+
+- {{unsubscribe_url}}
+{% endblock %}
+
+{% block content_mail_en %}
+{{responsible}} has reported the incident as dismissed.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
+
+If you don’t agree, you can ask the manager to reopen the incident again by following the link below:
+
+- {{reopen_request_url}}
+
+If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:
 
 - {{unsubscribe_url}}
 {% endblock %}

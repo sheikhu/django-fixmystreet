@@ -27,3 +27,16 @@ Reden : {{ reopen_reason }}
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 
 {% endblock %}
+
+{% block content_mail_en %}
+
+Request for the reopening of the reporting done by {{updater}}.
+
+{% language 'en' %}
+Reason : {{ reopen_reason }}
+{% endlanguage %}
+
+{{ reopen_comment }}
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
+{% endblock %}

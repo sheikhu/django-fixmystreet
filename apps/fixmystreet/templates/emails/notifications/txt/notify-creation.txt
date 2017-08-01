@@ -7,7 +7,14 @@ Un nouvel incident vous a été signalé.
 {% endblock %}
 
 {% block content_mail_nl %}
-Er werd u een nieuw probleem gemeld. 
+Er werd door u een nieuw incident gemeld.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
+{% endblock %}
+
+
+{% block content_mail_en %}
+A new incident has been reported by you.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
 {% endblock %}

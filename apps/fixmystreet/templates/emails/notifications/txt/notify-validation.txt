@@ -27,3 +27,17 @@ Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven via onder
 
 - {{unsubscribe_url}}
 {% endblock %}
+
+{% block content_mail_en %}
+{{responsible}} has approved the incident reported by you.
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
+
+You can consult the incident by clicking on the link below  :
+
+- {{display_url}}
+
+If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:
+
+- {{unsubscribe_url}}
+{% endblock %}

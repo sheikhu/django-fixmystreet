@@ -11,11 +11,21 @@ Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant s
 {% endblock %}
 
 {% block content_mail_nl %}
-{{updater}} heeft nieuw informatie gepubliceerd
+{{updater}} heeft nieuwe informatie gepubliceerd
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='nl' %}
 
 Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven via onderstaande link:
+
+- {{unsubscribe_url}}
+{% endblock %}
+
+{% block content_mail_en %}
+{{updater}} has published new information
+
+{% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
+
+If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:
 
 - {{unsubscribe_url}}
 {% endblock %}

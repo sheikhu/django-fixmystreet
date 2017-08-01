@@ -8,3 +8,7 @@ Bonjour,
 {% block content_mail_nl %}
 Goededag,
 {% endblock %}
+
+{% block content_mail_en %}
+Good day,
+{% endblock %}

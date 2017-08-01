@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block content_mail_nl %}
-<p>Er werd u een nieuw probleem gemeld. </p>
+<p>Er werd door u een nieuw incident gemeld. </p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
+{% endblock %}
+
+{% block content_mail_en %}
+<p>A new incident has been reported by you. </p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>
 {% endblock %}

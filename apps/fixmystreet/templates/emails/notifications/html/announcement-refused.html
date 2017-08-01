@@ -14,13 +14,26 @@
 {% endblock %}
 
 {% block content_mail_nl %}
-<p>{{responsible}} heeft het probleem als opgelost gemeld.</p>
+<p>{{responsible}} heeft het probleem als zonder gevolg gemeld</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>s
-<p>Indien u niet akkoord bent dat het incident werd afgesloten kan u via onderstaande link de beheerder vragen om het incident opnieuw te openen:</p>
+<p>Indien u niet akkoord bent, kan u via onderstaande link de beheerder vragen om het incident opnieuw te openen:</p>
 <ul>
 <li><a href="{{reopen_request_url}}">{{reopen_request_url}}</a></li>
 </ul>
 <p>Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven door op onderstaande link te klikken:</p>
+<ul>
+<li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
+</ul>
+{% endblock %}
+
+{% block content_mail_en %}
+<p>{{responsible}} has reported the incident as dismissed.</p>
+<p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>s
+<p>If you don’t agree, you can ask the manager to reopen the incident again by following the link below:</p>
+<ul>
+<li><a href="{{reopen_request_url}}">{{reopen_request_url}}</a></li>
+</ul>
+<p>If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:</p>
 <ul>
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
 </ul>
