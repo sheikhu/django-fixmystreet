@@ -14,7 +14,7 @@ Er werd door u een nieuw incident gemeld.
 
 
 {% block content_mail_en %}
-A new incident has been reported by you.
+A new incident has been reported to you.
 
 {% include 'emails/notifications/txt/_report_overview.txt' with lang='en' %}
 {% endblock %}

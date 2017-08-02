@@ -30,7 +30,7 @@ Reden : {{ reopen_reason }}
 
 {% block content_mail_en %}
 
-Request for the reopening of the reporting done by {{updater}}.
+A request for the reopening of the reporting was done by {{updater}}.
 
 {% language 'en' %}
 Reason : {{ reopen_reason }}

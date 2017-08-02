@@ -2787,55 +2787,55 @@ msgstr ""
 
 #: fixmystreet/utils.py:182
 msgid "acknowledge-creation"
-msgstr ""
+msgstr "Reported on Fix My Street"
 
 #: fixmystreet/utils.py:184
 msgid "announcement-affectation"
-msgstr ""
+msgstr "being processed on Fix My Street has changed from manager"
 
 #: fixmystreet/utils.py:185
 msgid "announcement-processed"
-msgstr ""
+msgstr "closed on Fix My Street"
 
 #: fixmystreet/utils.py:187
 msgid "informations_published"
-msgstr ""
+msgstr "information publicated on Fix My Street"
 
 #: fixmystreet/utils.py:189
 msgid "mail-pdf"
-msgstr ""
+msgstr "{User} has sent this PDF"
 
 #: fixmystreet/utils.py:190
 msgid "mark-as-done"
-msgstr ""
+msgstr "signaled as solved on Fix My Street"
 
 #: fixmystreet/utils.py:192
 msgid "notify-affectation"
-msgstr ""
+msgstr "has been assigned to you on Fix My Street"
 
 #: fixmystreet/utils.py:193
 msgid "notify-became-private"
-msgstr ""
+msgstr "became private on Fix My Street"
 
 #: fixmystreet/utils.py:194
 msgid "notify-creation"
-msgstr ""
+msgstr "signaled on Fix My Street"
 
 #: fixmystreet/utils.py:195
 msgid "notify-merged"
-msgstr ""
+msgstr "merged on Fix My Street"
 
 #: fixmystreet/utils.py:196
 msgid "notify-planned"
-msgstr ""
+msgstr "planned on Fix My Street"
 
 #: fixmystreet/utils.py:197
 msgid "notify-refused"
-msgstr ""
+msgstr "refused on Fix My Street"
 
 #: fixmystreet/utils.py:198
 msgid "notify-reopen"
-msgstr ""
+msgstr "Re-opened on Fix My Street"
 
 #: fixmystreet/utils.py:199
 msgid "notify-subscription"
@@ -2847,11 +2847,11 @@ msgstr ""
 
 #: fixmystreet/utils.py:201
 msgid "notify-validation"
-msgstr ""
+msgstr "Validated on Fix My Street"
 
 #: fixmystreet/utils.py:202
 msgid "notify-reopen-request"
-msgstr ""
+msgstr "Re-opening request"
 
 #: fixmystreet/utils.py:542
 msgid "Digest of the day on Fix My Street"

@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block content_mail_en %}
-{{responsible}} hasn’t approved the incident you’ve reported for the following reason:
+{{responsible}} dismissed the incident you’ve reported for the following reason:
 
 > {{comment}}
 

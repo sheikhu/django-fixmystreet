@@ -2943,7 +2943,7 @@ msgstr "vous a été assigné sur Fix My Street"
 
 #: fixmystreet/utils.py:193
 msgid "notify-became-private"
-msgstr "devenue privé sur Fix My Street"
+msgstr "devenu privé sur Fix My Street"
 
 #: fixmystreet/utils.py:194
 msgid "notify-creation"
