@@ -58,12 +58,12 @@ class Command(BaseCommand):
         }
     }
 
-    PAVE_ID_IDX = 0
-    PAVE_CATEGORY_IDX = 1
-    PAVE_SOLUTION_IDX = 2
-    PAVE_LAT_IDX = 3
-    PAVE_LONG_IDX = 4
-    PAVE_PICTURE_IDX = 5
+    PAVE_ID_IDX = 1
+    PAVE_CATEGORY_IDX = 14
+    PAVE_SOLUTION_IDX = 15
+    PAVE_LAT_IDX = 6
+    PAVE_LONG_IDX = 7
+    PAVE_PICTURE_IDX = 33
 
     municipality = None
     pave_csv = None
@@ -123,7 +123,7 @@ class Command(BaseCommand):
                 try:
                     self.set_category(report, row)
                 except KeyError:
-                    errors.append({row[self.PAVE_ID_IDX]: "Invalid categories"})
+                    errors.append({self._get_pave_id(row): "Invalid categories"})
                     continue
 
                 self.set_address(report, row)
@@ -136,7 +136,7 @@ class Command(BaseCommand):
                 try:
                     self.set_pictures(report, row)
                 except:
-                    errors.append({row[self.PAVE_ID_IDX]: "Picture problem"})
+                    errors.append({self._get_pave_id(row): "Picture problem"})
                     continue
 
         if errors:
@@ -145,7 +145,8 @@ class Command(BaseCommand):
 
 
     def _get_pave_id(self, row):
-        return "PAVE-{}".format(row[self.PAVE_ID_IDX])
+        id = row[self.PAVE_ID_IDX].split('/')[0].strip()
+        return "PAVE-{}".format(id)
 
     def _get_pave_name(self):
         return "PAVE [{}]".format(self.municipality)
