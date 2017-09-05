@@ -93,7 +93,7 @@ class Command(BaseCommand):
     def resize_pictures(self):
         command = "convert {}/*.JPG".format(self.pictures_folder)
         command += " "
-        command += "-resize 140x140 -set filename:myname '%t' '{}/%[filename:myname].thumbnail.jpg'".format(self.pictures_folder)
+        command += "-resize 140x140 -set filename:myname '%t' '{}/%[filename:myname].thumbnail.JPG'".format(self.pictures_folder)
 
         subprocess.call(command, shell=True)
 
@@ -244,10 +244,10 @@ class Command(BaseCommand):
         # Generate path and name
         now = datetime.datetime.now()
         picture_name= row[self.PAVE_PICTURE_IDX]
-        thumbnail_name = picture_name[:-3] + "thumbnail.jpg"
+        thumbnail_name = picture_name[:-3] + "thumbnail.JPG"
 
         path = "files/{}/{}/{}/".format(now.year, now.month, report.id)
-        file_path = path + "/" + picture_name
+        file_path = path + picture_name
 
         # Move pictures to expected path
         self._move_to_media(picture_name, thumbnail_name, path)
