@@ -200,6 +200,7 @@ class CitizenForm(forms.Form):
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
     email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={'class': 'validate-email'}))
     quality = forms.ChoiceField(label=_('Quality'), widget=forms.Select, choices=qualities)
+    map_language = forms.CharField(max_length=2, required=False)
 
     def clean(self):
         cleaned_data = super(CitizenForm, self).clean()
