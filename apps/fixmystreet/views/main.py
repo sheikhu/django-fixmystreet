@@ -84,6 +84,7 @@ def update_current_language(request):
     if request.user.is_authenticated():
         fms_user = request.user.fmsuser
         fms_user.last_used_language = request.REQUEST.get("language").upper()
+        fms_user.map_language = fms_user.last_used_language
         fms_user.save()
 
     return HttpResponseRedirect("{0}?{1}".format(reverse(resolve_match.url_name, args=args, kwargs=kwargs), params))

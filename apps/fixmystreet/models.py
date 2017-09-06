@@ -105,6 +105,7 @@ class FMSUser(User):
 
     telephone = models.CharField(max_length=20, null=True)
     last_used_language = models.CharField(max_length=10, null=True, default="FR")
+    map_language = models.CharField(max_length=10, null=True, default="FR")
     quality = models.IntegerField(choices=REPORT_QUALITY_CHOICES, null=True, blank=True)
 
     agent = models.BooleanField(default=False)

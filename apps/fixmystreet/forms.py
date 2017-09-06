@@ -194,7 +194,7 @@ class CitizenForm(forms.Form):
 
     class Meta:
         model = FMSUser
-        fields = ('last_name', 'telephone', 'email', 'quality')
+        fields = ('last_name', 'telephone', 'email', 'quality', 'map_language')
 
     last_name = forms.CharField(max_length="30", label=_('Identity'), required=False)
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
@@ -234,11 +234,13 @@ class CitizenForm(forms.Form):
                 or instance.telephone != self.cleaned_data["telephone"]
                 or instance.quality != self.cleaned_data["quality"]
                 or instance.last_used_language.upper() != get_language().upper()
+                or instance.map_language.upper() != self.cleaned_data.get("map_language", instance.last_used_language)
             ):
                 instance.last_name = self.cleaned_data["last_name"]
                 instance.telephone = self.cleaned_data["telephone"]
                 instance.quality = self.cleaned_data["quality"]
                 instance.last_used_language = get_language()
+                instance.map_language = self.cleaned_data.get("map_language", instance.last_used_language)
                 instance.clean()
                 instance.save()
         except FMSUser.DoesNotExist:

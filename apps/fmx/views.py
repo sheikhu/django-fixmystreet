@@ -19,6 +19,8 @@ from apps.fixmystreet.views.api import create_report
 from apps.fmx.forms import SeveralOccurencesForm, IsIncidentCreationForm
 from mobileserverstatus.models import Message
 from PIL import Image
+from django.utils.translation import get_language, activate
+
 
 def get_response():
     return {
@@ -841,6 +843,9 @@ def changePassword(request, uidb64, token):
         return exit_with_error("Invalid token", 404)
 
 def create_incident(request):
+    language = request.POST.get('language', None)
+    activate(request.POST.get('language', None))
+
     several_occurences = False
     several_occurences_form = SeveralOccurencesForm(request.POST)
     if several_occurences_form.is_valid():
