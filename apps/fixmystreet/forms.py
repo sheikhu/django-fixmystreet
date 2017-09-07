@@ -241,7 +241,7 @@ class CitizenForm(forms.Form):
                 instance.telephone = self.cleaned_data["telephone"]
                 instance.quality = self.cleaned_data["quality"]
                 instance.last_used_language = get_language()
-                instance.map_language = self.cleaned_data.get("map_language", instance.last_used_language)
+                instance.map_language = self.cleaned_data.get("map_language") if self.cleaned_data.get("map_language") else  instance.last_used_language
                 instance.clean()
                 instance.save()
         except FMSUser.DoesNotExist:
