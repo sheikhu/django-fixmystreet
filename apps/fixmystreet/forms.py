@@ -248,6 +248,7 @@ class CitizenForm(forms.Form):
             data = self.cleaned_data.copy()
             #For unique constraints
             data['username'] = data['email']
+            data['last_used_language'] = get_language()
             data['is_active'] = False
             instance = FMSUser.objects.create(**data)
 
