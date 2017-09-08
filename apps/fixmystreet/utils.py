@@ -224,9 +224,8 @@ def transform_notification_template(template_mail, report, user, old_responsible
 
     if display_pro:
         data["status"] = lambda: report.get_status_display()
-        data["display_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_absolute_url_pro())
         # PRO URL CAN NOT BE IN ENGLISH AS THE WEBSITE DOES NOT EXIST IN ENGLISH
-        data["display_url"] = data["display_url"].replace("/en/", "/fr/")
+        data["display_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_absolute_url_pro()).replace("/en/", "/fr/")
         data["pdf_url"] = lambda: "{0}{1}".format(SITE_URL, report.get_pdf_url_pro())
     else:
         data["status"] = lambda: report.get_public_status_display()
