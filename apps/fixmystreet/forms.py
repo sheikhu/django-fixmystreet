@@ -200,6 +200,7 @@ class CitizenForm(forms.Form):
     telephone = forms.CharField(max_length="20", label=_('Tel.'), required=False)
     email = forms.EmailField(max_length="75", label=_('Email'), widget=forms.TextInput(attrs={'class': 'validate-email'}))
     quality = forms.ChoiceField(label=_('Quality'), widget=forms.Select, choices=qualities)
+    map_language = forms.CharField(max_length=2, required=False)
 
     def clean(self):
         cleaned_data = super(CitizenForm, self).clean()
@@ -240,13 +241,14 @@ class CitizenForm(forms.Form):
                 instance.telephone = self.cleaned_data["telephone"]
                 instance.quality = self.cleaned_data["quality"]
                 instance.last_used_language = get_language()
-                instance.map_language = self.cleaned_data.get("map_language", instance.last_used_language)
+                instance.map_language = self.cleaned_data.get("map_language") if self.cleaned_data.get("map_language") else  instance.last_used_language
                 instance.clean()
                 instance.save()
         except FMSUser.DoesNotExist:
             data = self.cleaned_data.copy()
             #For unique constraints
             data['username'] = data['email']
+            data['last_used_language'] = get_language()
             data['is_active'] = False
             instance = FMSUser.objects.create(**data)
 

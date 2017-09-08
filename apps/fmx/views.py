@@ -844,7 +844,7 @@ def changePassword(request, uidb64, token):
 
 def create_incident(request):
     language = request.POST.get('language', None)
-    activate(request.POST.get('language', None))
+    activate(language)
 
     several_occurences = False
     several_occurences_form = SeveralOccurencesForm(request.POST)
