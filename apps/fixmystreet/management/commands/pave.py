@@ -6,7 +6,7 @@ from django.conf import settings
 
 from optparse import make_option
 
-from apps.fixmystreet.models import Report, ReportComment, FMSUser, ReportMainCategoryClass, ReportCategory, ReportFile
+from apps.fixmystreet.models import Report, ReportComment, ReportEventLog, FMSUser, ReportMainCategoryClass, ReportCategory, ReportFile
 
 import csv, datetime, json, logging, requests, subprocess
 
@@ -154,9 +154,10 @@ class Command(BaseCommand):
                     report.save()
 
                     self.set_description(report, row)
+                    self.set_history(report, row)
 
                 try:
-                    ReportFile.objects.get(file__icontains=row[self.PAVE_PICTURE_IDX])
+                    ReportFile.objects.get(file__icontains=row[self.PAVE_PICTURE_IDX], report__id=report.id)
                     logger.info('   Image {} of Report {} ALREADY exists'.format(row[self.PAVE_PICTURE_IDX], report.id))
                 except ReportFile.DoesNotExist:
                     logger.info('   NEW image {} for Report {}'.format(row[self.PAVE_PICTURE_IDX], report.id))
@@ -263,6 +264,15 @@ class Command(BaseCommand):
         )
         comment.bypassNotification = True
         comment.save()
+
+
+    def set_history(self, report, row):
+        ReportEventLog(
+            report=report,
+            event_type=ReportEventLog.CREATED,
+            user=self._get_pave_user(),
+            related_new=report.responsible_department
+        ).save()
 
 
     def set_external_id(self, report, row):
