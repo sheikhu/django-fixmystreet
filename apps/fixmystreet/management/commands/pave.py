@@ -129,32 +129,30 @@ class Command(BaseCommand):
                     firstline = False
                     continue
 
+
+                logger.info('Report with NEW PAVE id {}'.format(self._get_pave_id(row)))
+
+                # Create new report
+                report = Report(
+                    citizen=self._get_pave_user(),
+                    private=True,
+                    pending=True
+                )
+                report.bypassNotification = True
+
                 try:
-                    report = Report.objects.get(contractor_reference_id=self._get_pave_id(row))
-                    logger.info('Report {} ALREADY exists with PAVE id {}'.format(report.id, self._get_pave_id(row)))
-                except Report.DoesNotExist:
-                    logger.info('Report with NEW PAVE id {}'.format(self._get_pave_id(row)))
-                    # Create new report
-                    report = Report(
-                        citizen=self._get_pave_user(),
-                        private=True,
-                        pending=True
-                    )
-                    report.bypassNotification = True
+                    self.set_category(report, row)
+                except KeyError:
+                    errors.append({self._get_pave_id(row): "Invalid categories"})
+                    continue
 
-                    try:
-                        self.set_category(report, row)
-                    except KeyError:
-                        errors.append({self._get_pave_id(row): "Invalid categories"})
-                        continue
+                self.set_address(report, row)
+                self.set_external_id(report, row)
 
-                    self.set_address(report, row)
-                    self.set_external_id(report, row)
+                report.save()
 
-                    report.save()
-
-                    self.set_description(report, row)
-                    self.set_history(report, row)
+                self.set_description(report, row)
+                self.set_history(report, row)
 
                 try:
                     ReportFile.objects.get(file__icontains=row[self.PAVE_PICTURE_IDX], report__id=report.id)
