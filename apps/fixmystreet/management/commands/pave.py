@@ -33,6 +33,18 @@ class Command(BaseCommand):
             dest='pictures_folder',
             default="",
             help='The folder containing original pictures'),
+
+        make_option('--index_start',
+            action='store',
+            dest='index_start',
+            default=None,
+            help='The index to start PAVE parsing'),
+
+        make_option('--index_end',
+            action='store',
+            dest='index_end',
+            default=None,
+            help='The index to end PAVE parsing'),
     )
 
     PAVE_CATEGORIES = {
@@ -68,6 +80,8 @@ class Command(BaseCommand):
     municipality = None
     pave_csv = None
     pictures_folder = None
+    index_start = None
+    index_end = None
 
     def handle(self, *args, **options):
         if not options['municipality']:
@@ -85,6 +99,8 @@ class Command(BaseCommand):
         self.municipality = options['municipality']
         self.pave_csv = options['pave_csv']
         self.pictures_folder = options['pictures_folder']
+        self.index_start = int(options['index_start']) if options['index_start'] else None
+        self.index_end = int(options['index_end']) if options['index_end'] else None
 
         self.resize_pictures()
         self.inject_data()
@@ -105,39 +121,52 @@ class Command(BaseCommand):
 
             errors = []
 
-            for row in pave_reader:
-                logger.info(row)
+            for row in list(pave_reader)[self.index_start:self.index_end]:
+                # logger.info(row)
 
                 # Avoid CSV headers
                 if firstline:
                     firstline = False
                     continue
 
-                # Create new report
-                report = Report(
-                    citizen=self._get_pave_user(),
-                    private=True
-                )
-                report.bypassNotification = True
+                try:
+                    report = Report.objects.get(contractor_reference_id=self._get_pave_id(row))
+                    logger.info('Report {} ALREADY exists with PAVE id {}'.format(report.id, self._get_pave_id(row)))
+                except Report.DoesNotExist:
+                    logger.info('Report with NEW PAVE id {}'.format(self._get_pave_id(row)))
+                    # Create new report
+                    report = Report(
+                        citizen=self._get_pave_user(),
+                        private=True,
+                        pending=True
+                    )
+                    report.bypassNotification = True
+
+                    try:
+                        self.set_category(report, row)
+                    except KeyError:
+                        errors.append({self._get_pave_id(row): "Invalid categories"})
+                        continue
+
+                    self.set_address(report, row)
+                    self.set_external_id(report, row)
+
+                    report.save()
+
+                    self.set_description(report, row)
 
                 try:
-                    self.set_category(report, row)
-                except KeyError:
-                    errors.append({self._get_pave_id(row): "Invalid categories"})
-                    continue
-
-                self.set_address(report, row)
-                self.set_external_id(report, row)
-
-                report.save()
-
-                self.set_description(report, row)
-
-                try:
-                    self.set_pictures(report, row)
-                except:
-                    errors.append({self._get_pave_id(row): "Picture problem"})
-                    continue
+                    ReportFile.objects.get(file__icontains=row[self.PAVE_PICTURE_IDX])
+                    logger.info('   Image {} of Report {} ALREADY exists'.format(row[self.PAVE_PICTURE_IDX], report.id))
+                except ReportFile.DoesNotExist:
+                    logger.info('   NEW image {} for Report {}'.format(row[self.PAVE_PICTURE_IDX], report.id))
+                    try:
+                        self.set_pictures(report, row)
+                    except:
+                        errors.append({self._get_pave_id(row): "Picture problem"})
+                        continue
+                except ReportFile.MultipleObjectsReturned:
+                    logger.info('   Oops, Report {} already has multiple same images {}'.format(report.id, row[self.PAVE_PICTURE_IDX]))
 
         if errors:
             logger.error(errors)
