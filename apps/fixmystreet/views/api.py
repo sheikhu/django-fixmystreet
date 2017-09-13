@@ -247,6 +247,7 @@ def create_citizen(request, several_occurences=False):
     report = report_form.save(commit=False)
     report.citizen = citizen
     report.several_occurences = several_occurences
+    report.forceAutoDispatching = False
     report.save()
 
     # Subscribe if wanted
@@ -260,6 +261,10 @@ def create_citizen(request, several_occurences=False):
         comment.report = report
         comment.is_new_report = True
         comment.save()
+
+    # Commit report after comment to get this one when triggering to partners
+    report.forceAutoDispatching = True
+    report.save()
 
     return report
 
