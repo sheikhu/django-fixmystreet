@@ -265,6 +265,7 @@ def create_citizen(request, several_occurences=False):
     # Commit report after comment to get this one when triggering to partners
     report.forceAutoDispatching = True
     report.save()
+    report.forceAutoDispatching = False
 
     return report
 
