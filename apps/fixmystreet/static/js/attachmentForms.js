@@ -205,15 +205,22 @@
 
         // Validation of comment and photo
         var hasComment, hasPhoto = false;
-        if ($('#id_comment-text').val()) {
+        if ($('#id_comment-text').val().length >= 15) {
+            console.log('yeah has comment', $('#id_comment-text').val().length);
             hasComment = true;
         }
         if (file_count) {
             hasPhoto = true;
         }
 
-        if (hasComment || hasPhoto) {
-            isValid = true;
+        if (isNewIncident) {
+            if (hasComment) {
+                isValid = true;
+            }
+        } else {
+            if (hasComment || hasPhoto) {
+                isValid = true;
+            }
         }
 
         $this.find('[data-one-click]').prop('disabled', isValid && $('#coordonnees').is(':visible'));
@@ -221,9 +228,18 @@
         var commentArea = $('#id_comment-text');
         var fileUploadBtn = $('#file-form-btn-add-container > label.input-file-button');
 
-        if (!isValid) {
-            fileUploadBtn.addClass('invalid');
+        if (!hasComment) {
             commentArea.addClass('invalid');
+
+            if (isNewIncident) {
+                if (!hasPhoto) {
+                    fileUploadBtn.addClass('invalid');
+                } else {
+                    fileUploadBtn.removeClass('invalid');
+                }
+            } else {
+                fileUploadBtn.addClass('invalid')
+            }
         } else {
             fileUploadBtn.removeClass('invalid');
             commentArea.removeClass('invalid');

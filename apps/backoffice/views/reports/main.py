@@ -94,6 +94,7 @@ def new(request):
         "pnt": pnt,
         "file_formset": file_formset,
         "comment_form": comment_form,
+        "isNewIncident": True
     }, context_instance=RequestContext(request))
 
 

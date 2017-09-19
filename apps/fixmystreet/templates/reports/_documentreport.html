@@ -214,3 +214,11 @@
 {% endif %}
 
 </form>
+
+<script>
+    {% if isNewIncident %}
+        var isNewIncident = true;
+    {% else %}
+        var isNewIncident = false;
+    {% endif %}
+</script>
