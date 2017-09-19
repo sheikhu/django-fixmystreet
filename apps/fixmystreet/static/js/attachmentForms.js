@@ -206,7 +206,6 @@
         // Validation of comment and photo
         var hasComment, hasPhoto = false;
         if ($('#id_comment-text').val().length >= 15) {
-            console.log('yeah has comment', $('#id_comment-text').val().length);
             hasComment = true;
         }
         if (file_count) {
@@ -250,4 +249,9 @@
         return isValid;
 
     }
+
+    var commentText = document.querySelector('#id_comment-text');
+    commentText.addEventListener('input', function(event) {
+        validateForm($("form"));
+    });
 })(validateForm);
