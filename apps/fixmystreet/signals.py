@@ -94,7 +94,7 @@ def init_street_number_as_int(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Report)
 def init_regional_street(sender, instance, **kwargs):
-    if not instance.id and not kwargs['raw']:
+    if not instance.id and not kwargs['raw'] and not instance.address_regional:
         if StreetSurface.objects.filter(geom__intersects=instance.point.buffer(5), administrator=StreetSurface.REGION).exists():
             instance.address_regional = True
 

@@ -6,7 +6,7 @@ from django.conf import settings
 
 from optparse import make_option
 
-from apps.fixmystreet.models import Report, ReportComment, ReportEventLog, FMSUser, ReportMainCategoryClass, ReportCategory, ReportFile
+from apps.fixmystreet.models import Report, ReportComment, ReportEventLog, FMSUser, ReportMainCategoryClass, ReportCategory, ReportFile, OrganisationEntity
 
 import csv, datetime, json, logging, requests, subprocess
 
@@ -83,6 +83,8 @@ class Command(BaseCommand):
     index_start = None
     index_end = None
 
+    region_entity = OrganisationEntity.objects.get(id=20)
+
     def handle(self, *args, **options):
         if not options['municipality']:
             logger.error('No municipality supplied. See help. Aborted.')
@@ -148,6 +150,7 @@ class Command(BaseCommand):
 
                 self.set_address(report, row)
                 self.set_external_id(report, row)
+                self.set_regional_flag(report, row)
 
                 report.save()
 
@@ -309,3 +312,25 @@ class Command(BaseCommand):
         subprocess.call("cp {}/{} {}/{}".format(self.pictures_folder, picture_name, target_path, picture_name), shell=True)
         subprocess.call("cp {}/{} {}/{}".format(self.pictures_folder, thumbnail_name, target_path, thumbnail_name), shell=True)
         subprocess.call("cp -r {}/files {}".format(self.pictures_folder, settings.MEDIA_ROOT), shell=True)
+
+    def set_regional_flag(self, report, row):
+        template_url = 'http://geoservices-urbis.irisnet.be/geoserver/wfs?service=wfs&request=GetFeature&version=2.0&typeName=UrbisAdm:Ss&outputFormat=application/json&FILTER=<Filter xmlns="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml"><Intersects><PropertyName>GEOM</PropertyName><gml:Point srsName="EPSG:4326"><gml:coordinates>coord_x,coord_y</gml:coordinates></gml:Point></Intersects></Filter>&propertyName=SSA_ADMIN,SSA_DESCRIPTION_FRE'
+
+        template_url = template_url.replace("coord_x", str(report.point.x))
+        template_url = template_url.replace("coord_y", str(report.point.y))
+
+        response = requests.get(template_url)
+
+        if response.status_code == requests.codes.ok:
+            try:
+                feature = response.json()['features'][0]
+
+                if feature['properties']['SSA_ADMIN'] in ["REGION", "33"]:
+                    report.address_regional = True
+                    report.responsible_entity = self.region_entity
+
+                    logger.info('   Address is regional: ' + feature['properties']['SSA_ADMIN'])
+            except AttributeError:
+                pass
+            except IndexError:
+                pass
