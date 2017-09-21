@@ -205,15 +205,21 @@
 
         // Validation of comment and photo
         var hasComment, hasPhoto = false;
-        if ($('#id_comment-text').val()) {
+        if ($('#id_comment-text').val().length >= 15) {
             hasComment = true;
         }
         if (file_count) {
             hasPhoto = true;
         }
 
-        if (hasComment || hasPhoto) {
-            isValid = true;
+        if (isNewIncident) {
+            if (hasComment) {
+                isValid = true;
+            }
+        } else {
+            if (hasComment || hasPhoto) {
+                isValid = true;
+            }
         }
 
         $this.find('[data-one-click]').prop('disabled', isValid && $('#coordonnees').is(':visible'));
@@ -221,9 +227,18 @@
         var commentArea = $('#id_comment-text');
         var fileUploadBtn = $('#file-form-btn-add-container > label.input-file-button');
 
-        if (!isValid) {
-            fileUploadBtn.addClass('invalid');
+        if (!hasComment) {
             commentArea.addClass('invalid');
+
+            if (isNewIncident) {
+                if (!hasPhoto) {
+                    fileUploadBtn.addClass('invalid');
+                } else {
+                    fileUploadBtn.removeClass('invalid');
+                }
+            } else {
+                fileUploadBtn.addClass('invalid')
+            }
         } else {
             fileUploadBtn.removeClass('invalid');
             commentArea.removeClass('invalid');
@@ -234,4 +249,9 @@
         return isValid;
 
     }
+
+    var commentText = document.querySelector('#id_comment-text');
+    commentText.addEventListener('input', function(event) {
+        validateForm($("form"));
+    });
 })(validateForm);
