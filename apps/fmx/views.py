@@ -16,7 +16,7 @@ from  django.utils.http import urlsafe_base64_decode
 import re
 from django.contrib.auth.forms import SetPasswordForm
 from apps.fixmystreet.views.api import create_report
-from apps.fmx.forms import SeveralOccurencesForm, IsIncidentCreationForm
+from apps.fmx.forms import SeveralOccurencesForm, IsIncidentCreationForm, IsProForm
 from mobileserverstatus.models import Message
 from PIL import Image
 from django.utils.translation import get_language, activate
@@ -391,6 +391,12 @@ def duplicates(request):
 
     x = request.GET.get("x", None)
     y = request.GET.get("y", None)
+    is_pro_form = IsProForm(request.POST)
+    if is_pro_form.is_valid():
+        pro = is_pro_form.cleaned_data['pro']
+    else:
+        pro = False
+
 
     if x is None or y is None:
         return exit_with_error("Missing coordinates", 400)
@@ -403,7 +409,10 @@ def duplicates(request):
         return exit_with_error("Invalid coordinates", 400)
 
     pnt = fromstr("POINT(" + x + " " + y + ")", srid=31370)
-    reports_nearby = Report.objects.all().fmxPublic().fmxNotClosed().near(pnt, 20).related_fields()
+    if pro:
+        reports_nearby = Report.objects.all().fmxNotClosed().near(pnt, 20).related_fields()
+    else:
+        reports_nearby = Report.objects.all().fmxPublic().fmxNotClosed().near(pnt, 20).related_fields()
 
     response = get_response()
     response["response"] = []
