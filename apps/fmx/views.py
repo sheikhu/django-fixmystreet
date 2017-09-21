@@ -391,7 +391,7 @@ def duplicates(request):
 
     x = request.GET.get("x", None)
     y = request.GET.get("y", None)
-    is_pro_form = IsProForm(request.POST)
+    is_pro_form = IsProForm(request.GET)
     if is_pro_form.is_valid():
         pro = is_pro_form.cleaned_data['pro']
     else:
