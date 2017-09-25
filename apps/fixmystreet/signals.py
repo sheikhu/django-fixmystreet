@@ -666,14 +666,14 @@ def eventlog_init_values(sender, instance, **kwargs):
 def init_report_overview(sender, instance, **kwargs):
 
     # Thumbnail for citizen
-    images_public = instance.report.active_files().filter(file_type=ReportFile.IMAGE)
+    images_public = instance.report.active_files().filter(file_type=ReportFile.IMAGE).order_by('created')
     if images_public.exists():
         instance.report.thumbnail = images_public[0].image.thumbnail.url
     else:
         instance.report.thumbnail = None
 
     # Thumbnail for pro
-    images_pro = instance.report.files().filter(logical_deleted=False, file_type=ReportFile.IMAGE).order_by('-modified')
+    images_pro = instance.report.files().filter(logical_deleted=False, file_type=ReportFile.IMAGE).order_by('created')
     if images_pro.exists():
         instance.report.thumbnail_pro = images_pro[0].image.thumbnail.url
     else:
