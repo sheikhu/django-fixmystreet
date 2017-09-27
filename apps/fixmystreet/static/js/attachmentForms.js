@@ -202,22 +202,38 @@
     validateForm = function(form) {
         var isValid = false;
         var $this = $(this);
+        var commentLength = $('#id_comment-text').val().length;
 
-        // Validation of comment and photo
-        var hasComment, hasPhoto = false;
-        if ($('#id_comment-text').val().length >= 15) {
-            hasComment = true;
-        }
+        var hasComment = false;
+        var hasPhoto = false;
+
+        // Generic
         if (file_count) {
+            hasPhoto = true;
             hasPhoto = true;
         }
 
+        // New incident
+        if (isNewIncident) {
+            if (commentLength >= 15) {
+                hasComment = true;
+            }
+        } else {
+            // Documentation
+            if ((commentLength > 0) && (commentLength > 15)) {
+                hasComment = true;
+            } else if ( (commentLength == 0) && hasPhoto) {
+                hasComment = true;
+            }
+        }
+
+        // isValid
         if (isNewIncident) {
             if (hasComment) {
                 isValid = true;
             }
         } else {
-            if (hasComment || hasPhoto) {
+            if (hasComment && hasPhoto) {
                 isValid = true;
             }
         }
