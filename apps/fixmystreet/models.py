@@ -760,6 +760,9 @@ class Report(UserTrackedModel):
     # Several occurences flag
     several_occurences = models.BooleanField(default=False)
 
+    # Notification to update mobile app
+    mobile_notification = False
+
     def get_category_path(self):
         path = " > ".join([self.secondary_category.category_class.name, self.secondary_category.secondary_category_class.name, self.secondary_category.name])
 
@@ -1776,6 +1779,9 @@ class ReportNotification(models.Model):
         if 'reopen_reason' in kwargs:
             reopen_reason = kwargs['reopen_reason']
             del kwargs['reopen_reason']
+        if 'mobile_notification' in kwargs:
+            self.related.mobile_notification = kwargs['mobile_notification']
+            del kwargs['mobile_notification']
 
         if self.related.merged_with:
             merged_with = self.related.merged_with

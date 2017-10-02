@@ -221,7 +221,7 @@ def report_notify_created(sender, instance, **kwargs):
                 content_template='acknowledge-creation',
                 recipient=report.citizen,
                 related=report,
-            ).save()
+            ).save(mobile_notification=report.mobile_notification)
 
         # Send notifications to group or members according to group configuration
         mail_config = report.responsible_department.get_mail_config()

@@ -14,3 +14,8 @@ class IsProForm(forms.Form):
     """Form to validate that we have a pro asking for duplicates"""
 
     pro = forms.BooleanField(initial=False, label='is_pro')
+
+class AddMobileUpdateNotificationForm(forms.Form):
+    """Form to validate that we have must add a notification in the creation mail"""
+
+    mobile_notification = forms.BooleanField(initial=False, label='mobile_notification')

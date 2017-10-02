@@ -3,6 +3,13 @@
 {% block content_mail_fr %}
 <p>Vous avez signalé un  incident sur Fix My Street.</p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='fr' %}</p>
+{% if report.mobile_notification %}
+    <p>La version de l'application FixMyStreet que vous utilisez ne sera plus compatible à partir du 01/01/2018. Pour continuer à signaler des incidents, vous devez installer la dernière version de l'application :</p>
+    <ul>
+        <li>Google Play : <a href="https://play.google.com/store/apps/details?id=be.irisnet.fixmystreet">https://play.google.com/store/apps/details?id=be.irisnet.fixmystreet</a></li>
+        <li>App Store : <a href="https://itunes.apple.com/be/app/fixmy-street-bruxelles/id624618373?ls=1&mt=8">https://itunes.apple.com/be/app/fixmy-street-bruxelles/id624618373?ls=1&mt=8</a></li>
+    </ul>
+{% endif %}
 <p>Vous pouvez vous désinscrire et ne plus recevoir de notifications en cliquant sur le lien ci-dessous :</p>
 <ul>
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
@@ -12,6 +19,13 @@
 {% block content_mail_nl %}
 <p>U heeft een probleem gemeld via Fix My Street. </p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='nl' %}</p>
+{% if report.mobile_notification %}
+    <p>De versie van de applicatie FixMyStreet die u gebruikt zal niet langer compatibel zijn vanaf 01/01/2018. Als u wilt verdergaan met het signaleren van de incidenten, Moet u de laatste versie van de applicatie installeren:</p>
+    <ul>
+        <li>Google Play : <a href="https://play.google.com/store/apps/details?id=be.irisnet.fixmystreet">https://play.google.com/store/apps/details?id=be.irisnet.fixmystreet</a></li>
+        <li>App Store : <a href="https://itunes.apple.com/be/app/fixmy-street-bruxelles/id624618373?ls=1&mt=8">https://itunes.apple.com/be/app/fixmy-street-bruxelles/id624618373?ls=1&mt=8</a></li>
+    </ul>
+{% endif %}
 <p>Indien u niet langer berichten wilt ontvangen kunt u zich uitschrijven via onderstaande link:</p>
 <ul>
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>
@@ -21,6 +35,13 @@
 {% block content_mail_en %}
 <p>You’ve reported an incident via Fix My Street. </p>
 <p>{% include 'emails/notifications/html/_report_overview.html' with lang='en' %}</p>
+{% if report.mobile_notification %}
+    <p>The version of the FixMyStreet application that you're using will no longer be compatible from 01/01/2018. To continue reporting incidents, you need to update your application with the latest version:</p>
+    <ul>
+        <li>Google Play : <a href="https://play.google.com/store/apps/details?id=be.irisnet.fixmystreet">https://play.google.com/store/apps/details?id=be.irisnet.fixmystreet</a></li>
+        <li>App Store : <a href="https://itunes.apple.com/be/app/fixmy-street-bruxelles/id624618373?ls=1&mt=8">https://itunes.apple.com/be/app/fixmy-street-bruxelles/id624618373?ls=1&mt=8</a></li>
+    </ul>
+{% endif %}
 <p>If you don’t want to receive notifications anymore you can unsubscribe to the incident by following the link below:</p>
 <ul>
 <li><a href="{{unsubscribe_url}}">{{unsubscribe_url}}</a></li>

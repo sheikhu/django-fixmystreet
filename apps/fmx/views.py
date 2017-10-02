@@ -16,7 +16,7 @@ from  django.utils.http import urlsafe_base64_decode
 import re
 from django.contrib.auth.forms import SetPasswordForm
 from apps.fixmystreet.views.api import create_report
-from apps.fmx.forms import SeveralOccurencesForm, IsIncidentCreationForm, IsProForm
+from apps.fmx.forms import SeveralOccurencesForm, IsIncidentCreationForm, IsProForm, AddMobileUpdateNotificationForm
 from mobileserverstatus.models import Message
 from PIL import Image
 from django.utils.translation import get_language, activate
@@ -861,7 +861,13 @@ def create_incident(request):
     if several_occurences_form.is_valid():
         several_occurences = True
 
-    incidentResult = create_report(request, several_occurences)
+    mobile_notification_form = AddMobileUpdateNotificationForm(request.POST)
+    if mobile_notification_form.is_valid():
+        mobile_notification = mobile_notification_form.cleaned_data['mobile_notification']
+    else:
+        mobile_notification = False
+
+    incidentResult = create_report(request, several_occurences, mobile_notification)
     if incidentResult.status_code != 200:
         return exit_with_error(incidentResult.content, incidentResult.status_code)
 

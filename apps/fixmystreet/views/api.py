@@ -179,7 +179,7 @@ from apps.fixmystreet.forms import CitizenForm, CitizenReportForm, ProReportForm
 from apps.fixmystreet.utils import RequestFingerprint
 from django.core.serializers.json import DjangoJSONEncoder
 
-def create_report(request, several_occurences=False):
+def create_report(request, several_occurences=False, mobile_notification=False):
     fingerprint = RequestFingerprint(request)
 
     if not fingerprint.is_duplicate():
@@ -187,9 +187,9 @@ def create_report(request, several_occurences=False):
 
         # Check if citizen or pro
         if request.POST.get('username', False):
-            report = create_pro(request, several_occurences)
+            report = create_pro(request, several_occurences, mobile_notification)
         else:
-            report = create_citizen(request, several_occurences)
+            report = create_citizen(request, several_occurences, mobile_notification)
 
         if isinstance(report, HttpResponse):
             return report
@@ -227,7 +227,7 @@ def create_report(request, several_occurences=False):
     response = { "error" : "Duplicate fingerprint"}
     return HttpResponse(json.dumps(response, cls=DjangoJSONEncoder), content_type="application/json; charset=utf-8")
 
-def create_citizen(request, several_occurences=False):
+def create_citizen(request, several_occurences=False, mobile_notification=False):
     # Get user in DB or create it
 
     citizen_form = CitizenForm(request.POST, prefix='citizen')
@@ -247,6 +247,7 @@ def create_citizen(request, several_occurences=False):
     report = report_form.save(commit=False)
     report.citizen = citizen
     report.several_occurences = several_occurences
+    report.mobile_notification = mobile_notification
     report.forceAutoDispatching = False
     report.save()
 
@@ -269,7 +270,7 @@ def create_citizen(request, several_occurences=False):
 
     return report
 
-def create_pro(request, several_occurences=False):
+def create_pro(request, several_occurences=False, mobile_notification=False):
     # Login the user
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
 
@@ -288,6 +289,7 @@ def create_pro(request, several_occurences=False):
 
     report.private = True
     report.several_occurences = several_occurences
+    report.mobile_notification = mobile_notification
     report.save()
     report.subscribe_author()
 
