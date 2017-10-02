@@ -37,7 +37,7 @@ dev_require = [
     'django-debug-toolbar==1.3.2',
     'sqlparse==0.1.19', # force this version of sqlparse to get debug-toolbar working
 
-    'ipython',
+    'ipython==5.5.0',
 
     # These following packages depend on system requirements,
     # must be installed on system for prod
