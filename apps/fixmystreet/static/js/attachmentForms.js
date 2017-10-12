@@ -233,7 +233,7 @@
                 isValid = true;
             }
         } else {
-            if (hasComment && hasPhoto) {
+            if (hasComment || hasPhoto) {
                 isValid = true;
             }
         }
@@ -261,6 +261,7 @@
         }
 
         isValid = oldValidateForm(form) && isValid;
+
 
         return isValid;
 
