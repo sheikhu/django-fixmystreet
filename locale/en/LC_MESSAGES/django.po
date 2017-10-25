@@ -2448,6 +2448,8 @@ msgid ""
 "Veuillez trouver ci-dessous un résumé de l'activité lié à vos abonnements "
 "sur Fix My Street."
 msgstr ""
+"Please find below a summary of the activity linked to your subscribtions "
+"on Fix My Street."
 
 #: fixmystreet/templates/emails/digest.html:15
 #: fixmystreet/templates/emails/digest.html:57
