@@ -1458,7 +1458,10 @@ class ReportFile(ReportAttachment):
     def is_document(self):
         return self.is_pdf() or self.is_word() or self.is_excel()
 
-    def save(self):
+    def save(self, *args, **kwargs):
+        if 'refresh_report' in kwargs and kwargs['refresh_report']:
+            del kwargs['refresh_report']
+            self.report.refresh_from_db()
         super(ReportFile, self).save()
 
         # Resize original image file

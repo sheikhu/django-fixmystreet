@@ -172,8 +172,7 @@ def add_attachment_for_user(request, report, user):
                 for report_file in files:
                     report_file.created_by = user
                     report_file.is_incident_creation = is_incident_creation
-                    report_file.report.refresh_from_db()
-                    report_file.save()
+                    report_file.save(refresh_report=True)
                     attachment = report_file
                     if report_file.file_type == ReportFile.IMAGE and image_rotation > 0:
                         src_im = Image.open(report_file.image.path)

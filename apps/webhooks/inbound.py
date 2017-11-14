@@ -11,6 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 from apps.fixmystreet.models import FMSUser, Report, ReportAttachment, ReportComment, ReportEventLog
 from apps.fixmystreet.utils import check_responsible_permission, check_contractor_permission, set_current_user
 
+import time
+
 
 class NotLinkedWithThirdPartyError(Exception): pass
 class ThirdPartyNotAuthorizedError(Exception): pass
@@ -233,6 +235,8 @@ class ReportTransferAcceptInWebhook(ReportAcceptInWebhookMixin, AbstractReportTr
     ACTION_MESSAGE = _(u"Report transfer was accepted by {third_party}.")
 
     def run(self):
+        # Temporary hack to avoid ABP from answering too fast
+        time.sleep( 3 )
         super(ReportTransferAcceptInWebhook, self).run()
 
         # Case of auto-dispatching and not manually transferred by a manager.
