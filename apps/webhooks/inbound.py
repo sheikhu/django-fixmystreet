@@ -236,7 +236,7 @@ class ReportTransferAcceptInWebhook(ReportAcceptInWebhookMixin, AbstractReportTr
 
     def run(self):
         # Temporary hack to avoid ABP from answering too fast
-        time.sleep( 3 )
+        time.sleep( 5 )
         super(ReportTransferAcceptInWebhook, self).run()
 
         # Case of auto-dispatching and not manually transferred by a manager.
