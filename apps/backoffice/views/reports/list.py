@@ -40,7 +40,7 @@ def table_content(request, selection=""):
 
     if selection == "responsible" and user.manager:
         reports = reports.responsible(user)
-        reports = reports.filter(pending=False).exclude(Q(status__in=Report.REPORT_STATUS_CLOSED) | Q(status__in=Report.REPORT_STATUS_OFF) | Q(status=Report.REFUSED))
+        reports = reports.exclude(Q(status__in=Report.REPORT_STATUS_CLOSED) | Q(status__in=Report.REPORT_STATUS_OFF) | Q(status=Report.REFUSED))
     elif selection == "subscribed":
         reports = reports.subscribed(user)
     elif selection == "contractor_responsible":
