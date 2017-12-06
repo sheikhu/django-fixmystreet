@@ -21,6 +21,7 @@
             <th>{% trans "All" context "Masculine plural" %}</th>
             <th>{% trans "All" context "Feminine plural" %}</th>
             <th class="filter-date">{% trans "All" context "Masculine plural" %}</th>
+            <th class="filter-date">{% trans "All" context "Masculine plural" %}</th>
             <th class="filter-date">{% trans "All" context "Feminine plural" %}</th>
             <th>{% trans "All" context "Feminine plural" %}</th>
             <th>{% trans "All" context "Masculine plural" %}</th>
@@ -55,6 +56,7 @@
             <th>{% trans "Responsible department" %}</th>
             <th>{% trans "Responsible entity" %}</th>
             <th>{% trans "Created at" %}</th>
+            <th>{% trans "Accepted at" %}</th>
             <th>{% trans "Planning date" %}</th>
             <th>{% trans "Priority" %}</th>
             <th>{% trans "Planning" %}</th>
@@ -91,6 +93,7 @@
                 <td class="s{{report.status}}">{{ report.contractor_reference_id|default_if_none:"" }}</td>
                 <td class="s{{report.status}}">{{ report.responsible_department.name }}</td>
                 <td class="s{{report.status}}">{{ report.responsible_entity.name }}</td>
+                <td class="s{{report.status}}">{{ report.created|date:"d/m/Y" }}</td>
                 <td class="s{{report.status}}">{{ report.accepted_at|date:"d/m/Y" }}</td>
                 <td class="s{{report.status}}">{{ report.date_planned|date:"d/m/Y" }}</td>
                 <td class="s{{report.status}}">{{ report.get_priority }}</td>
