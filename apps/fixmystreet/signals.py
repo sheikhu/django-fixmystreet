@@ -242,6 +242,9 @@ def report_notify_status_changed(sender, instance, **kwargs):
     signal on a report to notify author and manager that the status of the report has changed
     """
 
+    if hasattr(instance, 'bypassStatusChanged') and instance.bypassStatusChanged:
+        return
+
     if not kwargs['raw']:
         report = instance
         event_log_user = report.modified_by
