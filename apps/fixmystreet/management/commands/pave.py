@@ -325,7 +325,7 @@ class Command(BaseCommand):
             try:
                 feature = response.json()['features'][0]
 
-                if feature['properties']['SSA_ADMIN'] in ["REGION", "33"]:
+                if feature['properties']['SSA_ADMIN'] in ["REGION"]:
                     report.address_regional = True
                     report.responsible_entity = self.region_entity
 
