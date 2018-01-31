@@ -176,7 +176,7 @@ class Command(BaseCommand):
 
 
     def _get_pave_id(self, row):
-        id = row[self.PAVE_ID_IDX].split('/')[0].strip()
+        id = row[self.PAVE_ID_IDX].split('/')[0].strip()[:15]
         return "PAVE-{}".format(id)
 
     def _get_pave_name(self):
