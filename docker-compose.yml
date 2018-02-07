@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+    app:
+        build: ./docker/app
+        networks:
+            - default
+
+networks:
+    default:
+        driver: "bridge"
