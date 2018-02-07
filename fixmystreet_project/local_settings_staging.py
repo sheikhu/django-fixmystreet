@@ -4,7 +4,7 @@ DATABASES = {
         'NAME': 'fms',
         'USER': 'fms',
         'PASSWORD': 'fms',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': 5432
    }
 }
