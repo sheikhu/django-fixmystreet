@@ -48,6 +48,7 @@ initcache:
 
 install: $(BIN_PATH)
 	$(BIN_PATH)/python setup.py develop -Z
+	$(BIN_PATH)/pip install -e .[dev]
 	$(MAKE) collectstatic
 
 jenkins: develop

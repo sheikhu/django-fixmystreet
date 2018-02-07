@@ -14,12 +14,15 @@ COPY Makefile /app
 
 COPY . /app
 
+ADD fixmystreet_project/local_settings_staging.py /app/fixmystreet_project/local_settings.py
+
 
 RUN make install
 
-RUN ls 
+
 RUN chmod +x entrypoint.sh
 
 CMD ["/bin/bash"]
 
+EXPOSE 8080
 ENTRYPOINT ["./entrypoint.sh"]
