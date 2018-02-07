@@ -154,7 +154,7 @@ INSTALLED_APPS = (
     'simple_history',
     'django_extensions',
     'ckeditor',
-    'monitoring',
+    #'monitoring',
     'stdimage',
 
     'rest_framework',

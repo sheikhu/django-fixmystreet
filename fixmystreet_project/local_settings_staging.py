@@ -1,9 +1,9 @@
 DATABASES = {
    'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'fixmystreet',
-        'USER': '###',
-        'PASSWORD': '###',
+        'NAME': 'fms',
+        'USER': 'fms',
+        'PASSWORD': 'fms',
         'HOST': 'localhost',
         'PORT': 5432
    }

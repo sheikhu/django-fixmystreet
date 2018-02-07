@@ -5,8 +5,23 @@ services:
         build:
             context: ./
             dockerfile: ./docker/app/Dockerfile
+        depends_on:
+            - db
+        links:
+            - db:db
         networks:
             - default
+    db:
+        image: postgres:9.3.20
+        restart: always
+        environment:
+            POSTGRES_USER: fms
+            POSTGRES_PASSWORD: fms
+            POSTGRES_DB: fms
+        ports:
+            - "5432:5432"
+        expose:
+            - "5432"
 
 networks:
     default:

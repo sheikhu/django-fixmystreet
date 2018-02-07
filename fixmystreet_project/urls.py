@@ -26,7 +26,7 @@ urlpatterns += patterns(
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', admin.site.urls),
     (r'^ckeditor/', include('ckeditor.urls')),
-    (r'^monitoring/', include('monitoring.urls')),
+    #(r'^monitoring/', include('monitoring.urls')),
     (r'^status/', include('mobileserverstatus.urls')),
     url(r'^fms-proxy/', include('apps.fmsproxy.urls')),
 )
