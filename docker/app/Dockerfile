@@ -17,8 +17,9 @@ COPY . /app
 
 RUN make install
 
-RUN ls /app
+RUN ls 
+RUN chmod +x entrypoint.sh
 
 CMD ["/bin/bash"]
 
-ENTRYPOINT ["echo $PATH && python manage.py runserver"]
+ENTRYPOINT ["./entrypoint.sh"]
