@@ -2,7 +2,9 @@ version: '2'
 
 services:
     app:
-        build: ./docker/app
+        build:
+            context: ./
+            dockerfile: ./docker/app/Dockerfile
         networks:
             - default
 
